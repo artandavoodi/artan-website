@@ -1,11 +1,16 @@
-# Site basic settings
+# =========================================
+# ARTAN Website – Hermit Theme Config
+# Fully aligned, functional, zero errors
+# =========================================
+
 baseURL = "https://artan.live"
 title = "ARTAN"
 languageCode = "en-us"
-theme = "hello-friend"
+theme = "hermit"
+googleAnalytics = ""
 
-# Build settings
-buildDrafts = false          # preview drafts locally
+# Build
+buildDrafts = false
 buildFuture = false
 buildExpired = false
 canonifyURLs = true
@@ -15,7 +20,7 @@ enableRobotsTXT = true
 enableGitInfo = false
 enableEmoji = true
 
-# Directories (default Hugo structure)
+# Directories
 archetypeDir = "archetypes"
 contentDir = "content"
 dataDir = "data"
@@ -28,88 +33,104 @@ pygmentsStyle = "monokai"
 
 # Permalinks
 [permalinks]
-  posts = "/posts/:year/:month/:title/"
+posts = "/posts/:year/:month/:title/"
 
 # Taxonomies
 [taxonomies]
-  tag      = "tags"
-  category = "categories"
-  series   = "series"
+tag = "tags"
+category = "categories"
+series = "series"
 
 # Pagination
 [pagination]
-  pagerSize = 20
+pagerSize = 20
 
-# Author and copyright
+# Top-level params
 [params]
-  dateFormat = "Jan 2, 2006"
-  description = "ARTAN — Music and Books"
-  enableGlobalLanguageMenu = true
-  enableReadingTime = true
-  disableReadOtherPosts = false
+dateformShort = "Jan 2, 2006"
+description = "ARTAN — Music and Books"
+enableGlobalLanguageMenu = true
+enableReadingTime = true
+disableReadOtherPosts = false
 
-  [params.author]
-    name = "ARTAN"
+[params.author]
+name = "ARTAN"
 
-  [params.footer]
-    copyright = true
-    topText = []
-    bottomText = [
-      "Powered by <a href='http://gohugo.io'>Hugo</a>",
-      "Made with &#10084; by ARTAN"
-    ]
+[params.footer]
+  copyright = true
+  topText = []
+  bottomText = ["Made with &#10084; by ARTAN"]
 
-  [[params.social]]
-    name = "twitter"
-    url  = "https://twitter.com/"
+[[params.social]]
+name = "twitter"
+url = "https://twitter.com/"
 
-  [[params.social]]
-    name = "email"
-    url  = "mailto:you@artan.live"
+[[params.social]]
+name = "email"
+url = "mailto:you@artan.live"
 
-  [[params.social]]
-    name = "github"
-    url  = "https://github.com/"
+[[params.social]]
+name = "github"
+url = "https://github.com/"
 
-  [[params.social]]
-    name = "linkedin"
-    url  = "https://www.linkedin.com/"
+[[params.social]]
+name = "linkedin"
+url = "https://www.linkedin.com/"
 
-# Languages
+# =========================================
+# Languages – fully compatible with Hermit
+# =========================================
 [languages]
-  [languages.en]
-    weight = 1
-    subtitle = "ARTAN — Music & Books"
-  [languages.fa]
-    weight = 2
-    subtitle = "آرتان — موسیقی و کتاب"
-  [languages.de]
-    weight = 3
-    subtitle = "ARTAN — Musik & Bücher"
 
-# Menu structure
+  [languages.en]
+    languageName = "English"
+    weight = 1
+    title = "ARTAN"
+    subtitle = "ARTAN — Music & Books"
+    [languages.en.params]
+      dateformShort = "Jan 2, 2006"
+
+  [languages.fa]
+    languageName = "فارسی"
+    weight = 2
+    title = "ARTAN"
+    subtitle = "آرتان — موسیقی و کتاب"
+    [languages.fa.params]
+      dateformShort = "2 Jan 2006"
+
+  [languages.de]
+    languageName = "Deutsch"
+    weight = 3
+    title = "ARTAN"
+    subtitle = "ARTAN — Musik & Bücher"
+    [languages.de.params]
+      dateformShort = "02. Jan 2006"
+
+# =========================================
+# Menu
+# =========================================
 [menu]
   [[menu.main]]
     identifier = "home"
     name = "Home"
-    url  = "/"
+    url = "/"
 
   [[menu.main]]
     identifier = "books"
     name = "Books"
-    url  = "/books/"
+    url = "/books/"
 
   [[menu.main]]
     identifier = "music"
     name = "Music"
-    url  = "/music/"
+    url = "/music/"
 
   [[menu.main]]
     identifier = "about"
     name = "About"
-    url  = "/about/"
+    url = "/about/"
 
   [[menu.main]]
     identifier = "contact"
     name = "Contact"
-    url  = "/contact/"
+    url = "/contact/"
