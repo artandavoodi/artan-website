@@ -2,9 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://artan.live/about/</loc>
-  </url><url>
     <loc>https://artan.live/</loc>
+    <lastmod>2018-12-24T12:29:41+08:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/demo/</loc>
+    <lastmod>2018-12-24T12:29:41+08:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/image/</loc>
+    <lastmod>2018-12-24T12:29:41+08:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/posts/</loc>
+    <lastmod>2018-12-24T12:29:41+08:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/</loc>
+    <lastmod>2018-12-24T12:29:41+08:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/posts/the-figure-shortcode/</loc>
+    <lastmod>2018-12-24T12:29:41+08:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/posts/post-with-featured-image/</loc>
+    <lastmod>2018-10-01T16:15:09+08:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/posts/typography/</loc>
+    <lastmod>2018-09-29T11:36:33+08:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/typography/</loc>
+    <lastmod>2018-09-29T11:36:33+08:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/posts/creating-a-new-theme/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/about-hugo/</loc>
+    <lastmod>2014-04-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/posts/goisforlovers/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/development/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/posts/hugoisforlovers/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/go/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/golang/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/hugo/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/templates/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/tags/themes/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/posts/migrate-from-jekyll/</loc>
+    <lastmod>2014-03-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://artan.live/about/</loc>
   </url><url>
     <loc>https://artan.live/books/</loc>
   </url><url>
@@ -13,7 +71,5 @@
     <loc>https://artan.live/contact/</loc>
   </url><url>
     <loc>https://artan.live/music/</loc>
-  </url><url>
-    <loc>https://artan.live/tags/</loc>
   </url>
 </urlset>

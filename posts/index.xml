@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ARTAN</title>
-    <link>https://artan.live/</link>
-    <description>Recent content on ARTAN</description>
+    <title>Posts on ARTAN</title>
+    <link>https://artan.live/posts/</link>
+    <description>Recent content in Posts on ARTAN</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 24 Dec 2018 12:29:41 +0800</lastBuildDate>
-    <atom:link href="https://artan.live/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://artan.live/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The &#34;figure&#34; Shortcode</title>
       <link>https://artan.live/posts/the-figure-shortcode/</link>
@@ -37,13 +37,6 @@
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&amp;rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&amp;rsquo;t cover using CSS to style your theme.&lt;/p&gt;&#xA;&lt;p&gt;We&amp;rsquo;ll start with creating a new site with a very basic template. Then we&amp;rsquo;ll add in a few pages and posts. With small variations on that, you will be able to create many different types of web sites.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>About Hugo</title>
-      <link>https://artan.live/about-hugo/</link>
-      <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
-      <guid>https://artan.live/about-hugo/</guid>
-      <description>&lt;p&gt;Hugo is the &lt;strong&gt;world’s fastest framework for building websites&lt;/strong&gt;. It is written in Go.&lt;/p&gt;&#xA;&lt;p&gt;It makes use of a variety of open source projects including:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/russross/blackfriday&#34;&gt;https://github.com/russross/blackfriday&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/alecthomas/chroma&#34;&gt;https://github.com/alecthomas/chroma&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/muesli/smartcrop&#34;&gt;https://github.com/muesli/smartcrop&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/cobra&#34;&gt;https://github.com/spf13/cobra&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/viper&#34;&gt;https://github.com/spf13/viper&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Learn more and contribute on &lt;a href=&#34;https://github.com/gohugoio&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>(Hu)go Template Primer</title>
       <link>https://artan.live/posts/goisforlovers/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
@@ -63,34 +56,6 @@
       <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
       <guid>https://artan.live/posts/migrate-from-jekyll/</guid>
       <description>&lt;h2 id=&#34;move-static-content-to-static&#34;&gt;Move static content to &lt;code&gt;static&lt;/code&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Jekyll has a rule that any directory not starting with &lt;code&gt;_&lt;/code&gt; will be copied as-is to the &lt;code&gt;_site&lt;/code&gt; output. Hugo keeps all static content under &lt;code&gt;static&lt;/code&gt;. You should therefore move it all there.&#xA;With Jekyll, something that looked like&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/&#xA;    ▾ images/&#xA;        logo.png&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;should become&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/&#xA;    ▾ static/&#xA;        ▾ images/&#xA;            logo.png&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;Additionally, you&amp;rsquo;ll want any files that should reside at the root (such as &lt;code&gt;CNAME&lt;/code&gt;) to be moved to &lt;code&gt;static&lt;/code&gt;.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>About</title>
-      <link>https://artan.live/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://artan.live/about/</guid>
-      <description>&lt;p&gt;About ARTAN&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Books</title>
-      <link>https://artan.live/books/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://artan.live/books/</guid>
-      <description>&lt;p&gt;Books page&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Contact</title>
-      <link>https://artan.live/contact/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://artan.live/contact/</guid>
-      <description>&lt;p&gt;Contact page&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Music</title>
-      <link>https://artan.live/music/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://artan.live/music/</guid>
-      <description>&lt;p&gt;Music page&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

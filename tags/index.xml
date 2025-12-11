@@ -6,6 +6,70 @@
     <description>Recent content in Tags on ARTAN</description>
     <generator>Hugo</generator>
     <language>en-us</language>
+    <lastBuildDate>Mon, 24 Dec 2018 12:29:41 +0800</lastBuildDate>
     <atom:link href="https://artan.live/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Demo</title>
+      <link>https://artan.live/tags/demo/</link>
+      <pubDate>Mon, 24 Dec 2018 12:29:41 +0800</pubDate>
+      <guid>https://artan.live/tags/demo/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Image</title>
+      <link>https://artan.live/tags/image/</link>
+      <pubDate>Mon, 24 Dec 2018 12:29:41 +0800</pubDate>
+      <guid>https://artan.live/tags/image/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Typography</title>
+      <link>https://artan.live/tags/typography/</link>
+      <pubDate>Sat, 29 Sep 2018 11:36:33 +0800</pubDate>
+      <guid>https://artan.live/tags/typography/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Development</title>
+      <link>https://artan.live/tags/development/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      <guid>https://artan.live/tags/development/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Go</title>
+      <link>https://artan.live/tags/go/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      <guid>https://artan.live/tags/go/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Golang</title>
+      <link>https://artan.live/tags/golang/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      <guid>https://artan.live/tags/golang/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hugo</title>
+      <link>https://artan.live/tags/hugo/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      <guid>https://artan.live/tags/hugo/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Templates</title>
+      <link>https://artan.live/tags/templates/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      <guid>https://artan.live/tags/templates/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Themes</title>
+      <link>https://artan.live/tags/themes/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      <guid>https://artan.live/tags/themes/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
