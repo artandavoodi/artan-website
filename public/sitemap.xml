@@ -2,18 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/about/</loc>
+    <loc>https://artan.live/about/</loc>
   </url><url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://artan.live/</loc>
   </url><url>
-    <loc>http://localhost:1313/books/</loc>
+    <loc>https://artan.live/books/</loc>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://artan.live/categories/</loc>
   </url><url>
-    <loc>http://localhost:1313/contact/</loc>
+    <loc>https://artan.live/contact/</loc>
   </url><url>
-    <loc>http://localhost:1313/music/</loc>
+    <loc>https://artan.live/music/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://artan.live/tags/</loc>
   </url>
 </urlset>
