@@ -2,9 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://artan.live/about/</loc>
-  </url><url>
-    <loc>https://artan.live/</loc>
+    <loc>https://artan.live/de/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://artan.live/"
+                />
     <xhtml:link
                 rel="alternate"
                 hreflang="fa"
@@ -15,17 +18,13 @@
                 hreflang="de"
                 href="https://artan.live/de/"
                 />
+  </url><url>
+    <loc>https://artan.live/de/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://artan.live/"
+                href="https://artan.live/categories/"
                 />
-  </url><url>
-    <loc>https://artan.live/projects/awareness-test/</loc>
-  </url><url>
-    <loc>https://artan.live/books/</loc>
-  </url><url>
-    <loc>https://artan.live/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fa"
@@ -36,33 +35,13 @@
                 hreflang="de"
                 href="https://artan.live/de/categories/"
                 />
+  </url><url>
+    <loc>https://artan.live/de/series/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://artan.live/categories/"
+                href="https://artan.live/series/"
                 />
-  </url><url>
-    <loc>https://artan.live/projects/charity/</loc>
-  </url><url>
-    <loc>https://artan.live/contact/</loc>
-  </url><url>
-    <loc>https://artan.live/events/</loc>
-  </url><url>
-    <loc>https://artan.live/projects/fundraising/</loc>
-  </url><url>
-    <loc>https://artan.live/gallery/</loc>
-  </url><url>
-    <loc>https://artan.live/music/</loc>
-  </url><url>
-    <loc>https://artan.live/podcast/</loc>
-  </url><url>
-    <loc>https://artan.live/posts/</loc>
-  </url><url>
-    <loc>https://artan.live/products/</loc>
-  </url><url>
-    <loc>https://artan.live/projects/</loc>
-  </url><url>
-    <loc>https://artan.live/series/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fa"
@@ -73,13 +52,13 @@
                 hreflang="de"
                 href="https://artan.live/de/series/"
                 />
+  </url><url>
+    <loc>https://artan.live/de/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://artan.live/series/"
+                href="https://artan.live/tags/"
                 />
-  </url><url>
-    <loc>https://artan.live/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fa"
@@ -90,12 +69,5 @@
                 hreflang="de"
                 href="https://artan.live/de/tags/"
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://artan.live/tags/"
-                />
-  </url><url>
-    <loc>https://artan.live/tour/</loc>
   </url>
 </urlset>

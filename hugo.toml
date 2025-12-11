@@ -3,13 +3,12 @@
 # Fully aligned, multilingual, functional, advanced
 # =========================================
 
-baseURL = "https://artan.live"
+baseURL = "https://artan.live/"
 title = "ARTAN"
 languageCode = "en-us"
 theme = "hermit"
 canonifyURLs = true
 googleAnalytics = ""
-disqusShortname = "artandavoodi"
 
 # Build
 buildDrafts = false
@@ -59,7 +58,7 @@ disableReadOtherPosts = false
 justifyContent = false
 relatedPosts = false
 code_copy_button = true
-disqusShortname = "artandavoodi"
+utterancesRepo = "ArtanDev/artan-website"
 
 [params.author]
 name = "ARTAN"
