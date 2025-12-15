@@ -1,32 +1,38 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const toggleBtn = document.getElementById("theme-toggle-btn");
+document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
+    const toggle = document.getElementById("theme-toggle");
 
-    // Initialize theme based on saved preference or system
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-        body.classList.toggle("dark-mode", savedTheme === "dark");
+    const applyTheme = (theme) => {
+        body.classList.remove("dark-mode", "light-mode");
+        body.classList.add(theme === "dark" ? "dark-mode" : "light-mode");
+        localStorage.setItem("theme", theme);
+
+        if (toggle) {
+            toggle.setAttribute("aria-pressed", theme === "dark");
+        }
+    };
+
+    // Initial theme resolution
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+        applyTheme(storedTheme);
     } else {
-        // Optionally set system preference
-        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        body.classList.toggle("dark-mode", prefersDark);
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        applyTheme(prefersDark ? "dark" : "light");
     }
 
-    // Toggle theme on button click
-    if (toggleBtn) {
-        toggleBtn.addEventListener("click", function() {
-            const isDark = body.classList.toggle("dark-mode");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
+    // Toggle interaction
+    if (toggle) {
+        toggle.addEventListener("click", () => {
+            const isDark = body.classList.contains("dark-mode");
+            applyTheme(isDark ? "light" : "dark");
         });
     }
 
-    // Optional: toggle based on system theme changes
-    if (window.matchMedia) {
-        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(e) {
-            const themeFromStorage = localStorage.getItem("theme");
-            if (!themeFromStorage) {
-                body.classList.toggle("dark-mode", e.matches);
-            }
-        });
-    }
+    // React to system changes only if user hasn't chosen explicitly
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+        if (!localStorage.getItem("theme")) {
+            applyTheme(e.matches ? "dark" : "light");
+        }
+    });
 });

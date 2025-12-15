@@ -1,3 +1,63 @@
+/* Color Palette and Theme Modes */
+:root {
+    --color-white: rgba(255,255,255,1);
+    --color-black: rgba(0,0,0,1);
+    --color-primary1: rgba(145,124,111,1);
+    --color-primary2: rgba(80,68,22,1);
+    --color-primary3: rgba(153,153,153,1);
+    --color-primary4: rgba(34,43,0,1);
+    --color-primary5: rgba(0,128,128,1);
+    --color-primary6: rgba(128,128,0,1);
+
+    /* Theme mode variables */
+    --bg-color: var(--color-black);
+    --text-color: var(--color-white);
+    --text-secondary-color: var(--color-primary3);
+    --link-color: var(--color-primary5);
+    --link-hover-color: var(--color-primary6);
+}
+
+/* Dark mode class */
+body.dark-mode {
+    --bg-color: var(--color-black);
+    --text-color: var(--color-white);
+    --text-secondary-color: var(--color-primary3);
+    --link-color: var(--color-primary5);
+    --link-hover-color: var(--color-primary6);
+}
+
+/* Light mode class */
+body.light-mode {
+    --bg-color: var(--color-white);
+    --text-color: var(--color-black);
+    --text-secondary-color: var(--color-black); /* changed from primary4 */
+    --link-color: var(--color-primary5);
+    --link-hover-color: var(--color-primary6);
+}
+
+/* Apply colors globally */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Global paragraph colors with light/dark mode support */
+p, section p {
+    color: var(--text-secondary-color);
+}
+
+/* Light mode specific override for announcement text */
+body.light-mode div[style*='flex-direction:column'] p {
+    color: var(--color-black);
+}
+
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
 
 /* Reset & Base Styles */
@@ -11,8 +71,8 @@ body {
     font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    color: #111;
-    background-color: #fff;
+    color: var(--text-color);
+    background-color: var(--bg-color);
 }
 
 .container {
@@ -20,6 +80,91 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
+
+/* Typography System */
+:root {
+    --font-base: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --font-color: #fff;
+    --font-color-secondary: #ccc;
+    --line-height-base: 1.6;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+}
+
+body {
+    font-family: var(--font-base);
+    font-size: 16px;
+    line-height: var(--line-height-base);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+/* Headings */
+h1, .site-logo {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-lg);
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+}
+
+h3 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+}
+
+h4 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+}
+
+h5 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+}
+
+h6 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Paragraphs */
+p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+    color: var(--font-color-secondary);
+}
+
+/* Links */
+a {
+    color: #0077cc;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Utility Classes for spacing */
+.mb-xs { margin-bottom: var(--spacing-xs); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
 
 /* Header */
 .site-header {
@@ -146,4 +291,55 @@ section p {
 .section-comments h2 {
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
+}
+
+/* Dark mode toggle visual (additive) */
+.theme-toggle {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--text-color);
+    cursor: pointer;
+    z-index: 9999;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+body.dark-mode .theme-toggle {
+    background-color: var(--color-white);
+}
+
+body.light-mode .theme-toggle {
+    background-color: var(--color-black);
+}
+
+/* --- Global Theme Harmony (Additive) --- */
+
+/* Smooth global transitions between modes */
+body {
+    transition: background-color 0.6s ease, color 0.6s ease;
+}
+
+/* Ensure landing layout remains perfectly centered */
+body > div {
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Refined toggle presence (subtle, tactile, minimal) */
+.theme-toggle:hover {
+    transform: translateX(-50%) scale(1.15);
+    opacity: 0.9;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    body {
+        transition: none;
+    }
+    .theme-toggle {
+        transition: none;
+    }
 }

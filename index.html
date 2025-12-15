@@ -4,19 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artan</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <meta name="description" content="Artan's visionary creative world.">
-    <script src="../assets/js/darkmode.js" defer></script>
+    <script src="assets/js/darkmode.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="margin:0; background-color:#000; color:#fff; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; text-align:center;">
+<body style="margin:0; background-color:#000; color:#fff; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; text-align:center; font-family: 'Manrope', sans-serif;">
+
+    <!-- Theme Toggle -->
+    <button id="theme-toggle"
+            aria-label="Toggle dark and light mode"
+            style="
+                position: absolute;
+                top: 24px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                border: none;
+                background-color: #ffffff;
+                cursor: pointer;
+            ">
+    </button>
 
     <!-- Logo -->
-    <div style="margin-bottom:2rem;">
+    <div style="margin-bottom:2rem; display:flex; justify-content:center; align-items:center;">
         <!-- Replace with your actual logo SVG or image -->
-        <img src="../assets/images/logo.svg" alt="Artan Logo" style="width:200px; height:auto;">
+        <img src="assets/images/logo.svg" alt="Artan Logo" style="width:200px; height:auto;">
     </div>
 
     <!-- Site Name -->
@@ -25,9 +42,9 @@
     </h1>
 
     <!-- Announcement / Message -->
-    <div style="margin-top:2.5rem; display:flex; flex-direction:column; gap:1.2rem; max-width:640px;">
+    <div style="margin-top:2.5rem; display:flex; flex-direction:column; gap:0.1rem; max-width:640px;">
 
-        <p style="font-size:1.8rem; font-weight:600; letter-spacing:0.02em;">
+        <p style="font-size:1.8rem; font-weight:500; letter-spacing:0.02em;">
             This website is under construction
         </p>
 
@@ -41,6 +58,60 @@
 
     </div>
 
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const body = document.body;
+    const toggle = document.getElementById("theme-toggle");
+    const footer = document.querySelector("footer");
+
+    // Define colors
+    const darkBg = "#000000";
+    const darkText = "#ffffff";
+    const lightBg = "#ffffff";
+    const lightText = "#000000";
+
+    // Initialize theme
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    let currentTheme = savedTheme || (prefersDark ? "dark" : "light");
+
+    const applyTheme = (theme) => {
+        currentTheme = theme;
+        if (theme === "dark") {
+            body.style.backgroundColor = darkBg;
+            body.style.color = darkText;
+            toggle.style.backgroundColor = darkText;
+            if (footer) footer.style.color = darkText;
+        } else {
+            body.style.backgroundColor = lightBg;
+            body.style.color = lightText;
+            toggle.style.backgroundColor = lightText;
+            if (footer) footer.style.color = lightText;
+        }
+        localStorage.setItem("theme", theme);
+    };
+
+    applyTheme(currentTheme);
+
+    // Toggle on click
+    if (toggle) {
+        toggle.addEventListener("click", () => {
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            applyTheme(newTheme);
+        });
+    }
+
+    // Listen for system preference changes
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+        const systemTheme = e.matches ? "dark" : "light";
+        if (!savedTheme) applyTheme(systemTheme);
+    });
+});
+</script>
+<!-- Footer -->
+<footer style="margin-top:3rem; font-size:0.9rem; opacity:0.6; text-align:center; width:100%;">
+    © 2025 ARTAN. All rights reserved.
+</footer>
 </body>
 <style>
 @keyframes breathe {
