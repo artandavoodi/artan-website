@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artan</title>
+    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
@@ -45,21 +46,22 @@
         Artan
     </h1>
 
-    <!-- Announcement / Message -->
-    <div style="margin-top:2.5rem; display:flex; flex-direction:column; gap:0.1rem; max-width:640px; min-height:6rem;">
-        <p id="announcement" 
-           data-primary="The website is under construction"
-           data-secondary="A visionary experience of sound, visual art, and consciousness"
-           style="font-size:1.8rem; font-weight:600; letter-spacing:0.02em; text-align:center; margin:0.75rem auto 0 auto; min-height:2.5rem; display:inline-block; width:100%;">
-           <!-- Dynamic text will appear here -->
-        </p>
+    <!-- Announcement container (primary + secondary text in same container) -->
+    <p id="announcement" 
+       data-primary="The website is under construction" 
+       data-secondary="A visionary experience of sound, visual art, and consciousness"
+       style="font-size:1.8rem; font-weight:600; letter-spacing:0.02em; text-align:center; margin:0.75rem auto 0 auto; min-height:2.5rem; display:inline-block; width:100%;">
+       <!-- Dynamic text will appear here -->
+    </p>
 
-        <p class="stay-tuned" style="font-size:1.25rem; font-weight:400; opacity:0.7; letter-spacing:0.15em;">
-            Stay tuned
-        </p>
-    </div>
+    <p class="stay-tuned" style="font-size:1.25rem; font-weight:400; opacity:0.7; letter-spacing:0.15em;">
+        Stay tuned
+    </p>
 
+    <!-- Footer separator -->
     <hr class="footer-separator" style="margin:3rem auto 1rem auto;">
+
+    <!-- Footer -->
     <footer style="margin-top:0.5rem; font-size:0.9rem; opacity:0.6; width:100%;">
         <div class="footer-flex">
             <div>© 2025 ARTAN. All rights reserved.</div>
