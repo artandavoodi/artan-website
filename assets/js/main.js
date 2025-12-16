@@ -73,39 +73,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Announcement container typewriter
     const announcementEl = document.getElementById("announcement");
-    if (!announcementEl) return;
+    if (announcementEl) {
+        const primaryText = announcementEl.dataset.primary;
+        const secondaryText = announcementEl.dataset.secondary;
 
-    const primaryText = announcementEl.dataset.primary;
-    const secondaryText = announcementEl.dataset.secondary;
+        announcementEl.textContent = "";
+        announcementEl.style.fontWeight = "600";
+        announcementEl.style.fontSize = "1.8rem";
 
-    announcementEl.textContent = "";
-    announcementEl.style.fontWeight = "600";
-    announcementEl.style.fontSize = "1.8rem";
+        let index = 0;
+        let deleting = false;
 
-    let index = 0;
-
-    function typePrimary() {
-        announcementEl.textContent = primaryText.substring(0, index + 1);
-        index++;
-        if (index < primaryText.length) {
-            setTimeout(typePrimary, 100);
-        } else {
-            setTimeout(removePrimary, 2000);
+        function typeLoop() {
+            if (!deleting) {
+                announcementEl.textContent = primaryText.substring(0, index + 1);
+                index++;
+                if (index <= primaryText.length) {
+                    setTimeout(typeLoop, 100);
+                } else {
+                    // Pause before backward deletion
+                    setTimeout(() => {
+                        deleting = true;
+                        typeLoop();
+                    }, 2000);
+                }
+            } else {
+                announcementEl.textContent = primaryText.substring(0, index - 1);
+                index--;
+                if (index > 0) {
+                    setTimeout(typeLoop, 50);
+                } else {
+                    // Show secondary text after deletion
+                    announcementEl.style.fontWeight = "400";
+                    announcementEl.style.fontSize = "1.5rem";
+                    announcementEl.textContent = secondaryText;
+                }
+            }
         }
-    }
 
-    function removePrimary() {
-        announcementEl.textContent = primaryText.substring(0, index - 1);
-        index--;
-        if (index > 0) {
-            setTimeout(removePrimary, 50);
-        } else {
-            // Secondary text
-            announcementEl.style.fontWeight = "400";
-            announcementEl.style.fontSize = "1.5rem";
-            announcementEl.textContent = secondaryText;
-        }
+        typeLoop();
     }
-
-    typePrimary();
 });
