@@ -506,3 +506,30 @@ body.dark-mode .site-footer {
 .footer-right {
     text-align: right;
 }
+
+/* ENTER button styling (only for the secondary text) */
+.enter-button {
+    display: inline-block;
+    background-color: transparent; /* container stays transparent */
+    border: 0.5px solid var(--text-color); /* thinner stroke for minimalistic look */
+    border-radius: 50px;
+    padding: 0.4rem 1.5rem; /* smaller padding */
+    font-weight: 200; /* lighter font weight */
+    font-size: 1rem; /* slightly smaller font size */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem; /* spacing below announcement text */
+}
+
+.enter-button:hover {
+    transform: scale(1.05);
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+.enter-button:active {
+    transform: scale(0.95);
+}

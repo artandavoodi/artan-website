@@ -104,37 +104,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (index > 0) {
                     setTimeout(typeLoop, 50); // deletion speed
                 } else {
-                    // Show secondary text with scale animation
-                    announcementEl.style.fontWeight = "400";
-                    announcementEl.style.fontSize = "1.5rem";
-                    announcementEl.style.opacity = "0";
-                    announcementEl.textContent = secondaryText;
-
-                    announcementEl.style.display = "inline-block";
-
-                    function animateSecondary() {
-                        // initial scale
-                        let scale = 0.05;
-                        
-                        function step() {
-                            // variable speed: slower for first half, faster for second half
-                            let speed = scale < 0.5 ? 0.005 : 0.008; 
-                            scale += speed;
-                            if (scale <= 1) {
-                                announcementEl.style.transform = `scale(${scale})`;
-                                announcementEl.style.opacity = scale;
-                                requestAnimationFrame(step);
-                            } else {
-                                announcementEl.style.transform = `scale(1)`;
-                                announcementEl.style.opacity = 1;
-                            }
-                        }
-                        
-                        step();
-                    }
-                    animateSecondary();
+                    // Show secondary text as button with scale animation
+                    showSecondaryButton();
                 }
             }
+        }
+
+        function showSecondaryButton() {
+            // Clear container
+            announcementEl.textContent = "";
+
+            // Create button for secondary text
+            const btn = document.createElement("button");
+            btn.className = "enter-button";
+            btn.textContent = secondaryText;
+
+            announcementEl.appendChild(btn);
+
+            // initial scale and opacity
+            let scale = 0.3;  // adjusted from 0.05 to match previous animation size
+            btn.style.opacity = 0;
+            btn.style.transform = `scale(${scale})`;
+
+            function step() {
+                let speed = scale < 0.5 ? 0.01 : 0.015; // adjusted for smoother/faster scaling
+                scale += speed;
+                if (scale <= 1) {
+                    btn.style.transform = `scale(${scale})`;
+                    btn.style.opacity = scale;
+                    requestAnimationFrame(step);
+                } else {
+                    btn.style.transform = "scale(1)";
+                    btn.style.opacity = 1;
+                }
+            }
+            step();
         }
 
         typeLoop();
