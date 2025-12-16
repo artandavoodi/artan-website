@@ -114,11 +114,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     function animateSecondary() {
                         // initial scale
-                        let scale = 0.1;
+                        let scale = 0.05;
                         
                         function step() {
                             // variable speed: slower for first half, faster for second half
-                            let speed = scale < 0.5 ? 0.005 : 0.002; 
+                            let speed = scale < 0.5 ? 0.005 : 0.008; 
                             scale += speed;
                             if (scale <= 1) {
                                 announcementEl.style.transform = `scale(${scale})`;
