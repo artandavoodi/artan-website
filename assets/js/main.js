@@ -96,53 +96,51 @@ if (header) {
   }, 250));
 }
 
+/**
+ * Theme toggle logic
+ */
 document.addEventListener("DOMContentLoaded", () => {
-    const textElement = document.getElementById("typewriter");
-    if (!textElement) return;
-
-    const text = "The website is under construction";
-    const typingSpeed = 200;      // ms per character typing
-    const deletingSpeed = 50;     // ms per character deleting
-    const pauseAfterTyping = 5000; // 5s pause at full text
-
-    // Prepare container
-    const span = document.createElement("span");
-    textElement.innerHTML = "";
-    textElement.appendChild(span);
-
-    textElement.style.display = "inline-block";
-    textElement.style.minWidth = "300px"; // maintain container width
-    textElement.style.whiteSpace = "nowrap";
-    textElement.style.textAlign = "center"; // text centered
-
+    const typewriterEl = document.getElementById("announcement");
+    const textPrimary = typewriterEl.dataset.primary;
+    const textSecondary = typewriterEl.dataset.secondary;
+    const pauseAfterTyping = 2000; // pause after typing primary text
     let index = 0;
-    let isDeleting = false;
+    let deleting = false;
 
-    function type() {
-        span.textContent = text.substring(0, index);
-
-        if (!isDeleting) {
+    function typewriterLoop() {
+        if (!deleting) {
+            typewriterEl.textContent = textPrimary.substring(0, index + 1);
             index++;
-            if (index > text.length) {
-                // Wait at full text, then start deleting
+            if (index === textPrimary.length) {
                 setTimeout(() => {
-                    isDeleting = true;
-                    type();
+                    deleting = true;
+                    typewriterLoop();
                 }, pauseAfterTyping);
                 return;
             }
-            setTimeout(type, typingSpeed);
+            setTimeout(typewriterLoop, 100);
         } else {
+            typewriterEl.textContent = textPrimary.substring(0, index - 1);
             index--;
-            if (index < 0) {
-                // Restart typing after deletion
-                isDeleting = false;
-                setTimeout(type, typingSpeed);
+            if (index === 0) {
+                // After backward deletion, show secondary text
+                deleting = false;
+                typewriterEl.style.fontWeight = "400"; // lighter font for secondary text
+                typewriterEl.style.fontSize = "1.5rem"; // adjust size if needed
+                typewriterEl.textContent = textSecondary;
+                typewriterEl.style.opacity = 1;
+                typewriterEl.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+                typewriterEl.style.transform = "scale(0.8)";
+                setTimeout(() => {
+                    typewriterEl.style.transform = "scale(1)";
+                }, 50);
+                // No loop back to primary text
                 return;
+            } else {
+                setTimeout(typewriterLoop, 50);
             }
-            setTimeout(type, deletingSpeed);
         }
     }
 
-    type();
+    typewriterLoop();
 });
