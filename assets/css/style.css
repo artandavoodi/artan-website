@@ -37,8 +37,11 @@ body.light-mode {
 
 /* Apply colors globally */
 body {
-    background-color: var(--bg-color);
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
     color: var(--text-color);
+    background-color: var(--bg-color);
 }
 
 /* Global paragraph colors with light/dark mode support */
@@ -86,12 +89,12 @@ body {
     --font-base: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
     --font-color: #fff;
     --font-color-secondary: #ccc;
-    --line-height-base: 1.6;
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
-    --spacing-lg: 2rem;
-    --spacing-xl: 3rem;
+    --line-height-base: 1.55;
+    --spacing-xs: 0.35rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1.1rem;
+    --spacing-lg: 1.6rem;
+    --spacing-xl: 2.4rem;
 }
 
 body {
@@ -104,45 +107,45 @@ body {
 
 /* Headings */
 h1, .site-logo {
-    font-size: 4rem;
+    font-size: 2.6rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     margin-bottom: var(--spacing-lg);
 }
 
 h2 {
-    font-size: 2.5rem;
+    font-size: 1.9rem;
     font-weight: 600;
     margin-bottom: var(--spacing-md);
 }
 
 h3 {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 500;
     margin-bottom: var(--spacing-sm);
 }
 
 h4 {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
     font-weight: 500;
     margin-bottom: var(--spacing-sm);
 }
 
 h5 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 500;
     margin-bottom: var(--spacing-xs);
 }
 
 h6 {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     margin-bottom: var(--spacing-xs);
 }
 
 /* Paragraphs */
 p {
-    font-size: 1.2rem;
+    font-size: 0.95rem;
     line-height: 1.6;
     margin-bottom: var(--spacing-md);
     color: var(--font-color-secondary);
@@ -230,7 +233,8 @@ section p {
 }
 
 .site-footer p {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
 }
 
 /* Featured Posts Section */
@@ -366,7 +370,7 @@ body > div {
     margin: 0 auto;
     padding: 0;           /* removed horizontal padding for flush alignment */
     color: var(--text-secondary-color);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
 }
 
 /* Additive: Loading animation for homepage main message */
@@ -397,26 +401,108 @@ body > div {
     animation: typing 4s steps(30, end) infinite;
 }
 
-/* Announcement container styling for fixed height and adaptive width */
+/* Announcement container styling for primary and secondary text */
 #announcement {
-    width: 100%;               /* adaptive width for all screen sizes */
-    max-width: 90%;            /* prevent text from touching screen edges */
-    margin: 0.75rem auto;      /* vertical spacing + horizontal centering */
-    height: 10rem;              /* fixed vertical height for 2 paragraphs */
+    width: 100%;
+    max-width: 90%;
+    margin: 1rem auto;
+    height: 10rem;
     display: flex;
-    flex-direction: column;    /* allow multiple lines/paragraphs */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    box-sizing: border-box;    /* include padding in width */
+    box-sizing: border-box;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    overflow: hidden;          /* prevent content overflow */
+    overflow: hidden;
     transition: height 0.2s;
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
-@media (min-width: 768px) {
-    #announcement {
-        max-width: 640px;      /* standard width for tablet/desktop */
-    }
+#announcement.secondary {
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Subtext below announcement (site essence) */
+#announcement + .site-essence {
+    font-size: 1rem;
+    letter-spacing: 0.16em;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+}
+
+/* Footer separator line */
+.footer-separator {
+    width: 90%;
+    max-width: 1200px;
+    height: 1px;
+    border: none;
+    margin-top: 3rem;       /* keep top spacing */
+    margin-bottom: 0.5rem; /* minimal gap below line */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--color-primary3);
+    opacity: 0.6;
+    display: block;
+}
+
+/* Footer container and text alignment */
+/* Footer container and text alignment */
+.site-footer {
+    width: 100%;
+    font-size: 0.9rem;
+    margin-top: 0;
+    padding: 0;
+    background-color: transparent; /* ensure no background blocks text */
+    color: var(--text-secondary-color);
+    opacity: 0.6;
+}
+
+/* Light mode specific override for footer text */
+body.light-mode .site-footer {
+    color: var(--text-secondary-color);
+    background-color: transparent;
+}
+
+/* Dark mode specific override for footer text */
+body.dark-mode .site-footer {
+    color: var(--text-color);
+    background-color: transparent;
+}
+
+/* Footer flex layout */
+.footer-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+    color: var(--text-secondary-color);
+}
+
+/* Footer text blocks */
+.footer-left,
+.footer-right {
+    font-size: 0.9rem;
+    line-height: 1.2; /* tighter line-height for minimal vertical space */
+    letter-spacing: 0.02em;
+    margin: 0;        /* remove default block margin */
+}
+
+.footer-left {
+    text-align: left;
+}
+
+.footer-right {
+    text-align: right;
 }
