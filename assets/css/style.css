@@ -8,6 +8,10 @@
     --color-primary4: rgba(34,43,0,1);
     --color-primary5: rgba(0,128,128,1);
     --color-primary6: rgba(128,128,0,1);
+    --color-primary7: rgba(255,85,85,1);
+    --color-primary8: rgba(102,255,0,1);
+    --color-primary9: rgba(0,255,255,1);
+    --color-primary10: rgba(255,204,0,1);
 
     /* Theme mode variables */
     --bg-color: var(--color-black);
@@ -507,6 +511,28 @@ body.dark-mode .site-footer {
     text-align: right;
 }
 
+/* Country selector — Apple‑like, text‑only, inherits footer typography */
+#country-selector {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+#country-selector:hover {
+    opacity: 0.85;
+}
+
+#country-selector:focus {
+    outline: none;
+}
+
 /* ENTER button styling (only for the secondary text) */
 .enter-button {
     display: inline-block;
@@ -562,7 +588,7 @@ body.dark-mode .site-footer {
     100% { opacity: 1; } /* ensure text is fully visible at end */
 }
 
-/* Custom minimalistic circular cursor */
+/* Custom minimalistic circular cursor - global and overlay-compatible */
 body {
     cursor: none; /* hide default cursor */
 }
@@ -571,14 +597,14 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 12px; /* small minimalistic size */
+    width: 12px; /* minimal size */
     height: 12px;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 99999;
+    z-index: 100001; /* higher than overlays */
     background-color: var(--color-primary1);
     transform: translate(-50%, -50%);
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    transition: background-color 0.3s ease, transform 0.1s ease, opacity 0.2s ease;
 }
 /* Responsive adjustments for mobile devices */
 @media (max-width: 768px) {
@@ -646,5 +672,208 @@ body {
 
     #announcement + .site-essence {
         font-size: 0.9rem;
+    }
+}
+/* --- Overlay and Global Close Button Styles --- */
+
+/* Global reusable close button with visible spans */
+/* Adjusted smaller global close button */
+.global-close-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem; /* reduced from 2rem */
+    font-weight: 300; /* thin */
+    color: var(--text-color); /* theme-adaptive default */
+    cursor: pointer;
+    opacity: 1;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+    width: 1.2rem;  /* reduced from 2rem */
+    height: 1.2rem; /* reduced from 2rem */
+    transition: color 0.3s ease;
+}
+
+/* Inner span lines to create X */
+/* Inner span lines of X */
+.global-close-button span {
+    display: block;
+    width: 100%;
+    height: 1.2px; /* reduced from 2px */
+    background-color: currentColor;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform-origin: center;
+    transition: transform 0.6s ease, background-color 0.3s ease;
+}
+
+/* Top line of X */
+.global-close-button span:nth-child(1) {
+    transform: rotate(45deg);
+}
+
+/* Bottom line of X */
+.global-close-button span:nth-child(2) {
+    transform: rotate(-45deg);
+}
+
+/* Hover effect: change color to primary7 and rotate to horizontal minus */
+.global-close-button:hover {
+    color: var(--color-primary7);
+}
+
+.global-close-button:hover span:nth-child(1),
+.global-close-button:hover span:nth-child(2) {
+    transform: rotate(0deg); /* horizontal line */
+}
+
+/* --- Overlay header container for horizontal alignment --- */
+.overlay-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.overlay-header-container .country-overlay-title {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+    font-size: 1.4rem;
+    font-weight: 300; /* light */
+    text-align: left;
+    letter-spacing: 0.02em;
+}
+.overlay-header-container #country-overlay-close {
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
+/* --- Country overlay adjustments --- */
+.country-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
+    z-index: 99999;
+    padding: 4rem 1rem;
+    box-sizing: border-box;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+.country-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+.country-overlay-inner {
+    max-width: 960px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0 1rem;
+    transform: translateX(100%) scale(0.9);
+    transition: transform 0.5s ease;
+}
+.country-overlay.visible .country-overlay-inner {
+    transform: translateX(0) scale(1);
+}
+.country-overlay-title {
+    font-size: 1.4rem;
+    font-weight: 300;
+    text-align: left;
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+}
+.country-region {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.region-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    opacity: 0.85;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    letter-spacing: 0.02em;
+}
+.country-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+.country-option {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: inherit;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: color 0.2s ease;
+    text-align: left;
+}
+.country-option:hover {
+    color: var(--color-primary1);
+}
+.country-overlay-inner hr.footer-separator,
+.country-region hr.footer-separator {
+    width: 100%;
+    max-width: 960px;
+    margin: 0.5rem 0 1rem 0;
+}
+
+/* Ensure cursor visibility on overlay */
+.country-overlay, .country-option, #country-overlay-close {
+    cursor: default !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .country-overlay {
+        padding: 3rem 1rem;
+    }
+    .country-overlay-title {
+        font-size: 1.6rem;
+    }
+    .region-title {
+        font-size: 1rem;
+    }
+    .country-option {
+        font-size: 0.95rem;
+    }
+}
+@media (max-width: 480px) {
+    .country-overlay-title {
+        font-size: 1.4rem;
+    }
+    .region-title {
+        font-size: 0.95rem;
+    }
+    .country-option {
+        font-size: 0.9rem;
+    }
+    #country-overlay-close {
+        font-size: 1.5rem;
     }
 }

@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         typeLoop();
     }
 
-    /* Smooth custom cursor movement */
+    /* Smooth custom cursor movement with global hover effect including overlay */
     const customCursor = document.querySelector('.custom-cursor');
     if (customCursor) {
         let mouseX = 0;
@@ -167,18 +167,117 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         animateCursor();
+
+        /* Global cursor hover effect - fully universal */
+        document.addEventListener('mouseover', (e) => {
+            const target = e.target;
+            const interactive = target.closest(
+                'button, a, input, select, textarea, label, [role="button"], [onclick], .enter-button, .logo-container, .country-option, #country-overlay-close'
+            );
+
+            if (customCursor) {
+                // Maintain existing behavior:
+                // On interactive elements, the cursor circle disappears
+                // On non-interactive areas, circle is visible
+                customCursor.style.opacity = interactive ? '0' : '1';
+            }
+        });
     }
 
-    /* Hide custom cursor on hover over all clickable or interactive elements */
-    document.addEventListener('mouseover', (e) => {
-        const target = e.target;
-        const interactive = target.closest('button, a, input, select, textarea, label, [role="button"], [onclick], .enter-button, .logo-container');
-        if (customCursor) {
-            if (interactive) {
-                customCursor.style.opacity = '0';
-            } else {
-                customCursor.style.opacity = '1';
+
+    /**
+     * Country detection (IP-based) + persistence
+     * Non-blocking, silent, Apple-like
+     */
+    const countryLabel = document.getElementById("current-country");
+    const COUNTRY_STORAGE_KEY = "artan_country";
+
+    const setCountry = (countryName) => {
+        if (!countryName || !countryLabel) return;
+        countryLabel.textContent = countryName;
+        localStorage.setItem(COUNTRY_STORAGE_KEY, countryName);
+    };
+
+    const storedCountry = localStorage.getItem(COUNTRY_STORAGE_KEY);
+    if (storedCountry) {
+        setCountry(storedCountry);
+    } else {
+        fetch("https://ipapi.co/json/")
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.country_name) {
+                    setCountry(data.country_name);
+                }
+            })
+            .catch(() => {
+                /* silent fail — fallback remains unchanged */
+            });
+    }
+
+    /**
+     * Country overlay interactivity
+     */
+    const countryOverlay = document.getElementById("country-overlay");
+    const countrySelectorButton = document.getElementById("country-selector");
+    const countryOverlayClose = document.getElementById("country-overlay-close");
+    const countryOptions = document.querySelectorAll(".country-option");
+
+    // Overlay close button animation: ensure spans animate X <-> horizontal
+    if (countryOverlayClose) {
+        countryOverlayClose.classList.add("global-close-button");
+        countryOverlayClose.removeAttribute("style");
+
+        const spans = countryOverlayClose.querySelectorAll("span");
+        countryOverlayClose.addEventListener("mouseenter", () => {
+            countryOverlayClose.classList.add("hovering");
+            spans.forEach(span => {
+                span.style.transform = "rotate(0deg)"; // X to horizontal minus
+            });
+        });
+
+        countryOverlayClose.addEventListener("mouseleave", () => {
+            countryOverlayClose.classList.remove("hovering");
+            spans.forEach((span, idx) => {
+                span.style.transform = idx === 0 ? "rotate(45deg)" : "rotate(-45deg)"; // revert back to X
+            });
+        });
+
+        countryOverlayClose.addEventListener("click", () => {
+            countryOverlayClose.classList.remove("hovering");
+            spans.forEach(span => {
+                span.style.transform = "rotate(0deg)"; // final horizontal line
+            });
+            countryOverlay.classList.remove("visible");
+            setTimeout(() => {
+                countryOverlay.classList.add("hidden");
+            }, 600);
+        });
+    }
+
+    // Open overlay on footer button click
+    if (countrySelectorButton && countryOverlay) {
+        countrySelectorButton.addEventListener("click", () => {
+            countryOverlay.classList.remove("hidden");
+            setTimeout(() => {
+                countryOverlay.classList.add("visible");
+            }, 20); // allow transition to trigger
+        });
+    }
+
+    // (Overlay close button logic is above; see new block.)
+
+    // Handle country selection
+    countryOptions.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            const selectedCountry = e.currentTarget.dataset.country;
+            if (selectedCountry) {
+                setCountry(selectedCountry); // update footer and localStorage
+                // Optional: close overlay after selection
+                countryOverlay.classList.remove("visible");
+                setTimeout(() => {
+                    countryOverlay.classList.add("hidden");
+                }, 400);
             }
-        }
+        });
     });
 });
