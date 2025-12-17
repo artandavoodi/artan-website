@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* Hide custom cursor on hover over all clickable or interactive elements */
     document.addEventListener('mouseover', (e) => {
         const target = e.target;
-        const interactive = target.closest('button, a, input, select, textarea, label, [role="button"], [onclick], .enter-button');
+        const interactive = target.closest('button, a, input, select, textarea, label, [role="button"], [onclick], .enter-button, .logo-container');
         if (customCursor) {
             if (interactive) {
                 customCursor.style.opacity = '0';

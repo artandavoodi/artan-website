@@ -576,7 +576,7 @@ body {
     border-radius: 50%;
     pointer-events: none;
     z-index: 99999;
-    background-color: var(--text-color); /* white in dark mode, black in light mode */
+    background-color: var(--color-primary1);
     transform: translate(-50%, -50%);
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
