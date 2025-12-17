@@ -907,3 +907,8 @@ body {
     color: var(--text-secondary-color);
     user-select: none;
 }
+
+/* Debug highlight for translatable elements */
+[data-i18n-key] {
+    outline: 1px dashed red !important;
+}

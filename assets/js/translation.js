@@ -112,6 +112,10 @@ window.ARTAN_TRANSLATION = (function () {
                 const country = e.currentTarget.dataset.country;
                 if (country) {
                     const regionLang = REGION_LANGUAGE_MAP[country] || "en";
+                    currentRegion = country;
+                    currentLanguage = regionLang;
+                    localStorage.setItem(REGION_STORAGE_KEY, currentRegion);
+                    localStorage.setItem(LANGUAGE_STORAGE_KEY, currentLanguage);
                     applyRegion(country);
                     await applyLanguage(regionLang);
                     document.getElementById("current-country").textContent = country;
