@@ -1,22 +1,9 @@
 /**
- * Translation and Region Management - Dedicated Module
- * Fully IP-detecting, future-proof, online/offline fallback
+ * Translation and Region Management - Apple.com inspired professional setup
+ * Fully IP-detecting, real-time translation, EN toggle override, caching
  */
 
 window.ARTAN_TRANSLATION = (function () {
-    // Real-time translation function (free, browser-based fallback)
-    const translateText = async (text, targetLang) => {
-        if (targetLang === "en") return text; // EN override, return original
-        try {
-            const encoded = encodeURIComponent(text);
-            const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${encoded}`);
-            const data = await response.json();
-            return data[0].map(item => item[0]).join("");
-        } catch (e) {
-            return text; // fallback to English if translation fails
-        }
-    };
-
     const LANGUAGE_STORAGE_KEY = "artan_language";
     const REGION_STORAGE_KEY = "artan_region";
     const REGION_LANGUAGE_MAP = {
@@ -37,44 +24,62 @@ window.ARTAN_TRANSLATION = (function () {
         Canada: "en"
     };
 
-    let currentLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY) || "en";
-    let currentRegion = localStorage.getItem(REGION_STORAGE_KEY) || "Germany";
+    let currentLanguage = "en"; // default English
+    let currentRegion = "United States"; // default region
+    const translationCache = new Map(); // in-memory cache
 
-    // IP detection with online fallback, offline defaults
-    const detectIP = async () => {
-        // Detect if running locally
-        if (window.location.protocol === "file:") {
-            currentRegion = localStorage.getItem(REGION_STORAGE_KEY) || "Germany";
-            currentLanguage = REGION_LANGUAGE_MAP[currentRegion] || "de";
-        } else {
-            try {
-                const response = await fetch("https://ipapi.co/json/");
-                const data = await response.json();
-                if (data && data.country_name && REGION_LANGUAGE_MAP[data.country_name]) {
-                    currentRegion = data.country_name;
-                    currentLanguage = REGION_LANGUAGE_MAP[currentRegion];
-                }
-            } catch (e) {
-                currentRegion = "Germany";
-                currentLanguage = "de";
-            }
+    // Real-time translation function (free, browser-based Google Translate API)
+    const translateText = async (text, targetLang) => {
+        if (targetLang === "en") return text; // EN override
+        const cacheKey = `${text}_${targetLang}`;
+        if (translationCache.has(cacheKey)) return translationCache.get(cacheKey);
+        try {
+            const encoded = encodeURIComponent(text);
+            const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${encoded}`);
+            const data = await response.json();
+            const translated = data[0].map(item => item[0]).join("");
+            translationCache.set(cacheKey, translated);
+            return translated;
+        } catch {
+            return text; // fallback English
         }
+    };
+
+    // Detect IP and determine region/language
+    const detectIP = async () => {
+        try {
+            const response = await fetch("https://ipapi.co/json/");
+            const data = await response.json();
+            if (data && data.country_name && REGION_LANGUAGE_MAP[data.country_name]) {
+                currentRegion = data.country_name;
+                currentLanguage = REGION_LANGUAGE_MAP[currentRegion];
+            } else {
+                currentRegion = "United States";
+                currentLanguage = "en";
+            }
+        } catch {
+            currentRegion = "United States";
+            currentLanguage = "en";
+        }
+
+        // Update localStorage after detection
         localStorage.setItem(REGION_STORAGE_KEY, currentRegion);
         localStorage.setItem(LANGUAGE_STORAGE_KEY, currentLanguage);
     };
 
-    const applyLanguage = (lang) => {
-        console.log("Applying language:", lang);
+    // Apply language dynamically to all [data-i18n-key] elements
+    const applyLanguage = async (lang) => {
         currentLanguage = lang;
         localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
-
-        document.querySelectorAll("[data-i18n-key]").forEach(async (el) => {
-            const originalText = el.textContent;
-            const translated = await translateText(originalText, lang);
-            el.textContent = translated;
-        });
+        const nodes = document.querySelectorAll("[data-i18n-key]");
+        for (const el of nodes) {
+            const originalText = el.dataset.originalText || el.textContent;
+            if (!el.dataset.originalText) el.dataset.originalText = originalText; // store original
+            el.textContent = await translateText(originalText, lang);
+        }
     };
 
+    // Apply region-specific logic (e.g., currency)
     const applyRegion = (region) => {
         currentRegion = region;
         localStorage.setItem(REGION_STORAGE_KEY, region);
@@ -85,69 +90,67 @@ window.ARTAN_TRANSLATION = (function () {
         });
     };
 
+    // Country overlay interactions
     const initCountryOverlay = () => {
-        const countryOverlay = document.getElementById("country-overlay");
-        const countrySelectorButton = document.getElementById("country-selector");
-        const countryOverlayClose = document.getElementById("country-overlay-close");
-        const countryOptions = document.querySelectorAll(".country-option");
+        const overlay = document.getElementById("country-overlay");
+        const selector = document.getElementById("country-selector");
+        const closeBtn = document.getElementById("country-overlay-close");
+        const options = document.querySelectorAll(".country-option");
 
-        if (countryOverlayClose) {
-            countryOverlayClose.addEventListener("click", () => {
-                countryOverlay.classList.remove("visible");
-                setTimeout(() => countryOverlay.classList.add("hidden"), 400);
-            });
-        }
+        if (closeBtn) closeBtn.addEventListener("click", () => {
+            overlay.classList.remove("visible");
+            setTimeout(() => overlay.classList.add("hidden"), 400);
+        });
 
-        if (countrySelectorButton && countryOverlay) {
-            countrySelectorButton.addEventListener("click", () => {
-                countryOverlay.classList.remove("hidden");
-                setTimeout(() => countryOverlay.classList.add("visible"), 20);
-            });
-        }
+        if (selector && overlay) selector.addEventListener("click", () => {
+            overlay.classList.remove("hidden");
+            setTimeout(() => overlay.classList.add("visible"), 20);
+        });
 
-        countryOptions.forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-                const selectedCountry = e.currentTarget.dataset.country;
-                if (selectedCountry) {
-                    const regionLang = REGION_LANGUAGE_MAP[selectedCountry] || "en";
-                    applyRegion(selectedCountry);
-                    applyLanguage(regionLang);
-                    document.getElementById("current-country").textContent = selectedCountry;
-                    countryOverlay.classList.remove("visible");
-                    setTimeout(() => countryOverlay.classList.add("hidden"), 400);
+        options.forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+                const country = e.currentTarget.dataset.country;
+                if (country) {
+                    const regionLang = REGION_LANGUAGE_MAP[country] || "en";
+                    applyRegion(country);
+                    await applyLanguage(regionLang);
+                    document.getElementById("current-country").textContent = country;
+                    overlay.classList.remove("visible");
+                    setTimeout(() => overlay.classList.add("hidden"), 400);
                 }
             });
         });
     };
 
+    // EN toggle override
     const initLanguageToggle = () => {
-        const languageToggle = document.getElementById("language-toggle");
-        if (!languageToggle) return;
+        const toggle = document.getElementById("language-toggle");
+        if (!toggle) return;
 
-        const updateLanguageState = () => {
+        const updateToggle = () => {
             const isActive = localStorage.getItem(LANGUAGE_STORAGE_KEY) === "en";
-            languageToggle.classList.toggle("active", isActive);
+            toggle.classList.toggle("active", isActive);
         };
 
-        languageToggle.addEventListener("click", () => {
+        toggle.addEventListener("click", async () => {
             const isActive = localStorage.getItem(LANGUAGE_STORAGE_KEY) === "en";
             if (isActive) {
                 const regionLang = REGION_LANGUAGE_MAP[currentRegion] || "en";
                 localStorage.setItem(LANGUAGE_STORAGE_KEY, regionLang);
-                applyLanguage(regionLang);
+                await applyLanguage(regionLang);
             } else {
                 localStorage.setItem(LANGUAGE_STORAGE_KEY, "en");
-                applyLanguage("en");
+                await applyLanguage("en");
             }
-            updateLanguageState();
+            updateToggle();
         });
 
-        updateLanguageState();
+        updateToggle();
     };
 
     const init = async () => {
         await detectIP();
-        applyLanguage(currentLanguage);
+        await applyLanguage(currentLanguage);
         applyRegion(currentRegion);
         initCountryOverlay();
         initLanguageToggle();
