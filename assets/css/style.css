@@ -877,3 +877,33 @@ body {
         font-size: 1.5rem;
     }
 }
+/* EN language toggle next to country selector */
+#language-toggle {
+    background: none;
+    border: none;
+    font: inherit;
+    font-size: inherit;
+    font-weight: 300; /* light when inactive */
+    color: var(--color-primary3); /* inactive state */
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: color 0.3s ease, font-weight 0.3s ease, opacity 0.3s ease;
+}
+
+#language-toggle:hover {
+    color: var(--color-primary1);
+    opacity: 0.95;
+}
+
+#language-toggle.active {
+    color: var(--text-color); /* white in dark mode, black in light mode */
+    font-weight: 600; /* bold when active */
+    opacity: 1;
+}
+
+/* Minimalistic separator dot between country and language */
+.footer-separator-dot {
+    margin: 0 0.3rem;
+    color: var(--text-secondary-color);
+    user-select: none;
+}
