@@ -620,3 +620,15 @@ body {
         font-size: 0.8rem;
     }
 }
+
+/* Disable custom cursor on touch devices and adjust Enter button for mobile */
+@media (hover: none) and (pointer: coarse), (max-width: 768px) {
+    .custom-cursor {
+        display: none !important;
+    }
+
+    .enter-button {
+        font-size: 1.1rem;
+        padding: 0.5rem 1.8rem;
+    }
+}
