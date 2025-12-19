@@ -61,9 +61,15 @@ document.addEventListener("DOMContentLoaded", () => {
         let index = 0;
         let deleting = false;
         let currentPrimaryText = primaryText;
+        let currentSecondaryText = secondaryText;
         let btn; // secondary button reference
 
         function typeLoop() {
+            // Use latest translated primary text if available
+            if (primaryKey && window.I18N && window.I18N[primaryKey] && window.I18N[primaryKey][currentLanguage]) {
+                currentPrimaryText = window.I18N[primaryKey][currentLanguage];
+            }
+
             if (!deleting) {
                 announcementEl.textContent = currentPrimaryText.substring(0, index + 1);
                 index++;
@@ -87,14 +93,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         function showSecondaryButton() {
-            secondaryText = secondaryKey && window.I18N ? window.I18N[secondaryKey][currentLanguage] : announcementEl.dataset.secondary;
+            // Update secondary text with latest translation without touching DOM
+            if (secondaryKey && window.I18N && window.I18N[secondaryKey] && window.I18N[secondaryKey][currentLanguage]) {
+                currentSecondaryText = window.I18N[secondaryKey][currentLanguage];
+            }
+
             announcementEl.textContent = "";
             if (!btn) {
                 btn = document.createElement("button");
                 btn.className = "enter-button";
                 announcementEl.appendChild(btn);
             }
-            btn.innerHTML = `<span>${secondaryText}</span>`;
+            btn.innerHTML = `<span>${currentSecondaryText}</span>`;
             btn.style.opacity = 0;
             let scale = 0.3;
             btn.style.transform = `scale(${scale})`;
