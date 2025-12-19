@@ -154,3 +154,10 @@ window.ARTAN_TRANSLATION = (function () {
 
     return { init, applyLanguage, applyRegion };
 })();
+
+// Auto-start translation system on page load
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.ARTAN_TRANSLATION && typeof window.ARTAN_TRANSLATION.init === "function") {
+        window.ARTAN_TRANSLATION.init();
+    }
+});

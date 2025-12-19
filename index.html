@@ -123,13 +123,13 @@
 
     <!-- Announcement / Message -->
     <div style="margin-top:2.5rem; display:flex; flex-direction:column; gap:0.1rem; max-width:640px; min-height:6rem;">
-        <p id="announcement" 
+        <p id="announcement"
+           data-i18n-key="announcement.message"
            data-primary="WEBSITE UNDER CONSTRUCTION"
-           data-secondary="ENTER"
-           <!-- Dynamic text will appear here -->
+           data-secondary="ENTER">
         </p>
 
-        <p class="site-essence">
+        <p class="site-essence" data-i18n-key="site.essence">
             SOUND • VISUAL • CONSCIOUSNESS
         </p>
     </div>
@@ -155,7 +155,11 @@
         <div class="country-overlay-inner">
             <!-- Overlay header: title and close button aligned horizontally -->
             <div class="overlay-header-container" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                <h2 class="country-overlay-title" style="margin:0; padding:0;">Choose your country or region</h2>
+                <h2 class="country-overlay-title"
+                    data-i18n-key="overlay.chooseRegion"
+                    style="margin:0; padding:0;">
+                    Choose your country or region
+                </h2>
                 <!-- Fixed overlay close button with visible spans for animation -->
                 <button id="country-overlay-close" class="global-close-button" aria-label="Close country selector">
                     <span></span>
@@ -165,7 +169,7 @@
             <hr class="footer-separator">
 
             <div class="country-region" data-region="Africa, Middle East & India">
-                <h3 class="region-title">Africa, Middle East & India</h3>
+                <h3 class="region-title" data-i18n-key="region.africaMiddleEastIndia">Africa, Middle East & India</h3>
                 <ul class="country-list">
                     <li><button class="country-option" data-country="South Africa">South Africa</button></li>
                     <li><button class="country-option" data-country="India">India</button></li>
@@ -175,7 +179,7 @@
             </div>
 
             <div class="country-region" data-region="Asia">
-                <h3 class="region-title">Asia</h3>
+                <h3 class="region-title" data-i18n-key="region.asia">Asia</h3>
                 <ul class="country-list">
                     <li><button class="country-option" data-country="Japan">Japan</button></li>
                     <li><button class="country-option" data-country="China">China</button></li>
@@ -186,7 +190,7 @@
             </div>
 
             <div class="country-region" data-region="Europe">
-                <h3 class="region-title">Europe</h3>
+                <h3 class="region-title" data-i18n-key="region.europe">Europe</h3>
                 <ul class="country-list">
                     <li><button class="country-option" data-country="Germany">Germany</button></li>
                     <li><button class="country-option" data-country="France">France</button></li>
@@ -198,7 +202,7 @@
             </div>
 
             <div class="country-region" data-region="Latin America">
-                <h3 class="region-title">Latin America</h3>
+                <h3 class="region-title" data-i18n-key="region.latinAmerica">Latin America</h3>
                 <ul class="country-list">
                     <li><button class="country-option" data-country="Brazil">Brazil</button></li>
                     <li><button class="country-option" data-country="Mexico">Mexico</button></li>
@@ -208,7 +212,7 @@
             </div>
 
             <div class="country-region" data-region="United States & Canada">
-                <h3 class="region-title">United States & Canada</h3>
+                <h3 class="region-title" data-i18n-key="region.unitedStatesCanada">United States & Canada</h3>
                 <ul class="country-list">
                     <li><button class="country-option" data-country="United States">United States</button></li>
                     <li><button class="country-option" data-country="Canada">Canada</button></li>
