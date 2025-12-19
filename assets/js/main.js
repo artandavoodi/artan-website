@@ -1,31 +1,3 @@
-/**
- * Utils
- */
-const throttle = (callback, limit) => {
-  let timeoutHandler = null;
-  return () => {
-    if (timeoutHandler == null) {
-      timeoutHandler = setTimeout(() => {
-        callback();
-        timeoutHandler = null;
-      }, limit);
-    }
-  };
-};
-
-const listen = (selector, event, callback) => {
-  const ele = document.querySelector(selector);
-  if (ele) ele.addEventListener(event, callback);
-};
-
-/**
- * Other site functions (header, menu, etc.) remain intact
- * ... existing functions ...
- */
-
-/**
- * DOMContentLoaded - Theme + Announcement
- */
 document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
     const toggle = document.getElementById("theme-toggle");
@@ -92,13 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let btn; // secondary button reference
 
         function typeLoop() {
-            const updatedText = primaryKey && window.I18N ? window.I18N[primaryKey][currentLanguage] : announcementEl.dataset.primary;
-            if (updatedText !== currentPrimaryText) {
-                currentPrimaryText = updatedText;
-                index = 0;
-                deleting = false;
-            }
-
             if (!deleting) {
                 announcementEl.textContent = currentPrimaryText.substring(0, index + 1);
                 index++;
@@ -206,165 +171,25 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(COUNTRY_STORAGE_KEY, countryName);
     };
 
+    let ipDetectedCountry = null;
+
+    // Check if user previously selected a country
     const storedCountry = localStorage.getItem(COUNTRY_STORAGE_KEY);
     if (storedCountry) {
         setCountry(storedCountry);
     } else {
+        // Fetch IP-based location
         fetch("https://ipapi.co/json/")
             .then(res => res.json())
             .then(data => {
                 if (data && data.country_name) {
-                    setCountry(data.country_name);
+                    ipDetectedCountry = data.country_name;
+                    setCountry(ipDetectedCountry);
+                    localStorage.setItem("artan_region", ipDetectedCountry);
                 }
             })
             .catch(() => {
                 /* silent fail — fallback remains unchanged */
             });
     }
-
-    window.__TRANSLATION_BOOTSTRAP__ = function () {
-        /**
-         * Global localization system: region vs language
-         */
-        const LANGUAGE_STORAGE_KEY = "artan_language";
-        const REGION_STORAGE_KEY = "artan_region";
-
-        // Default language and region
-        let currentLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY) || "en";
-        let currentRegion = localStorage.getItem(REGION_STORAGE_KEY) || storedCountry || "Germany";
-
-        const REGION_LANGUAGE_MAP = {
-            Germany: "de",
-            France: "fr",
-            "United Kingdom": "en",
-            Denmark: "da",
-            Switzerland: "de",
-            India: "hi",
-            Japan: "ja",
-            China: "zh",
-            Singapore: "en",
-            Persia: "fa",
-            Brazil: "pt",
-            Mexico: "es",
-            Argentina: "es",
-            "United States": "en",
-            Canada: "en"
-        };
-
-        // Function to apply language globally
-        const applyLanguage = (lang) => {
-            currentLanguage = lang;
-            localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
-
-            // Example: select all elements with data-i18n-key and replace text
-            document.querySelectorAll("[data-i18n-key]").forEach((el) => {
-                const key = el.dataset.i18nKey;
-                if (window.I18N && window.I18N[key] && window.I18N[key][lang]) {
-                    el.textContent = window.I18N[key][lang];
-                }
-            });
-        };
-
-        // Function to apply region-specific settings (currency, services, etc.)
-        const applyRegion = (region) => {
-            currentRegion = region;
-            localStorage.setItem(REGION_STORAGE_KEY, region);
-
-            // Example: update currency display or other region-dependent logic
-            document.querySelectorAll("[data-region-currency]").forEach((el) => {
-                if (window.CURRENCY && window.CURRENCY[region]) {
-                    el.textContent = window.CURRENCY[region];
-                }
-            });
-        };
-
-        // Initialize stored language and region
-        applyLanguage(currentLanguage);
-        applyRegion(currentRegion);
-
-        /**
-         * Country overlay interactivity
-         */
-        const countryOverlay = document.getElementById("country-overlay");
-        const countrySelectorButton = document.getElementById("country-selector");
-        const countryOverlayClose = document.getElementById("country-overlay-close");
-        const countryOptions = document.querySelectorAll(".country-option");
-
-        // Overlay close button animation: ensure spans animate X <-> horizontal
-        if (countryOverlayClose) {
-            countryOverlayClose.classList.add("global-close-button");
-            countryOverlayClose.removeAttribute("style");
-
-            const spans = countryOverlayClose.querySelectorAll("span");
-            countryOverlayClose.addEventListener("mouseenter", () => {
-                countryOverlayClose.classList.add("hovering");
-                spans.forEach(span => {
-                    span.style.transform = "rotate(0deg)"; // X to horizontal minus
-                });
-            });
-
-            countryOverlayClose.addEventListener("mouseleave", () => {
-                countryOverlayClose.classList.remove("hovering");
-                spans.forEach((span, idx) => {
-                    span.style.transform = idx === 0 ? "rotate(45deg)" : "rotate(-45deg)"; // revert back to X
-                });
-            });
-
-            countryOverlayClose.addEventListener("click", () => {
-                countryOverlayClose.classList.remove("hovering");
-                spans.forEach(span => {
-                    span.style.transform = "rotate(0deg)"; // final horizontal line
-                });
-                countryOverlay.classList.remove("visible");
-                setTimeout(() => {
-                    countryOverlay.classList.add("hidden");
-                }, 600);
-            });
-        }
-
-        // Open overlay on footer button click
-        if (countrySelectorButton && countryOverlay) {
-            countrySelectorButton.addEventListener("click", () => {
-                countryOverlay.classList.remove("hidden");
-                setTimeout(() => {
-                    countryOverlay.classList.add("visible");
-                }, 20); // allow transition to trigger
-            });
-        }
-
-        // Extend existing country selection with language and region separation
-        countryOptions.forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-                const selectedCountry = e.currentTarget.dataset.country;
-                if (selectedCountry) {
-                    // Update region for services
-                    applyRegion(selectedCountry);
-
-                    // Language remains as currentLanguage (manual selection)
-                    applyLanguage(currentLanguage);
-
-                    // Update footer display
-                    setCountry(selectedCountry);
-
-                    // Close overlay after selection
-                    countryOverlay.classList.remove("visible");
-                    setTimeout(() => {
-                        countryOverlay.classList.add("hidden");
-                    }, 400);
-                }
-            });
-        });
-
-        // Example language selector (dropdown, overlay, or buttons)
-        document.querySelectorAll(".language-option").forEach((langBtn) => {
-            langBtn.addEventListener("click", (e) => {
-                const lang = e.currentTarget.dataset.lang;
-                if (lang) {
-                    applyLanguage(lang); // override language globally
-                }
-            });
-        });
-
-    };
-    if (window.__TRANSLATION_BOOTSTRAP__) window.__TRANSLATION_BOOTSTRAP__();
 });

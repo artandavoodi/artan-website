@@ -67,9 +67,10 @@ window.ARTAN_TRANSLATION = (function () {
     const applyLanguage = async (lang) => {
         currentLanguage = lang;
         localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
-        const nodes = document.querySelectorAll("[data-i18n-key]");
+        const nodes = document.querySelectorAll("[data-i18n-key]:not(.enter-button):not(.enter-button *)");
         for (const el of nodes) {
             const originalText = el.dataset.originalText || el.textContent;
+            if (el.closest(".enter-button") || el.closest("#announcement")) continue;
             if (!el.dataset.originalText) el.dataset.originalText = originalText; // store original
 
             if (el.dataset.animated === "true") {
@@ -127,30 +128,32 @@ window.ARTAN_TRANSLATION = (function () {
         });
     };
 
-    // EN toggle override
+    // EN toggle override — pure on/off, no region mutation
     const initLanguageToggle = () => {
         const toggle = document.getElementById("language-toggle");
         if (!toggle) return;
 
+        const EN_OVERRIDE_KEY = "artan_en_override";
+
         const updateToggle = () => {
-            const storedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY) || currentLanguage;
-            const isActive = storedLang === "en";
+            const isActive = localStorage.getItem(EN_OVERRIDE_KEY) === "true";
             toggle.classList.toggle("active", isActive);
         };
 
-        toggle.addEventListener("click", async () => {
-            // Immediately determine current state
-            const storedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY) || currentLanguage;
-            const isActive = storedLang === "en";
+        toggle.addEventListener("click", () => {
+            const isActive = localStorage.getItem(EN_OVERRIDE_KEY) === "true";
 
-            // Update localStorage first to reflect desired language
-            const targetLang = isActive ? (REGION_LANGUAGE_MAP[currentRegion] || "en") : "en";
-            localStorage.setItem(LANGUAGE_STORAGE_KEY, targetLang);
+            if (isActive) {
+                // Disable English → return to region language
+                localStorage.removeItem(EN_OVERRIDE_KEY);
+                const regionLang = REGION_LANGUAGE_MAP[currentRegion] || "en";
+                applyLanguage(regionLang);
+            } else {
+                // Enable English → bypass translation
+                localStorage.setItem(EN_OVERRIDE_KEY, "true");
+                applyLanguage("en");
+            }
 
-            // Apply language asynchronously without awaiting to prevent UI freeze
-            applyLanguage(targetLang);
-
-            // Update toggle appearance immediately
             updateToggle();
         });
 
