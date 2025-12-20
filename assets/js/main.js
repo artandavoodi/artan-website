@@ -181,32 +181,46 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     const countryLabel = document.getElementById("current-country");
     const COUNTRY_STORAGE_KEY = "artan_country";
+    const REGION_STORAGE_KEY = "artan_region";
 
+    // Unified function to set both country label and storage
     const setCountry = (countryName) => {
         if (!countryName || !countryLabel) return;
         countryLabel.textContent = countryName;
         localStorage.setItem(COUNTRY_STORAGE_KEY, countryName);
+        localStorage.setItem(REGION_STORAGE_KEY, countryName);
+        if (window.__UPDATE_ANNOUNCEMENT_LANGUAGE__) {
+            const lang = window.I18N_LANG_MAP && window.I18N_LANG_MAP[countryName] ? window.I18N_LANG_MAP[countryName] : 'en';
+            window.__UPDATE_ANNOUNCEMENT_LANGUAGE__(lang);
+        }
     };
 
-    let ipDetectedCountry = null;
+    // Detect hard refresh using sessionStorage
+    const sessionKey = "artan_session_active";
+    const isHardRefresh = !sessionStorage.getItem(sessionKey);
+    sessionStorage.setItem(sessionKey, "true");
 
-    // Check if user previously selected a country
-    const storedCountry = localStorage.getItem(COUNTRY_STORAGE_KEY);
-    if (storedCountry) {
-        setCountry(storedCountry);
+    // Clear stored selections on hard refresh to fully reset
+    if (isHardRefresh) {
+        localStorage.removeItem(REGION_STORAGE_KEY);
+        localStorage.removeItem(COUNTRY_STORAGE_KEY);
+    }
+
+    // Retrieve stored selections
+    const storedRegion = localStorage.getItem(REGION_STORAGE_KEY);
+
+    if (storedRegion) {
+        // Normal refresh → respect stored region
+        setCountry(storedRegion);
     } else {
-        // Fetch IP-based location
+        // First visit or hard refresh → detect by IP
         fetch("https://ipapi.co/json/")
             .then(res => res.json())
             .then(data => {
                 if (data && data.country_name) {
-                    ipDetectedCountry = data.country_name;
-                    setCountry(ipDetectedCountry);
-                    localStorage.setItem("artan_region", ipDetectedCountry);
+                    setCountry(data.country_name);
                 }
             })
-            .catch(() => {
-                /* silent fail — fallback remains unchanged */
-            });
+            .catch(() => {});
     }
 });

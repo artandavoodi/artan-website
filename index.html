@@ -153,14 +153,10 @@
     <!-- Full-page country/region selector overlay -->
     <div id="country-overlay" class="country-overlay hidden">
         <div class="country-overlay-inner">
-            <!-- Overlay header: title and close button aligned horizontally -->
-            <div class="overlay-header-container" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                <h2 class="country-overlay-title"
-                    data-i18n-key="overlay.chooseRegion"
-                    style="margin:0; padding:0;">
+            <div class="overlay-header-container">
+                <h2 class="country-overlay-title" data-i18n-key="overlay.chooseRegion">
                     Choose your country or region
                 </h2>
-                <!-- Fixed overlay close button with visible spans for animation -->
                 <button id="country-overlay-close" class="global-close-button" aria-label="Close country selector">
                     <span></span>
                     <span></span>
@@ -173,7 +169,13 @@
                 <ul class="country-list">
                     <li><button class="country-option" data-country="South Africa">South Africa</button></li>
                     <li><button class="country-option" data-country="India">India</button></li>
-                    <li><button class="country-option" data-country="United Arab Emirates">United Arab Emirates</button></li>
+                    <li><button class="country-option" data-country="United Arab Emirates">الإمارات العربية المتحدة</button></li>
+                    <li><button class="country-option" data-country="Egypt">مصر</button></li>
+                    <li><button class="country-option" data-country="Saudi Arabia">المملكة العربية السعودية</button></li>
+                    <li><button class="country-option" data-country="Turkey">Türkiye</button></li>
+                    <li><button class="country-option" data-country="Pakistan">پاکستان</button></li>
+                    <li><button class="country-option" data-country="Kenya">Kenya</button></li>
+                    <li><button class="country-option" data-country="Morocco">Maroc</button></li>
                 </ul>
                 <hr class="footer-separator">
             </div>
@@ -181,10 +183,15 @@
             <div class="country-region" data-region="Asia">
                 <h3 class="region-title" data-i18n-key="region.asia">Asia</h3>
                 <ul class="country-list">
-                    <li><button class="country-option" data-country="Japan">Japan</button></li>
-                    <li><button class="country-option" data-country="China">China</button></li>
+                    <li><button class="country-option" data-country="Japan">日本</button></li>
+                    <li><button class="country-option" data-country="China">中国</button></li>
                     <li><button class="country-option" data-country="Singapore">Singapore</button></li>
-                    <li><button class="country-option" data-country="Persia">Persia</button></li>
+                    <li><button class="country-option" data-country="Persia">ایران</button></li>
+                    <li><button class="country-option" data-country="South Korea">대한민국</button></li>
+                    <li><button class="country-option" data-country="Thailand">ไทย</button></li>
+                    <li><button class="country-option" data-country="Indonesia">Indonesia</button></li>
+                    <li><button class="country-option" data-country="Vietnam">Việt Nam</button></li>
+                    <li><button class="country-option" data-country="Philippines">Philippines</button></li>
                 </ul>
                 <hr class="footer-separator">
             </div>
@@ -192,11 +199,17 @@
             <div class="country-region" data-region="Europe">
                 <h3 class="region-title" data-i18n-key="region.europe">Europe</h3>
                 <ul class="country-list">
-                    <li><button class="country-option" data-country="Germany">Germany</button></li>
+                    <li><button class="country-option" data-country="Germany">Deutschland</button></li>
                     <li><button class="country-option" data-country="France">France</button></li>
                     <li><button class="country-option" data-country="United Kingdom">United Kingdom</button></li>
-                    <li><button class="country-option" data-country="Denmark">Denmark</button></li>
-                    <li><button class="country-option" data-country="Switzerland">Switzerland</button></li>
+                    <li><button class="country-option" data-country="Denmark">Danmark</button></li>
+                    <li><button class="country-option" data-country="Switzerland">Schweiz</button></li>
+                    <li><button class="country-option" data-country="Italy">Italia</button></li>
+                    <li><button class="country-option" data-country="Spain">España</button></li>
+                    <li><button class="country-option" data-country="Sweden">Sverige</button></li>
+                    <li><button class="country-option" data-country="Netherlands">Nederland</button></li>
+                    <li><button class="country-option" data-country="Norway">Norge</button></li>
+                    <li><button class="country-option" data-country="Belgium">Belgique</button></li>
                 </ul>
                 <hr class="footer-separator">
             </div>
@@ -204,9 +217,12 @@
             <div class="country-region" data-region="Latin America">
                 <h3 class="region-title" data-i18n-key="region.latinAmerica">Latin America</h3>
                 <ul class="country-list">
-                    <li><button class="country-option" data-country="Brazil">Brazil</button></li>
-                    <li><button class="country-option" data-country="Mexico">Mexico</button></li>
+                    <li><button class="country-option" data-country="Brazil">Brasil</button></li>
+                    <li><button class="country-option" data-country="Mexico">México</button></li>
                     <li><button class="country-option" data-country="Argentina">Argentina</button></li>
+                    <li><button class="country-option" data-country="Colombia">Colombia</button></li>
+                    <li><button class="country-option" data-country="Chile">Chile</button></li>
+                    <li><button class="country-option" data-country="Peru">Perú</button></li>
                 </ul>
                 <hr class="footer-separator">
             </div>
