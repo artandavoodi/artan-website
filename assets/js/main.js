@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const primaryKey = announcementEl.dataset.primaryKey;
         const secondaryKey = announcementEl.dataset.secondaryKey;
 
-        let primaryText = primaryKey && window.I18N ? window.I18N[primaryKey][currentLanguage] : announcementEl.dataset.primary;
-        let secondaryText = secondaryKey && window.I18N ? window.I18N[secondaryKey][currentLanguage] : announcementEl.dataset.secondary;
+        let primaryText = announcementEl.dataset.primary || "";
+        let secondaryText = announcementEl.dataset.secondary || "";
 
         announcementEl.dataset.animated = "true";
         announcementEl.textContent = "";
@@ -64,11 +64,21 @@ document.addEventListener("DOMContentLoaded", () => {
         let currentSecondaryText = secondaryText;
         let btn; // secondary button reference
 
+        // Expose safe language update hook for announcement (no DOM mutation)
+        window.__UPDATE_ANNOUNCEMENT_LANGUAGE__ = function (lang) {
+            if (primaryKey && window.I18N && window.I18N[primaryKey] && window.I18N[primaryKey][lang]) {
+                currentPrimaryText = window.I18N[primaryKey][lang];
+            }
+            if (secondaryKey && window.I18N && window.I18N[secondaryKey] && window.I18N[secondaryKey][lang]) {
+                currentSecondaryText = window.I18N[secondaryKey][lang];
+                if (btn) {
+                    btn.querySelector("span").textContent = currentSecondaryText;
+                }
+            }
+        };
+
         function typeLoop() {
             // Use latest translated primary text if available
-            if (primaryKey && window.I18N && window.I18N[primaryKey] && window.I18N[primaryKey][currentLanguage]) {
-                currentPrimaryText = window.I18N[primaryKey][currentLanguage];
-            }
 
             if (!deleting) {
                 announcementEl.textContent = currentPrimaryText.substring(0, index + 1);
@@ -94,9 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function showSecondaryButton() {
             // Update secondary text with latest translation without touching DOM
-            if (secondaryKey && window.I18N && window.I18N[secondaryKey] && window.I18N[secondaryKey][currentLanguage]) {
-                currentSecondaryText = window.I18N[secondaryKey][currentLanguage];
-            }
 
             announcementEl.textContent = "";
             if (!btn) {

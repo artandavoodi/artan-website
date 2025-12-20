@@ -83,6 +83,11 @@ window.ARTAN_TRANSLATION = (function () {
                 el.textContent = await translateText(originalText, lang);
             }
         }
+
+        // Notify announcement system safely (no DOM mutation)
+        if (typeof window.__UPDATE_ANNOUNCEMENT_LANGUAGE__ === "function") {
+            window.__UPDATE_ANNOUNCEMENT_LANGUAGE__(lang);
+        }
     };
 
     // Apply region-specific logic (e.g., currency)
