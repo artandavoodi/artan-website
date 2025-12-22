@@ -410,7 +410,7 @@ html, body, body * { cursor: none !important; }
 /* =================== HEADER CONTROLS (IMMUTABLE) =================== */
 
 #header-controls {
-  position: fixed;
+  position: fixead;
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
@@ -582,7 +582,7 @@ html, body, body * { cursor: none !important; }
 
 /* Menu links */
 .menu-link {
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-size: clamp(1.6rem, 4vw, 1.8rem);
   font-weight: 300;
   letter-spacing: 0.08em;
   text-transform: uppercase;
