@@ -261,24 +261,28 @@ function initMenu({ onOpen, onClose } = {}) {
 
         isOpen = false;
 
-        // Start visual exit (items animate out)
-        menuOverlay.classList.remove('active');
+        // Trigger graceful exit animation
         menuOverlay.classList.add('closing');
+
         const items = Array.from(menuItems).reverse();
         items.forEach((item, index) => {
             item.style.transitionDelay = `${index * 0.06}s`;
         });
+
         document.body.classList.remove('menu-active');
 
         if (typeof onClose === 'function') onClose();
 
-        // Delay structural reset so animation can breathe
+        // Allow exit animation to fully play before hiding overlay
         setTimeout(() => {
-            menuButton.classList.remove('menu-open');
+            menuOverlay.classList.remove('active');
             menuOverlay.classList.remove('closing');
+            menuButton.classList.remove('menu-open');
+
             menuItems.forEach((item) => {
                 item.style.transitionDelay = '';
             });
+
             isAnimating = false;
         }, CLOSE_ANIMATION_DURATION);
     }
