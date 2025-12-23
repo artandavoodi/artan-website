@@ -1,0 +1,7 @@
+#menu-button.menu-open .line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  transform-origin: center;
+}
