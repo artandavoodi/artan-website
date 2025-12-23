@@ -88,11 +88,17 @@ window.ARTAN_TRANSLATION = (function () {
     const applyLanguage = async (lang) => {
         currentLanguage = lang;
         localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
-        const nodes = document.querySelectorAll("[data-i18n-key]:not(.enter-button):not(.enter-button *)");
+        const nodes = document.querySelectorAll("[data-i18n-key]");
         for (const el of nodes) {
-            if (el.closest(".enter-button") || el.closest("#announcement")) continue;
             const originalText = el.dataset.originalText || el.textContent;
             if (!el.dataset.originalText) el.dataset.originalText = originalText; // store original
+
+            // Handle direction-sensitive languages (RTL)
+            if (lang === "fa" || lang === "ar" || lang === "ur") {
+                el.setAttribute("dir", "rtl");
+            } else {
+                el.removeAttribute("dir");
+            }
 
             if (el.dataset.animated === "true") {
                 el.addEventListener("animationend", async function handler() {
@@ -107,6 +113,16 @@ window.ARTAN_TRANSLATION = (function () {
         if (typeof window.__UPDATE_ANNOUNCEMENT_LANGUAGE__ === "function") {
             window.__UPDATE_ANNOUNCEMENT_LANGUAGE__(lang);
         }
+
+        // Re-apply translation when menu overlay opens (ensures hidden menu items translate)
+        document.addEventListener("menuOverlayOpen", async () => {
+            const menuNodes = document.querySelectorAll("#menu-overlay [data-i18n-key]");
+            for (const el of menuNodes) {
+                const originalText = el.dataset.originalText || el.textContent;
+                if (!el.dataset.originalText) el.dataset.originalText = originalText;
+                el.textContent = await translateText(originalText, currentLanguage);
+            }
+        });
     };
 
     // Apply region-specific logic (e.g., currency)
