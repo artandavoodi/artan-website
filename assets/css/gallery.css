@@ -41,3 +41,19 @@
 @media (max-width: 480px) {
     .gallery-item { flex: 0 1 calc(80% - 16px); }
 }
+
+
+/* Center logo and make it responsive */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.logo-container img {
+    width: 320px;
+    max-width: 80%;
+    height: auto;
+    display: block; /* ensures proper centering */
+}
