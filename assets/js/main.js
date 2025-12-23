@@ -227,21 +227,27 @@ document.addEventListener("DOMContentLoaded", () => {
 function initMenu({ onOpen, onClose } = {}) {
     const menuButton = document.getElementById('menu-button');
     const menuOverlay = document.getElementById('menu-overlay');
+    const menuItems = menuOverlay.querySelectorAll('.menu-list li');
 
     if (!menuButton || !menuOverlay) return;
 
     let isOpen = false;
     let isAnimating = false;
+    const CLOSE_ANIMATION_DURATION = 420; // ms — matches CSS exit rhythm
 
     function openMenu() {
         if (isAnimating) return;
         isAnimating = true;
 
-        isOpen = true;
         menuButton.classList.add('menu-open');
         menuOverlay.classList.add('active');
+        menuOverlay.classList.remove('closing');
+        menuItems.forEach((item) => {
+            item.style.transitionDelay = '';
+        });
         document.body.classList.add('menu-active');
 
+        isOpen = true;
         if (typeof onOpen === 'function') onOpen();
 
         requestAnimationFrame(() => {
@@ -254,15 +260,27 @@ function initMenu({ onOpen, onClose } = {}) {
         isAnimating = true;
 
         isOpen = false;
-        menuButton.classList.remove('menu-open');
+
+        // Start visual exit (items animate out)
         menuOverlay.classList.remove('active');
+        menuOverlay.classList.add('closing');
+        const items = Array.from(menuItems).reverse();
+        items.forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.06}s`;
+        });
         document.body.classList.remove('menu-active');
 
         if (typeof onClose === 'function') onClose();
 
-        requestAnimationFrame(() => {
+        // Delay structural reset so animation can breathe
+        setTimeout(() => {
+            menuButton.classList.remove('menu-open');
+            menuOverlay.classList.remove('closing');
+            menuItems.forEach((item) => {
+                item.style.transitionDelay = '';
+            });
             isAnimating = false;
-        });
+        }, CLOSE_ANIMATION_DURATION);
     }
 
     menuButton.addEventListener('click', (e) => {
@@ -305,18 +323,6 @@ document.addEventListener('countryOverlayClose', () => {
     if (header) header.style.display = '';
 });
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const streamOverlay = document.getElementById("stream-overlay");
