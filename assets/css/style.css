@@ -197,7 +197,7 @@ body.light-mode .theme-toggle { background-color: var(--color-black); }
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 1.4s ease, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
 }
 
@@ -211,14 +211,15 @@ body.light-mode .theme-toggle { background-color: var(--color-black); }
 /* Enter hidden initially */
 .stage-layer--enter {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(14px);
     pointer-events: none;
+    transition-delay: 0.45s;
 }
 
 /* When announcement completes */
 .stage-container.show-enter .stage-layer--announcement {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-14px);
     pointer-events: none;
 }
 
@@ -231,7 +232,7 @@ body.light-mode .theme-toggle { background-color: var(--color-black); }
 /* Mobile harmony */
 @media (max-width: 640px) {
     .stage-container {
-        min-height: 5.5rem;
+        min-height: 6.2rem;
     }
 }
 
@@ -773,58 +774,4 @@ html, body, body * { cursor: none !important; }
 /* Prevent scroll jump */
 body.menu-open {
   overflow: hidden;
-}
-
-
-
-
-
-.connect-section {
-    width: 100%;
-    max-width: 1200px;
-    margin: 3rem auto;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    text-align: center;
-}
-.connect-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 4rem;
-}
-.connect-block h3 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    color: currentColor;
-}
-.connect-icon {
-    display: inline-block;
-    margin: 0.5rem;
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s ease, filter 0.3s ease;
-    cursor: pointer;
-    filter: brightness(1);
-}
-.connect-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-}
-.connect-icon:hover {
-    transform: scale(1.2);
-    filter: brightness(1.2);
-}
-body.dark .connect-section h3,
-body.dark .connect-icon img {
-    filter: invert(100%);
-}
-body.light .connect-section h3,
-body.light .connect-icon img {
-    filter: invert(0%);
 }

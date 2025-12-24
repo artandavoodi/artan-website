@@ -46,18 +46,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // Announcement container typewriter
     const announcementEl = document.getElementById("announcement");
     const enterButton = document.getElementById("enter-button");
+    const announcementWrapper = announcementEl ? announcementEl.parentElement : null;
     const stageContainer = announcementEl ? announcementEl.closest('.stage-container') : null;
     const enterContainer = document.getElementById("enter-container");
     if (announcementEl) {
         const primaryKey = announcementEl.dataset.i18nKey;
 
-        let primaryText = announcementEl.dataset.primary || "";
+        let currentLang = 'en';
+        let primaryText = announcementEl.dataset.primary || '';
+        let currentPrimaryText = primaryText;
 
         announcementEl.dataset.animated = "true";
         announcementEl.textContent = "";
         announcementEl.style.fontWeight = "600";
         announcementEl.style.fontSize = "1.8rem";
         announcementEl.style.display = "inline-block";
+
+        // Lock layout height BEFORE animation starts (prevents jumping)
+        if (announcementWrapper) {
+            const h = announcementWrapper.offsetHeight;
+            announcementWrapper.style.minHeight = h + "px";
+        }
 
         if (enterButton) {
             enterButton.style.opacity = "0";
@@ -66,12 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let index = 0;
         let deleting = false;
-        let currentPrimaryText = primaryText;
 
         // Expose safe language update hook for announcement (no DOM mutation)
         window.__UPDATE_ANNOUNCEMENT_LANGUAGE__ = function (lang) {
-            if (primaryKey && window.I18N && window.I18N[primaryKey] && window.I18N[primaryKey][lang]) {
-                currentPrimaryText = window.I18N[primaryKey][lang];
+            currentLang = lang || 'en';
+
+            if (primaryKey && window.I18N && window.I18N[primaryKey] && window.I18N[primaryKey][currentLang]) {
+                currentPrimaryText = window.I18N[primaryKey][currentLang];
                 index = 0;
                 deleting = false;
                 announcementEl.textContent = "";
@@ -79,10 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             if (enterButton && enterButton.dataset.i18nKey && window.I18N && window.I18N[enterButton.dataset.i18nKey]) {
-                const translated = window.I18N[enterButton.dataset.i18nKey][lang];
-                if (translated) {
-                    enterButton.textContent = translated;
-                }
+                const translated = window.I18N[enterButton.dataset.i18nKey][currentLang];
+                if (translated) enterButton.textContent = translated;
             }
         };
 
@@ -106,6 +114,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (index > 0) {
                     setTimeout(typeLoop, 50);
                 } else {
+                    if (announcementWrapper) {
+                        const h = announcementWrapper.offsetHeight;
+                        announcementWrapper.style.minHeight = h + "px";
+                        announcementWrapper.dataset.lockedHeight = "true";
+                        announcementWrapper.dataset.lockedHeightValue = h;
+                    }
                     revealEnterButton();
                 }
             }
@@ -118,26 +132,40 @@ document.addEventListener("DOMContentLoaded", () => {
                 stageContainer.classList.add("stage-enter-visible");
             }
 
+            if (announcementWrapper) {
+                announcementWrapper.classList.add("announcement-replaced");
+            }
+
             announcementEl.style.opacity = "0";
             announcementEl.style.pointerEvents = "none";
+            announcementEl.style.display = "none";
 
             if (!enterButton) return;
 
             enterButton.style.opacity = "0";
             enterButton.style.transform = "scale(0.6)";
             enterButton.style.pointerEvents = "auto";
+            enterButton.style.display = "inline-flex";
+            enterButton.style.alignSelf = "center";
+
             if (stageContainer) {
                 stageContainer.classList.add("stage--enter-active");
             }
 
             requestAnimationFrame(() => {
-                enterButton.style.transition = "opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)";
+                enterButton.style.transition =
+                    "opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1)";
                 enterButton.style.opacity = "1";
                 enterButton.style.transform = "scale(1)";
             });
         }
 
         typeLoop();
+
+        const storedCountry = localStorage.getItem("artan_country");
+        if (storedCountry && window.I18N_LANG_MAP && window.I18N_LANG_MAP[storedCountry]) {
+            window.__UPDATE_ANNOUNCEMENT_LANGUAGE__(window.I18N_LANG_MAP[storedCountry]);
+        }
     }
 
     /* Smooth custom cursor movement with global hover effect including overlay */

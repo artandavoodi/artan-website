@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artan • Music</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/icons/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icons/favicon-32x32.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/icons/apple-touch-icon.png" />
-    <link rel="icon" type="image/svg+xml" href="../../assets/icons/favicon.svg" />
-    <link rel="stylesheet" href="../../assets/css/style.css" />
-    <meta name="description" content="Explore Artan's music collection, albums, singles, and scores." />
-    <meta name="keywords" content="Artan, Music, Albums, Singles, Scores, Sound, Spotify, Apple Music" />
-    <link rel="canonical" href="https://artan.live/music/" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icons/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/svg+xml" href="../../assets/icons/favicon.svg">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <meta name="description" content="Explore Artan's music collection, albums, singles, and scores.">
+    <meta name="keywords" content="Artan, Music, Albums, Singles, Scores, Sound, Spotify, Apple Music">
+    <link rel="canonical" href="https://artan.live/music/">
 
     <script type="application/ld+json">
     {
@@ -33,21 +33,21 @@
     <script src="../../assets/js/darkmode.js" defer></script>
     <script src="../../assets/js/main.js" defer></script>
     <script src="../../assets/js/translation.js" defer></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="dark-theme">
+<body style="margin:0; background-color:#000; color:#fff; font-family: 'Manrope', sans-serif; display:flex; flex-direction:column; align-items:center;">
 
 <!-- Header Controls: Menu Button + Theme Toggle -->
-<header id="header-controls" class="header-controls">
+<header id="header-controls" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; justify-content: flex-start; align-items: center; z-index: 1000; padding: 0; box-sizing: border-box;">
     <div id="menu-button-container">
-        <button id="menu-button" aria-label="Open menu" class="menu-button">
+        <button id="menu-button" aria-label="Open menu">
             <span class="line line-top"></span>
             <span class="line line-bottom"></span>
         </button>
     </div>
-    <button id="theme-toggle" aria-label="Toggle dark and light mode" class="theme-toggle"></button>
+    <button id="theme-toggle" aria-label="Toggle dark and light mode" style="width: 14px; height: 14px; border-radius: 50%; border: none; background-color: #ffffff; cursor: pointer;"></button>
 </header>
 
 <!-- Menu Overlay -->
@@ -60,7 +60,7 @@
                 <span></span>
             </button>
         </div>
-        <hr class="footer-separator" />
+        <hr class="footer-separator">
         <nav class="menu-nav">
             <ul class="menu-list">
                 <li><a href="../../pages/music/index.html" class="menu-link">Music</a></li>
@@ -72,38 +72,26 @@
 </div>
 
 <!-- Logo top-left small -->
-<div class="logo-top-left">
-    <img src="../../assets/images/logo.svg" alt="Artan Logo" class="logo-small" />
+<div style="position: fixed; top: 20px; left: 20px; z-index: 900;">
+    <img src="../../assets/images/logo.svg" alt="Artan Logo" style="width:120px; height:auto;">
 </div>
 
-<!-- Main Logo top-center -->
-<div class="logo-top-center">
-    <img src="../../assets/images/logo.svg" alt="Artan Logo" class="logo-primary" />
-</div>
+<!-- Featured Album Section -->
+<main style="width:100%; max-width:1280px; margin-top:6rem; padding:0 2rem; display:flex; flex-direction:column; gap:4rem;">
 
-<!-- Main Content Container -->
-<main class="container main-content">
-
-    <!-- Announcement or Intro Section (if needed) -->
-    <section class="intro text-center">
-        <h1 class="page-title">Music</h1>
-        <p class="page-subtitle">Explore Artan's music collection, albums, singles, and scores.</p>
-    </section>
-
-    <!-- Featured Album Section -->
-    <section class="album-featured flex-column center gap-2rem">
+    <section class="album-featured" style="display:flex; flex-direction:column; align-items:center; gap:2rem;">
         <!-- Album Cover -->
-        <img src="../../assets/images/album-placeholder.jpg" alt="Album Cover" class="album-cover" />
+        <img src="../../assets/images/album-placeholder.jpg" alt="Album Cover" style="width:80%; max-width:600px; border-radius:8px; box-shadow:0 0 20px rgba(255,255,255,0.2);">
 
         <!-- Album Info -->
-        <div class="album-info text-center flex-column gap-0-5rem">
-            <h2 class="album-title">Solum</h2>
-            <p class="album-release-year">Release Year: 2023</p>
-            <p class="album-producer">Producer: Artan Davoodi</p>
-
+        <div style="text-align:center; display:flex; flex-direction:column; gap:0.5rem;">
+            <h2>Solum</h2>
+            <p>Release Year: 2023</p>
+            <p>Producer: Artan Davoodi</p>
+            
             <!-- Credits Dropdown -->
-            <button class="credits-toggle button-secondary">Credits</button>
-            <div class="credits-content hidden small-text">
+            <button class="credits-toggle" style="background:none; border:none; color:#fff; cursor:pointer; text-decoration:underline;">Credits</button>
+            <div class="credits-content hidden" style="margin-top:0.5rem; font-size:0.9rem;">
                 <p>Track 1: Sound Design - Artan</p>
                 <p>Track 2: Mixing - Artan</p>
                 <p>Track 3: Mastering - Artan</p>
@@ -111,41 +99,41 @@
         </div>
 
         <!-- Artist Circle -->
-        <div class="artist-circle-container flex-column center gap-0-5rem">
-            <div class="artist-circle">
-                <img src="../../assets/images/artist-placeholder.jpg" alt="Artan" class="artist-image" />
+        <div style="margin-top:2rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+            <div style="width:120px; height:120px; border-radius:50%; overflow:hidden; border:2px solid #fff;">
+                <img src="../../assets/images/artist-placeholder.jpg" alt="Artan" style="width:100%; height:100%; object-fit:cover;">
             </div>
             <p>Experience the album</p>
-            <button class="stream-btn button-primary">Stream / Buy Album</button>
+            <button class="stream-btn" style="padding:0.5rem 1.5rem; border:none; border-radius:4px; background-color:#fff; color:#000; cursor:pointer;">Stream / Buy Album</button>
         </div>
     </section>
 
     <!-- Stream Overlay -->
-    <div id="stream-overlay" class="stream-overlay hidden">
-        <button id="close-stream" class="close-stream" aria-label="Close stream overlay">&times;</button>
+    <div id="stream-overlay" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; justify-content:center; align-items:center; flex-direction:column; gap:2rem; z-index:2000; padding:2rem;">
+        <button id="close-stream" style="position:absolute; top:20px; right:20px; background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
         <h2>Stream Solum</h2>
-        <div class="stream-links flex-wrap center gap-2rem">
-            <a href="https://open.spotify.com/album/..." target="_blank" class="stream-link button-secondary">Spotify</a>
-            <a href="https://music.apple.com/album/..." target="_blank" class="stream-link button-secondary">Apple Music</a>
-            <a href="#" target="_blank" class="stream-link button-secondary">Other Platform</a>
+        <div style="display:flex; gap:2rem; flex-wrap:wrap; justify-content:center;">
+            <a href="https://open.spotify.com/album/..." target="_blank" style="color:#fff; text-decoration:none;">Spotify</a>
+            <a href="https://music.apple.com/album/..." target="_blank" style="color:#fff; text-decoration:none;">Apple Music</a>
+            <a href="#" target="_blank" style="color:#fff; text-decoration:none;">Other Platform</a>
         </div>
     </div>
 
     <!-- Additional Section: Books & Social Media -->
-    <section class="explore-more flex-column center gap-1-5rem text-center">
+    <section style="width:100%; margin-top:4rem; display:flex; flex-direction:column; align-items:center; gap:1.5rem; text-align:center;">
         <h3>Explore More</h3>
-        <div class="explore-links flex-wrap center gap-2rem">
-            <a href="../../pages/books/index.html" class="explore-link button-secondary">Books</a>
-            <a href="https://x.com/artandavoodi" target="_blank" class="explore-link button-secondary">X</a>
-            <a href="https://www.instagram.com/artandavoodi/" target="_blank" class="explore-link button-secondary">Instagram</a>
-            <a href="https://www.tiktok.com/@artan.davoodi" target="_blank" class="explore-link button-secondary">TikTok</a>
+        <div style="display:flex; gap:2rem; flex-wrap:wrap; justify-content:center;">
+            <a href="../../pages/books/index.html" style="color:#fff; text-decoration:none; border:1px solid #fff; padding:0.5rem 1rem; border-radius:4px;">Books</a>
+            <a href="https://x.com/artandavoodi" target="_blank" style="color:#fff; text-decoration:none; border:1px solid #fff; padding:0.5rem 1rem; border-radius:4px;">X</a>
+            <a href="https://www.instagram.com/artandavoodi/" target="_blank" style="color:#fff; text-decoration:none; border:1px solid #fff; padding:0.5rem 1rem; border-radius:4px;">Instagram</a>
+            <a href="https://www.tiktok.com/@artan.davoodi" target="_blank" style="color:#fff; text-decoration:none; border:1px solid #fff; padding:0.5rem 1rem; border-radius:4px;">TikTok</a>
         </div>
     </section>
 
 </main>
 
-<hr class="footer-separator" />
-<footer class="site-footer">
+<hr class="footer-separator" style="margin:4rem 0 2rem 0;">
+<footer class="site-footer" style="width:100%; text-align:center; padding:2rem 0;">
     <div>© 2025 ARTAN. All rights reserved.</div>
 </footer>
 
@@ -165,9 +153,20 @@
     const overlay = document.getElementById('stream-overlay');
     const closeBtn = document.getElementById('close-stream');
 
-    streamBtn.addEventListener('click', () => overlay.classList.add('visible'));
-    closeBtn.addEventListener('click', () => overlay.classList.remove('visible'));
+    streamBtn.addEventListener('click', () => overlay.classList.remove('hidden'));
+    closeBtn.addEventListener('click', () => overlay.classList.add('hidden'));
 </script>
 
+<style>
+    .hidden { display:none; }
+    /* Theme toggle integration */
+    body[data-theme='light'] {
+        background-color:#fff;
+        color:#000;
+    }
+    body[data-theme='light'] .credits-toggle,
+    body[data-theme='light'] .stream-btn,
+    body[data-theme='light'] a { color:#000; }
+</style>
 </body>
 </html>
