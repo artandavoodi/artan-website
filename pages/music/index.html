@@ -37,7 +37,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 </head>
-<body class="dark-mode">
+<body class="dark-theme">
 
 <!-- Header Controls: Menu Button + Theme Toggle -->
 <header id="header-controls" class="header-controls">
@@ -71,24 +71,31 @@
     </div>
 </div>
 
-<!-- Top-left small logo -->
+<!-- Logo top-left small -->
 <div class="logo-top-left">
     <img src="../../assets/images/logo.svg" alt="Artan Logo" class="logo-small" />
 </div>
 
-<!-- Main Content -->
+<!-- Main Logo top-center -->
+<div class="logo-top-center">
+    <img src="../../assets/images/logo.svg" alt="Artan Logo" class="logo-primary" />
+</div>
+
+<!-- Main Content Container -->
 <main class="container main-content">
 
-    <!-- Intro / Announcement Section -->
+    <!-- Announcement or Intro Section (if needed) -->
     <section class="intro text-center">
         <h1 class="page-title">Music</h1>
         <p class="page-subtitle">Explore Artan's music collection, albums, singles, and scores.</p>
     </section>
 
-    <!-- Featured Album -->
+    <!-- Featured Album Section -->
     <section class="album-featured flex-column center gap-2rem">
+        <!-- Album Cover -->
         <img src="../../assets/images/album-placeholder.jpg" alt="Album Cover" class="album-cover" />
 
+        <!-- Album Info -->
         <div class="album-info text-center flex-column gap-0-5rem">
             <h2 class="album-title">Solum</h2>
             <p class="album-release-year">Release Year: 2023</p>
@@ -103,10 +110,10 @@
             </div>
         </div>
 
-        <!-- Artist Circle + Stream -->
+        <!-- Artist Circle -->
         <div class="artist-circle-container flex-column center gap-0-5rem">
             <div class="artist-circle">
-                <img src="../../assets/images/artist.jpg" alt="Artan" class="artist-image" />
+                <img src="../../assets/images/artist-placeholder.jpg" alt="Artan" class="artist-image" />
             </div>
             <p>Experience the album</p>
             <button class="stream-btn button-primary">Stream / Buy Album</button>
@@ -118,34 +125,20 @@
         <button id="close-stream" class="close-stream" aria-label="Close stream overlay">&times;</button>
         <h2>Stream Solum</h2>
         <div class="stream-links flex-wrap center gap-2rem">
-            <a href="https://open.spotify.com/album/..." target="_blank" class="stream-link">
-                <img src="../../assets/icons/music/spotify.svg" alt="Spotify" class="icon-small"/>
-            </a>
-            <a href="https://music.apple.com/album/..." target="_blank" class="stream-link">
-                <img src="../../assets/icons/music/apple-music.svg" alt="Apple Music" class="icon-small"/>
-            </a>
-            <a href="#" target="_blank" class="stream-link">
-                <img src="../../assets/icons/music/other.svg" alt="Other Platform" class="icon-small"/>
-            </a>
+            <a href="https://open.spotify.com/album/..." target="_blank" class="stream-link button-secondary">Spotify</a>
+            <a href="https://music.apple.com/album/..." target="_blank" class="stream-link button-secondary">Apple Music</a>
+            <a href="#" target="_blank" class="stream-link button-secondary">Other Platform</a>
         </div>
     </div>
 
-    <!-- Explore More: Books & Social -->
+    <!-- Additional Section: Books & Social Media -->
     <section class="explore-more flex-column center gap-1-5rem text-center">
         <h3>Explore More</h3>
         <div class="explore-links flex-wrap center gap-2rem">
-            <a href="../../pages/books/index.html" class="explore-link">
-                <img src="../../assets/icons/social/books.svg" alt="Books" class="icon-small"/>
-            </a>
-            <a href="https://x.com/artandavoodi" target="_blank" class="explore-link">
-                <img src="../../assets/icons/social/x.svg" alt="X" class="icon-small"/>
-            </a>
-            <a href="https://www.instagram.com/artandavoodi/" target="_blank" class="explore-link">
-                <img src="../../assets/icons/social/instagram.svg" alt="Instagram" class="icon-small"/>
-            </a>
-            <a href="https://www.tiktok.com/@artan.davoodi" target="_blank" class="explore-link">
-                <img src="../../assets/icons/social/tiktok.svg" alt="TikTok" class="icon-small"/>
-            </a>
+            <a href="../../pages/books/index.html" class="explore-link button-secondary">Books</a>
+            <a href="https://x.com/artandavoodi" target="_blank" class="explore-link button-secondary">X</a>
+            <a href="https://www.instagram.com/artandavoodi/" target="_blank" class="explore-link button-secondary">Instagram</a>
+            <a href="https://www.tiktok.com/@artan.davoodi" target="_blank" class="explore-link button-secondary">TikTok</a>
         </div>
     </section>
 
@@ -167,7 +160,7 @@
         });
     });
 
-    // Stream overlay toggle
+    // Stream overlay
     const streamBtn = document.querySelector('.stream-btn');
     const overlay = document.getElementById('stream-overlay');
     const closeBtn = document.getElementById('close-stream');
