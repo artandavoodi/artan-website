@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Artan</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <!-- Your Config & Auth -->
+  <script src="assets/js/firebase-config.js" defer></script>
+  <script src="assets/js/auth.js" defer></script>
+</head>
+<body style="margin:0; background-color:#000; color:#fff; font-family: 'Manrope', sans-serif; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; text-align:center;">
+
+  <div class="profile-container">
+    <h1 id="profile-name">Loading...</h1>
+    <p id="profile-email">Loading...</p>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+</body>
+</html>
