@@ -48,16 +48,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const enterButton = document.getElementById("enter-button");
     const announcementWrapper = announcementEl ? announcementEl.parentElement : null;
     const stageContainer = announcementEl ? announcementEl.closest('.stage-container') : null;
+    const announcementSlot = announcementEl ? announcementEl.parentElement : null;
     const enterContainer = document.getElementById("enter-container");
     if (announcementEl) {
         const primaryKey = announcementEl.dataset.i18nKey;
 
         let currentLang = 'en';
-        let primaryText = announcementEl.dataset.primary || '';
+        let primaryText = '';
+        const resolvePrimaryText = (lang = 'en') => {
+            if (
+                announcementEl.dataset.i18nKey &&
+                window.I18N &&
+                window.I18N[announcementEl.dataset.i18nKey] &&
+                window.I18N[announcementEl.dataset.i18nKey][lang]
+            ) {
+                return window.I18N[announcementEl.dataset.i18nKey][lang];
+            }
+            return announcementEl.dataset.primary || '';
+        };
+
+        primaryText = resolvePrimaryText('en');
         let currentPrimaryText = primaryText;
 
         announcementEl.dataset.animated = "true";
         announcementEl.textContent = "";
+        announcementEl.style.opacity = "1";
+        announcementEl.style.visibility = "visible";
+        announcementEl.style.pointerEvents = "auto";
         announcementEl.style.fontWeight = "600";
         announcementEl.style.fontSize = "1.8rem";
         announcementEl.style.display = "inline-block";
@@ -71,6 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (enterButton) {
             enterButton.style.opacity = "0";
             enterButton.style.pointerEvents = "none";
+            enterButton.style.display = "inline-flex";
+            enterButton.style.visibility = "hidden";
         }
 
         let index = 0;
@@ -79,17 +98,21 @@ document.addEventListener("DOMContentLoaded", () => {
         // Expose safe language update hook for announcement (no DOM mutation)
         window.__UPDATE_ANNOUNCEMENT_LANGUAGE__ = function (lang) {
             currentLang = lang || 'en';
+            primaryText = resolvePrimaryText(currentLang);
 
-            if (primaryKey && window.I18N && window.I18N[primaryKey] && window.I18N[primaryKey][currentLang]) {
-                currentPrimaryText = window.I18N[primaryKey][currentLang];
-                index = 0;
-                deleting = false;
-                announcementEl.textContent = "";
-                announcementEl.style.opacity = "1";
-            }
+            index = 0;
+            deleting = false;
+            announcementEl.textContent = '';
+            announcementEl.style.opacity = '1';
+            announcementEl.style.visibility = 'visible';
 
-            if (enterButton && enterButton.dataset.i18nKey && window.I18N && window.I18N[enterButton.dataset.i18nKey]) {
-                const translated = window.I18N[enterButton.dataset.i18nKey][currentLang];
+            if (enterButton) {
+                const translated =
+                    window.I18N &&
+                    enterButton.dataset.i18nKey &&
+                    window.I18N[enterButton.dataset.i18nKey] &&
+                    window.I18N[enterButton.dataset.i18nKey][currentLang];
+
                 if (translated) enterButton.textContent = translated;
             }
         };
@@ -98,9 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
             // Use latest translated primary text if available
 
             if (!deleting) {
-                announcementEl.textContent = currentPrimaryText.substring(0, index + 1);
+                announcementEl.textContent = primaryText.substring(0, index + 1);
                 index++;
-                if (index <= currentPrimaryText.length) {
+                if (index <= primaryText.length) {
                     setTimeout(typeLoop, 100);
                 } else {
                     setTimeout(() => {
@@ -109,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }, 4000);
                 }
             } else {
-                announcementEl.textContent = currentPrimaryText.substring(0, index - 1);
+                announcementEl.textContent = primaryText.substring(0, index - 1);
                 index--;
                 if (index > 0) {
                     setTimeout(typeLoop, 50);
@@ -126,6 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         function revealEnterButton() {
+            if (!enterButton) return;
+
             document.dispatchEvent(new CustomEvent("announcementFinished"));
 
             if (stageContainer) {
@@ -138,18 +163,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
             announcementEl.style.opacity = "0";
             announcementEl.style.pointerEvents = "none";
-            announcementEl.style.display = "none";
+            announcementEl.style.visibility = "hidden";
+            announcementEl.textContent = "";
 
-            if (!enterButton) return;
+            if (enterButton.dataset.i18nKey && window.I18N && window.I18N[enterButton.dataset.i18nKey]) {
+                const lang = currentLang || 'en';
+                const translated = window.I18N[enterButton.dataset.i18nKey][lang];
+                if (translated) enterButton.textContent = translated;
+            }
 
+            enterButton.style.margin = "0";
             enterButton.style.opacity = "0";
-            enterButton.style.transform = "scale(0.6)";
+            enterButton.style.transform = "scale(0.75)";
             enterButton.style.pointerEvents = "auto";
             enterButton.style.display = "inline-flex";
+            enterButton.style.visibility = "visible";
             enterButton.style.alignSelf = "center";
 
-            if (stageContainer) {
-                stageContainer.classList.add("stage--enter-active");
+            if (announcementSlot) {
+                announcementSlot.style.minHeight = announcementSlot.offsetHeight + "px";
             }
 
             requestAnimationFrame(() => {
@@ -158,6 +190,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 enterButton.style.opacity = "1";
                 enterButton.style.transform = "scale(1)";
             });
+            enterButton.style.opacity = '1';
+            enterButton.style.visibility = 'visible';
+            enterButton.style.pointerEvents = 'auto';
         }
 
         typeLoop();
