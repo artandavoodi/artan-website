@@ -208,19 +208,25 @@ body.light-mode .theme-toggle { background-color: var(--color-black); }
     pointer-events: auto;
 }
 
-/* Enter hidden initially */
+/* Enter visible by default */
 .stage-layer--enter {
-    opacity: 0;
-    transform: translateY(14px);
-    pointer-events: none;
-    transition-delay: 0.45s;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  margin-top: 3.2rem;
 }
 
-/* When announcement completes */
+/* When announcement completes (neutralized for always visible) */
 .stage-container.show-enter .stage-layer--announcement {
-    opacity: 0;
-    transform: translateY(-14px);
-    pointer-events: none;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 .stage-container.show-enter .stage-layer--enter {
@@ -293,48 +299,91 @@ body.light-mode .theme-toggle { background-color: var(--color-black); }
     }
 }
 
-/* =================== ENTER Button =================== */
+/* =================== ENTER Button — Call to Action ===================
+   JescoJets-inspired: breathing presence + tracing border
+===================================================================== */
+
 .enter-button {
-  display: inline-block; background-color: transparent;
-  border: 0.5px solid var(--text-color); border-radius: 50px;
-  padding: 0.4rem 1.5rem; font-weight: 200; font-size: 1rem;
-  text-transform: uppercase; letter-spacing: 0.05em;
-  color: var(--text-color); cursor: pointer;
-  transition: all 0.3s;
-  margin-top: 0.5rem; position: relative; overflow: hidden;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: var(--spacing-xl); /* intentional separation from announcement */
+  padding: 0.55rem 1.9rem;
+
+  background: transparent;
+  color: var(--text-color);
+
+  font-size: 0.95rem;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  border: 1px solid rgba(255,255,255,0.35);
+  transition: border-color 0.6s ease, opacity 0.6s ease;
+  border-radius: 999px;
+
+  cursor: pointer;
+  overflow: hidden;
+
+  animation: enter-breathe 6s ease-in-out infinite;
 }
-.enter-button:hover { background-color: var(--text-color); color: var(--bg-color); }
-.enter-button:active { transform: scale(0.95); }
-.enter-button span { display: inline-block; }
-.enter-button:hover span { animation: text-flicker 0.3s ease-in-out forwards; }
-@keyframes text-flicker {
-  0% { opacity: 1; }
-  25% { opacity: 0; }
-  50% { opacity: 1; }
-  75% { opacity: 0; }
-  100% { opacity: 1; }
+
+body.light-mode .enter-button {
+  border-color: rgba(0,0,0,0.35);
 }
-@keyframes text-jump {
-  0% { transform: translateY(0); }
-  25% { transform: translateY(-3px); }
-  50% { transform: translateY(0); }
-  75% { transform: translateY(-1.5px); }
+body.dark-mode .enter-button {
+  border-color: rgba(255,255,255,0.35);
+}
+
+/* Text layer */
+.enter-button span {
+  position: relative;
+  z-index: 2;
+}
+
+/* Continuous shining edge */
+.enter-button::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+
+  background: linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(255,255,255,0.9) 40%,
+    transparent 60%
+  );
+
+  opacity: 0.85;
+  animation: enter-shine 2.8s linear infinite;
+  pointer-events: none;
+}
+
+/* Hover — subtle emphasis, no aggression */
+.enter-button:hover {
+  opacity: 0.95;
+}
+
+.enter-button:hover::before {
+  opacity: 0.9;
+}
+
+/* Breathing motion (shared tempo with essence) */
+@keyframes enter-breathe {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-4px); }
   100% { transform: translateY(0); }
 }
 
-/* =================== Loading Text Animation =================== */
-.loading-text {
-  display: inline-block; position: relative; overflow: hidden; vertical-align: bottom;
-  width: auto; min-width: 1ch; min-height: 1em;
-  white-space: nowrap; letter-spacing: 0.02em;
-  font-weight: 600; font-size: 1.8rem; opacity: 1; color: var(--text-color);
+
+@keyframes enter-shine {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(120%); }
 }
-@keyframes typing {
-  0% { width: 0; }
-  70% { width: 100%; }
-  100% { width: 100%; }
-}
-.loading-text.typing { animation: typing 4s steps(30, end) infinite; }
+
 
 /* =================== Country Selector & Language Toggle =================== */
 #country-selector {
@@ -727,16 +776,15 @@ html, body, body * { cursor: none !important; }
   color: var(--text-color);
   text-decoration: none;
 
-  transform: scale(1);
+  display: inline-block;
+  transform: translateY(0);
   transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.25s ease,
-    letter-spacing 0.25s ease;
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.25s ease;
 }
 
 .menu-link:hover {
-  transform: scale(1.38);
-  letter-spacing: 0.12em;
+  transform: translateY(-4px);
   color: var(--color-primary1);
 }
 
@@ -751,8 +799,7 @@ html, body, body * { cursor: none !important; }
 /* Touch devices */
 @media (hover: none) {
   .menu-link:hover {
-    transform: none;
-    letter-spacing: 0.1em;
+    transform: translateY(-2px);
   }
 }
 
@@ -774,4 +821,27 @@ html, body, body * { cursor: none !important; }
 /* Prevent scroll jump */
 body.menu-open {
   overflow: hidden;
+}
+@media (max-width: 640px) {
+  .enter-button {
+    margin-top: var(--spacing-lg);
+  }
+}
+/* =================== Global Clickable Text Motion =================== */
+/* PinkFloyd-inspired: vertical lift, zero spacing mutation */
+
+a:not(.enter-button),
+.menu-link,
+.country-option {
+  display: inline-block;
+  transform: translateY(0);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.25s ease;
+}
+
+a:not(.enter-button):hover,
+.menu-link:hover,
+.country-option:hover {
+  transform: translateY(-4px);
 }

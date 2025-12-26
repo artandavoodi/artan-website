@@ -140,21 +140,27 @@
 <div class="stage-circle">
     <div class="stage-container" id="stage">
 
-        <div class="stage-layer stage-layer--announcement is-active">
-            <p id="announcement"
-               data-i18n-key="announcement.message"
-               data-primary="WEBSITE UNDER CONSTRUCTION">
-                WEBSITE UNDER CONSTRUCTION
-            </p>
-        </div>
+        <div class="stage-stack">
 
-        <div class="stage-layer stage-layer--enter">
-            <button id="enter-button"
-                    class="enter-button"
-                    data-i18n-key="action.enter"
-                    aria-label="Enter site">
-                ENTER
-            </button>
+            <div class="stage-layer stage-layer--announcement">
+                <p id="announcement"
+                   data-i18n-key="announcement.message">
+                    WEBSITE UNDER CONSTRUCTION
+                </p>
+            </div>
+
+            <!-- Optical spacer for announcement → enter separation -->
+            <div class="stage-layer stage-layer--spacer" aria-hidden="true"></div>
+
+            <div class="stage-layer stage-layer--enter">
+                <button id="enter-button"
+                        class="enter-button enter-breathe pf-text-trigger"
+                        aria-label="Enter site"
+                        onclick="window.location.href='pages/home/index.html'">
+                    <span class="pf-text" data-i18n-key="action.enter">ENTER</span>
+                </button>
+            </div>
+
         </div>
 
     </div>
@@ -274,15 +280,4 @@
         </div>
     </div>
 </body>
-<style>
-@keyframes breathe {
-    0% { opacity: 0.4; transform: translateY(0); }
-    50% { opacity: 0.8; transform: translateY(-4px); }
-    100% { opacity: 0.4; transform: translateY(0); }
-}
-
-.site-essence {
-    animation: breathe 4s ease-in-out infinite;
-}
-</style>
 </html>
