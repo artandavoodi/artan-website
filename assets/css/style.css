@@ -59,8 +59,24 @@ body {
 }
 .container { width: 90%; max-width: 1200px; margin: 0 auto; }
 
-/* =================== Typography =================== */
 h1, .site-logo { font-size: 2.6rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: var(--spacing-lg); }
+h2 { font-size: 1.9rem; font-weight: 600; margin-bottom: var(--spacing-md); }
+h3 { font-size: 1.4rem; font-weight: 500; margin-bottom: var(--spacing-sm); }
+h4 { font-size: 1.15rem; font-weight: 500; margin-bottom: var(--spacing-sm); }
+h5 { font-size: 1rem; font-weight: 500; margin-bottom: var(--spacing-xs); }
+h6 { font-size: 0.9rem; font-weight: 500; margin-bottom: var(--spacing-xs); }
+p, section p { font-size: 0.95rem; line-height: 1.6; margin-bottom: var(--spacing-md); color: var(--text-secondary-color); }
+body.light-mode div[style*='flex-direction:column'] p { color: var(--color-black); }
+a { color: var(--link-color); text-decoration: none; font-weight: 500; transition: color 0.18s; }
+a:hover { color: var(--link-hover-color); text-decoration: underline; }
+
+/* .site-logo typography overrides */
+.site-logo {
+  display: inline-block;
+  font-size: clamp(2.1rem, 5vw, 2.6rem);
+  letter-spacing: 0.12em;
+  margin-bottom: 2.6rem;
+}
 h2 { font-size: 1.9rem; font-weight: 600; margin-bottom: var(--spacing-md); }
 h3 { font-size: 1.4rem; font-weight: 500; margin-bottom: var(--spacing-sm); }
 h4 { font-size: 1.15rem; font-weight: 500; margin-bottom: var(--spacing-sm); }
@@ -107,6 +123,7 @@ section p { font-size: 1.1rem; max-width: 800px; }
   display: flex; justify-content: space-between; align-items: center;
   width: 90%; max-width: 1200px; margin: 0 auto; padding: 0;
   color: var(--text-secondary-color); font-size: 0.75rem;
+  margin-bottom: 1rem;
 }
 .site-footer {
   width: 100%; font-size: 0.9rem; margin-top: 0; padding: 0;
@@ -177,69 +194,18 @@ body.light-mode .theme-toggle { background-color: var(--color-black); }
 /* ===============================
    Central Stage (Announcement → Enter)
    Future-proof, no layout jump
-================================ */
+=============================== */
 
 .stage-container {
     position: relative;
     width: 100%;
     max-width: 640px;
-    min-height: 6rem; /* fixed spatial promise */
+    min-height: 11rem; /* single vertical authority */
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-/* Shared center for both layers */
-.stage-layer {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    transition: opacity 1.4s ease, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: opacity, transform;
-}
-
-/* Announcement visible by default */
-.stage-layer--announcement {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-/* Enter visible by default */
-.stage-layer--enter {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-
-  margin-top: 3.2rem;
-}
-
-/* When announcement completes (neutralized for always visible) */
-.stage-container.show-enter .stage-layer--announcement {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-.stage-container.show-enter .stage-layer--enter {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-/* Mobile harmony */
-@media (max-width: 640px) {
-    .stage-container {
-        min-height: 6.2rem;
-    }
+    gap: 3.2rem; /* definitive announcement → enter spacing */
 }
 
 /* ===============================
@@ -306,10 +272,9 @@ body.light-mode .theme-toggle { background-color: var(--color-black); }
 .enter-button {
   position: relative;
   display: inline-flex;
+  align-self: center;
   align-items: center;
   justify-content: center;
-
-  margin-top: var(--spacing-xl); /* intentional separation from announcement */
   padding: 0.55rem 1.9rem;
 
   background: transparent;
@@ -822,14 +787,14 @@ html, body, body * { cursor: none !important; }
 body.menu-open {
   overflow: hidden;
 }
-@media (max-width: 640px) {
-  .enter-button {
-    margin-top: var(--spacing-lg);
-  }
-}
-/* =================== Global Clickable Text Motion =================== */
-/* PinkFloyd-inspired: vertical lift, zero spacing mutation */
+ 
 
+/* =========================================================
+   GLOBAL CLICKABLE TEXT MOTION
+   PinkFloyd-inspired · Vertical Breath Only
+========================================================= */
+
+/* All clickable text (EXCEPT the enter button box) */
 a:not(.enter-button),
 .menu-link,
 .country-option {
@@ -840,8 +805,110 @@ a:not(.enter-button),
     color 0.25s ease;
 }
 
+/* Hover — lift, not jump */
 a:not(.enter-button):hover,
 .menu-link:hover,
 .country-option:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
+}
+
+/* Absolutely no spacing tricks */
+a,
+.menu-link,
+.country-option {
+  letter-spacing: inherit !important;
+  word-spacing: normal !important;
+  text-decoration: none !important;
+}
+
+
+/* =================== HERO / LANDING LAYOUT RESTORATION =================== */
+/* Restores all layout that was intentionally removed from index.html */
+
+/* Header rail — calm, non-intrusive */
+.site-header {
+  position: relative;
+  width: 100%;
+  padding-top: 3.2rem;
+  padding-bottom: 1.6rem;
+  background: transparent;
+  z-index: 10;
+}
+
+/* Logo — restored to original minimal authority */
+.site-logo {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  margin-bottom:2rem;
+  width:320px;
+  height:auto
+}
+
+/* Central hero alignment */
+main,
+#stage,
+.stage-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Stage circle positioning */
+.stage-circle {
+  margin: 0 auto;
+}
+
+/* Vertical authority container */
+.stage-container {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Announcement + Enter vertical authority */
+.stage-container {
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Announcement text centering */
+#announcement {
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Essence text */
+.site-essence {
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Enter button centering */
+.enter-button {
+  margin: 0 auto;
+}
+
+/* Soft atmosphere — NO BLEED */
+.stage-circle::after {
+  content: "";
+  position: absolfute;
+  inset: 0;                        /* <-- THIS fixes scroll */
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,0.06),
+    transparent 70%
+  );
+  opacity: 0.6;
+  animation: circle-breathe 8s ease-in-out infinite;
+  pointer-events: none;
 }

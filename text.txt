@@ -157,3 +157,106 @@
             window.__UPDATE_ANNOUNCEMENT_LANGUAGE__(window.I18N_LANG_MAP[storedCountry]);
         }
     }
+
+
+
+
+
+
+
+
+
+    /* =================== HERO / LANDING LAYOUT RESTORATION =================== */
+/* Restores all layout that was intentionally removed from index.html */
+
+/* Header rail — calm, non-intrusive */
+.site-header {
+  position: relative;
+  width: 100%;
+  padding-top: 3.2rem;
+  padding-bottom: 1.6rem;
+  background: transparent;
+  z-index: 10;
+}
+
+/* Logo — restored to original minimal authority */
+.site-logo {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  font-size: 0.95rem;              /* SMALL. INTENTIONAL. */
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-align: center;
+  white-space: nowrap;
+  max-width: 90vw;
+}
+
+/* Central hero alignment */
+main,
+#stage,
+.stage-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+/* Stage circle positioning */
+.stage-circle {
+  margin: 0 auto;
+}
+
+/* Vertical authority container */
+.stage-container {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  /* THIS is the distance you keep asking for */
+  gap: 10rem;
+
+  text-align: center;
+}
+
+/* Announcement + Enter vertical authority */
+.stage-container {
+  margin: 0 auto;
+  padding-top: 3.8rem;
+  padding-bottom: 2.8rem;
+}
+
+/* Announcement text centering */
+#announcement {
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Essence text */
+.site-essence {
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Enter button centering */
+.enter-button {
+  margin: 0 auto;
+}
+
+/* Prevent accidental left alignment from removed inline styles */
+.stage-layer,
+.stage-layer * {
+  text-align: center;
+}
+
+
+
+
+style="margin-bottom:2rem; display:flex; justify-content:center; align-items:center;">
+        <img src="assets/images/logo.svg" alt="Artan Logo" style="width:320px; height:auto;">
+    </div>

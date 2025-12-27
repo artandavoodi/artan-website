@@ -92,7 +92,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="margin:0; background-color:#000; color:#fff; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; text-align:center; font-family: 'Manrope', sans-serif;">
+<body class="site-body">
 
 <!-- Header Controls: Menu Button + Theme Toggle -->
 <header id="header-controls">
@@ -127,36 +127,35 @@
     </div>
 </div>
 
-    <!-- Logo -->
-    <div class="logo-container" style="margin-bottom:2rem; display:flex; justify-content:center; align-items:center;">
-        <img src="assets/images/logo.svg" alt="Artan Logo" style="width:320px; height:auto;">
-    </div>
-
     <!-- Site Name -->
     <h1 style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">
         Artan
     </h1>
 
 <div class="stage-circle">
+
+    
     <div class="stage-container" id="stage">
 
         <div class="stage-stack">
 
-            <div class="stage-layer stage-layer--announcement">
+            <!-- Logo -->
+            <div class="logo-container">
+             <img src="assets/images/logo.svg" alt="Artan Logo" class="site-logo">
+            </div>
+
+            <div class="stage-container">
                 <p id="announcement"
                    data-i18n-key="announcement.message">
                     WEBSITE UNDER CONSTRUCTION
                 </p>
             </div>
 
-            <!-- Optical spacer for announcement → enter separation -->
-            <div class="stage-layer stage-layer--spacer" aria-hidden="true"></div>
-
-            <div class="stage-layer stage-layer--enter">
+            <div class="stage-container-gap">
                 <button id="enter-button"
                         class="enter-button enter-breathe pf-text-trigger"
                         aria-label="Enter site"
-                        onclick="window.location.href='pages/home/index.html'">
+                        onclick="window.location.href='index.html';">
                     <span class="pf-text" data-i18n-key="action.enter">ENTER</span>
                 </button>
             </div>
