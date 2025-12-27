@@ -1,129 +1,212 @@
-/* =================== Country & Language Management =================== */
-/* File: Country & Language Management for dynamic IP detection and language selection */
+/* =========================================================
+   Country & Language Management — SINGLE SOURCE OF TRUTH
+   File: country-language.js
+   Deterministic · Apple-like · Drop-in Replacement
+========================================================= */
 
-// =================== Storage keys ===================
-const COUNTRY_STORAGE_KEY = "artan_country";
-const REGION_STORAGE_KEY = "artan_region";
+/* =================== Storage Keys =================== */
+const COUNTRY_STORAGE_KEY  = "artan_country";
 const LANGUAGE_STORAGE_KEY = "artan_language";
-const EN_OVERRIDE_KEY = "artan_en_override";
-const SESSION_KEY = "artan_session_active";
+const EN_OVERRIDE_KEY      = "artan_en_override";
+const SESSION_KEY          = "artan_session_active";
 
-// =================== Country native label mapping ===================
+/* =================== Native Country Labels =================== */
 const nativeNameMap = {
-    Germany: "Deutschland", France: "France", "United Kingdom": "United Kingdom", Ireland: "Ireland",
-    Denmark: "Danmark", Sweden: "Sverige", Norway: "Norge", Finland: "Suomi", Iceland: "Ísland",
-    Netherlands: "Nederland", Belgium: "Belgique", Luxembourg: "Luxembourg", Switzerland: "Schweiz",
-    Austria: "Österreich", Italy: "Italia", Spain: "España", Portugal: "Portugal", Greece: "Ελλάδα",
-    Poland: "Polska", Hungary: "Magyarország", Romania: "România", Bulgaria: "България", Croatia: "Hrvatska",
-    Serbia: "Srbija", Slovenia: "Slovenija", Slovakia: "Slovensko", CzechRepublic: "Česká republika",
-    Estonia: "Eesti", Latvia: "Latvija", Lithuania: "Lietuva", Ukraine: "Україна", Russia: "Россия",
-    Belarus: "Беларусь", Moldova: "Moldova", Georgia: "საქართველო", Armenia: "Հայաստան", Azerbaijan: "Azərbaycan",
-    Turkey: "Türkiye", China: "中国", "China Mainland": "中国大陆", Taiwan: "台灣", HongKong: "香港",
-    Macau: "澳門", Japan: "日本", "South Korea": "대한민국", Thailand: "ไทย", Vietnam: "Việt Nam",
-    Australia: "Australia", "New Zealand": "New Zealand", Iran: "ایران", Pakistan: "پاکستان",
-    India: "India", Egypt: "مصر", Morocco: "Maroc", Tunisia: "تونس", "United Arab Emirates": "الإمارات العربية المتحدة"
+  Germany: "Deutschland",
+  France: "France",
+  "United Kingdom": "United Kingdom",
+  Ireland: "Ireland",
+  Denmark: "Danmark",
+  Sweden: "Sverige",
+  Norway: "Norge",
+  Finland: "Suomi",
+  Netherlands: "Nederland",
+  Belgium: "Belgique",
+  Switzerland: "Schweiz",
+  Austria: "Österreich",
+  Italy: "Italia",
+  Spain: "España",
+  Portugal: "Portugal",
+  Poland: "Polska",
+  Serbia: "Srbija",
+  Croatia: "Hrvatska",
+  Slovenia: "Slovenija",
+  Slovakia: "Slovensko",
+  CzechRepublic: "Česká republika",
+  Hungary: "Magyarország",
+  Romania: "România",
+  Bulgaria: "България",
+  Greece: "Ελλάδα",
+  Turkey: "Türkiye",
+  Russia: "Россия",
+  Ukraine: "Україна",
+  China: "中国",
+  Japan: "日本",
+  "South Korea": "대한민국",
+  India: "India",
+  Egypt: "مصر",
+  Morocco: "Maroc",
+  Tunisia: "تونس",
+  "United Arab Emirates": "الإمارات العربية المتحدة",
+  Australia: "Australia",
+  "New Zealand": "New Zealand",
+  "United States": "United States"
 };
 
-// =================== Region to language mapping ===================
+/* =================== Region → Language =================== */
 const REGION_LANGUAGE_MAP = {
-    Germany: "de", France: "fr", "United Kingdom": "en", Ireland: "en",
-    Denmark: "da", Sweden: "sv", Norway: "no", Finland: "fi", Iceland: "is",
-    Netherlands: "nl", Belgium: "fr", Luxembourg: "fr", Switzerland: "de", Austria: "de",
-    Italy: "it", Spain: "es", Portugal: "pt", Greece: "el", Poland: "pl", Hungary: "hu",
-    Romania: "ro", Bulgaria: "bg", Croatia: "hr", Serbia: "sr", Slovenia: "sl", Slovakia: "sk",
-    CzechRepublic: "cs", Estonia: "et", Latvia: "lv", Lithuania: "lt", Ukraine: "uk",
-    Russia: "ru", Belarus: "ru", Moldova: "ro", Georgia: "ka", Armenia: "hy", Azerbaijan: "az",
-    Turkey: "tr", China: "zh", "China Mainland": "zh", Taiwan: "zh", HongKong: "zh", Macau: "zh",
-    Japan: "ja", "South Korea": "ko", Thailand: "th", Vietnam: "vi", Australia: "en",
-    "New Zealand": "en", Iran: "fa", Pakistan: "ur", India: "hi", Egypt: "ar", Morocco: "ar",
-    Tunisia: "ar", "United Arab Emirates": "ar"
+  Germany: "de",
+  France: "fr",
+  "United Kingdom": "en",
+  Ireland: "en",
+  Denmark: "da",
+  Sweden: "sv",
+  Norway: "no",
+  Finland: "fi",
+  Netherlands: "nl",
+  Belgium: "fr",
+  Switzerland: "de",
+  Austria: "de",
+  Italy: "it",
+  Spain: "es",
+  Portugal: "pt",
+  Poland: "pl",
+  Serbia: "sr",
+  Croatia: "hr",
+  Slovenia: "sl",
+  Slovakia: "sk",
+  CzechRepublic: "cs",
+  Hungary: "hu",
+  Romania: "ro",
+  Bulgaria: "bg",
+  Greece: "el",
+  Turkey: "tr",
+  Russia: "ru",
+  Ukraine: "uk",
+  China: "zh",
+  Japan: "ja",
+  "South Korea": "ko",
+  India: "hi",
+  Egypt: "ar",
+  Morocco: "ar",
+  Tunisia: "ar",
+  "United Arab Emirates": "ar",
+  Australia: "en",
+  "New Zealand": "en",
+  "United States": "en"
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    const countryLabelEl = document.getElementById("current-country");
-    const languageToggleEl = document.getElementById("language-toggle");
+/* =================== Runtime State =================== */
+const STATE = {
+  country: null,
+  language: null,
+  enOverride: false,
+  firstSession: false
+};
 
-    function updateLanguageToggleText(languageCode) {
-        if (!languageToggleEl) return;
-        languageToggleEl.textContent = languageCode.toUpperCase();
+/* =================== Boot =================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const countryEl  = document.getElementById("current-country");
+  const langToggle = document.getElementById("language-toggle");
+
+  /* ---------- Translation Barrier ---------- */
+  function waitForTranslation(cb) {
+    const max = 80;
+    let i = 0;
+    const t = setInterval(() => {
+      if (window.ARTAN_TRANSLATION?.applyLanguage) {
+        clearInterval(t);
+        cb();
+      }
+      if (++i > max) clearInterval(t);
+    }, 25);
+  }
+
+  /* ---------- Language Resolution ---------- */
+  function resolveLanguage(country) {
+    if (STATE.enOverride) return "en";
+    return REGION_LANGUAGE_MAP[country] || "en";
+  }
+
+  /* ---------- Commit State ---------- */
+  function commit() {
+    if (countryEl && STATE.country) {
+      countryEl.textContent =
+        nativeNameMap[STATE.country] || STATE.country;
     }
 
-    function applyLanguage(langCode) {
-        if (window.ARTAN_TRANSLATION?.applyLanguage) {
-            window.ARTAN_TRANSLATION.applyLanguage(langCode);
-        }
-        updateLanguageToggleText(langCode);
-        localStorage.setItem(LANGUAGE_STORAGE_KEY, langCode);
+    if (langToggle && STATE.language) {
+      langToggle.textContent = STATE.language.toUpperCase();
     }
 
-    function setCountryRegion(countryName, overrideLang) {
-        if (!countryName || !countryLabelEl) return;
+    localStorage.setItem(COUNTRY_STORAGE_KEY, STATE.country);
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, STATE.language);
+    localStorage.setItem(EN_OVERRIDE_KEY, STATE.enOverride ? "true" : "false");
 
-        const nativeName = nativeNameMap[countryName] || countryName;
-        countryLabelEl.textContent = nativeName;
+    waitForTranslation(() => {
+      window.ARTAN_TRANSLATION.applyLanguage(STATE.language);
+    });
+  }
 
-        localStorage.setItem(COUNTRY_STORAGE_KEY, countryName);
-        localStorage.setItem(REGION_STORAGE_KEY, countryName);
+  /* ---------- IP Detection (First Session Only) ---------- */
+  function detectIP() {
+    fetch("https://ipapi.co/json/")
+      .then(r => r.json())
+      .then(d => {
+        STATE.country  = d?.country_name || "United States";
+        STATE.language = resolveLanguage(STATE.country);
+        commit();
+      })
+      .catch(() => {
+        STATE.country  = "United States";
+        STATE.language = "en";
+        commit();
+      });
+  }
 
-        const enOverrideActive = localStorage.getItem(EN_OVERRIDE_KEY) === "true";
-        let lang = overrideLang || (enOverrideActive ? "en" : (REGION_LANGUAGE_MAP[countryName] || "en"));
-        applyLanguage(lang);
+  /* ---------- Session Resolution ---------- */
+  function initSession() {
+    STATE.firstSession = !sessionStorage.getItem(SESSION_KEY);
+    sessionStorage.setItem(SESSION_KEY, "true");
+
+    STATE.enOverride =
+      localStorage.getItem(EN_OVERRIDE_KEY) === "true";
+
+    if (STATE.firstSession) {
+      detectIP();
+    } else {
+      STATE.country =
+        localStorage.getItem(COUNTRY_STORAGE_KEY) || "United States";
+
+      STATE.language = STATE.enOverride
+        ? "en"
+        : localStorage.getItem(LANGUAGE_STORAGE_KEY) ||
+          resolveLanguage(STATE.country);
+
+      commit();
     }
+  }
 
-    function initializeLanguageToggle() {
-        if (!languageToggleEl) return;
-        const enOverrideActive = localStorage.getItem(EN_OVERRIDE_KEY) === "true";
-        const storedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-        const currentLang = enOverrideActive ? "en" : (storedLanguage || "en");
-        updateLanguageToggleText(currentLang);
+  /* ---------- Language Toggle ---------- */
+  if (langToggle) {
+    langToggle.addEventListener("click", () => {
+      STATE.enOverride = !STATE.enOverride;
+      STATE.language = STATE.enOverride
+        ? "en"
+        : resolveLanguage(STATE.country);
+      commit();
+    });
+  }
+
+  /* ---------- Public API ---------- */
+  window.ARTAN_COUNTRY_LANGUAGE = {
+    setCountry(country) {
+      STATE.country  = country;
+      STATE.language = resolveLanguage(country);
+      STATE.enOverride = false;
+      commit();
     }
+  };
 
-    if (languageToggleEl) {
-        languageToggleEl.addEventListener("click", () => {
-            const enActive = localStorage.getItem(EN_OVERRIDE_KEY) === "true";
-            if (enActive) {
-                localStorage.removeItem(EN_OVERRIDE_KEY);
-                const currentRegion = localStorage.getItem(REGION_STORAGE_KEY) || "United States";
-                const lang = REGION_LANGUAGE_MAP[currentRegion] || "en";
-                applyLanguage(lang);
-            } else {
-                localStorage.setItem(EN_OVERRIDE_KEY, "true");
-                applyLanguage("en");
-            }
-        });
-    }
-
-    (function initCountryLanguage() {
-        const isFirstSession = !sessionStorage.getItem(SESSION_KEY);
-        const storedCountry = localStorage.getItem(COUNTRY_STORAGE_KEY);
-        const storedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-        const enOverrideActive = localStorage.getItem(EN_OVERRIDE_KEY) === "true";
-
-        if (!isFirstSession) {
-            if (storedCountry && countryLabelEl) {
-                countryLabelEl.textContent = nativeNameMap[storedCountry] || storedCountry;
-            }
-            if (enOverrideActive) {
-                applyLanguage("en");
-            } else if (storedLanguage) {
-                applyLanguage(storedLanguage);
-            } else if (storedCountry) {
-                applyLanguage(REGION_LANGUAGE_MAP[storedCountry] || "en");
-            }
-            initializeLanguageToggle();
-        } else {
-            sessionStorage.setItem(SESSION_KEY, "true");
-            fetch("https://ipapi.co/json/")
-                .then(res => res.json())
-                .then(data => {
-                    const countryName = data?.country_name || "United States";
-                    setCountryRegion(countryName);
-                    initializeLanguageToggle();
-                })
-                .catch(() => {
-                    setCountryRegion("United States");
-                    initializeLanguageToggle();
-                });
-        }
-    })();
+  initSession();
 });
