@@ -1,121 +1,60 @@
 /**
  * ============================================================
- * ARTAN — TRANSLATION ENGINE
- * Single responsibility: language translation only
- * Deterministic · Cache-aware · No IP · No Region logic
+ * ARTAN — TRANSLATION ENGINE (LOCKED · SINGLE RESPONSIBILITY)
+ * Translates DOM text ONLY.
+ * No IP logic · No country logic · No UI logic.
+ * Controlled exclusively by countrylanguage.js
  * ============================================================
  */
 
-window.ARTAN_TRANSLATION = (function () {
+window.ARTAN_TRANSLATION = (() => {
 
-  /* =================== Storage Keys =================== */
-  const LANGUAGE_KEY = "artan_language";
-  const EN_OVERRIDE_KEY = "artan_en_override";
+  let currentLang = "en";
+  const cache = new Map();
 
-  /* =================== Runtime State =================== */
-  let currentLanguage = "en";
-  const translationCache = new Map();
+  /* ---------- RTL handling ---------- */
+  const RTL_LANGS = ["ar", "fa", "ur", "he"];
+  const applyDir = lang => {
+    document.documentElement.dir = RTL_LANGS.includes(lang) ? "rtl" : "ltr";
+  };
 
-  /* =================== Direction Utilities =================== */
-  function isRTL(lang) {
-    return ["ar", "fa", "ur", "he"].includes(lang);
-  }
-
-  function applyDirection(lang) {
-    if (isRTL(lang)) {
-      document.documentElement.setAttribute("dir", "rtl");
-    } else {
-      document.documentElement.removeAttribute("dir");
-    }
-  }
-
-  /* =================== Core Translator =================== */
-  async function translateText(text, lang) {
+  /* ---------- Google translate fetch ---------- */
+  async function translate(text, lang) {
     if (!text || lang === "en") return text;
 
-    const cacheKey = `${text}__${lang}`;
-    if (translationCache.has(cacheKey)) {
-      return translationCache.get(cacheKey);
-    }
+    const key = `${lang}::${text}`;
+    if (cache.has(key)) return cache.get(key);
 
     try {
       const res = await fetch(
         "https://translate.googleapis.com/translate_a/single" +
         `?client=gtx&sl=en&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`
       );
-      const data = await res.json();
-      const translated = data[0].map(chunk => chunk[0]).join("");
-      translationCache.set(cacheKey, translated);
-      return translated;
+      const json = await res.json();
+      const out = json[0].map(x => x[0]).join("");
+      cache.set(key, out);
+      return out;
     } catch {
       return text;
     }
   }
 
-  /* =================== Apply Language =================== */
+  /* ---------- Apply language to DOM ---------- */
   async function applyLanguage(lang) {
-    currentLanguage = lang;
-    localStorage.setItem(LANGUAGE_KEY, lang);
+    if (!lang || lang === currentLang) return;
 
-    applyDirection(lang);
+    currentLang = lang;
+    applyDir(lang);
 
     const nodes = document.querySelectorAll("[data-i18n-key]");
     for (const el of nodes) {
-      if (!el.dataset.originalText) {
-        el.dataset.originalText = el.textContent.trim();
+      if (!el.dataset.sourceText) {
+        el.dataset.sourceText = el.textContent.trim();
       }
-      const source = el.dataset.originalText;
-      el.textContent = await translateText(source, lang);
+      el.textContent = await translate(el.dataset.sourceText, lang);
     }
   }
 
-  /* =================== Language Toggle =================== */
-  function initLanguageToggle() {
-    const toggle = document.getElementById("language-toggle");
-    if (!toggle) return;
-
-    function syncToggle() {
-      const override = localStorage.getItem(EN_OVERRIDE_KEY) === "true";
-      toggle.classList.toggle("active", !override);
-    }
-
-    toggle.addEventListener("click", async () => {
-      const overrideActive = localStorage.getItem(EN_OVERRIDE_KEY) === "true";
-
-      if (overrideActive) {
-        localStorage.removeItem(EN_OVERRIDE_KEY);
-        const lang = localStorage.getItem(LANGUAGE_KEY) || "en";
-        await applyLanguage(lang);
-      } else {
-        localStorage.setItem(EN_OVERRIDE_KEY, "true");
-        await applyLanguage("en");
-      }
-
-      syncToggle();
-    });
-
-    syncToggle();
-  }
-
-  /* =================== Init =================== */
-  async function init() {
-    const storedLang = localStorage.getItem(LANGUAGE_KEY);
-    const enOverride = localStorage.getItem(EN_OVERRIDE_KEY) === "true";
-
-    const langToApply = enOverride ? "en" : (storedLang || "en");
-    await applyLanguage(langToApply);
-
-    initLanguageToggle();
-  }
-
-  return {
-    init,
-    applyLanguage
-  };
+  return { applyLanguage };
 
 })();
-
-/* =================== Boot =================== */
-document.addEventListener("DOMContentLoaded", () => {
-  window.ARTAN_TRANSLATION.init();
-});

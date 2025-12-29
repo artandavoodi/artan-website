@@ -3,9 +3,30 @@
 
 /* =================== Theme Colors & Modes =================== */
 :root {
-  --color-white:#fff; --color-black:#000; --color-primary1:#917c6f; --color-primary2:#504416; --color-primary3:#999; --color-primary4:#222b00; --color-primary5:#008080; --color-primary6:#808000; --color-primary7:#ff5555; --color-primary8:#66ff00; --color-primary9:#00ffff; --color-primary10:#ffcc00;
-  --bg-color:var(--color-black); --text-color:var(--color-white); --text-secondary-color:var(--color-primary3); --link-color:var(--color-primary5); --link-hover-color:var(--color-primary6);
-  --font-base:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; --line-height-base:1.55; --spacing-xs:0.35rem; --spacing-sm:0.75rem; --spacing-md:1.1rem; --spacing-lg:1.6rem; --spacing-xl:2.4rem;
+  --color-white:#fff;
+  --color-black:#000;
+  --color-primary1: #917c6f;
+  --color-primary2:#504416;
+  --color-primary3:#999;
+  --color-primary4:#222b00;
+  --color-primary5:#008080;
+  --color-primary6:#808000;
+  --color-primary7:#ff5555;
+  --color-primary8:#66ff00;
+  --color-primary9:#00ffff;
+  --color-primary10:#ffcc00;
+  --bg-color:var(--color-black);
+  --text-color:var(--color-white);
+  --text-secondary-color:var(--color-primary3);
+  --link-color:var(--color-primary5);
+  --link-hover-color:var(--color-primary6);
+  --font-base:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  --line-height-base:1.55;
+  --spacing-xs:0.35rem;
+  --spacing-sm:0.75rem;
+  --spacing-md:1.1rem;
+  --spacing-lg:1.6rem;
+  --spacing-xl:2.4rem;
 }
 
 body.dark-mode { --bg-color:var(--color-black); --text-color:var(--color-white); --text-secondary-color:var(--color-primary3); --link-color:var(--color-primary5); --link-hover-color:var(--color-primary6); }
@@ -107,15 +128,58 @@ body.dark-mode .enter-button { border-color:rgba(255,255,255,0.35); }
 @keyframes enter-shine { from {transform:translateX(-120%);} to {transform:translateX(120%);} }
 
 /* =================== Country & Language Overlay =================== */
-#country-selector { background:none; border:none; padding:0; margin:0; font:inherit; font-size:inherit; line-height:inherit; letter-spacing:inherit; color:inherit; cursor:pointer; transition:opacity 0.3s; }
-#country-selector:hover { opacity:0.85; }
-#country-selector:focus { outline:none; }
+#footer-locale {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:0.35rem;
+}
 
-#language-toggle { background:none; border:none; font:inherit; font-size:inherit; font-weight:300; color:var(--color-primary3); cursor:pointer; margin-left:0.5rem; transition:color 0.3s, font-weight 0.3s, opacity 0.3s; }
-#language-toggle:hover { color:var(--color-primary1); opacity:0.95; }
-#language-toggle.active { color:var(--text-color); font-weight:600; opacity:1; }
+#country-selector {
+  background:none;
+  border:none;
+  padding:0;
+  margin:0;
+  font:inherit;
+  font-size:0.85rem;
+  font-weight:400;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  cursor:pointer;
+  opacity:0.85;
+  transition:opacity 0.25s;
+}
 
-.footer-separator-dot { margin:0 0.3rem; color:var(--text-secondary-color); user-select:none; }
+#country-selector:hover {
+  opacity:1;
+}
+
+.footer-separator-dot {
+  margin:0 0.35rem;
+  opacity:0.5;
+  user-select:none;
+}
+
+#language-toggle {
+  background:none;
+  border:none;
+  padding:0;
+  margin:0;
+  font:inherit;
+  font-size:0.85rem;
+  font-weight:400;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  cursor:pointer;
+  opacity:0.85;
+  transition:opacity 0.25s;
+}
+
+#language-toggle:hover {
+  opacity:1;
+}
 
 /* =================== Country Overlay =================== */
 .country-overlay { position:fixed; inset:0; background-color:var(--bg-color); color:var(--text-color); display:flex; justify-content:center; align-items:flex-start; overflow-y:auto; z-index:99999; padding:4rem 1rem; box-sizing:border-box; opacity:0; pointer-events:none; transition:opacity 0.4s; }

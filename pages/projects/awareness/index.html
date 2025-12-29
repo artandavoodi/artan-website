@@ -77,19 +77,19 @@
                 <!-- =================== Questionnaire Page =================== -->
                 <div id="questionPane" class="hidden">
                   <div id="questionText"></div>
-                  <div class="fixed-slider-wrap" style="width:680px; max-width:92%; margin:18px auto 8px auto;">
-                    <div class="fixed-track" style="width:100%;">
+                  <div class="fixed-slider-wrap">
+                    <div class="fixed-track">
                       <input id="questionSlider" type="range" min="0" max="10" value="5" />
                     </div>
-                    <div class="slider-labels" style="display:flex; justify-content:space-between; font-size:0.9rem; margin-top:0.5rem;">
+                    <div class="slider-labels">
                       <span id="qLblLeft" data-i18n-key="awareness.disagree">Disagree</span>
                       <span id="qLblMid" data-i18n-key="awareness.uncertain">Uncertain</span>
                       <span id="qLblRight" data-i18n-key="awareness.agree">Agree</span>
                     </div>
                   </div>
                   <button id="nextBtn" class="btn" data-i18n-key="awareness.next">Next</button>
-                  <div id="questionProgressBar">
-                    <div id="questionProgressFill"></div>
+                  <div id="questionProgressBar" class="question-progress-bar">
+                      <div id="questionProgressFill" class="question-progress-fill"></div>
                   </div>
                 </div>
 

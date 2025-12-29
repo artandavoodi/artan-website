@@ -102,26 +102,12 @@ const questionTextEl = document.getElementById("questionText");
 const sliderEl = document.getElementById("questionSlider");
 const nextBtnEl = document.getElementById("nextBtn");
 
-// ----------------- MINIMALISTIC DOTS -----------------
+// ----------------- QUESTION INDICATOR BASELINE FUNCTIONALITY -----------------
 function updateProgressBar() {
-  const total = (randomizedQuestions && randomizedQuestions.length>0) ? randomizedQuestions.length : QUESTIONS.length;
-  const percent = ((currentQ) / total) * 100;
-  document.getElementById("questionProgressFill").style.width = percent + "%";
-}
-
-function updateQuestionDots() {
-  const container = document.getElementById("questionDots");
-  const total = container.children.length;
-  for(let i=0;i<total;i++){
-    const dot = container.children[i];
-    if(i < currentQ){
-      dot.style.background = "var(--accent)";
-      dot.style.transform = "scale(1.2)";
-    } else {
-      dot.style.background = "#e6e6e6";
-      dot.style.transform = "scale(1)";
-    }
-  }
+  const total = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions.length : QUESTIONS.length;
+  const percent = (currentQ / total) * 100;
+  const fill = document.getElementById("questionProgressFill");
+  if (fill) fill.style.width = percent + "%";
 }
 
 // --------- NEW: randomizedQuestions and randomizer function (added only) ---------
@@ -264,7 +250,6 @@ function showResults() {
   // Hide question, show result
   document.getElementById("questionPane").classList.add("hidden");
   document.getElementById("resultPane").classList.remove("hidden");
-  document.getElementById("questionDots").style.display = "none";
 
   const stageScores = { 1: [], 2: [], 3: [] };
   const source = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions : QUESTIONS;
@@ -364,10 +349,6 @@ if (startBtn) {
     document.getElementById("landingPane").classList.add("hidden");
     randomizeQuestions();
     document.getElementById("questionPane").classList.remove("hidden");
-    // Ensure dots and progress bar are reset
-    if (document.getElementById("questionDots")) {
-      document.getElementById("questionDots").style.display = "";
-    }
     updateProgressBar();
     showQuestion();
   });
@@ -378,10 +359,8 @@ if (restartBtn) {
     // currentQ and answers are reset in randomizeQuestions
     document.getElementById("resultPane").classList.add("hidden");
     document.getElementById("questionPane").classList.remove("hidden");
-    if (document.getElementById("questionDots")) {
-      document.getElementById("questionDots").style.display = "";
-    }
     updateProgressBar();
     showQuestion();
   });
 }
+

@@ -69,8 +69,6 @@
 
     <!-- =================== Scripts =================== -->
     <script src="assets/js/darkmode.js" defer></script>
-    <script src="assets/js/main.js" defer></script>
-    <script src="assets/js/translation.js" defer></script>
 
     <!-- =================== Fonts =================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,13 +80,10 @@
 
 <!-- =================== Header Controls =================== -->
 <header id="header-controls" class="site-header">
-    <!-- Menu Button (Primary) -->
     <button id="menu-button" aria-label="Open menu">
         <span class="line line-top"></span>
         <span class="line line-bottom"></span>
     </button>
-
-    <!-- Theme Toggle (Secondary) -->
     <button id="theme-toggle" aria-label="Toggle dark and light mode" class="theme-toggle"></button>
 </header>
 
@@ -110,67 +105,68 @@
 </div>
 
 <!-- =================== Hidden Site Name =================== -->
+
 <h1 style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">Artan</h1>
 
 <!-- =================== Landing / Stage Circle =================== -->
+
 <div class="stage-circle">
     <div class="stage-container" id="stage">
-
-        <!-- Stage Stack -->
         <div class="stage-stack">
-
-            <!-- Logo -->
             <div class="logo-container">
                 <img src="assets/images/logo.svg" alt="Artan Logo" class="site-logo">
             </div>
-
-            <!-- Announcement -->
             <div class="stage-container">
                 <p id="announcement" data-i18n-key="announcement.message">WEBSITE UNDER CONSTRUCTION</p>
             </div>
-
-            <!-- Enter Button -->
             <div class="stage-container-gap">
-                <button id="enter-button" class="enter-button enter-breathe pf-text-trigger"
-                        aria-label="Enter site"
-                        onclick="window.location.href='index.html';">
+                <button id="enter-button" class="enter-button enter-breathe pf-text-trigger" aria-label="Enter site">
                     <span class="pf-text" data-i18n-key="action.enter">ENTER</span>
                 </button>
             </div>
-
         </div>
     </div>
 </div>
 
 <!-- =================== Site Essence =================== -->
+
 <p class="site-essence" data-i18n-key="site.essence">SOUND • VISUAL • CONSCIOUSNESS</p>
+
+<!-- =================== Footer =================== -->
 
 <hr class="footer-separator">
 
-<!-- =================== Footer =================== -->
 <footer class="site-footer">
     <div class="footer-flex">
         <div class="footer-left">© 2025 ARTAN</div>
-        <div class="footer-right">
-            <!-- Language Toggle -->
-            <button id="language-toggle" data-lang="" aria-label="Toggle language" class="language-active">Language</button>
+
+        <div class="footer-right footer-locale">
+            <div class="locale-item">
+                <button id="country-selector" class="locale-button" aria-label="Select country" data-locale-trigger="country">
+                    <span id="current-country">Deutschland</span>
+                </button>
+            </div>
+
             <span class="footer-separator-dot">•</span>
-            <!-- Country Selector -->
-            <button id="country-selector" aria-label="Select country">
-                <span id="current-country">Country</span>
-            </button>
+
+            <div class="locale-item">
+                <button id="language-toggle" class="locale-button" aria-label="Select language" data-locale-trigger="language">
+                    <span id="current-language">DE</span>
+                </button>
+                <div id="language-dropdown" class="language-dropdown" aria-hidden="true"></div>
+            </div>
         </div>
     </div>
 </footer>
 
 <!-- =================== Custom Cursor =================== -->
+
 <div class="custom-cursor"></div>
 
 <!-- =================== Country/Region Overlay =================== -->
-<div id="country-overlay" class="country-overlay hidden">
-    <div class="country-overlay-inner">
 
-        <!-- Overlay Header -->
+<div id="country-overlay" class="country-overlay">
+    <div class="country-overlay-inner">
         <div class="overlay-header-container">
             <h2 class="country-overlay-title" data-i18n-key="overlay.chooseRegion">Choose your country or region</h2>
             <button id="country-overlay-close" class="global-close-button" aria-label="Close country selector">
@@ -179,16 +175,16 @@
             </button>
         </div>
         <hr class="footer-separator">
-
-        <!-- Country Regions will be dynamically injected here by countries.js -->
         <div id="country-regions"></div>
     </div>
 </div>
 
 <!-- =================== Scripts =================== -->
-<script src="assets/js/countries.js" type="module" defer></script>
-<script src="assets/js/main.js" defer></script>
+
+<script src="assets/js/countries.js" defer></script>
 <script src="assets/js/translation.js" defer></script>
+<script src="assets/js/country-language.js" defer></script>
+<script src="assets/js/main.js" defer></script>
 
 </body>
 </html>
