@@ -71,14 +71,15 @@ section h2 { font-size:2rem; font-weight:600; margin-bottom:1rem; }
 section p { font-size:1.1rem; line-height:1.6; max-width:800px; margin-bottom:var(--spacing-md); }
 
 /* =================== Footer =================== */
-.footer-separator { width:90%; max-width:1200px; height:1px; border:none; margin:1.5rem auto; background-color:var(--color-primary3); opacity:0.6; display:block; }
+.footer-separator { width:90%; max-width:1200px; height:1px; border:none; margin:1rem auto; background-color:var(--color-primary3); opacity:0.6; display:block; }
 .footer-flex { display:flex; justify-content:space-between; align-items:center; width:90%; max-width:1200px; margin:0 auto 1rem auto; color:var(--text-secondary-color); font-size:0.75rem; }
 .site-footer { width:100%; font-size:0.9rem; margin:0; padding:0; background-color:transparent; color:var(--text-secondary-color); opacity:0.6; text-align:center; }
 body.dark-mode .site-footer { color:var(--text-color); }
 .footer-left { text-align:left; }
 .footer-right { text-align:right; }
 .footer-left, .footer-right { font-size:0.9rem; line-height:1.2; letter-spacing:0.02em; margin:0; }
-
+.footer-locale { display: flex; align-items: center; gap: 8px; /* space between language, dot, and country */}
+.locale-item { display: flex; align-items: center;}
 /* =================== Featured Posts =================== */
 .section-posts { background-color:#f9f9f9; }
 .post { border-bottom:1px solid #ddd; padding:2rem 0; }
