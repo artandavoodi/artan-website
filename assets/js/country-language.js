@@ -1,6 +1,6 @@
 /* =========================================================
    country-language.js
-   SINGLE SOURCE OF TRUTH — FINAL DROP-IN
+   SINGLE SOURCE OF TRUTH — STABLE BASELINE (FIXED)
 ========================================================= */
 (() => {
   const STORAGE = {
@@ -32,51 +32,64 @@
     window.COUNTRIES?.find(c => c.code === code) || null;
 
   function applyState() {
-    const countryEl = qs('#country-selector');
-    const langEl = qs('#language-toggle');
+    const countryLabel = qs('#current-country');
+    const languageLabel = qs('#current-language');
 
-    if (countryEl && state.country)
-      countryEl.textContent = state.country.nativeName;
+    if (countryLabel && state.country)
+      countryLabel.textContent = state.country.nativeName;
 
-    if (langEl)
-      langEl.textContent = state.language.toUpperCase();
+    if (languageLabel)
+      languageLabel.textContent = state.language.toUpperCase();
 
-    window.applyTranslation?.(state.language);
+    if (typeof window.applyTranslation === 'function')
+      window.applyTranslation(state.language);
   }
 
-  function buildLanguageMenu() {
+  function buildLanguageDropdown() {
+    const dropdown = qs('#language-dropdown');
     const toggle = qs('#language-toggle');
-    if (!toggle) return;
+    if (!dropdown || !toggle || !state.country) return;
 
-    let menu = qs('#language-menu');
-    if (menu) menu.remove();
+    dropdown.innerHTML = '';
+    dropdown.setAttribute('aria-hidden', 'true');
 
-    menu = document.createElement('div');
-    menu.id = 'language-menu';
-    menu.className = 'language-menu';
-
-    const languages = [...new Set([
-      DEFAULT_LANGUAGE,
-      state.country?.language
-    ].filter(Boolean))];
+    const languages = Array.from(
+      new Set([DEFAULT_LANGUAGE, state.country.language].filter(Boolean))
+    );
 
     languages.forEach(code => {
       const btn = document.createElement('button');
+      btn.className = 'language-option';
       btn.textContent = code.toUpperCase();
-      btn.onclick = () => {
+      btn.addEventListener('click', () => {
         state.language = code;
         set(STORAGE.LANGUAGE, code);
+        dropdown.setAttribute('aria-hidden', 'true');
         applyState();
-        menu.classList.remove('visible');
-      };
-      menu.appendChild(btn);
+      });
+      dropdown.appendChild(btn);
     });
 
-    toggle.parentElement.appendChild(menu);
-    toggle.onclick = () => menu.classList.toggle('visible');
+    toggle.addEventListener('click', () => {
+      const hidden = dropdown.getAttribute('aria-hidden') === 'true';
+      dropdown.setAttribute('aria-hidden', hidden ? 'false' : 'true');
+    });
   }
 
   function bindCountryOverlay() {
+    const overlay = qs('#country-overlay');
+    const closeBtn = qs('#country-overlay-close');
+
+    document.addEventListener('open-country-overlay', () => {
+      if (overlay) overlay.classList.add('is-visible');
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        if (overlay) overlay.classList.remove('is-visible');
+      });
+    }
+
     document.addEventListener('country-selected', e => {
       const c = resolveCountry(e.detail);
       if (!c) return;
@@ -87,24 +100,29 @@
       set(STORAGE.COUNTRY, c.code);
       set(STORAGE.LANGUAGE, state.language);
 
+      if (overlay) overlay.classList.remove('is-visible');
+
       applyState();
-      buildLanguageMenu();
+      buildLanguageDropdown();
     });
   }
 
-  function bindFooterUI() {
+  function bindFooterTriggers() {
     const countryBtn = qs('#country-selector');
     if (countryBtn) {
-      countryBtn.onclick = () =>
+      countryBtn.addEventListener('click', () => {
         document.dispatchEvent(new CustomEvent('open-country-overlay'));
+      });
     }
   }
 
   async function init() {
     if (!sessionStorage.getItem(STORAGE.SESSION)) {
       const ip = await detectIP();
-      state.country = resolveCountry(ip) || resolveCountry(DEFAULT_COUNTRY);
-      state.language = state.country.language || DEFAULT_LANGUAGE;
+      state.country =
+        resolveCountry(ip) || resolveCountry(DEFAULT_COUNTRY);
+      state.language =
+        state.country.language || DEFAULT_LANGUAGE;
 
       set(STORAGE.COUNTRY, state.country.code);
       set(STORAGE.LANGUAGE, state.language);
@@ -120,10 +138,10 @@
         DEFAULT_LANGUAGE;
     }
 
-    bindFooterUI();
+    bindFooterTriggers();
     bindCountryOverlay();
     applyState();
-    buildLanguageMenu();
+    buildLanguageDropdown();
   }
 
   document.addEventListener('DOMContentLoaded', init);
