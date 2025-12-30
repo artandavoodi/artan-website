@@ -9,32 +9,32 @@
       i18nKey: "region.africaMiddleEastIndia",
       countries: [
         { name: "Algeria", label: "Algeria", languageCode: "ar" },
-        { name: "Angola", label: "Angola", languageCode: "en" },
+        { name: "Angola", label: "Angola", languageCode: "pt" },
         { name: "Bahrain", label: "Bahrain", languageCode: "ar" },
         { name: "Botswana", label: "Botswana", languageCode: "en" },
-        { name: "Cameroon", label: "Cameroon", languageCode: "en" },
+        { name: "Cameroon", label: "Cameroun", languageCode: "fr" },
         { name: "Egypt", label: "مصر", languageCode: "ar" },
         { name: "Ghana", label: "Ghana", languageCode: "en" },
         { name: "India", label: "India", languageCode: "hi" },
         { name: "Iran", label: "ایران", languageCode: "fa" },
-        { name: "Israel", label: "Israel", languageCode: "en" },
-        { name: "Ivory Coast", label: "Ivory Coast", languageCode: "en" },
-        { name: "Jordan", label: "Jordan", languageCode: "ar" },
+        { name: "Israel", label: "ישראל", languageCode: "he" },
+        { name: "Ivory Coast", label: "Côte d’Ivoire", languageCode: "fr" },
+        { name: "Jordan", label: "الأردن", languageCode: "ar" },
         { name: "Kenya", label: "Kenya", languageCode: "en" },
-        { name: "Kuwait", label: "Kuwait", languageCode: "ar" },
-        { name: "Lebanon", label: "Lebanon", languageCode: "ar" },
-        { name: "Morocco", label: "Maroc", languageCode: "ar" },
-        { name: "Mozambique", label: "Mozambique", languageCode: "en" },
+        { name: "Kuwait", label: "الكويت", languageCode: "ar" },
+        { name: "Lebanon", label: "لبنان", languageCode: "ar" },
+        { name: "Morocco", label: "المغرب", languageCode: "ar" },
+        { name: "Mozambique", label: "Moçambique", languageCode: "pt" },
         { name: "Namibia", label: "Namibia", languageCode: "en" },
         { name: "Nigeria", label: "Nigeria", languageCode: "en" },
-        { name: "Oman", label: "Oman", languageCode: "ar" },
+        { name: "Oman", label: "عُمان", languageCode: "ar" },
         { name: "Pakistan", label: "پاکستان", languageCode: "ur" },
-        { name: "Qatar", label: "Qatar", languageCode: "ar" },
+        { name: "Qatar", label: "قطر", languageCode: "ar" },
         { name: "Saudi Arabia", label: "المملكة العربية السعودية", languageCode: "ar" },
-        { name: "Senegal", label: "Senegal", languageCode: "en" },
+        { name: "Senegal", label: "Sénégal", languageCode: "fr" },
         { name: "South Africa", label: "South Africa", languageCode: "en" },
-        { name: "Tanzania", label: "Tanzania", languageCode: "en" },
-        { name: "Tunisia", label: "Tunisia", languageCode: "ar" },
+        { name: "Tanzania", label: "Tanzania", languageCode: "sw" },
+        { name: "Tunisia", label: "تونس", languageCode: "ar" },
         { name: "Turkey", label: "Türkiye", languageCode: "tr" },
         { name: "Uganda", label: "Uganda", languageCode: "en" },
         { name: "United Arab Emirates", label: "الإمارات العربية المتحدة", languageCode: "ar" }
@@ -45,112 +45,112 @@
       i18nKey: "region.asiaPacific",
       countries: [
         { name: "Australia", label: "Australia", languageCode: "en" },
-        { name: "Bangladesh", label: "Bangladesh", languageCode: "en" },
-        { name: "Brunei", label: "Brunei", languageCode: "en" },
-        { name: "Cambodia", label: "Cambodia", languageCode: "en" },
+        { name: "Bangladesh", label: "বাংলাদেশ", languageCode: "bn" },
+        { name: "Brunei", label: "Brunei", languageCode: "ms" },
+        { name: "Cambodia", label: "កម្ពុជា", languageCode: "km" },
         { name: "China Mainland", label: "中国大陆", languageCode: "zh" },
-        { name: "Hong Kong", label: "香港", languageCode: "en" },
-        { name: "Indonesia", label: "Indonesia", languageCode: "en" },
+        { name: "Hong Kong", label: "香港", languageCode: "zh" },
+        { name: "Indonesia", label: "Indonesia", languageCode: "id" },
         { name: "Japan", label: "日本", languageCode: "ja" },
-        { name: "Kazakhstan", label: "Kazakhstan", languageCode: "en" },
-        { name: "Macau", label: "澳門", languageCode: "en" },
-        { name: "Malaysia", label: "Malaysia", languageCode: "en" },
+        { name: "Kazakhstan", label: "Қазақстан", languageCode: "kk" },
+        { name: "Macau", label: "澳門", languageCode: "zh" },
+        { name: "Malaysia", label: "Malaysia", languageCode: "ms" },
         { name: "New Zealand", label: "New Zealand", languageCode: "en" },
-        { name: "Philippines", label: "Philippines", languageCode: "en" },
+        { name: "Philippines", label: "Pilipinas", languageCode: "fil" },
         { name: "Singapore", label: "Singapore", languageCode: "en" },
         { name: "South Korea", label: "대한민국", languageCode: "ko" },
-        { name: "Sri Lanka", label: "Sri Lanka", languageCode: "en" },
-        { name: "Taiwan", label: "台灣", languageCode: "en" },
-        { name: "Thailand", label: "ไทย", languageCode: "en" },
-        { name: "Vietnam", label: "Việt Nam", languageCode: "en" }
+        { name: "Sri Lanka", label: "ශ්‍රී ලංකා", languageCode: "si" },
+        { name: "Taiwan", label: "台灣", languageCode: "zh" },
+        { name: "Thailand", label: "ไทย", languageCode: "th" },
+        { name: "Vietnam", label: "Việt Nam", languageCode: "vi" }
       ]
     },
     {
       region: "Europe",
       i18nKey: "region.europe",
       countries: [
-        { name: "Albania", label: "Albania", languageCode: "en" },
-        { name: "Andorra", label: "Andorra", languageCode: "en" },
-        { name: "Armenia", label: "Armenia", languageCode: "en" },
-        { name: "Austria", label: "Austria", languageCode: "en" },
-        { name: "Azerbaijan", label: "Azerbaijan", languageCode: "en" },
-        { name: "Belarus", label: "Belarus", languageCode: "en" },
-        { name: "Belgium", label: "Belgium", languageCode: "en" },
-        { name: "Bosnia and Herzegovina", label: "Bosnia and Herzegovina", languageCode: "en" },
-        { name: "Bulgaria", label: "Bulgaria", languageCode: "en" },
-        { name: "Croatia", label: "Croatia", languageCode: "en" },
-        { name: "Cyprus", label: "Cyprus", languageCode: "en" },
-        { name: "Czech Republic", label: "Czech Republic", languageCode: "en" },
-        { name: "Denmark", label: "Denmark", languageCode: "en" },
-        { name: "Estonia", label: "Estonia", languageCode: "en" },
-        { name: "Finland", label: "Finland", languageCode: "fi" },
+        { name: "Albania", label: "Shqipëria", languageCode: "sq" },
+        { name: "Andorra", label: "Andorra", languageCode: "ca" },
+        { name: "Armenia", label: "Հայաստան", languageCode: "hy" },
+        { name: "Austria", label: "Österreich", languageCode: "de" },
+        { name: "Azerbaijan", label: "Azərbaycan", languageCode: "az" },
+        { name: "Belarus", label: "Беларусь", languageCode: "be" },
+        { name: "Belgium", label: "België", languageCode: "nl" },
+        { name: "Bosnia and Herzegovina", label: "Bosna i Hercegovina", languageCode: "bs" },
+        { name: "Bulgaria", label: "България", languageCode: "bg" },
+        { name: "Croatia", label: "Hrvatska", languageCode: "hr" },
+        { name: "Cyprus", label: "Κύπρος", languageCode: "el" },
+        { name: "Czech Republic", label: "Česko", languageCode: "cs" },
+        { name: "Denmark", label: "Danmark", languageCode: "da" },
+        { name: "Estonia", label: "Eesti", languageCode: "et" },
+        { name: "Finland", label: "Suomi", languageCode: "fi" },
         { name: "France", label: "France", languageCode: "fr" },
-        { name: "Georgia", label: "Georgia", languageCode: "en" },
+        { name: "Georgia", label: "საქართველო", languageCode: "ka" },
         { name: "Germany", label: "Deutschland", languageCode: "de" },
-        { name: "Greece", label: "Greece", languageCode: "en" },
-        { name: "Hungary", label: "Hungary", languageCode: "en" },
-        { name: "Iceland", label: "Iceland", languageCode: "en" },
+        { name: "Greece", label: "Ελλάδα", languageCode: "el" },
+        { name: "Hungary", label: "Magyarország", languageCode: "hu" },
+        { name: "Iceland", label: "Ísland", languageCode: "is" },
         { name: "Ireland", label: "Ireland", languageCode: "en" },
         { name: "Italy", label: "Italia", languageCode: "it" },
-        { name: "Kosovo", label: "Kosovo", languageCode: "en" },
-        { name: "Latvia", label: "Latvia", languageCode: "en" },
-        { name: "Liechtenstein", label: "Liechtenstein", languageCode: "en" },
-        { name: "Lithuania", label: "Lithuania", languageCode: "en" },
-        { name: "Luxembourg", label: "Luxembourg", languageCode: "en" },
-        { name: "Malta", label: "Malta", languageCode: "en" },
-        { name: "Moldova", label: "Moldova", languageCode: "en" },
-        { name: "Monaco", label: "Monaco", languageCode: "en" },
-        { name: "Montenegro", label: "Montenegro", languageCode: "en" },
+        { name: "Kosovo", label: "Kosovë", languageCode: "sq" },
+        { name: "Latvia", label: "Latvija", languageCode: "lv" },
+        { name: "Liechtenstein", label: "Liechtenstein", languageCode: "de" },
+        { name: "Lithuania", label: "Lietuva", languageCode: "lt" },
+        { name: "Luxembourg", label: "Luxembourg", languageCode: "fr" },
+        { name: "Malta", label: "Malta", languageCode: "mt" },
+        { name: "Moldova", label: "Moldova", languageCode: "ro" },
+        { name: "Monaco", label: "Monaco", languageCode: "fr" },
+        { name: "Montenegro", label: "Crna Gora", languageCode: "sr" },
         { name: "Netherlands", label: "Nederland", languageCode: "nl" },
-        { name: "North Macedonia", label: "North Macedonia", languageCode: "en" },
+        { name: "North Macedonia", label: "Северна Македонија", languageCode: "mk" },
         { name: "Norway", label: "Norge", languageCode: "no" },
-        { name: "Poland", label: "Poland", languageCode: "pl" },
+        { name: "Poland", label: "Polska", languageCode: "pl" },
         { name: "Portugal", label: "Portugal", languageCode: "pt" },
-        { name: "Romania", label: "Romania", languageCode: "en" },
-        { name: "Russia", label: "Russia", languageCode: "ru" },
-        { name: "San Marino", label: "San Marino", languageCode: "en" },
-        { name: "Serbia", label: "Serbia", languageCode: "en" },
-        { name: "Slovakia", label: "Slovakia", languageCode: "en" },
-        { name: "Slovenia", label: "Slovenia", languageCode: "en" },
+        { name: "Romania", label: "România", languageCode: "ro" },
+        { name: "Russia", label: "Россия", languageCode: "ru" },
+        { name: "San Marino", label: "San Marino", languageCode: "it" },
+        { name: "Serbia", label: "Srbija", languageCode: "sr" },
+        { name: "Slovakia", label: "Slovensko", languageCode: "sk" },
+        { name: "Slovenia", label: "Slovenija", languageCode: "sl" },
         { name: "Spain", label: "España", languageCode: "es" },
         { name: "Sweden", label: "Sverige", languageCode: "sv" },
-        { name: "Switzerland", label: "Schweiz", languageCode: "en" },
+        { name: "Switzerland", label: "Schweiz", languageCode: "de" },
         { name: "Turkey", label: "Türkiye", languageCode: "tr" },
-        { name: "Ukraine", label: "Ukraine", languageCode: "uk" },
+        { name: "Ukraine", label: "Україна", languageCode: "uk" },
         { name: "United Kingdom", label: "United Kingdom", languageCode: "en" },
-        { name: "Vatican City", label: "Vatican City", languageCode: "en" }
+        { name: "Vatican City", label: "Città del Vaticano", languageCode: "it" }
       ]
     },
     {
       region: "Latin America & Caribbean",
       i18nKey: "region.latinAmericaCaribbean",
       countries: [
-        { name: "Argentina", label: "Argentina", languageCode: "en" },
+        { name: "Argentina", label: "Argentina", languageCode: "es" },
         { name: "Bahamas", label: "Bahamas", languageCode: "en" },
         { name: "Barbados", label: "Barbados", languageCode: "en" },
         { name: "Belize", label: "Belize", languageCode: "en" },
         { name: "Bermuda", label: "Bermuda", languageCode: "en" },
-        { name: "Bolivia", label: "Bolivia", languageCode: "en" },
+        { name: "Bolivia", label: "Bolivia", languageCode: "es" },
         { name: "Brazil", label: "Brasil", languageCode: "pt" },
         { name: "Cayman Islands", label: "Cayman Islands", languageCode: "en" },
-        { name: "Chile", label: "Chile", languageCode: "en" },
-        { name: "Colombia", label: "Colombia", languageCode: "en" },
-        { name: "Costa Rica", label: "Costa Rica", languageCode: "en" },
-        { name: "Dominican Republic", label: "Dominican Republic", languageCode: "en" },
-        { name: "Ecuador", label: "Ecuador", languageCode: "en" },
-        { name: "El Salvador", label: "El Salvador", languageCode: "en" },
-        { name: "Guatemala", label: "Guatemala", languageCode: "en" },
-        { name: "Honduras", label: "Honduras", languageCode: "en" },
+        { name: "Chile", label: "Chile", languageCode: "es" },
+        { name: "Colombia", label: "Colombia", languageCode: "es" },
+        { name: "Costa Rica", label: "Costa Rica", languageCode: "es" },
+        { name: "Dominican Republic", label: "República Dominicana", languageCode: "es" },
+        { name: "Ecuador", label: "Ecuador", languageCode: "es" },
+        { name: "El Salvador", label: "El Salvador", languageCode: "es" },
+        { name: "Guatemala", label: "Guatemala", languageCode: "es" },
+        { name: "Honduras", label: "Honduras", languageCode: "es" },
         { name: "Jamaica", label: "Jamaica", languageCode: "en" },
-        { name: "Mexico", label: "México", languageCode: "en" },
-        { name: "Nicaragua", label: "Nicaragua", languageCode: "en" },
-        { name: "Panama", label: "Panama", languageCode: "en" },
-        { name: "Paraguay", label: "Paraguay", languageCode: "en" },
-        { name: "Peru", label: "Perú", languageCode: "en" },
-        { name: "Puerto Rico", label: "Puerto Rico", languageCode: "en" },
+        { name: "Mexico", label: "México", languageCode: "es" },
+        { name: "Nicaragua", label: "Nicaragua", languageCode: "es" },
+        { name: "Panama", label: "Panamá", languageCode: "es" },
+        { name: "Paraguay", label: "Paraguay", languageCode: "es" },
+        { name: "Peru", label: "Perú", languageCode: "es" },
+        { name: "Puerto Rico", label: "Puerto Rico", languageCode: "es" },
         { name: "Trinidad and Tobago", label: "Trinidad and Tobago", languageCode: "en" },
-        { name: "Uruguay", label: "Uruguay", languageCode: "en" },
-        { name: "Venezuela", label: "Venezuela", languageCode: "en" }
+        { name: "Uruguay", label: "Uruguay", languageCode: "es" },
+        { name: "Venezuela", label: "Venezuela", languageCode: "es" }
       ]
     },
     {
@@ -170,7 +170,7 @@
     const container = document.getElementById('country-regions');
     if (!container) return;
 
-    COUNTRIES_DATA.forEach((region, index) => {
+    COUNTRIES_DATA.forEach((region, idx) => {
       const regionEl = document.createElement('div');
       regionEl.className = 'country-region';
       regionEl.dataset.region = region.region;
@@ -188,7 +188,6 @@
         const btn = document.createElement('button');
         btn.className = 'country-option';
         btn.dataset.country = country.name;
-        btn.dataset.language = country.languageCode;
         btn.textContent = country.label;
         li.appendChild(btn);
         list.appendChild(li);
@@ -197,7 +196,8 @@
       regionEl.appendChild(title);
       regionEl.appendChild(list);
 
-      if (index < COUNTRIES_DATA.length - 1) {
+      // Separator after each region EXCEPT the last one
+      if (idx !== COUNTRIES_DATA.length - 1) {
         const hr = document.createElement('hr');
         hr.className = 'footer-separator';
         regionEl.appendChild(hr);
@@ -213,10 +213,9 @@
 
       const name = btn.dataset.country || btn.textContent || '';
       const label = btn.textContent || name;
-      const languageCode = btn.dataset.language || 'en';
 
       document.dispatchEvent(
-        new CustomEvent('country-selected', { detail: { name, label, languageCode } })
+        new CustomEvent('country-selected', { detail: { name, label } })
       );
     });
   });
