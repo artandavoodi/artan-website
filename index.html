@@ -84,13 +84,15 @@
         <span class="line line-top"></span>
         <span class="line line-bottom"></span>
     </button>
-
-    <button id="theme-toggle" aria-label="Toggle dark and light mode" class="theme-toggle"></button>
 </header>
 
 <!-- =================== Menu Overlay =================== -->
 <div id="menu-overlay" class="menu-overlay">
     <div class="menu-overlay-inner">
+        <!-- Overlay Controls (Theme Toggle lives only inside the open menu) -->
+        <div class="menu-overlay-controls" aria-hidden="true">
+            <button id="theme-toggle" aria-label="Toggle dark and light mode" class="theme-toggle"></button>
+        </div>
         <nav class="menu-nav">
             <ul class="menu-list">
                 <li><a href="#" class="menu-link" data-i18n-key="menu.music">Music</a></li>

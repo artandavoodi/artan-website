@@ -91,8 +91,8 @@ a:hover { color:var(--link-hover-color); text-decoration:underline; }
   color: var(--link-hover-color);
 }
 
-/* =================== Header Ribbon (Compatibility: id-only) =================== */
-/* If the `site-header` class gets removed from the header element, the ribbon must still render. */
+/* =================== Header Ribbon — Fixed Blur Rail =================== */
+/* Glass rail + separator line = exact bottom edge of blur */
 #header-controls {
   position: fixed;
   top: 0;
@@ -101,70 +101,102 @@ a:hover { color:var(--link-hover-color); text-decoration:underline; }
 
   width: 90%;
   max-width: 1200px;
+
+  /* The ribbon ENDS at the line (no blur spill below) */
   height: 64px;
+  padding: 0;
 
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 14px;
+  align-items: center; /* controls centered in ribbon */
+  justify-content: center; /* MENU centered */
+  gap: 12px;
 
-  background: transparent;
   z-index: 100001;
   pointer-events: all;
+
+  isolation: isolate;
+  overflow: hidden;
+
+  background: transparent;
+  border-bottom: 1px solid rgba(153, 153, 153, 0.6);
 }
 
-#header-controls::before {
-  display: block;
-  align-self: stretch;
-  flex: 1 1 auto;
-
+/* Glass surface (blur lives ONLY inside the ribbon box) */
+#header-controls::after {
   content: "";
-  height: 100%;
+  position: absolute;
+  inset: 0;
 
-  background:
-    linear-gradient(
-      to bottom,
-      transparent calc(50% - 0.5px),
-      rgba(153, 153, 153, 0.6) calc(50% - 0.5px),
-      rgba(153, 153, 153, 0.6) calc(50% + 0.5px),
-      transparent calc(50% + 0.5px)
-    ),
-    rgba(0, 0, 0, 0.18);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.38) 0%,
+    rgba(0, 0, 0, 0.22) 65%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
 
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
+  z-index: 0;
   pointer-events: none;
+
+  border-bottom: 0;
 }
 
-body.light-mode #header-controls::before {
-  background:
-    linear-gradient(
-      to bottom,
-      transparent calc(50% - 0.5px),
-      rgba(153, 153, 153, 0.6) calc(50% - 0.5px),
-      rgba(153, 153, 153, 0.6) calc(50% + 0.5px),
-      transparent calc(50% + 0.5px)
-    ),
-    rgba(255, 255, 255, 0.18);
+body.light-mode #header-controls::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.46) 0%,
+    rgba(255, 255, 255, 0.28) 65%,
+    rgba(255, 255, 255, 0.16) 100%
+  );
 }
 
+/* (Disabled) Line is now the ribbon border-bottom so it aligns perfectly and allows centered controls */
+#header-controls::before {
+  content: "";
+  display: none;
+}
+
+/* Controls always above glass */
 #header-controls #menu-button,
 #header-controls #menu-button-container,
 #header-controls .theme-toggle,
 #header-controls #theme-toggle {
   position: relative;
   z-index: 2;
+  top: 0;
 }
 
-#header-controls #theme-toggle,
-#header-controls .theme-toggle { order: 1; }
+/* Ensure the menu button sits on the separator line (no optical float) */
+#header-controls #menu-button-container {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+/* Centered header controls: MENU, then THEME (theme only visible when menu is open) */
 #header-controls #menu-button,
-#header-controls #menu-button-container { order: 2; }
+#header-controls #menu-button-container { order: 1; }
+
+#header-controls #theme-toggle,
+#header-controls .theme-toggle { order: 2; }
+
+/* Theme toggle hidden on home; appears when menu overlay is open */
+#header-controls #theme-toggle,
+#header-controls .theme-toggle {
+  display: none;
+}
+
+body.menu-open #header-controls #theme-toggle,
+body.menu-open #header-controls .theme-toggle {
+  display: inline-flex;
+}
 
 @media (max-width: 768px) {
   #header-controls { height: 60px; }
+  #header-controls #menu-button-container { height: 60px; }
 }
 
 
