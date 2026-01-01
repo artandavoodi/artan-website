@@ -91,6 +91,67 @@
     const menuOverlay = qs("#menu-overlay");
     const customCursor = qs(".custom-cursor");
 
+    // ===== Stage video mask (keeps video invisible during intro, then reveals softly) =====
+    // IMPORTANT: Must be full-viewport, not constrained by the stage container.
+    // We mount it on <body> as a fixed layer so it never becomes a small “box”.
+    const getOrCreateStageVideoMask = () => {
+      const existing =
+        qs("#stage-video-mask") ||
+        qs(".stage-video-mask") ||
+        qs("[data-stage-video-mask]");
+
+      if (existing) return existing;
+
+      const mask = document.createElement("div");
+      mask.id = "stage-video-mask";
+      mask.setAttribute("data-stage-video-mask", "true");
+      mask.setAttribute("aria-hidden", "true");
+
+      // Mount on <body> so it always covers the full viewport.
+      document.body.appendChild(mask);
+
+      // Full-screen, behind stage content, above the video.
+      setInline(mask, {
+        position: "fixed",
+        inset: "0",
+        pointerEvents: "none",
+        zIndex: "1",
+        opacity: "1",
+        background: "rgba(0,0,0,1)",
+        transition: `opacity 1400ms ${EASE_OUT}, background-color 600ms ${EASE_OUT}`,
+      });
+
+      // Ensure stage content sits above the mask (future-proof, minimal impact).
+      if (stage) {
+        const cs = window.getComputedStyle(stage);
+        if (cs.position === "static") stage.style.position = "relative";
+        if (!stage.style.zIndex) stage.style.zIndex = "2";
+      }
+
+      return mask;
+    };
+
+    const setStageVideoMask = ({ opacity, hard } = {}) => {
+      const mask = getOrCreateStageVideoMask();
+      const isLight = body.classList.contains("light-mode");
+
+      const targetBg = isLight ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)";
+
+      if (hard) {
+        mask.style.transition = "none";
+        mask.style.background = targetBg;
+        mask.style.opacity = String(opacity);
+        // restore transition next tick
+        requestAnimationFrame(() => {
+          mask.style.transition = `opacity 1400ms ${EASE_OUT}, background-color 600ms ${EASE_OUT}`;
+        });
+        return;
+      }
+
+      mask.style.background = targetBg;
+      if (typeof opacity === "number") mask.style.opacity = String(opacity);
+    };
+
     // Persist original essence placement so we can restore on ENTER.
     const essenceOriginal = essence
       ? { parent: essence.parentElement, next: essence.nextElementSibling }
@@ -227,6 +288,15 @@
 
       // Show global chrome.
       showChrome();
+
+      const mask = qs("#stage-video-mask");
+      if (mask) {
+        mask.style.transition = `opacity 700ms ${EASE_OUT}`;
+        mask.style.opacity = "0";
+        window.setTimeout(() => {
+          if (mask && mask.parentNode) mask.parentNode.removeChild(mask);
+        }, 760);
+      }
     });
 
     if (enterButton) {
@@ -258,6 +328,10 @@
         stageCircle.style.pointerEvents = "";
       }
 
+      setStageVideoMask({ opacity: 1, hard: true });
+      const __mask = qs("#stage-video-mask");
+      if (__mask) __mask.style.display = "none";
+
       return;
     }
 
@@ -267,6 +341,7 @@
       body.classList.add("intro-reveal");
       hideChrome();
       hideStageContent();
+      setStageVideoMask({ opacity: 0.5, hard: true });
       revealStageContent();
       return;
     }
@@ -276,6 +351,7 @@
       sessionStorage.setItem(INTRO_DONE_KEY, "1");
       hideChrome();
       hideStageContent();
+      setStageVideoMask({ opacity: 0.5, hard: true });
       body.classList.add("intro-reveal");
       revealStageContent();
       return;
@@ -302,8 +378,9 @@
     // Mark intro as done for this session once we begin.
     sessionStorage.setItem(INTRO_DONE_KEY, "1");
 
-    // Start intro.
+    // Start intro immediately (prevents first-paint video flash)
     body.classList.add("intro-loading");
+    setStageVideoMask({ opacity: 1, hard: true });
     hideChrome();
     hideStageContent();
 
@@ -356,6 +433,9 @@
     const finishIntro = once(() => {
       body.classList.remove("intro-loading");
       body.classList.add("intro-reveal");
+
+      // After the intro, reveal the video softly behind the stage (keep luxury wash)
+      setStageVideoMask({ opacity: 0.5 });
 
       // Remove overlay
       if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);

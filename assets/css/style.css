@@ -556,9 +556,16 @@ body.dark-mode .enter-button{border-color:rgba(255,255,255,0.35);}
   }
 }
 
+
 /* =============================================================================
    12.5) STAGE BACKGROUND VIDEO (HERO)
 ============================================================================= */
+/*
+  LOOP CONTROL (HTML/JS)
+  - Video looping is NOT controlled by CSS.
+  - To disable looping for testing: remove the `loop` attribute from the <video> tag in index.html
+    (or toggle it via JS: video.loop = false).
+*/
 /* Robust, selector-safe fullscreen background video.
    Works even if markup/classes change slightly, and ignores any container sizing. */
 
@@ -618,7 +625,6 @@ body.dark-mode .enter-button{border-color:rgba(255,255,255,0.35);}
   background:rgba(0,0,0,0.62);
 }
 
-
 body.light-mode .stage-video::after,
 body.light-mode #stage-video::after,
 body.light-mode #hero-video::after,
@@ -637,6 +643,60 @@ body.site-entered .stage-video-media,
 body.site-entered #stage-video-media,
 body.site-entered .hero-video-media{
   display:none !important;
+}
+
+/* =============================================================================
+   STAGE VIDEO OVERLAY (THEME-ADAPTABLE GLASS)
+   Controls perceived brightness of background video without affecting UI.
+   Opacity states are driven by body classes already managed by intro JS.
+============================================================================= */
+
+.stage-video-overlay{
+  position:fixed;
+  inset:0;
+  z-index:1; /* above video (z=0), below stage content (z>=2) */
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,0,0,0.35) 0%,
+      rgba(0,0,0,0.55) 45%,
+      rgba(0,0,0,0.75) 100%
+    );
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  opacity:1;
+  transition: opacity 2.4s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* Light mode tuning */
+body.light-mode .stage-video-overlay{
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255,255,255,0.25) 0%,
+      rgba(255,255,255,0.45) 45%,
+      rgba(255,255,255,0.65) 100%
+    );
+}
+
+/* During intro: video fully masked */
+body.intro-loading .stage-video-overlay{
+  opacity:1;
+}
+
+/* After intro reveal: let video breathe */
+body.intro-reveal .stage-video-overlay{
+  opacity:0.5;
+}
+
+/* Once ENTER is pressed: remove overlay entirely */
+body.site-entered .stage-video-overlay{
+  opacity:0;
+  display:none;
 }
 
 /* =============================================================================
