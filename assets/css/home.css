@@ -364,3 +364,83 @@ body.light-mode [data-hero="home"]::after{
     text-align: center;
   }
 }
+
+/* =============================================================================
+   05) HOME HERO LOGO — STICKY + SHRINK ON SCROLL
+============================================================================= */
+
+/* Base size (initial state, large but controlled) */
+.home-hero-logo,
+.hero-logo,
+.home-hero-logo-layer img,
+.home-hero-logo-layer svg {
+  width: clamp(320px, 34vw, 560px);
+  max-width: 78%;
+  height: auto;
+  transition:
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.6s ease;
+  will-change: transform, width;
+}
+
+/* Sticky behavior after enter (same anchor for both states) */
+.home-hero-logo-layer {
+  position: sticky;
+  top: 4.4rem; /* sit below the fixed header controls */
+  z-index: 300; /* above video + glass, below menu */
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 1.8rem;
+  pointer-events: auto;
+}
+
+/* Scrolled state (JS toggles .hero-logo-scrolled on body) */
+body.hero-logo-scrolled .home-hero-logo,
+body.hero-logo-scrolled .hero-logo,
+body.hero-logo-scrolled .home-hero-logo-layer img,
+body.hero-logo-scrolled .home-hero-logo-layer svg {
+  width: clamp(260px, 24vw, 380px); /* ~50% of original, not tiny */
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Mobile tuning */
+@media (max-width: 820px) {
+  .home-hero-logo,
+  .hero-logo,
+  .home-hero-logo-layer img,
+  .home-hero-logo-layer svg {
+    width: clamp(240px, 72vw, 380px);
+    max-width: 84%;
+  }
+
+  .home-hero-logo-layer {
+    top: 4.1rem;
+    padding-left: 1.1rem;
+  }
+
+  body.hero-logo-scrolled .home-hero-logo,
+  body.hero-logo-scrolled .hero-logo,
+  body.hero-logo-scrolled .home-hero-logo-layer img,
+  body.hero-logo-scrolled .home-hero-logo-layer svg {
+    width: 220px;
+    transform: scale(1);
+  }
+}
+
+/* =============================================================================
+   06) HIDE HOME HERO LOGO DURING OVERLAYS (MENU / COUNTRY)
+============================================================================= */
+
+body.menu-open .home-hero-logo-layer,
+body.menu-open .home-hero-logo,
+body.menu-open .hero-logo,
+body.menu-open .home-hero-logo-layer img,
+body.menu-open .home-hero-logo-layer svg,
+body.country-overlay-active .home-hero-logo-layer,
+body.country-overlay-active .home-hero-logo-layer img,
+body.country-overlay-active .home-hero-logo-layer svg {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

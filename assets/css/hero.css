@@ -296,9 +296,10 @@ main{
   margin:0 auto;
   padding:1.25rem 0;
 }
-#stage .site-logo{
-  position: sticky;
-  top: env(safe-area-inset-top, 24px);
+
+/* Scoped stage logo (prevents affecting other logos on the site) */
+#stage .logo-container .site-logo{
+  position: relative;
   z-index: 4;
   display: block;
   width: min(320px, 72vw);
@@ -306,6 +307,7 @@ main{
   margin: 0 auto 0.25rem auto;
   pointer-events: auto;
 }
+
 #stage #announcement{
   width:100%;
   max-width:90%;
@@ -422,7 +424,7 @@ body.site-entered #stage-intro.is-hidden{
 }
 
 /* Safety: if wrapper is not present, fall back to hiding individual pieces */
-body.site-entered #stage .site-logo,
+body.site-entered #stage .logo-container .site-logo,
 body.site-entered #stage #announcement,
 body.site-entered #stage .enter-button,
 body.site-entered #stage #enter-button,
@@ -466,7 +468,7 @@ body.site-entered #stage #announcement + .site-essence{
     gap: 0.95rem;
   }
 
-  #stage .site-logo{
+  #stage .logo-container .site-logo{
     width: min(260px, 68vw);
   }
 
