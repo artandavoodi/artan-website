@@ -11,9 +11,13 @@
 */
 
 :root {
+  /* Accent stays global */
   --menu-accent: var(--color-primary1);
+}
 
-  /* Theme-adaptable surface + lines */
+/* Scope menu colors to the overlay so they inherit the CURRENT theme vars (dark/light) */
+#menu-overlay.menu-overlay {
+  /* Theme-adaptable surface + lines (inherit from the active theme scope) */
   --menu-bg: var(--bg-color, #000);
   --menu-fg: var(--text-color, #fff);
   --menu-fg-muted: var(--text-secondary-color, rgba(255, 255, 255, 0.7));
@@ -21,9 +25,11 @@
   --menu-border: color-mix(in srgb, var(--menu-fg) 18%, transparent);
   --menu-sep: color-mix(in srgb, var(--menu-fg) 12%, transparent);
 
-  /* More glass (more transparent than before) */
-  --menu-glass: color-mix(in srgb, var(--menu-bg) 70%, transparent);
-  --menu-glass-strong: color-mix(in srgb, var(--menu-bg) 82%, transparent);
+  /* Glass (more transparent + neutral) */
+  --menu-glass: color-mix(in srgb, var(--menu-bg) 52%, transparent);
+  --menu-glass-strong: color-mix(in srgb, var(--menu-bg) 64%, transparent);
+  /* subtle grey wash that works in both themes */
+  --menu-glass-wash: color-mix(in srgb, var(--menu-fg) 7%, transparent);
 }
 
 /* =================== Overlay Shell =================== */
@@ -32,6 +38,8 @@
   inset: 0;
   z-index: 99999;
 
+  color: var(--menu-fg);
+  fill: currentColor;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -39,13 +47,13 @@
   /* Glass + gradient wash (NO stage-circle spotlight) */
   background:
     linear-gradient(90deg,
-      color-mix(in srgb, var(--menu-glass) 94%, transparent) 0%,
-      color-mix(in srgb, var(--menu-glass-strong) 96%, transparent) 55%,
-      color-mix(in srgb, var(--menu-glass) 94%, transparent) 100%
+      color-mix(in srgb, var(--menu-glass) 88%, var(--menu-glass-wash)) 0%,
+      color-mix(in srgb, var(--menu-glass-strong) 90%, var(--menu-glass-wash)) 52%,
+      color-mix(in srgb, var(--menu-glass) 88%, var(--menu-glass-wash)) 100%
     );
 
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 
   transition: opacity 260ms ease, visibility 260ms ease;
 }
@@ -113,6 +121,9 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   align-items: stretch;
 
   position: relative; /* anchor absolute packs */
+
+  /* Shared height for all vertical separators (center vlines + menu item dividers) */
+  --menu-vline-height: calc(100% - 160px);
 }
 
 /* If a legacy preview column exists (older markup), keep it hidden */
@@ -123,7 +134,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
 /* Vertical separator lines (sketch) */
 #menu-overlay .menu-vline {
   width: 1px;
-  height: calc(100% - 160px);
+  height: var(--menu-vline-height);
   align-self: center;
   background: var(--menu-sep);
   opacity: 0.9;
@@ -247,7 +258,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   font-size: clamp(2rem, 4.2vw, 4rem);
   line-height: 1.02;
   letter-spacing: 0.01em;
-  color: var(--menu-fg);
+  color: currentColor;
   margin: 0;
 }
 
@@ -265,41 +276,67 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   align-self: end;
   justify-self: end;
 
-  padding: 90px 46px 90px;
+  /* keep full-height context so dividers can match the main vline */
+  height: 100%;
+  min-height: 0;
+
+  /* horizontal breathing room only (no vertical padding that shrinks divider height) */
+  padding: 0 46px;
 
   background: transparent;
   border: none;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 #menu-overlay .menu-list {
   list-style: none;
-  margin: 0;
+  margin: 80px 0; /* matches (100% - vlineHeight)/2 = 80px */
   padding: 0;
 
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
   justify-content: flex-end;
+  align-items: flex-end;
+
+  height: var(--menu-vline-height);
   gap: 0;
 }
 
 #menu-overlay .menu-list li {
-  border-left: 1px solid var(--menu-sep);
-  padding: 0 26px;
-  min-height: 360px;
+  position: relative;
 
-  display: grid;
+  /* each item becomes a full-height “column” */
+  height: 100%;
+  padding: 0 26px;
+
+  display: flex;
   align-items: flex-end;
+  justify-content: center;
+
+  min-height: 0;
+}
+
+/* full-height separators (independent of text height) */
+#menu-overlay .menu-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--menu-sep);
 }
 
 /* readable vertical: top of the word on the LEFT */
 #menu-overlay .menu-link {
   text-decoration: none;
-  color: var(--menu-fg);
+  color: currentColor;
 
   writing-mode: vertical-rl;
   text-orientation: mixed;
-
   transform: rotate(180deg);
 
   letter-spacing: 0.14em;

@@ -103,13 +103,12 @@ a:hover { color:var(--link-hover-color); text-decoration:underline; }
   width: 90%;
   max-width: 1200px;
 
-  /* The ribbon ENDS at the line (no blur spill below) */
   height: 64px;
   padding: 0;
 
   display: flex;
-  align-items: center; /* controls centered in ribbon */
-  justify-content: center; /* MENU centered */
+  align-items: center;
+  justify-content: center;
   gap: 12px;
 
   z-index: 100001;
@@ -119,44 +118,31 @@ a:hover { color:var(--link-hover-color); text-decoration:underline; }
   overflow: hidden;
 
   background: transparent;
-  border-bottom: 1px solid rgba(153, 153, 153, 0.6);
-}
-
-/* Glass surface (blur lives ONLY inside the ribbon box) */
-#header-controls::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.38) 0%,
-    rgba(0, 0, 0, 0.22) 65%,
-    rgba(0, 0, 0, 0.12) 100%
-  );
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  z-index: 0;
-  pointer-events: none;
 
   border-bottom: 0;
+
+  /* slow hide/show */
+  will-change: transform, opacity;
+  transition:
+    transform 1200ms ease,
+    opacity 1200ms ease;
 }
 
-body.light-mode #header-controls::after {
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.46) 0%,
-    rgba(255, 255, 255, 0.28) 65%,
-    rgba(255, 255, 255, 0.16) 100%
-  );
+#header-controls::after {
+  content: "";
+  display: none;
 }
 
-/* (Disabled) Line is now the ribbon border-bottom so it aligns perfectly and allows centered controls */
+
+
 #header-controls::before {
   content: "";
   display: none;
+}
+
+/* Header ribbon is a transparent container only (no glass, no line) */
+#header-controls {
+  background: transparent !important;
 }
 
 /* Controls always above glass */
@@ -690,8 +676,11 @@ body.light-mode {
 
 body.menu-open { overflow: hidden; }
 
-body.menu-open #header-controls #theme-toggle, body.menu-open #header-controls .theme-toggle { display: inline-flex; }
-body.menu-open #header-controls { opacity: 0; pointer-events: none; }
+/* Theme toggle becomes available while the menu is open */
+body.menu-open #header-controls #theme-toggle,
+body.menu-open #header-controls .theme-toggle {
+  display: inline-flex;
+}
 
 
 /* =================== Clickable Text Motion =================== */
