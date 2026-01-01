@@ -15,10 +15,10 @@
 
 (() => {
   // ===== Timing (visible, no travel) =====
-  // Total intro ≈ POP_IN + HOLD + FADE (POP_OUT overlaps) → ~5s
-  const POP_IN_MS = 1400;   // noticeable scale-up
-  const POP_OUT_MS = 900;   // settle
-  const HOLD_MS = 2400;     // linger in center
+  // Total intro ≈ POP_IN + HOLD + FADE (POP_OUT overlaps) → ~3s
+  const POP_IN_MS = 1200;   // noticeable scale-up
+  const POP_OUT_MS = 700;   // settle
+  const HOLD_MS = 900;      // linger in center
   const FADE_MS = 1200;     // slow fade + scale-down exit
 
   const EASE_OUT = "cubic-bezier(0.22, 1, 0.36, 1)";
@@ -91,6 +91,32 @@
     const menuOverlay = qs("#menu-overlay");
     const customCursor = qs(".custom-cursor");
 
+    // ===== Stage video readiness gate (prevents blank beat before first frame) =====
+    // IMPORTANT: the <video> element should have id="stage-video" in index.html.
+    const stageVideo = qs("#stage-video");
+    let stageVideoReady = false;
+    let maskRevealStarted = false;
+
+    if (stageVideo) {
+      // Ensure the browser starts fetching/decoding as early as possible.
+      stageVideo.preload = "auto";
+      stageVideo.muted = true;
+      stageVideo.playsInline = true;
+
+      const markStageVideoReady = () => {
+        stageVideoReady = true;
+      };
+
+      // Any of these mean we have (or can get) a real frame.
+      stageVideo.addEventListener("loadeddata", markStageVideoReady, { once: true });
+      stageVideo.addEventListener("canplay", markStageVideoReady, { once: true });
+      stageVideo.addEventListener("playing", markStageVideoReady, { once: true });
+
+      // Try to start playback silently during intro so the first frame is ready.
+      // Autoplay can still be blocked in some cases; we fall back to the gate below.
+      stageVideo.play().catch(() => {});
+    }
+
     // ===== Stage video mask (keeps video invisible during intro, then reveals softly) =====
     // IMPORTANT: Must be full-viewport, not constrained by the stage container.
     // We mount it on <body> as a fixed layer so it never becomes a small “box”.
@@ -133,6 +159,7 @@
 
     const setStageVideoMask = ({ opacity, hard } = {}) => {
       const mask = getOrCreateStageVideoMask();
+      if (typeof opacity === "number" && opacity < 1) maskRevealStarted = true;
       const isLight = body.classList.contains("light-mode");
 
       const targetBg = isLight ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)";
@@ -384,6 +411,36 @@
     hideChrome();
     hideStageContent();
 
+    // ===== Video reveal timing (fine-tune) =====
+    // Reveal the video wash after 1s (even while the logo overlay is still running).
+    // We still wait for a real frame when possible to avoid a blank beat.
+    const REVEAL_AFTER_MS = 1000;
+
+    const fadeMaskToWash = () => setStageVideoMask({ opacity: 0.5 });
+
+    window.setTimeout(() => {
+      if (maskRevealStarted) return;
+
+      if (stageVideoReady) {
+        fadeMaskToWash();
+        return;
+      }
+
+      // Wait briefly for a playable frame; fall back quickly.
+      const fallback = window.setTimeout(() => {
+        if (!maskRevealStarted) fadeMaskToWash();
+      }, 900);
+
+      if (stageVideo) {
+        const onReadyForReveal = () => {
+          window.clearTimeout(fallback);
+          if (!maskRevealStarted) fadeMaskToWash();
+        };
+        stageVideo.addEventListener("playing", onReadyForReveal, { once: true });
+        stageVideo.addEventListener("canplay", onReadyForReveal, { once: true });
+      }
+    }, REVEAL_AFTER_MS);
+
     // Build centered overlay logo (clone) so the real logo never "travels" and never shifts left.
     const overlay = document.createElement("div");
     overlay.setAttribute("data-logo-intro-overlay", "true");
@@ -434,8 +491,25 @@
       body.classList.remove("intro-loading");
       body.classList.add("intro-reveal");
 
-      // After the intro, reveal the video softly behind the stage (keep luxury wash)
-      setStageVideoMask({ opacity: 0.5 });
+      // After the intro: ensure we are at least on the luxury wash.
+      // If the 1s reveal already ran, do nothing.
+      if (!maskRevealStarted) {
+        const fadeToWash = () => setStageVideoMask({ opacity: 0.5 });
+
+        if (stageVideoReady) {
+          fadeToWash();
+        } else {
+          const fallback = window.setTimeout(fadeToWash, 900);
+          if (stageVideo) {
+            const onReady = () => {
+              window.clearTimeout(fallback);
+              fadeToWash();
+            };
+            stageVideo.addEventListener("playing", onReady, { once: true });
+            stageVideo.addEventListener("canplay", onReady, { once: true });
+          }
+        }
+      }
 
       // Remove overlay
       if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
