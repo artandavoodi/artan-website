@@ -618,11 +618,25 @@ body.dark-mode .enter-button{border-color:rgba(255,255,255,0.35);}
   background:rgba(0,0,0,0.62);
 }
 
+
 body.light-mode .stage-video::after,
 body.light-mode #stage-video::after,
 body.light-mode #hero-video::after,
 body.light-mode #stage .stage-video::after{
   background:rgba(0,0,0,0.22);
+}
+
+/* Video exists only for the pre-enter stage. Once ENTER is pressed, remove it entirely. */
+body.site-entered .stage-video,
+body.site-entered #stage-video,
+body.site-entered #hero-video,
+body.site-entered .stage-video video,
+body.site-entered #stage-video video,
+body.site-entered #hero-video video,
+body.site-entered .stage-video-media,
+body.site-entered #stage-video-media,
+body.site-entered .hero-video-media{
+  display:none !important;
 }
 
 /* =============================================================================
