@@ -297,10 +297,14 @@ main{
   padding:1.25rem 0;
 }
 #stage .site-logo{
-  display:block;
-  width:min(320px, 72vw);
-  height:auto;
-  margin:0 auto 0.25rem auto;
+  position: sticky;
+  top: env(safe-area-inset-top, 24px);
+  z-index: 4;
+  display: block;
+  width: min(320px, 72vw);
+  height: auto;
+  margin: 0 auto 0.25rem auto;
+  pointer-events: auto;
 }
 #stage #announcement{
   width:100%;
