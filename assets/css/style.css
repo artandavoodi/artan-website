@@ -1,11 +1,13 @@
-/* --- Artan Website Unified CSS --- */
+/* --- ARTAN / Unified CSS (Clean) --- */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
 
-/* =================== Theme Colors & Modes =================== */
-:root {
+/* =============================================================================
+   01) DESIGN TOKENS
+============================================================================= */
+:root{
   --color-white:#fff;
   --color-black:#000;
-  --color-primary1: #917c6f;
+  --color-primary1:#917c6f;
   --color-primary2:#504416;
   --color-primary3:#999;
   --color-primary4:#222b00;
@@ -15,218 +17,248 @@
   --color-primary8:#66ff00;
   --color-primary9:#00ffff;
   --color-primary10:#ffcc00;
+
   --bg-color:var(--color-black);
   --text-color:var(--color-white);
   --text-secondary-color:var(--color-primary3);
   --link-color:var(--color-primary5);
   --link-hover-color:var(--color-primary6);
+
   --font-base:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
   --line-height-base:1.55;
+
   --spacing-xs:0.35rem;
   --spacing-sm:0.75rem;
   --spacing-md:1.1rem;
   --spacing-lg:1.6rem;
   --spacing-xl:2.4rem;
+
+  /* Stage circle size dial */
+  --stage-circle-desktop:1200px;
+  --stage-circle-mobile:600px;
+  --stage-circle-max-desktop:1800px;
+  --stage-circle-max-mobile:1200px;
+  --stage-circle-vh-cap:90vh;
+  --stage-circle-vw-cap:96vw;
+
+  /* Intro motion */
+  --intro-logo-max:420px;
+  --intro-logo-mobile-max:360px;
+  --intro-ease:cubic-bezier(0.22, 1, 0.36, 1);
+  --intro-pop-duration:1.6s;
+  --intro-settle-duration:1.9s;
+  --intro-fade-duration:1.5s;
 }
 
-body.dark-mode { --bg-color:var(--color-black); --text-color:var(--color-white); --text-secondary-color:var(--color-primary3); --link-color:var(--color-primary5); --link-hover-color:var(--color-primary6); }
-body.light-mode { --bg-color:var(--color-white); --text-color:var(--color-black); --text-secondary-color:var(--color-black); --link-color:var(--color-primary5); --link-hover-color:var(--color-primary6); }
-
-/* =================== Reset & Base =================== */
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:var(--font-base); font-size:16px; line-height:var(--line-height-base); color:var(--text-color); background-color:var(--bg-color); transition:background-color 0.6s, color 0.6s; }
-.container { width:90%; max-width:1200px; margin:0 auto; }
-body.site-body { min-height: 100vh; overflow-x: hidden; }
-
-/* =================== Typography =================== */
-h1 { font-size:2.6rem; font-weight:700; letter-spacing:0.1em; margin-bottom:var(--spacing-lg); }
-h2 { font-size:1.9rem; font-weight:600; margin-bottom:var(--spacing-md); }
-h3 { font-size:1.4rem; font-weight:500; margin-bottom:var(--spacing-sm); }
-h4 { font-size:1.15rem; font-weight:500; margin-bottom:var(--spacing-sm); }
-h5 { font-size:1rem; font-weight:500; margin-bottom:var(--spacing-xs); }
-h6 { font-size:0.9rem; font-weight:500; margin-bottom:var(--spacing-xs); }
-p, section p { font-size:0.95rem; line-height:1.6; margin-bottom:var(--spacing-md); color:var(--text-secondary-color); }
-body.light-mode div[style*='flex-direction:column'] p { color:var(--color-black); }
-a { color:var(--link-color); text-decoration:none; font-weight:500; transition:color 0.18s; }
-a:hover { color:var(--link-hover-color); text-decoration:underline; }
-
-/* =================== Utility Spacing =================== */
-.mb-xs { margin-bottom:var(--spacing-xs); }
-.mb-sm { margin-bottom:var(--spacing-sm); }
-.mb-md { margin-bottom:var(--spacing-md); }
-.mb-lg { margin-bottom:var(--spacing-lg); }
-.mb-xl { margin-bottom:var(--spacing-xl); }
-
-/* =================== Header =================== */
-.site-header {
-  position: relative;
-  width: 100%;
-  padding-top: 3.2rem;
-  padding-bottom: 1.6rem;
-  background: transparent;
-  z-index: 10;
+/* =============================================================================
+   02) THEME MODES
+============================================================================= */
+body.dark-mode{
+  --bg-color:var(--color-black);
+  --text-color:var(--color-white);
+  --text-secondary-color:var(--color-primary3);
+  --link-color:var(--color-primary5);
+  --link-hover-color:var(--color-primary6);
 }
 
-.site-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+body.light-mode{
+  --bg-color:var(--color-white);
+  --text-color:var(--color-black);
+  --text-secondary-color:var(--color-black);
+  --link-color:var(--color-primary5);
+  --link-hover-color:var(--color-primary6);
 }
 
-.main-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
+/* Menu overlay theme vars (menu.css paints; these are support vars) */
+body.dark-mode{
+  --menu-surface:rgba(0,0,0,0.94);
+  --menu-surface-strong:rgba(0,0,0,0.92);
+  --menu-border:rgba(255,255,255,0.18);
+  --menu-sep:rgba(255,255,255,0.14);
+}
+body.light-mode{
+  --menu-surface:rgba(255,255,255,0.92);
+  --menu-surface-strong:rgba(255,255,255,0.88);
+  --menu-border:rgba(0,0,0,0.14);
+  --menu-sep:rgba(0,0,0,0.12);
 }
 
-.main-nav a {
-  text-decoration: none;
-  color: #fff;
-  font-weight: 500;
-  transition: color 0.18s;
+/* =============================================================================
+   03) RESET + BASE
+============================================================================= */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:var(--font-base);
+  font-size:16px;
+  line-height:var(--line-height-base);
+  color:var(--text-color);
+  background-color:var(--bg-color);
+  transition:background-color 0.6s,color 0.6s;
+}
+body.site-body{min-height:100vh;overflow-x:hidden;}
+.container{width:90%;max-width:1200px;margin:0 auto;}
+
+/* =============================================================================
+   04) TYPOGRAPHY + LINKS
+============================================================================= */
+h1{font-size:2.6rem;font-weight:700;letter-spacing:0.1em;margin-bottom:var(--spacing-lg);}
+h2{font-size:1.9rem;font-weight:600;margin-bottom:var(--spacing-md);}
+h3{font-size:1.4rem;font-weight:500;margin-bottom:var(--spacing-sm);}
+h4{font-size:1.15rem;font-weight:500;margin-bottom:var(--spacing-sm);}
+h5{font-size:1rem;font-weight:500;margin-bottom:var(--spacing-xs);}
+h6{font-size:0.9rem;font-weight:500;margin-bottom:var(--spacing-xs);}
+p,section p{font-size:0.95rem;line-height:1.6;margin-bottom:var(--spacing-md);color:var(--text-secondary-color);}
+body.light-mode div[style*='flex-direction:column'] p{color:var(--color-black);}
+
+a{color:var(--link-color);text-decoration:none;font-weight:500;transition:color 0.18s;}
+a:hover{color:var(--link-hover-color);text-decoration:underline;}
+
+/* Global clickable lift (keep) */
+a:not(.enter-button),.menu-link,.country-option{
+  display:inline-block;
+  transform:translateY(0);
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1),color 0.25s ease;
+}
+a:not(.enter-button):hover,.menu-link:hover,.country-option:hover{transform:translateY(-5px);}
+a,.menu-link,.country-option{letter-spacing:inherit !important;word-spacing:normal !important;text-decoration:none !important;}
+
+/* =============================================================================
+   05) UTILITIES
+============================================================================= */
+.mb-xs{margin-bottom:var(--spacing-xs);}
+.mb-sm{margin-bottom:var(--spacing-sm);}
+.mb-md{margin-bottom:var(--spacing-md);}
+.mb-lg{margin-bottom:var(--spacing-lg);}
+.mb-xl{margin-bottom:var(--spacing-xl);}
+
+/* =============================================================================
+   06) HEADER + RIBBON (TRANSPARENT BASELINE)
+============================================================================= */
+.site-header{
+  position:relative;
+  width:100%;
+  padding-top:3.2rem;
+  padding-bottom:1.6rem;
+  background:transparent;
+  z-index:10;
+}
+.site-header h1{font-size:2rem;font-weight:700;margin-bottom:0.5rem;}
+
+.main-nav ul{list-style:none;display:flex;gap:2rem;margin:0;padding:0;}
+.main-nav a{text-decoration:none;color:#fff;font-weight:500;transition:color 0.18s;}
+.main-nav a:hover{color:var(--link-hover-color);}
+
+/* Header controls rail (kept as invisible container) */
+#header-controls{
+  position:fixed;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  max-width:1200px;
+  height:64px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  z-index:100001;
+  pointer-events:all;
+  isolation:isolate;
+  overflow:hidden;
+  background:transparent;
+  border:0;
 }
 
-.main-nav a:hover {
-  color: var(--link-hover-color);
-}
-
-/* =================== Header Ribbon — Fixed Blur Rail =================== */
-/* Glass rail + separator line = exact bottom edge of blur */
-#header-controls {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 90%;
-  max-width: 1200px;
-
-  height: 64px;
-  padding: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  z-index: 100001;
-  pointer-events: all;
-
-  isolation: isolate;
-  overflow: hidden;
-
-  background: transparent;
-
-  border-bottom: 0;
-
-  /* slow hide/show */
-  will-change: transform, opacity;
-  transition:
-    transform 1200ms ease,
-    opacity 1200ms ease;
-}
-
-#header-controls::after {
-  content: "";
-  display: none;
-}
-
-
-
-#header-controls::before {
-  content: "";
-  display: none;
-}
-
-/* Header ribbon is a transparent container only (no glass, no line) */
-#header-controls {
-  background: transparent !important;
-}
-
-/* Controls always above glass */
+/* Controls always above */
 #header-controls #menu-button,
 #header-controls #menu-button-container,
 #header-controls .theme-toggle,
-#header-controls #theme-toggle {
-  position: relative;
-  z-index: 2;
-  top: 0;
+#header-controls #theme-toggle{
+  position:relative;
+  z-index:2;
+  top:0;
 }
 
-/* Ensure the menu button sits on the separator line (no optical float) */
-#header-controls #menu-button-container {
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Menu button container sizing */
+#header-controls #menu-button-container{
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-/* Centered header controls: MENU, then THEME (theme only visible when menu is open) */
 #header-controls #menu-button,
-#header-controls #menu-button-container { order: 1; }
-
+#header-controls #menu-button-container{order:1;}
 #header-controls #theme-toggle,
-#header-controls .theme-toggle { order: 2; }
+#header-controls .theme-toggle{order:2;}
 
-/* Theme toggle hidden on home; appears when menu overlay is open */
+/* Theme toggle hidden on home; visible while menu is open */
 #header-controls #theme-toggle,
-#header-controls .theme-toggle {
-  display: none;
-}
-
+#header-controls .theme-toggle{display:none;}
 body.menu-open #header-controls #theme-toggle,
-body.menu-open #header-controls .theme-toggle {
-  display: inline-flex;
+body.menu-open #header-controls .theme-toggle{display:inline-flex;}
+
+@media (max-width:768px){
+  #header-controls{height:60px;}
+  #header-controls #menu-button-container{height:60px;}
 }
 
-@media (max-width: 768px) {
-  #header-controls { height: 60px; }
-  #header-controls #menu-button-container { height: 60px; }
-}
+/* =============================================================================
+   07) SECTIONS (LEGACY PLACEHOLDERS)
+============================================================================= */
+section{padding:6rem 0;}
+.section-music,.section-about{background-color:#f5f5f5;}
+.section-projects,.section-contact{background-color:#eaeaea;}
+section h2{font-size:2rem;font-weight:600;margin-bottom:1rem;}
+section p{font-size:1.1rem;line-height:1.6;max-width:800px;margin-bottom:var(--spacing-md);}
 
+/* =============================================================================
+   08) FOOTER
+============================================================================= */
+.footer-separator{
+  width:90%;
+  max-width:1200px;
+  height:1px;
+  border:none;
+  margin:1.5rem auto;
+  background-color:var(--color-primary3);
+  opacity:0.6;
+  display:block;
+}
+.footer-separator-dot{
+  margin:0 0.55rem;
+  opacity:0.9;
+  user-select:none;
+  display:inline-block;
+  line-height:1;
+  transform:translateY(-0.5px);
+}
+.footer-flex{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:90%;
+  max-width:1200px;
+  margin:0 auto 1rem auto;
+  color:var(--text-secondary-color);
+  font-size:0.75rem;
+}
+.site-footer{
+  width:100%;
+  font-size:0.9rem;
+  margin:0;
+  padding:0;
+  background-color:transparent;
+  color:var(--text-secondary-color);
+  text-align:center;
+}
+body.dark-mode .site-footer{color:var(--text-color);}
+.footer-left{text-align:left;}
+.footer-right{text-align:right;}
+.footer-left,.footer-right{font-size:0.9rem;line-height:1.2;letter-spacing:0.02em;margin:0;}
 
-/* =================== Sections =================== */
-section { padding:6rem 0; }
-.section-music, .section-about { background-color:#f5f5f5; }
-.section-projects, .section-contact { background-color:#eaeaea; }
-section h2 { font-size:2rem; font-weight:600; margin-bottom:1rem; }
-section p { font-size:1.1rem; line-height:1.6; max-width:800px; margin-bottom:var(--spacing-md); }
-
-.footer-separator {
-  width: 90%;
-  max-width: 1200px;
-  height: 1px;
-  border: none;
-  margin: 1.5rem auto;
-  background-color: var(--color-primary3);
-  opacity: 0.6;
-  display: block;
-}
-.footer-separator-dot {
-  margin: 0 0.55rem;
-  opacity: 0.9;
-  user-select: none;
-  display: inline-block;
-  line-height: 1;
-  transform: translateY(-0.5px);
-}
-.footer-flex { display:flex; justify-content:space-between; align-items:center; width:90%; max-width:1200px; margin:0 auto 1rem auto; color:var(--text-secondary-color); font-size:0.75rem; }
-.site-footer {
-  width: 100%;
-  font-size: 0.9rem;
-  margin: 0;
-  padding: 0;
-  background-color: transparent;
-  color: var(--text-secondary-color);
-  text-align: center;
-}
-body.dark-mode .site-footer { color:var(--text-color); }
-.footer-left { text-align:left; }
-.footer-right { text-align:right; }
-.footer-left, .footer-right { font-size:0.9rem; line-height:1.2; letter-spacing:0.02em; margin:0; }
-.footer-locale {
+.footer-locale{
   display:flex;
   flex-direction:row;
   align-items:center;
@@ -234,22 +266,14 @@ body.dark-mode .site-footer { color:var(--text-color); }
   gap:8px;
   white-space:nowrap;
 }
-
-/* Ensure the locale rail never stacks vertically */
-.footer-right.footer-locale {
+.footer-right.footer-locale{
   display:flex;
   align-items:center;
   justify-content:flex-end;
   text-align:unset;
 }
-
-.locale-item {
-  position:relative;
-  display:inline-flex;
-  align-items:center;
-}
-
-.locale-button {
+.locale-item{position:relative;display:inline-flex;align-items:center;}
+.locale-button{
   background:none;
   border:none;
   padding:0;
@@ -261,9 +285,7 @@ body.dark-mode .site-footer { color:var(--text-color); }
   align-items:center;
   line-height:1;
 }
-
-/* Country selector matches language styling */
-#country-selector {
+#country-selector{
   font-size:0.85rem;
   font-weight:400;
   letter-spacing:0.08em;
@@ -271,582 +293,765 @@ body.dark-mode .site-footer { color:var(--text-color); }
   opacity:0.85;
   transition:opacity 0.25s;
 }
-#country-selector:hover { opacity:1; }
+#country-selector:hover{opacity:1;}
 
-/* =================== Featured Posts =================== */
-.section-posts { background-color:#f9f9f9; }
-.post { border-bottom:1px solid #ddd; padding:2rem 0; }
-.post:last-child { border-bottom:none; }
-.post-title { font-size:1.5rem; font-weight:600; margin-bottom:0.5rem; }
-.post-excerpt { font-size:1rem; color:#333; margin-bottom:0.5rem; }
-.read-more { text-decoration:none; color:#0077cc; font-weight:500; transition:color 0.2s; }
-.read-more:hover { text-decoration:underline; color:#005fa3; }
+/* =============================================================================
+   09) FEATURED COLLECTIONS (HOMEPAGE)
+============================================================================= */
+.featured-section{padding:6rem 0;}
+.featured-header{
+  width:90%;
+  max-width:1200px;
+  margin:0 auto 2.6rem auto;
+  display:grid;
+  gap:0.85rem;
+}
+.featured-kicker{
+  font-size:0.8rem;
+  font-weight:400;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  opacity:0.75;
+  color:var(--text-secondary-color);
+  margin:0;
+}
+.featured-title{
+  font-size:clamp(1.6rem,2.4vw,2.2rem);
+  font-weight:500;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  margin:0;
+}
+.featured-sub{
+  max-width:62ch;
+  font-size:0.95rem;
+  line-height:1.7;
+  color:var(--text-secondary-color);
+  margin:0;
+}
+.featured-grid{
+  width:90%;
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1.25rem;
+}
+.featured-card{
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  background:
+    radial-gradient(900px 420px at 80% 20%, color-mix(in srgb, var(--color-primary1) 16%, transparent) 0%, transparent 58%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--bg-color) 78%, transparent) 0%,
+      color-mix(in srgb, var(--bg-color) 92%, transparent) 100%
+    );
+  border:1px solid color-mix(in srgb, var(--text-color) 14%, transparent);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  transition:transform 0.55s cubic-bezier(0.22,1,0.36,1),opacity 0.35s ease;
+}
+.featured-card:hover{transform:translateY(-6px);}
+.featured-card-inner{padding:1.35rem 1.25rem 1.2rem;display:grid;gap:0.9rem;}
 
-/* =================== Comments Section =================== */
-.section-comments { background-color:#f5f5f5; padding:2rem 0; }
-.section-comments h2 { font-size:1.8rem; font-weight:600; margin-bottom:1.5rem; }
-.comment { border-bottom:1px solid #ddd; padding:1rem 0; }
-.comment:last-child { border-bottom:none; }
-.comment p { font-size:0.95rem; line-height:1.6; color:#222; margin-bottom:var(--spacing-md); }
+.featured-media{
+  width:100%;
+  aspect-ratio:16/10;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid color-mix(in srgb, var(--text-color) 10%, transparent);
+  background:color-mix(in srgb, var(--bg-color) 92%, transparent);
+}
+.featured-media img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.01);}
 
-/* =================== Theme Toggle =================== */
-.theme-toggle { width:14px; height:14px; border-radius:50%; background-color:var(--text-color); border:none; box-shadow:none; cursor:pointer; z-index:9999; transition:transform 0.3s, opacity 0.3s, background-color 0.3s; }
-body.dark-mode .theme-toggle { background-color:var(--color-white); }
-body.light-mode .theme-toggle { background-color:var(--color-black); }
-.theme-toggle:hover { transform:scale(1.15); opacity:0.9; }
-@media (prefers-reduced-motion:reduce) { body, .theme-toggle { transition:none !important; } }
+.featured-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:0.75rem;
+  font-size:0.78rem;
+  font-weight:400;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  opacity:0.78;
+  color:var(--text-secondary-color);
+}
+.featured-name{
+  font-size:1.05rem;
+  font-weight:500;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  margin:0;
+}
+.featured-desc{
+  font-size:0.95rem;
+  line-height:1.7;
+  color:var(--text-secondary-color);
+  margin:0;
+}
+.featured-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:0.6rem;
+  font-size:0.8rem;
+  font-weight:400;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  opacity:0.86;
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1),opacity 0.25s ease,color 0.25s ease;
+}
+.featured-cta:hover{transform:translateY(-3px);opacity:1;color:var(--color-primary1);}
 
-/* =================== Announcement =================== */
-#announcement { max-width:90%; font-size:1.8rem; font-weight:600; letter-spacing:0.02em; text-align:center; margin:0 auto; }
-#announcement.secondary { font-size:1.5rem; font-weight:400; text-transform:uppercase; letter-spacing:0.05em; }
-#announcement + .site-essence { font-size:1rem; font-weight:400; text-transform:uppercase; letter-spacing:0.16em; margin:0.5rem auto 0 auto; opacity:0.7; text-align:center; }
-
-/* =================== Stage Container =================== */
-.stage-container { position:relative; width:100%; max-width:640px; min-height:11rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3.2rem; margin:0 auto; padding:1.5rem 0; text-align:center; }
-
-/* =================== Stage Circle =================== */
-/* SIZE DIAL:
-   - Desktop: tweak --stage-circle-desktop to shrink/grow the circle.
-   - Mobile:  tweak --stage-circle-mobile to shrink/grow the circle.
-   Smaller circle = less vertical “scroll headroom” on the intro/announcement view.
-*/
-:root {
-  /* Use valid CSS lengths ONLY (px, rem, vw, etc). */
-  /* Dial these freely: 10px → 1800px (actual render is still capped by viewport). */
-  --stage-circle-desktop: 1200px; /* your main desktop dial */
-  --stage-circle-mobile: 600px;  /* your main mobile dial */
-
-  /* Hard caps (let you push larger on big screens) */
-  --stage-circle-max-desktop: 1800px;
-  --stage-circle-max-mobile: 1200px;
-
-  /* Viewport caps (prevent overflow on smaller screens) */
-  --stage-circle-vh-cap: 90vh;
-  --stage-circle-vw-cap: 96vw;
+@media (max-width:1024px){
+  .featured-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:640px){
+  .featured-section{padding:4.2rem 0;}
+  .featured-grid{grid-template-columns:1fr;gap:1rem;}
+  .featured-card-inner{padding:1.15rem 1.05rem 1.05rem;}
 }
 
-.stage-circle {
-  position: relative;
-  /* Size dial is here ↓ */
-  width: min(var(--stage-circle-desktop), var(--stage-circle-vh-cap), var(--stage-circle-vw-cap), var(--stage-circle-max-desktop));
-  aspect-ratio: 1/1;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(
+/* Legacy featured posts/comments (kept) */
+.section-posts{background-color:#f9f9f9;}
+.post{border-bottom:1px solid #ddd;padding:2rem 0;}
+.post:last-child{border-bottom:none;}
+.post-title{font-size:1.5rem;font-weight:600;margin-bottom:0.5rem;}
+.post-excerpt{font-size:1rem;color:#333;margin-bottom:0.5rem;}
+.read-more{text-decoration:none;color:#0077cc;font-weight:500;transition:color 0.2s;}
+.read-more:hover{text-decoration:underline;color:#005fa3;}
+
+.section-comments{background-color:#f5f5f5;padding:2rem 0;}
+.section-comments h2{font-size:1.8rem;font-weight:600;margin-bottom:1.5rem;}
+.comment{border-bottom:1px solid #ddd;padding:1rem 0;}
+.comment:last-child{border-bottom:none;}
+.comment p{font-size:0.95rem;line-height:1.6;color:#222;margin-bottom:var(--spacing-md);}
+
+/* =============================================================================
+   10) THEME TOGGLE
+============================================================================= */
+.theme-toggle{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background-color:var(--text-color);
+  border:none;
+  box-shadow:none;
+  cursor:pointer;
+  z-index:9999;
+  transition:transform 0.3s,opacity 0.3s,background-color 0.3s;
+}
+body.dark-mode .theme-toggle{background-color:var(--color-white);}
+body.light-mode .theme-toggle{background-color:var(--color-black);}
+.theme-toggle:hover{transform:scale(1.15);opacity:0.9;}
+@media (prefers-reduced-motion:reduce){body,.theme-toggle{transition:none !important;}}
+
+/* =============================================================================
+   11) ANNOUNCEMENT + CTA
+============================================================================= */
+#announcement{
+  max-width:90%;
+  font-size:1.8rem;
+  font-weight:600;
+  letter-spacing:0.02em;
+  text-align:center;
+  margin:0 auto;
+}
+#announcement.secondary{
+  font-size:1.5rem;
+  font-weight:400;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+#announcement + .site-essence{
+  font-size:1rem;
+  font-weight:400;
+  text-transform:uppercase;
+  letter-spacing:0.16em;
+  margin:0.5rem auto 0 auto;
+  opacity:0.7;
+  text-align:center;
+}
+.enter-button{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0.55rem 1.9rem;
+  background:transparent;
+  color:var(--text-color);
+  font-size:0.95rem;
+  font-weight:300;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  border:1px solid rgba(255,255,255,0.35);
+  border-radius:999px;
+  cursor:pointer;
+  overflow:hidden;
+  transition:border-color 0.6s ease,opacity 0.6s ease;
+  animation:enter-breathe 6s ease-in-out infinite;
+  margin:0 auto;
+}
+body.light-mode .enter-button{border-color:rgba(0,0,0,0.35);}
+body.dark-mode .enter-button{border-color:rgba(255,255,255,0.35);}
+.enter-button span{position:relative;z-index:2;}
+.enter-button::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  background:linear-gradient(120deg,transparent 20%, rgba(255,255,255,0.9) 40%, transparent 60%);
+  opacity:0.85;
+  animation:enter-shine 2.8s linear infinite;
+  pointer-events:none;
+}
+.enter-button:hover{opacity:0.95;}
+.enter-button:hover::before{opacity:0.9;}
+@keyframes enter-breathe{0%{transform:translateY(0);}50%{transform:translateY(-4px);}100%{transform:translateY(0);}}
+@keyframes enter-shine{from{transform:translateX(-120%);}to{transform:translateX(120%);}}
+
+/* =============================================================================
+   12) STAGE CIRCLE (ATMOSPHERE)
+============================================================================= */
+.stage-circle{
+  position:relative;
+  width:min(var(--stage-circle-desktop), var(--stage-circle-vh-cap), var(--stage-circle-vw-cap), var(--stage-circle-max-desktop));
+  aspect-ratio:1/1;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(
     circle at center,
     rgba(255,255,255,0.08) 0%,
     rgba(255,255,255,0.04) 40%,
     rgba(255,255,255,0.015) 60%,
     rgba(255,255,255,0) 72%
   );
-  filter: blur(0);
-  transition: background 1.2s ease;
-  margin: 0 auto;
+  filter:blur(0);
+  transition:background 1.2s ease;
+  margin:0 auto;
 }
-.stage-circle::after { content:""; position:absolute; inset:-12%; border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,0.05), transparent 70%); opacity:0.6; animation:circle-breathe 8s ease-in-out infinite; pointer-events:none; }
-@keyframes circle-breathe { 0% {opacity:0.35; transform:scale(0.96);} 50% {opacity:0.65; transform:scale(1.02);} 100% {opacity:0.35; transform:scale(0.96);} }
-@media (max-width:640px) { .stage-circle { width: min(var(--stage-circle-mobile), var(--stage-circle-vw-cap), var(--stage-circle-max-mobile)); } }
-
-/* =================== Enter Button =================== */
-.enter-button { position:relative; display:inline-flex; align-items:center; justify-content:center; padding:0.55rem 1.9rem; background:transparent; color:var(--text-color); font-size:0.95rem; font-weight:300; letter-spacing:0.14em; text-transform:uppercase; border:1px solid rgba(255,255,255,0.35); border-radius:999px; cursor:pointer; overflow:hidden; transition:border-color 0.6s ease, opacity 0.6s ease; animation:enter-breathe 6s ease-in-out infinite; margin:0 auto; }
-body.light-mode .enter-button { border-color:rgba(0,0,0,0.35); }
-body.dark-mode .enter-button { border-color:rgba(255,255,255,0.35); }
-.enter-button span { position:relative; z-index:2; }
-.enter-button::before { content:""; position:absolute; inset:-1px; border-radius:inherit; background:linear-gradient(120deg,transparent 20%, rgba(255,255,255,0.9) 40%, transparent 60%); opacity:0.85; animation:enter-shine 2.8s linear infinite; pointer-events:none; }
-.enter-button:hover { opacity:0.95; }
-.enter-button:hover::before { opacity:0.9; }
-@keyframes enter-breathe { 0% {transform:translateY(0);} 50% {transform:translateY(-4px);} 100% {transform:translateY(0);} }
-@keyframes enter-shine { from {transform:translateX(-120%);} to {transform:translateX(120%);} }
-
-/* =================== Locale Controls: Country & Language =================== */
-/* Footer locale rail (country + language) and language dropdown surface */
-
-#language-toggle { background:none; border:none; padding:0; margin:0; font:inherit; font-size:0.85rem; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-color); cursor:pointer; opacity:0.85; transition:opacity 0.25s; }
-#language-toggle:hover { opacity:1; }
-
-.language-dropdown {
-  position: absolute;
-  bottom: calc(100% + 10px);
-  right: 0;
-  min-width: 176px;
-  padding: 0.55rem;
-
-  background-color: var(--bg-color);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
-
-  box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.38),
-    0 2px 10px rgba(0, 0, 0, 0.22);
-
-  display: none;
-  z-index: 200001;
+.stage-circle::after{
+  content:"";
+  position:absolute;
+  inset:-12%;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,0.05), transparent 70%);
+  opacity:0.6;
+  animation:circle-breathe 8s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes circle-breathe{
+  0%{opacity:0.35;transform:scale(0.96);}
+  50%{opacity:0.65;transform:scale(1.02);}
+  100%{opacity:0.35;transform:scale(0.96);}
+}
+@media (max-width:640px){
+  .stage-circle{
+    width:min(var(--stage-circle-mobile), var(--stage-circle-vw-cap), var(--stage-circle-max-mobile));
+  }
 }
 
-.language-dropdown.visible {
-  display: block;
+/* =============================================================================
+   13) LOCALE (LANGUAGE + COUNTRY OVERLAYS)
+============================================================================= */
+#language-toggle{
+  background:none;border:none;padding:0;margin:0;font:inherit;
+  font-size:0.85rem;font-weight:400;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--text-color);cursor:pointer;opacity:0.85;transition:opacity 0.25s;
 }
+#language-toggle:hover{opacity:1;}
 
-.language-dropdown[aria-hidden="false"] {
-  display: block;
+.language-dropdown{
+  position:absolute;
+  bottom:calc(100% + 10px);
+  right:0;
+  min-width:176px;
+  padding:0.55rem;
+  background-color:var(--bg-color);
+  border:1px solid rgba(255,255,255,0.16);
+  border-radius:14px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.38),0 2px 10px rgba(0,0,0,0.22);
+  display:none;
+  z-index:200001;
 }
-
-.language-dropdown > * { width: 100%; }
+.language-dropdown.visible,
+.language-dropdown[aria-hidden="false"]{display:block;}
+.language-dropdown > *{width:100%;}
 
 .language-dropdown button,
 .language-dropdown a,
 .language-dropdown [role="menuitem"],
 .language-dropdown .language-option,
-.language-dropdown .lang-option {
-  appearance: none;
-  -webkit-appearance: none;
-
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  padding: 0.65rem 0.85rem;
-  border-radius: 10px;
-
-  background: transparent;
-  border: none;
-
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-
-  color: var(--text-color);
-  text-decoration: none;
-
-  cursor: pointer;
-  transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.25s ease,
-    background-color 0.25s ease,
-    color 0.25s ease;
+.language-dropdown .lang-option{
+  appearance:none;-webkit-appearance:none;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  padding:0.65rem 0.85rem;
+  border-radius:10px;
+  background:transparent;
+  border:none;
+  font:inherit;
+  font-size:0.85rem;
+  font-weight:400;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  text-decoration:none;
+  cursor:pointer;
+  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),opacity 0.25s ease,background-color 0.25s ease,color 0.25s ease;
 }
-
 .language-dropdown button:hover,
 .language-dropdown a:hover,
 .language-dropdown [role="menuitem"]:hover,
 .language-dropdown .language-option:hover,
-.language-dropdown .lang-option:hover {
-  background-color: rgba(255, 255, 255, 0.06);
-  opacity: 0.98;
-  transform: translateY(-2px);
+.language-dropdown .lang-option:hover{
+  background-color:rgba(255,255,255,0.06);
+  opacity:0.98;
+  transform:translateY(-2px);
 }
-
-body.light-mode .language-dropdown {
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.16),
-    0 2px 10px rgba(0, 0, 0, 0.10);
+body.light-mode .language-dropdown{
+  border:1px solid rgba(0,0,0,0.14);
+  box-shadow:0 18px 40px rgba(0,0,0,0.16),0 2px 10px rgba(0,0,0,0.10);
 }
-
 body.light-mode .language-dropdown button:hover,
 body.light-mode .language-dropdown a:hover,
 body.light-mode .language-dropdown [role="menuitem"]:hover,
 body.light-mode .language-dropdown .language-option:hover,
-body.light-mode .language-dropdown .lang-option:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+body.light-mode .language-dropdown .lang-option:hover{
+  background-color:rgba(0,0,0,0.05);
 }
 
-.country-overlay { position:fixed; inset:0; background-color:var(--bg-color); color:var(--text-color); display:flex; justify-content:center; align-items:flex-start; overflow-y:auto; z-index:200000; padding:4rem 1rem; box-sizing:border-box; opacity:0; pointer-events:none; transition:opacity 0.4s; }
-.country-overlay.visible, .country-overlay.active { opacity:1; pointer-events:all; }
+.country-overlay{
+  position:fixed;
+  inset:0;
+  background-color:var(--bg-color);
+  color:var(--text-color);
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  overflow-y:auto;
+  z-index:200000;
+  padding:4rem 1rem;
+  box-sizing:border-box;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.4s;
+}
+.country-overlay.visible,
+.country-overlay.active{opacity:1;pointer-events:all;}
 
-.country-overlay-inner { max-width:960px; width:100%; display:flex; flex-direction:column; gap:1.5rem; padding:0 1rem; transform:translateX(100%) scale(0.9); transition:transform 0.5s; }
-.country-overlay.visible .country-overlay-inner { transform:translateX(0) scale(1); }
+.country-overlay-inner{
+  max-width:960px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+  padding:0 1rem;
+  transform:translateX(100%) scale(0.9);
+  transition:transform 0.5s;
+}
+.country-overlay.visible .country-overlay-inner{transform:translateX(0) scale(1);}
 
-.country-overlay-title { font-size:1.4rem; font-weight:300; text-align:left; margin-bottom:1rem; letter-spacing:0.02em; }
-.country-region { display:flex; flex-direction:column; gap:0.75rem; }
-.region-title { font-size:1.1rem; font-weight:700; opacity:0.85; margin-bottom:0.5rem; text-align:left; letter-spacing:0.02em; }
+.country-overlay-title{font-size:1.4rem;font-weight:300;text-align:left;margin-bottom:1rem;letter-spacing:0.02em;}
+.country-region{display:flex;flex-direction:column;gap:0.75rem;}
+.region-title{font-size:1.1rem;font-weight:700;opacity:0.85;margin-bottom:0.5rem;text-align:left;letter-spacing:0.02em;}
 
-.country-overlay-inner hr.footer-separator, .country-region hr.footer-separator { width:100%; max-width:960px; margin:0.5rem 0 1rem 0; }
+.country-overlay-inner hr.footer-separator,
+.country-region hr.footer-separator{width:100%;max-width:960px;margin:0.5rem 0 1rem 0;}
 
-.overlay-header-container { display:flex; justify-content:space-between; align-items:center; }
-.overlay-header-container .country-overlay-title { margin:0; padding:0; line-height:1.2; font-size:1.4rem; font-weight:300; text-align:left; letter-spacing:0.02em; }
-.overlay-header-container #country-overlay-close { position:relative; top:0; right:0; }
+.overlay-header-container{display:flex;justify-content:space-between;align-items:center;}
+.overlay-header-container .country-overlay-title{margin:0;padding:0;line-height:1.2;font-size:1.4rem;font-weight:300;text-align:left;letter-spacing:0.02em;}
+.overlay-header-container #country-overlay-close{position:relative;top:0;right:0;}
 
-.country-list { list-style:none; display:flex; flex-wrap:wrap; gap:0.5rem 2rem; padding:0; margin:0; justify-content:flex-start; align-items:flex-start; align-content:flex-start; }
-.country-list li { flex:0 1 calc(33% - 1.33rem); min-width:150px; text-align:left; }
+.country-list{
+  list-style:none;
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.5rem 2rem;
+  padding:0;
+  margin:0;
+  justify-content:flex-start;
+  align-items:flex-start;
+  align-content:flex-start;
+}
+.country-list li{flex:0 1 calc(33% - 1.33rem);min-width:150px;text-align:left;}
 
-.country-option { background:none; border:none; padding:0; margin:0; font:inherit; font-size:1rem; font-weight:300; line-height:inherit; color:var(--text-color); cursor:pointer; transition:color 0.2s; text-align:left; }
-.country-option:hover { color:var(--color-primary1); }
+.country-option{
+  background:none;border:none;padding:0;margin:0;font:inherit;
+  font-size:1rem;font-weight:300;line-height:inherit;color:var(--text-color);
+  cursor:pointer;transition:color 0.2s;text-align:left;
+}
+.country-option:hover{color:var(--color-primary1);}
 
-/* Responsive adjustments */
-@media (max-width:1024px) { .country-list li { flex:0 1 calc(50% - 1rem); } }
-@media (max-width:768px) { .country-overlay { padding:3rem 1rem; } .country-overlay-title { font-size:1.6rem; } .region-title { font-size:1rem; } .country-option { font-size:0.95rem; } .country-list li { flex:0 1 100%; } }
-@media (max-width:480px) { .country-overlay-title { font-size:1.4rem; } .region-title { font-size:0.95rem; } .country-option { font-size:0.9rem; } #country-overlay-close { font-size:1.5rem; } .country-list li { flex:0 1 100%; } }
+@media (max-width:1024px){.country-list li{flex:0 1 calc(50% - 1rem);}}
+@media (max-width:768px){
+  .country-overlay{padding:3rem 1rem;}
+  .country-overlay-title{font-size:1.6rem;}
+  .region-title{font-size:1rem;}
+  .country-option{font-size:0.95rem;}
+  .country-list li{flex:0 1 100%;}
+}
+@media (max-width:480px){
+  .country-overlay-title{font-size:1.4rem;}
+  .region-title{font-size:0.95rem;}
+  .country-option{font-size:0.9rem;}
+  #country-overlay-close{font-size:1.5rem;}
+  .country-list li{flex:0 1 100%;}
+}
 
-/* =================== Global Close Button =================== */
-.global-close-button { background:none; border:none; font-size:1.2rem; font-weight:300; color:var(--text-color); cursor:pointer; opacity:1; padding:0; margin:0; line-height:1; position:relative; display:inline-block; width:1.2rem; height:1.2rem; transition:color 0.3s, transform 0.22s; }
-.global-close-button span { display:block; width:100%; height:1.2px; background-color:currentColor; position:absolute; top:50%; left:0; transform-origin:center; transition:background-color 0.3s, transform 0.4s; }
-.global-close-button span:nth-child(1) { transform:rotate(45deg); }
-.global-close-button span:nth-child(2) { transform:rotate(-45deg); }
-.global-close-button:hover { color:var(--color-primary7); transform:scale(1.08); }
-.global-close-button:hover span:nth-child(1), .global-close-button:hover span:nth-child(2) { transform:rotate(0deg); }
+/* =============================================================================
+   14) GLOBAL CLOSE BUTTON
+============================================================================= */
+.global-close-button{
+  background:none;
+  border:none;
+  font-size:1.2rem;
+  font-weight:300;
+  color:var(--text-color);
+  cursor:pointer;
+  opacity:1;
+  padding:0;
+  margin:0;
+  line-height:1;
+  position:relative;
+  display:inline-block;
+  width:1.2rem;
+  height:1.2rem;
+  transition:color 0.3s,transform 0.22s;
+}
+.global-close-button span{
+  display:block;
+  width:100%;
+  height:1.2px;
+  background-color:currentColor;
+  position:absolute;
+  top:50%;
+  left:0;
+  transform-origin:center;
+  transition:background-color 0.3s,transform 0.4s;
+}
+.global-close-button span:nth-child(1){transform:rotate(45deg);}
+.global-close-button span:nth-child(2){transform:rotate(-45deg);}
+.global-close-button:hover{color:var(--color-primary7);transform:scale(1.08);}
+.global-close-button:hover span:nth-child(1),
+.global-close-button:hover span:nth-child(2){transform:rotate(0deg);}
 
-/* =================== Custom Cursor =================== */
-html, body, body * { cursor:none !important; }
-.custom-cursor { position:fixed; top:0; left:0; width:12px; height:12px; border-radius:50%; pointer-events:none; z-index:2147483647; background-color:var(--color-primary1); transform:translate(-50%,-50%); transition:background-color 0.3s, transform 0.1s, opacity 0.2s; opacity:1; mix-blend-mode:normal;
+/* =============================================================================
+   15) CUSTOM CURSOR
+============================================================================= */
+html,body,body *{cursor:none !important;}
+.custom-cursor{
+  position:fixed;
+  top:0;
+  left:0;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:2147483647;
+  background-color:var(--color-primary1);
+  transform:translate(-50%,-50%);
+  transition:background-color 0.3s,transform 0.1s,opacity 0.2s;
+  opacity:1;
+  mix-blend-mode:normal;
   display:block;
   visibility:visible;
-  opacity:1;
-  z-index:2147483647;
   left:0;
   right:auto;
   top:0;
   bottom:auto;
 }
-@media (hover:none) and (pointer:coarse), (max-width:768px) { .custom-cursor { display:none !important; } html, body, body * { cursor:auto !important; } }
-
-/* =================== Custom Cursor: RTL Safety =================== */
+@media (hover:none) and (pointer:coarse), (max-width:768px){
+  .custom-cursor{display:none !important;}
+  html,body,body *{cursor:auto !important;}
+}
 html[dir="rtl"] .custom-cursor,
-body[dir="rtl"] .custom-cursor {
+body[dir="rtl"] .custom-cursor{
   direction:ltr;
   unicode-bidi:isolate;
   transform:translate(-50%,-50%) !important;
 }
 
-/* =================== Menu Overlay Theme Variables =================== */
-/* menu.css defines these on :root; we override per theme here so the overlay is theme-adaptable */
-body.dark-mode {
-  --menu-surface: rgba(0, 0, 0, 0.94);
-  --menu-surface-strong: rgba(0, 0, 0, 0.92);
-  --menu-border: rgba(255, 255, 255, 0.18);
-  --menu-sep: rgba(255, 255, 255, 0.14);
+/* =============================================================================
+   16) MENU OVERLAY VISIBILITY + MOTION (menu.css OWNS layout)
+============================================================================= */
+#menu-overlay{
+  position:fixed;
+  inset:0;
+  z-index:200005;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  width:100vw;
+  height:100vh;
+  background:transparent;
+  color:inherit;
+  transition:opacity 0.35s ease,visibility 0.35s ease;
 }
-body.light-mode {
-  --menu-surface: rgba(255, 255, 255, 0.92);
-  --menu-surface-strong: rgba(255, 255, 255, 0.88);
-  --menu-border: rgba(0, 0, 0, 0.14);
-  --menu-sep: rgba(0, 0, 0, 0.12);
+#menu-overlay.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
 }
-
-/* =================== Menu Overlay =================== */
-/* NOTE: Layout + sizing for the menu overlay is owned by assets/css/menu.css.
-   style.css only controls open/close visibility + motion, and must NOT impose layout constraints.
-*/
-#menu-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200005; /* above header ribbon */
-
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-
-  /* Ensure overlay is truly full-screen and not visually boxed by any global containers */
-  width: 100vw;
-  height: 100vh;
-
-  /* Let menu.css paint the surface; keep transparent here. */
-  background: transparent;
-  color: inherit;
-
-  transition: opacity 0.35s ease, visibility 0.35s ease;
+#menu-overlay .menu-overlay-inner{
+  width:100vw;
+  height:100vh;
+  max-width:none;
+  max-height:none;
+  border:0;
+  border-radius:0;
+  opacity:0;
+  transform:translateY(24px);
+  transition:transform 0.8s cubic-bezier(0.22,1,0.36,1),opacity 0.6s ease;
 }
-
-#menu-overlay.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+#menu-overlay.active .menu-overlay-inner{opacity:1;transform:translateY(0);}
+#menu-overlay.closing .menu-overlay-inner{
+  opacity:0;
+  transform:translateY(32px);
+  transition:transform 1.1s cubic-bezier(0.22,1,0.36,1),opacity 0.8s ease;
 }
+body.menu-open{overflow:hidden;}
 
-#menu-overlay .menu-overlay-inner {
-  /* Full-screen canvas (menu.css will grid its internal columns) */
-  width: 100vw;
-  height: 100vh;
-  max-width: none;
-  max-height: none;
-
-  /* Remove any boxed look coming from global borders/radius */
-  border: 0;
-  border-radius: 0;
-
-  opacity: 0;
-  transform: translateY(24px);
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
+/* Menu list reveal only (no layout constraints) */
+.menu-nav{width:100%;}
+.menu-list{list-style:none;padding:0;margin:0;}
+.menu-list li{
+  opacity:0;
+  transform:translateY(22px);
+  transition:transform 0.85s cubic-bezier(0.22,1,0.36,1),opacity 0.65s ease;
 }
+#menu-overlay.active .menu-list li{opacity:1;transform:translateY(0);}
+#menu-overlay.closing .menu-list li{opacity:0;transform:translateY(28px);}
 
-#menu-overlay.active .menu-overlay-inner {
-  opacity: 1;
-  transform: translateY(0);
+/* Stagger */
+#menu-overlay.active .menu-list li:nth-child(1){transition-delay:0.12s;}
+#menu-overlay.active .menu-list li:nth-child(2){transition-delay:0.18s;}
+#menu-overlay.active .menu-list li:nth-child(3){transition-delay:0.24s;}
+#menu-overlay.active .menu-list li:nth-child(4){transition-delay:0.30s;}
+#menu-overlay.active .menu-list li:nth-child(5){transition-delay:0.36s;}
+#menu-overlay.active .menu-list li:nth-child(6){transition-delay:0.42s;}
+#menu-overlay.active .menu-list li:nth-child(7){transition-delay:0.48s;}
+
+#menu-overlay.closing .menu-list li:nth-last-child(1){transition-delay:0.12s;}
+#menu-overlay.closing .menu-list li:nth-last-child(2){transition-delay:0.22s;}
+#menu-overlay.closing .menu-list li:nth-last-child(3){transition-delay:0.32s;}
+#menu-overlay.closing .menu-list li:nth-last-child(4){transition-delay:0.42s;}
+#menu-overlay.closing .menu-list li:nth-last-child(5){transition-delay:0.52s;}
+#menu-overlay.closing .menu-list li:nth-last-child(6){transition-delay:0.62s;}
+#menu-overlay.closing .menu-list li:nth-last-child(7){transition-delay:0.72s;}
+
+/* Menu links (typography + hover only) */
+.menu-link{
+  font-size:clamp(1.6rem,4vw,1.8rem);
+  font-weight:300;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  text-decoration:none;
+  display:inline-flex;
+  transform:translateY(0);
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1),color 0.25s ease;
 }
-
-#menu-overlay.closing .menu-overlay-inner {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
-}
-
-/* =================== Menu Button =================== */
-#menu-button-container { width:60px; height:60px; display:flex; justify-content:center; align-items:center; position:relative; order:1; }
-#menu-button { position:relative; width:35px; height:35px; background:transparent; border:none; border-radius:50%; cursor:pointer; display:flex; justify-content:center; align-items:center; transform-origin:center; }
-#menu-button .line { position:absolute; top:50%; left:50%; width:55%; height:1.2px; background-color:var(--text-color); transform-origin:center; transition:transform 0.45s cubic-bezier(0.22,1,0.36,1), background-color 0.3s ease; backface-visibility:hidden; }
-#menu-button .line-top { transform:translate(-50%,calc(-50% - 4px)); }
-#menu-button .line-bottom { transform:translate(-50%,calc(-50% + 4px)); }
-#menu-button:not(.menu-open):hover { animation:menu-hover-pulse 0.35s forwards; }
-@keyframes menu-hover-pulse { 0%{transform:scale(1);} 40%{transform:scale(0.88);} 70%{transform:scale(1.06);} 100%{transform:scale(1);} }
-#menu-button.menu-open .line-top { transform:translate(-50%,-50%) rotate(45deg); }
-#menu-button.menu-open .line-bottom { transform:translate(-50%,-50%) rotate(-45deg); }
-#menu-button.menu-open:hover .line-top, #menu-button.menu-open:hover .line-bottom { transform:translate(-50%,-50%) rotate(0deg); background-color:var(--color-primary7); }
-
-/* =================== Menu Content =================== */
-/* NOTE: Layout + sizing for the menu overlay is handled in assets/css/menu.css.
-   style.css only defines: overlay visibility, button animation, and item reveal motion.
-*/
-
-.menu-nav { width: 100%; }
-
-/* Do NOT force horizontal/vertical layout here — menu.css owns it. */
-.menu-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* Reveal motion (kept global so it works with any menu layout) */
-.menu-list li {
-  opacity: 0;
-  transform: translateY(22px);
-  transition:
-    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.65s ease;
-}
-
-#menu-overlay.active .menu-list li {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-#menu-overlay.closing .menu-list li {
-  opacity: 0;
-  transform: translateY(28px);
-}
-
-/* Stagger (keep) */
-#menu-overlay.active .menu-list li:nth-child(1) { transition-delay: 0.12s; }
-#menu-overlay.active .menu-list li:nth-child(2) { transition-delay: 0.18s; }
-#menu-overlay.active .menu-list li:nth-child(3) { transition-delay: 0.24s; }
-#menu-overlay.active .menu-list li:nth-child(4) { transition-delay: 0.30s; }
-#menu-overlay.active .menu-list li:nth-child(5) { transition-delay: 0.36s; }
-#menu-overlay.active .menu-list li:nth-child(6) { transition-delay: 0.42s; }
-#menu-overlay.active .menu-list li:nth-child(7) { transition-delay: 0.48s; }
-
-#menu-overlay.closing .menu-list li:nth-last-child(1) { transition-delay: 0.12s; }
-#menu-overlay.closing .menu-list li:nth-last-child(2) { transition-delay: 0.22s; }
-#menu-overlay.closing .menu-list li:nth-last-child(3) { transition-delay: 0.32s; }
-#menu-overlay.closing .menu-list li:nth-last-child(4) { transition-delay: 0.42s; }
-#menu-overlay.closing .menu-list li:nth-last-child(5) { transition-delay: 0.52s; }
-#menu-overlay.closing .menu-list li:nth-last-child(6) { transition-delay: 0.62s; }
-#menu-overlay.closing .menu-list li:nth-last-child(7) { transition-delay: 0.72s; }
-
-/* Link styling: keep typography + hover motion, but no layout constraints */
-.menu-link {
-  font-size: clamp(1.6rem, 4vw, 1.8rem);
-  font-weight: 300;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-color);
-  text-decoration: none;
-  display: inline-flex;
-  transform: translateY(0);
-  transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.25s ease;
-}
-
-.menu-link:hover {
-  transform: translateY(-4px);
-  color: var(--color-primary1);
-}
-
+.menu-link:hover{transform:translateY(-4px);color:var(--color-primary1);}
 #menu-overlay a,
 #menu-overlay a:hover,
 .menu-link,
-.menu-link:hover {
-  text-decoration: none !important;
+.menu-link:hover{text-decoration:none !important;}
+
+/* Menu button */
+#menu-button-container{width:60px;height:60px;display:flex;justify-content:center;align-items:center;position:relative;order:1;}
+#menu-button{position:relative;width:35px;height:35px;background:transparent;border:none;border-radius:50%;cursor:pointer;display:flex;justify-content:center;align-items:center;transform-origin:center;}
+#menu-button .line{
+  position:absolute;top:50%;left:50%;
+  width:55%;height:1.2px;background-color:var(--text-color);
+  transform-origin:center;
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1),background-color 0.3s ease;
+  backface-visibility:hidden;
 }
+#menu-button .line-top{transform:translate(-50%,calc(-50% - 4px));}
+#menu-button .line-bottom{transform:translate(-50%,calc(-50% + 4px));}
+#menu-button:not(.menu-open):hover{animation:menu-hover-pulse 0.35s forwards;}
+@keyframes menu-hover-pulse{0%{transform:scale(1);}40%{transform:scale(0.88);}70%{transform:scale(1.06);}100%{transform:scale(1);}}
+#menu-button.menu-open .line-top{transform:translate(-50%,-50%) rotate(45deg);}
+#menu-button.menu-open .line-bottom{transform:translate(-50%,-50%) rotate(-45deg);}
+#menu-button.menu-open:hover .line-top,
+#menu-button.menu-open:hover .line-bottom{transform:translate(-50%,-50%) rotate(0deg);background-color:var(--color-primary7);}
 
-body.menu-open { overflow: hidden; }
+/* =============================================================================
+   17) INTRO LOGO ANIMATION (CSS HOOKS)
+============================================================================= */
+body.intro-loading{overflow:hidden;}
+body.intro-loading .stage-circle{opacity:0;background:transparent;}
+body.intro-loading .stage-circle::after{opacity:0;animation:none;}
 
-/* Theme toggle becomes available while the menu is open */
-body.menu-open #header-controls #theme-toggle,
-body.menu-open #header-controls .theme-toggle {
-  display: inline-flex;
-}
-
-
-/* =================== Clickable Text Motion =================== */
-a:not(.enter-button), .menu-link, .country-option { display:inline-block; transform:translateY(0); transition:transform 0.45s cubic-bezier(0.22,1,0.36,1), color 0.25s ease; }
-a:not(.enter-button):hover, .menu-link:hover, .country-option:hover { transform:translateY(-5px); }
-a, .menu-link, .country-option { letter-spacing:inherit !important; word-spacing:normal !important; text-decoration:none !important; }
-
-/* =================== Hero / Landing Layout =================== */
-.site-header { position:relative; width:100%; padding-top:3.2rem; padding-bottom:1.6rem; background:transparent; z-index:10; }
-.site-logo { position:relative; display:block; margin:0 auto 2rem auto; width:320px; height:auto; }
-.stage-circle { display:flex; justify-content:center; align-items:center; }
-main, #stage { display:flex; justify-content:center; align-items:center; width:100%; }
-.stage-circle { margin:0 auto; }
-.stage-container { width:100%; max-width:640px; margin:0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding-top:1.5rem; padding-bottom:1.5rem; }
-#announcement, .site-essence, .enter-button { text-align:center; margin:0 auto; }
-.stage-circle::after { content:""; position:absolute; inset:0; border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,0.06), transparent 70%); opacity:0.6; animation:circle-breathe 8s ease-in-out infinite; pointer-events:none; }
-
-
-/* =================== Logo Intro Animation — PinkFloyd-style =================== */
-/* CSS-only hooks. JS will toggle body + logo classes. No existing behavior is changed unless a body class is present. */
-
-:root {
-  --intro-logo-max: 420px;
-  --intro-logo-mobile-max: 360px;
-
-  /* Motion tuning (JS timings should match these for a ~5s intro) */
-  --intro-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --intro-pop-duration: 1.6s;
-  --intro-settle-duration: 1.9s;
-  --intro-fade-duration: 1.5s;
-}
-
-/* While intro runs: lock scroll and hide UI layers (only when class is present) */
-body.intro-loading {
-  overflow: hidden;
-}
-
-/* During intro: hide the hero circle + stage stack entirely (logo is rendered as fixed overlay) */
-body.intro-loading .stage-circle {
-  opacity: 0;
-  background: transparent;
-}
-
-body.intro-loading .stage-circle::after {
-  opacity: 0;
-  animation: none;
-}
-
-/* Reveal the hero circle smoothly once the intro hands off */
-body.intro-reveal .stage-circle {
-  opacity: 1;
-  transition: opacity 0.9s var(--intro-ease);
-}
+body.intro-reveal .stage-circle{opacity:1;transition:opacity 0.9s var(--intro-ease);}
 
 body.intro-loading #header-controls,
 body.intro-loading .site-essence,
 body.intro-loading .site-footer,
 body.intro-loading .footer-separator,
-body.intro-loading #menu-overlay {
-  opacity: 0;
-  pointer-events: none;
+body.intro-loading #menu-overlay{
+  opacity:0;
+  pointer-events:none;
 }
 
-/* Stage text + CTA remain in DOM but stay silent until reveal */
+/* Stage text + CTA silent until reveal */
 body.intro-loading #announcement,
 body.intro-loading #enter-button,
-body.intro-loading .enter-button {
-  opacity: 0;
-  transform: translateY(18px);
+body.intro-loading .enter-button{
+  opacity:0;
+  transform:translateY(18px);
 }
-
-/* Reveal phase for stage text + CTA */
 body.intro-reveal #announcement,
 body.intro-reveal #enter-button,
-body.intro-reveal .enter-button {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 0.65s ease,
-    transform 0.85s var(--intro-ease);
+body.intro-reveal .enter-button{
+  opacity:1;
+  transform:translateY(0);
+  transition:opacity 0.65s ease,transform 0.85s var(--intro-ease);
 }
 
-/* Intro logo: floated, centered, above everything */
-.site-logo.intro-logo {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  right: auto;
-  bottom: auto;
-  display: block;
-  width: min(62vw, var(--intro-logo-max));
-  height: auto;
-  margin: 0 !important;
-  z-index: 300000;
-
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.68);
-
-  /* Transitions are driven by class swaps from JS */
-  transition:
-    opacity var(--intro-pop-duration) ease,
-    transform var(--intro-settle-duration) var(--intro-ease);
-
-  will-change: transform, opacity;
-  backface-visibility: hidden;
+/* Intro logo overlay */
+.site-logo.intro-logo{
+  position:fixed;
+  left:50%;
+  top:50%;
+  right:auto;
+  bottom:auto;
+  display:block;
+  width:min(62vw, var(--intro-logo-max));
+  height:auto;
+  margin:0 !important;
+  z-index:300000;
+  opacity:0;
+  transform:translate(-50%,-50%) scale(0.68);
+  transition:opacity var(--intro-pop-duration) ease,transform var(--intro-settle-duration) var(--intro-ease);
+  will-change:transform,opacity;
+  backface-visibility:hidden;
 }
-
-/* Pop-in (first beat) */
-.site-logo.intro-logo.intro-pop {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+.site-logo.intro-logo.intro-pop{opacity:1;transform:translate(-50%,-50%) scale(1);}
+.site-logo.intro-logo.intro-settle{transform:translate(-50%,-50%) scale(0.94);}
+.site-logo.intro-logo.intro-fade{
+  opacity:0;
+  transform:translate(-50%,-50%) scale(0.30);
+  transition:opacity var(--intro-fade-duration) ease,transform var(--intro-fade-duration) var(--intro-ease);
 }
-
-/* Subtle settle (second beat) */
-.site-logo.intro-logo.intro-settle {
-  transform: translate(-50%, -50%) scale(0.94);
-}
-
-/* Fade-out + slow scale-down (final beat) */
-.site-logo.intro-logo.intro-fade {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.30);
-  transition:
-    opacity var(--intro-fade-duration) ease,
-    transform var(--intro-fade-duration) var(--intro-ease);
-}
-
-/* Safety: ensure true center in all writing directions */
 html[dir="rtl"] .site-logo.intro-logo,
-body[dir="rtl"] .site-logo.intro-logo {
-  left: 50% !important;
-  right: auto !important;
-}
+body[dir="rtl"] .site-logo.intro-logo{left:50% !important;right:auto !important;}
 
-/* Docked state: JS removes `position:fixed` by swapping to this class after the move */
-.site-logo.intro-docked {
-  position: relative;
-  left: auto;
-  top: auto;
-  transform: none;
-  width: 320px;
-  margin: 0 auto 2rem auto;
-  z-index: 1;
-  opacity: 1;
+.site-logo.intro-docked{
+  position:relative;
+  left:auto;
+  top:auto;
+  transform:none;
+  width:320px;
+  margin:0 auto 2rem auto;
+  z-index:1;
+  opacity:1;
 }
-
-@media (max-width: 640px) {
-  .site-logo.intro-logo {
-    width: min(78vw, var(--intro-logo-mobile-max));
-  }
-  .site-logo.intro-docked {
-    width: 260px;
-  }
+@media (max-width:640px){
+  .site-logo.intro-logo{width:min(78vw, var(--intro-logo-mobile-max));}
+  .site-logo.intro-docked{width:260px;}
 }
-
-@media (prefers-reduced-motion: reduce) {
-  body.intro-loading {
-    overflow: auto;
-  }
+@media (prefers-reduced-motion: reduce){
+  body.intro-loading{overflow:auto;}
   .site-logo.intro-logo,
   .site-logo.intro-logo.intro-fade,
   body.intro-reveal #announcement,
   body.intro-reveal #enter-button,
-  body.intro-reveal .enter-button {
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
+  body.intro-reveal .enter-button{
+    transition:none !important;
+    animation:none !important;
+    transform:none !important;
   }
+}
+
+/* =============================================================================
+   18) PRE-ENTER CONTENT GATE (HOMEPAGE)
+============================================================================= */
+body:not(.site-entered) section,
+body:not(.site-entered) .featured-section,
+body:not(.site-entered) .section-posts,
+body:not(.site-entered) .section-comments,
+body:not(.site-entered) .site-footer,
+body:not(.site-entered) .footer-flex,
+body:not(.site-entered) .footer-separator{
+  display:none !important;
+}
+
+/* Keep stage visible without breaking its internal layout */
+body:not(.site-entered) #stage{display:flex !important;}
+body:not(.site-entered) #stage *{display:revert;}
+body:not(.site-entered){overflow:hidden;}
+
+/* =============================================================================
+   19) HERO / LANDING STACK (SINGLE SOURCE OF TRUTH)
+============================================================================= */
+main{
+  width:100%;
+}
+
+/* Hero stage is its own centered column stack */
+#stage{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+.stage-circle{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0 auto;
+}
+#stage .stage-container{
+  position:relative;
+  width:100%;
+  max-width:640px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:1.15rem;
+  margin:0 auto;
+  padding:1.5rem 0;
+}
+#stage .site-logo{
+  display:block;
+  width:min(320px, 72vw);
+  height:auto;
+  margin:0 auto 0.25rem auto;
+}
+#stage #announcement{
+  width:100%;
+  max-width:90%;
+  margin:0 auto;
+  text-align:center;
+}
+#stage #announcement.secondary{margin-top:0.15rem;}
+#stage .enter-button,
+#stage #enter-button{
+  display:inline-flex;
+  width:fit-content;
+  margin:0.35rem auto 0;
+  align-self:center;
+  justify-content:center;
+  text-align:center;
+}
+#stage .stage-container{
+  text-align:center;
+}
+#stage .site-essence,
+#stage #announcement + .site-essence{
+  margin:0.55rem auto 0 auto;
+  text-align:center;
 }
