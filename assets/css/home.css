@@ -1,0 +1,319 @@
+/* =============================================================================
+   01) SECTIONS (LEGACY PLACEHOLDERS)
+============================================================================= */
+section{padding:6rem 0;}
+.section-music,.section-about{background-color:#f5f5f5;}
+.section-projects,.section-contact{background-color:#eaeaea;}
+section h2{font-size:2rem;font-weight:600;margin-bottom:1rem;}
+section p{font-size:1.1rem;line-height:1.6;max-width:800px;margin-bottom:var(--spacing-md);}
+
+/* =============================================================================
+   02) FEATURED COLLECTIONS (HOMEPAGE)
+============================================================================= */
+.featured-section{padding:6rem 0;}
+.featured-header{
+  width:90%;
+  max-width:1200px;
+  margin:0 auto 2.6rem auto;
+  display:grid;
+  gap:0.85rem;
+}
+.featured-kicker{
+  font-size:0.8rem;
+  font-weight:400;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  opacity:0.75;
+  color:var(--text-secondary-color);
+  margin:0;
+}
+.featured-title{
+  font-size:clamp(1.6rem,2.4vw,2.2rem);
+  font-weight:500;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  margin:0;
+}
+.featured-sub{
+  max-width:62ch;
+  font-size:0.95rem;
+  line-height:1.7;
+  color:var(--text-secondary-color);
+  margin:0;
+}
+.featured-grid{
+  width:90%;
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1.25rem;
+}
+.featured-card{
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  background:
+    radial-gradient(900px 420px at 80% 20%, color-mix(in srgb, var(--color-primary1) 16%, transparent) 0%, transparent 58%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--bg-color) 78%, transparent) 0%,
+      color-mix(in srgb, var(--bg-color) 92%, transparent) 100%
+    );
+  border:1px solid color-mix(in srgb, var(--text-color) 14%, transparent);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  transition:transform 0.55s cubic-bezier(0.22,1,0.36,1),opacity 0.35s ease;
+}
+.featured-card:hover{transform:translateY(-6px);}
+.featured-card-inner{padding:1.35rem 1.25rem 1.2rem;display:grid;gap:0.9rem;}
+
+.featured-media{
+  width:100%;
+  aspect-ratio:16/10;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid color-mix(in srgb, var(--text-color) 10%, transparent);
+  background:color-mix(in srgb, var(--bg-color) 92%, transparent);
+}
+.featured-media img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.01);}
+
+.featured-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:0.75rem;
+  font-size:0.78rem;
+  font-weight:400;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  opacity:0.78;
+  color:var(--text-secondary-color);
+}
+.featured-name{
+  font-size:1.05rem;
+  font-weight:500;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  margin:0;
+}
+.featured-desc{
+  font-size:0.95rem;
+  line-height:1.7;
+  color:var(--text-secondary-color);
+  margin:0;
+}
+.featured-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:0.6rem;
+  font-size:0.8rem;
+  font-weight:400;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  opacity:0.86;
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1),opacity 0.25s ease,color 0.25s ease;
+}
+.featured-cta:hover{transform:translateY(-3px);opacity:1;color:var(--color-primary1);}
+
+@media (max-width:1024px){
+  .featured-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:640px){
+  .featured-section{padding:4.2rem 0;}
+  .featured-grid{grid-template-columns:1fr;gap:1rem;}
+  .featured-card-inner{padding:1.15rem 1.05rem 1.05rem;}
+}
+
+/* =============================================================================
+   03) LEGACY POSTS & COMMENTS
+============================================================================= */
+
+/* Legacy featured posts/comments (kept) */
+.section-posts{background-color:#f9f9f9;}
+.post{border-bottom:1px solid #ddd;padding:2rem 0;}
+.post:last-child{border-bottom:none;}
+.post-title{font-size:1.5rem;font-weight:600;margin-bottom:0.5rem;}
+.post-excerpt{font-size:1rem;color:#333;margin-bottom:0.5rem;}
+.read-more{text-decoration:none;color:#0077cc;font-weight:500;transition:color 0.2s;}
+.read-more:hover{text-decoration:underline;color:#005fa3;}
+
+.section-comments{background-color:#f5f5f5;padding:2rem 0;}
+.section-comments h2{font-size:1.8rem;font-weight:600;margin-bottom:1.5rem;}
+.comment{border-bottom:1px solid #ddd;padding:1rem 0;}
+.comment:last-child{border-bottom:none;}
+.comment p{font-size:0.95rem;line-height:1.6;color:#222;margin-bottom:var(--spacing-md);}
+
+/* =============================================================================
+   04) HOME HERO (POST-ENTER) — FULL-BLEED VIDEO + LUX GLASS OVERLAY
+   Goal: video spans edge-to-edge, sits UNDER the header ribbon, and stays centered.
+============================================================================= */
+
+/* Full-bleed hero section container (tolerant selectors) */
+#home-hero,
+.home-hero,
+.hero-home,
+[data-hero="home"]{
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  /* Full viewport hero */
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+@supports (height: 100dvh){
+  #home-hero,
+  .home-hero,
+  .hero-home,
+  [data-hero="home"]{
+    min-height: 100dvh;
+  }
+}
+
+/* Video wrapper (covers under fixed header-controls) */
+#home-hero .hero-video,
+#home-hero .home-hero-video,
+#home-hero video,
+.home-hero .hero-video,
+.home-hero .home-hero-video,
+.home-hero video,
+.hero-home .hero-video,
+.hero-home .home-hero-video,
+.hero-home video,
+[data-hero="home"] .hero-video,
+[data-hero="home"] .home-hero-video,
+[data-hero="home"] video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure the media itself is truly centered and fills (no side black gaps) */
+#home-hero video,
+.home-hero video,
+.hero-home video,
+[data-hero="home"] video{
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center center;
+  transform: translateZ(0);
+}
+
+/* Optional glass overlay element if present in HTML */
+#home-hero .hero-glass,
+#home-hero .home-hero-glass,
+.home-hero .hero-glass,
+.home-hero .home-hero-glass,
+.hero-home .hero-glass,
+.hero-home .home-hero-glass,
+[data-hero="home"] .hero-glass,
+[data-hero="home"] .home-hero-glass{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+
+  /* Lux wash + subtle blur, theme-adaptable */
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(0,0,0,0.22) 0%,
+      rgba(0,0,0,0.48) 52%,
+      rgba(0,0,0,0.68) 100%
+    );
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.light-mode #home-hero .hero-glass,
+body.light-mode #home-hero .home-hero-glass,
+body.light-mode .home-hero .hero-glass,
+body.light-mode .home-hero .home-hero-glass,
+body.light-mode .hero-home .hero-glass,
+body.light-mode .hero-home .home-hero-glass,
+body.light-mode [data-hero="home"] .hero-glass,
+body.light-mode [data-hero="home"] .home-hero-glass{
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(255,255,255,0.10) 0%,
+      rgba(0,0,0,0.12) 52%,
+      rgba(0,0,0,0.22) 100%
+    );
+}
+
+/* If no overlay element exists, paint the glass with a pseudo-element on the hero */
+#home-hero::after,
+.home-hero::after,
+.hero-home::after,
+[data-hero="home"]::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(0,0,0,0.22) 0%,
+      rgba(0,0,0,0.48) 52%,
+      rgba(0,0,0,0.68) 100%
+    );
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.light-mode #home-hero::after,
+body.light-mode .home-hero::after,
+body.light-mode .hero-home::after,
+body.light-mode [data-hero="home"]::after{
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(255,255,255,0.10) 0%,
+      rgba(0,0,0,0.12) 52%,
+      rgba(0,0,0,0.22) 100%
+    );
+}
+
+/* Hero content sits above glass */
+#home-hero .hero-content,
+.home-hero .hero-content,
+.hero-home .hero-content,
+[data-hero="home"] .hero-content{
+  position: relative;
+  z-index: 2;
+}
+
+/* Mobile: use dynamic viewport units to avoid bottom gaps */
+@media (max-width: 820px){
+  #home-hero,
+  .home-hero,
+  .hero-home,
+  [data-hero="home"]{
+    min-height: 100svh;
+  }
+
+  @supports (height: 100dvh){
+    #home-hero,
+    .home-hero,
+    .hero-home,
+    [data-hero="home"]{
+      min-height: 100dvh;
+    }
+  }
+}

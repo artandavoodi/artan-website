@@ -1,4 +1,4 @@
-/* =================== MENU OVERLAY (ARTAN) — FULLSCREEN, SKETCH LAYOUT =================== */
+/* =================== 01. MENU OVERLAY — FULLSCREEN SKETCH LAYOUT =================== */
 /*
   Goals:
   - Fullscreen overlay (no boxed container)
@@ -32,7 +32,7 @@
   --menu-glass-wash: color-mix(in srgb, var(--menu-fg) 7%, transparent);
 }
 
-/* =================== Overlay Shell =================== */
+/* =================== 02. OVERLAY SHELL =================== */
 #menu-overlay.menu-overlay {
   position: fixed;
   inset: 0;
@@ -85,7 +85,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   pointer-events: none !important;
 }
 
-/* =================== Hard Menu Isolation =================== */
+/* =================== 03. HARD MENU ISOLATION =================== */
 #menu-overlay,
 #menu-overlay * {
   box-sizing: border-box;
@@ -106,7 +106,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   outline: none !important;
 }
 
-/* =================== Fullscreen Grid =================== */
+/* =================== 04. FULLSCREEN GRID =================== */
 #menu-overlay .menu-overlay-inner {
   width: 100vw;
   height: 100vh;
@@ -140,7 +140,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   opacity: 0.9;
 }
 
-/* =================== Left Rail =================== */
+/* =================== 05. LEFT RAIL =================== */
 #menu-overlay .menu-rail {
   grid-column: 1;
   height: 100%;
@@ -216,7 +216,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   outline: none;
 }
 
-/* =================== Center Stack =================== */
+/* =================== 06. CENTER STACK =================== */
 #menu-overlay .menu-center {
   grid-column: 3;
   height: 100%;
@@ -270,7 +270,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   color: var(--menu-fg-muted);
 }
 
-/* =================== Right Menu (vertical readable labels) =================== */
+/* =================== 07. RIGHT MENU — VERTICAL LABELS =================== */
 #menu-overlay .menu-nav {
   grid-column: 5;
   align-self: end;
@@ -355,7 +355,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   outline: none;
 }
 
-/* =================== Packs (LEFT-BOTTOM like sketch) =================== */
+/* =================== 08. PACKS — LEFT BOTTOM =================== */
 #menu-overlay .menu-packs {
   position: absolute;
   left: 22px;
@@ -414,7 +414,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   opacity: 0.92;
 }
 
-/* =================== Close button (top-center) =================== */
+/* =================== 09. CLOSE BUTTON =================== */
 #menu-overlay .menu-close {
   position: absolute;
   top: 18px;
@@ -444,7 +444,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   border-color: color-mix(in srgb, var(--menu-accent) 55%, var(--menu-border));
 }
 
-/* =================== Reduced Motion =================== */
+/* =================== 10. REDUCED MOTION =================== */
 @media (prefers-reduced-motion: reduce) {
   #menu-overlay.menu-overlay,
   #menu-overlay .menu-link,
@@ -455,7 +455,7 @@ body.menu-open .site-header { opacity: 0 !important; pointer-events: none !impor
   }
 }
 
-/* =================== Mobile =================== */
+/* =================== 11. MOBILE =================== */
 @media (max-width: 820px) {
   #menu-overlay .menu-overlay-inner {
     grid-template-columns: 1fr;
