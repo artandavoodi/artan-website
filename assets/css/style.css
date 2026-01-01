@@ -557,6 +557,75 @@ body.dark-mode .enter-button{border-color:rgba(255,255,255,0.35);}
 }
 
 /* =============================================================================
+   12.5) STAGE BACKGROUND VIDEO (HERO)
+============================================================================= */
+/* Robust, selector-safe fullscreen background video.
+   Works even if markup/classes change slightly, and ignores any container sizing. */
+
+/* Preferred wrapper (if present) */
+.stage-video,
+#stage-video,
+#hero-video,
+#stage .stage-video{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  margin:0 !important;
+  padding:0 !important;
+  max-width:none !important;
+  max-height:none !important;
+  border:0 !important;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  transform:none !important;
+}
+
+/* Video element (covers most markups) */
+.stage-video video,
+#stage-video video,
+#hero-video video,
+#stage video.stage-video-media,
+#stage video#stage-video-media,
+#stage .stage-video-media,
+#stage .hero-video-media,
+#stage video{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  min-width:100vw !important;
+  min-height:100vh !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:cover !important;
+  object-position:center !important;
+  display:block;
+  margin:0 !important;
+  padding:0 !important;
+  transform:none !important;
+}
+
+/* Dark glass wash above the video */
+.stage-video::after,
+#stage-video::after,
+#hero-video::after,
+#stage .stage-video::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.62);
+}
+
+body.light-mode .stage-video::after,
+body.light-mode #stage-video::after,
+body.light-mode #hero-video::after,
+body.light-mode #stage .stage-video::after{
+  background:rgba(0,0,0,0.22);
+}
+
+/* =============================================================================
    13) LOCALE (LANGUAGE + COUNTRY OVERLAYS)
 ============================================================================= */
 #language-toggle{
@@ -1005,12 +1074,15 @@ main{
   justify-content:center;
   align-items:center;
   text-align:center;
+  position:relative;
+  z-index:2;
 }
 .stage-circle{
   display:flex;
   justify-content:center;
   align-items:center;
   margin:0 auto;
+  z-index:2;
 }
 #stage .stage-container{
   position:relative;
