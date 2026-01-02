@@ -110,17 +110,65 @@ h6{font-size:0.9rem;font-weight:500;margin-bottom:var(--spacing-xs);}
 p,section p{font-size:0.95rem;line-height:1.6;margin-bottom:var(--spacing-md);color:var(--text-secondary-color);}
 body.light-mode div[style*='flex-direction:column'] p{color:var(--color-black);}
 
-a{color:var(--link-color);text-decoration:none;font-weight:500;transition:color 0.18s;}
-a:hover{color:var(--link-hover-color);text-decoration:underline;}
+/* =============================================================================
+   04A) CLICKABLE TEXT HOVER (GLOBAL — NO JUMP)
+============================================================================= */
 
-/* Global clickable lift (keep) */
-a:not(.enter-button),.menu-link,.country-option{
+a:not(.enter-button),
+.menu-link,
+.country-option,
+#language-toggle,
+#country-selector,
+.locale-button,
+.language-dropdown button,
+.language-dropdown a,
+.language-dropdown [role="menuitem"],
+.language-dropdown .language-option,
+.language-dropdown .lang-option{
   display:inline-block;
-  transform:translateY(0);
-  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1),color 0.25s ease;
+  transition:color 0.25s ease;
+  transform:none !important; /* never lift/translate on hover */
+  text-decoration:none !important;
 }
-a:not(.enter-button):hover,.menu-link:hover,.country-option:hover{transform:translateY(-5px);}
-a,.menu-link,.country-option{letter-spacing:inherit !important;word-spacing:normal !important;text-decoration:none !important;}
+
+a:not(.enter-button):hover,
+.menu-link:hover,
+.country-option:hover,
+#language-toggle:hover,
+#country-selector:hover,
+.locale-button:hover,
+.language-dropdown button:hover,
+.language-dropdown a:hover,
+.language-dropdown [role="menuitem"]:hover,
+.language-dropdown .language-option:hover,
+.language-dropdown .lang-option:hover,
+
+a:not(.enter-button):focus-visible,
+.menu-link:focus-visible,
+.country-option:focus-visible,
+#language-toggle:focus-visible,
+#country-selector:focus-visible,
+.locale-button:focus-visible,
+.language-dropdown button:focus-visible,
+.language-dropdown a:focus-visible,
+.language-dropdown [role="menuitem"]:focus-visible,
+.language-dropdown .language-option:focus-visible,
+.language-dropdown .lang-option:focus-visible{
+  transform:none !important;
+  text-decoration:none !important;
+}
+
+/* Keep baseline typography intact */
+
+a,
+.menu-link,
+.country-option,
+#language-toggle,
+#country-selector,
+.locale-button{
+  letter-spacing:inherit !important;
+  word-spacing:normal !important;
+}
 
 /* =============================================================================
    05) UTILITIES
@@ -354,7 +402,7 @@ body.light-mode .theme-toggle{background-color:var(--color-black);}
   color:var(--text-color);
   text-decoration:none;
   cursor:pointer;
-  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),opacity 0.25s ease,background-color 0.25s ease,color 0.25s ease;
+  transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease;
 }
 .language-dropdown button:hover,
 .language-dropdown a:hover,
@@ -363,7 +411,6 @@ body.light-mode .theme-toggle{background-color:var(--color-black);}
 .language-dropdown .lang-option:hover{
   background-color:rgba(255,255,255,0.06);
   opacity:0.98;
-  transform:translateY(-2px);
 }
 body.light-mode .language-dropdown{
   border:1px solid rgba(0,0,0,0.14);
@@ -529,112 +576,7 @@ body[dir="rtl"] .custom-cursor{
 }
 
 /* =============================================================================
-   12) MENU OVERLAY VISIBILITY + MOTION (menu.css OWNS layout)
-============================================================================= */
-#menu-overlay{
-  position:fixed;
-  inset:0;
-  z-index:200005;
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  width:100vw;
-  height:100vh;
-  background:transparent;
-  color:inherit;
-  transition:opacity 0.35s ease,visibility 0.35s ease;
-}
-#menu-overlay.active{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-}
-#menu-overlay .menu-overlay-inner{
-  width:100vw;
-  height:100vh;
-  max-width:none;
-  max-height:none;
-  border:0;
-  border-radius:0;
-  opacity:0;
-  transform:translateY(24px);
-  transition:transform 0.8s cubic-bezier(0.22,1,0.36,1),opacity 0.6s ease;
-}
-#menu-overlay.active .menu-overlay-inner{opacity:1;transform:translateY(0);}
-#menu-overlay.closing .menu-overlay-inner{
-  opacity:0;
-  transform:translateY(32px);
-  transition:transform 1.1s cubic-bezier(0.22,1,0.36,1),opacity 0.8s ease;
-}
-body.menu-open{overflow:hidden;}
-
-/* Menu list reveal only (no layout constraints) */
-.menu-nav{width:100%;}
-.menu-list{list-style:none;padding:0;margin:0;}
-.menu-list li{
-  opacity:0;
-  transform:translateY(22px);
-  transition:transform 0.85s cubic-bezier(0.22,1,0.36,1),opacity 0.65s ease;
-}
-#menu-overlay.active .menu-list li{opacity:1;transform:translateY(0);}
-#menu-overlay.closing .menu-list li{opacity:0;transform:translateY(28px);}
-
-/* Stagger */
-#menu-overlay.active .menu-list li:nth-child(1){transition-delay:0.12s;}
-#menu-overlay.active .menu-list li:nth-child(2){transition-delay:0.18s;}
-#menu-overlay.active .menu-list li:nth-child(3){transition-delay:0.24s;}
-#menu-overlay.active .menu-list li:nth-child(4){transition-delay:0.30s;}
-#menu-overlay.active .menu-list li:nth-child(5){transition-delay:0.36s;}
-#menu-overlay.active .menu-list li:nth-child(6){transition-delay:0.42s;}
-#menu-overlay.active .menu-list li:nth-child(7){transition-delay:0.48s;}
-
-#menu-overlay.closing .menu-list li:nth-last-child(1){transition-delay:0.12s;}
-#menu-overlay.closing .menu-list li:nth-last-child(2){transition-delay:0.22s;}
-#menu-overlay.closing .menu-list li:nth-last-child(3){transition-delay:0.32s;}
-#menu-overlay.closing .menu-list li:nth-last-child(4){transition-delay:0.42s;}
-#menu-overlay.closing .menu-list li:nth-last-child(5){transition-delay:0.52s;}
-#menu-overlay.closing .menu-list li:nth-last-child(6){transition-delay:0.62s;}
-#menu-overlay.closing .menu-list li:nth-last-child(7){transition-delay:0.72s;}
-
-/* Menu links (typography + hover only) */
-.menu-link{
-  font-size:clamp(1.6rem,4vw,1.8rem);
-  font-weight:300;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--text-color);
-  text-decoration:none;
-  display:inline-flex;
-  transform:translateY(0);
-  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1),color 0.25s ease;
-}
-.menu-link:hover{transform:translateY(-4px);color:var(--color-primary1);}
-#menu-overlay a,
-#menu-overlay a:hover,
-.menu-link,
-.menu-link:hover{text-decoration:none !important;}
-
-/* Menu button */
-#menu-button-container{width:60px;height:60px;display:flex;justify-content:center;align-items:center;position:relative;order:1;}
-#menu-button{position:relative;width:35px;height:35px;background:transparent;border:none;border-radius:50%;cursor:pointer;display:flex;justify-content:center;align-items:center;transform-origin:center;}
-#menu-button .line{
-  position:absolute;top:50%;left:50%;
-  width:55%;height:1.2px;background-color:var(--text-color);
-  transform-origin:center;
-  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1),background-color 0.3s ease;
-  backface-visibility:hidden;
-}
-#menu-button .line-top{transform:translate(-50%,calc(-50% - 4px));}
-#menu-button .line-bottom{transform:translate(-50%,calc(-50% + 4px));}
-#menu-button:not(.menu-open):hover{animation:menu-hover-pulse 0.35s forwards;}
-@keyframes menu-hover-pulse{0%{transform:scale(1);}40%{transform:scale(0.88);}70%{transform:scale(1.06);}100%{transform:scale(1);}}
-#menu-button.menu-open .line-top{transform:translate(-50%,-50%) rotate(45deg);}
-#menu-button.menu-open .line-bottom{transform:translate(-50%,-50%) rotate(-45deg);}
-#menu-button.menu-open:hover .line-top,
-#menu-button.menu-open:hover .line-bottom{transform:translate(-50%,-50%) rotate(0deg);background-color:var(--color-primary7);}
-
-/* =============================================================================
-   13) INTRO LOGO ANIMATION (CSS HOOKS)
+   12) INTRO LOGO ANIMATION (CSS HOOKS)
 ============================================================================= */
 body.intro-loading{overflow:hidden;}
 body.intro-loading .stage-circle{opacity:0;background:transparent;}
@@ -722,7 +664,7 @@ body[dir="rtl"] .site-logo.intro-logo{left:50% !important;right:auto !important;
 }
 
 /* =============================================================================
-   14) PRE-ENTER CONTENT GATE (HOMEPAGE)
+   13) PRE-ENTER CONTENT GATE (HOMEPAGE)
 ============================================================================= */
 body:not(.site-entered) section,
 body:not(.site-entered) .featured-section,
