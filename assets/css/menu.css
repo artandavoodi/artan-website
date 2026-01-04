@@ -738,6 +738,7 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   position: absolute;
   inset: 0;
   height: 100%;
+  --menu-link-rot: 180deg;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -757,7 +758,7 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   line-height: 1;
 
   opacity: 0;
-  transform: translateY(44px) scale(1);
+  transform: translateY(44px) scale(1) rotate(var(--menu-link-rot));
   transition: transform 1.25s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease, color 260ms ease;
   transition-delay: inherit;
   z-index: 2;
@@ -769,20 +770,20 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 /* Sync text with rail stagger (menu.js) */
 #menu-overlay .menu-col-b-section-b .menu-item.menu-animate-in .menu-link{
   opacity: 0.86;
-  transform: translateY(0) scale(1);
+  transform: translateY(0) scale(1) rotate(var(--menu-link-rot));
   transition-delay: inherit;
 }
 
 #menu-overlay .menu-col-b-section-b .menu-item.menu-animate-out .menu-link{
   opacity: 0;
-  transform: translateY(52px) scale(1);
+  transform: translateY(52px) scale(1) rotate(var(--menu-link-rot));
   transition-delay: inherit;
 }
 
 #menu-overlay .menu-col-b-section-b .menu-item:hover .menu-link,
 #menu-overlay .menu-link:hover,
 #menu-overlay .menu-link:focus-visible{
-  transform: translateY(0) scale(1.32);
+  transform: translateY(0) scale(1.32) rotate(var(--menu-link-rot));
   opacity: 1;
 }
 
