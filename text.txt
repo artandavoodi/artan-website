@@ -13,7 +13,7 @@
    05) Overlay inner + blueprint layout (wrapper → col A / col B)
    06) Column A (controls / packs / plain logo / typo + essence)
    07) Column B (preview + rail)
-   08) Right rail (vertical labels + breathing lanes)
+   08) Right rail (labels + breathing lanes)
    09) Packs (left bottom)
    10) Close button
    11) Reduced motion
@@ -58,6 +58,12 @@
   /* Shell gutters (match site language; no clamp) */
   --menu-gutter: var(--footer-gutter, 56px);
   --menu-vpad: 90px;
+
+  /* Rail breathing (fixed, no clamp) */
+  --menu-rail-pad: 34px;
+  --menu-rail-label-pad: 34px;
+  --menu-rail-label-pad-right: 34px;
+  --menu-rail-font: 1.08rem;
 }
 
 @supports (color: color-mix(in srgb, #fff 50%, transparent)){
@@ -321,10 +327,8 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   grid-template-columns: max-content 1fr;
   align-items: stretch;
 
-  /* Column A sticks left, Column B sticks right, space lives between */
   column-gap: 0;
 
-  /* Harmonized shell: equal breathing on all edges */
   padding: var(--menu-vpad) var(--menu-gutter);
 }
 
@@ -337,14 +341,11 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 
   display: grid;
 
-  /* Section A stays intrinsic (hug content); separator + Section B follow */
   grid-template-columns: max-content 1px minmax(0, 1fr);
   align-items: stretch;
 
-  /* G1 on both sides of the separator (Section A ↔ line ↔ Section B) */
   column-gap: var(--menu-g1);
 
-  /* Ensure Section A never expands and creates phantom gap */
   justify-content: start;
 }
 
@@ -356,7 +357,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   opacity: 0.9;
 }
 
-/* Column A — Section A (Controls / Packs / Plain logo) */
 #menu-overlay .menu-col-a-section-a{
   height: 100%;
   display: grid;
@@ -368,11 +368,9 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   width: max-content;
   justify-self: start;
 
-  /* No side padding here — separator spacing is owned by Column A (G1) */
   padding: 0;
 }
 
-/* Controls */
 #menu-overlay .menu-controls{
   display: grid;
   gap: 14px;
@@ -381,7 +379,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   justify-self: center;
 }
 
-/* Shared icon button */
 #menu-overlay .menu-control-icon{
   width: 44px;
   height: 44px;
@@ -409,7 +406,7 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 }
 #menu-overlay .menu-control-icon:active{ transform: scale(0.98); }
 
-/* THEME / TEAM TOGGLE (Column A → Section A → Controls) */
+/* THEME / TEAM TOGGLE */
 #menu-overlay #theme-toggle.menu-control-icon,
 #menu-overlay #theme-toggle,
 #menu-overlay .theme-toggle,
@@ -440,15 +437,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   display: block;
   transition: transform var(--menu-hover-duration) var(--menu-hover-ease), opacity var(--menu-hover-opacity-duration) ease;
 }
-#menu-overlay #theme-toggle.menu-control-icon:hover::before,
-#menu-overlay #theme-toggle.menu-control-icon:focus-visible::before,
-#menu-overlay #theme-toggle:hover::before,
-#menu-overlay #theme-toggle:focus-visible::before,
-#menu-overlay .theme-toggle:hover::before,
-#menu-overlay .theme-toggle:focus-visible::before,
-#menu-overlay [data-theme-toggle]:hover::before,
-#menu-overlay [data-theme-toggle]:focus-visible::before{ opacity: 1; }
-
 #menu-overlay #theme-toggle.menu-control-icon:hover,
 #menu-overlay #theme-toggle.menu-control-icon:focus-visible,
 #menu-overlay #theme-toggle:hover,
@@ -459,7 +447,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 #menu-overlay [data-theme-toggle]:focus-visible{
   transform: scale(var(--menu-hover-scale));
 }
-
 #menu-overlay #theme-toggle.menu-control-icon:active,
 #menu-overlay #theme-toggle:active,
 #menu-overlay .theme-toggle:active,
@@ -467,24 +454,7 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   transform: scale(0.98);
 }
 
-#menu-overlay #theme-toggle.menu-control-icon:hover::before,
-#menu-overlay #theme-toggle.menu-control-icon:focus-visible::before,
-#menu-overlay #theme-toggle:hover::before,
-#menu-overlay #theme-toggle:focus-visible::before,
-#menu-overlay .theme-toggle:hover::before,
-#menu-overlay .theme-toggle:focus-visible::before,
-#menu-overlay [data-theme-toggle]:hover::before,
-#menu-overlay [data-theme-toggle]:focus-visible::before{
-  transform: scale(1.04);
-}
-
-/* Packs split (OVERLAYED — one centered footprint, two layers)
-   - Centering: both layers share the exact same grid cell (no drift)
-   - Smoothness: out → gap → in (no flicker)
-   - Clicks: only the visible layer is clickable
-   - JS toggles ONE state:
-     - #menu-overlay.packs-social  OR  #menu-overlay[data-pack-state="social"]
-*/
+/* Packs split (OVERLAYED — one centered footprint, two layers) */
 #menu-overlay .menu-packs-split{
   position: relative;
   display: grid;
@@ -518,7 +488,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   align-items: center;
 }
 
-/* Force both layers to stay centered and never baseline-drop */
 #menu-overlay #menu-pack-music,
 #menu-overlay #menu-pack-social{
   grid-area: 1 / 1;
@@ -530,7 +499,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   transform-origin: center;
 }
 
-/* DEFAULT: MUSIC ON */
 #menu-overlay #menu-pack-music{
   opacity: 1;
   visibility: visible;
@@ -553,7 +521,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
     visibility 0s linear var(--pack-out);
 }
 
-/* SOCIAL ON: music leaves first; social arrives after gap */
 #menu-overlay.packs-social #menu-pack-music,
 #menu-overlay[data-pack-state="social"] #menu-pack-music,
 #menu-overlay .menu-wrapper.packs-social #menu-pack-music,
@@ -586,7 +553,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
     visibility 0s linear;
 }
 
-/* BACK TO MUSIC: social leaves first; music returns after gap */
 #menu-overlay:not(.packs-social):not([data-pack-state="social"]) #menu-pack-music{
   transition:
     opacity var(--pack-in) var(--menu-hover-ease) var(--pack-gap),
@@ -594,13 +560,11 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
     visibility 0s linear;
 }
 
-/* Plain logo bottom */
 #menu-overlay .menu-plain-logo-wrap{
   display: grid;
   align-items: end;
   padding-top: 22px;
 
-  /* KEY: plain logo defines the column centerline */
   justify-items: center;
   width: max-content;
 }
@@ -611,7 +575,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   justify-self: center;
 }
 
-/* Column A — Section B (Typo + Essence) */
 #menu-overlay .menu-col-a-section-b{
   height: 100%;
   display: grid;
@@ -620,7 +583,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   align-items: start;
   justify-items: start;
 
-  /* No left padding here — separator spacing is owned by Column A (G1) */
   padding: 0;
 
   min-width: 0;
@@ -653,7 +615,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   justify-self: end;
 }
 
-/* Preview */
 #menu-overlay .menu-col-b-section-a{
   height: 100%;
   display: grid;
@@ -685,7 +646,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   }
 }
 
-/* Rail wrapper */
 #menu-overlay .menu-col-b-section-b{
   height: 100%;
   display: flex;
@@ -695,62 +655,58 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 }
 
 /* =============================================================================
-   08) RIGHT RAIL (VERTICAL LABELS + BREATHING LANES)
+   08) RIGHT RAIL (LABELS + BREATHING LANES)
 ============================================================================= */
 
+/* --- RAIL: VERTICAL LIST, HORIZONTAL LABELS --- */
 #menu-overlay .menu-col-b-section-b .menu-list{
   list-style: none;
   margin: 0;
-  height: 100%;
   width: 100%;
+  height: auto;
   display: flex;
+  flex-direction: column;
   align-items: stretch;
-  justify-content: flex-end;
+  justify-content: flex-start;
   padding: 0;
 }
 
 #menu-overlay .menu-col-b-section-b .menu-list .menu-sep{
+  width: 100%;
+  height: 1px;
   flex: 0 0 1px;
-  height: 100%;
   background: var(--menu-sep);
-  align-self: stretch;
   opacity: inherit;
 }
 
 #menu-overlay .menu-col-b-section-b .menu-list .menu-item{
   position: relative;
-  height: 100%;
-  flex: 0.7 1 0;
+  height: auto;
+  flex: 0 0 auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: flex 420ms cubic-bezier(0.22,1,0.36,1);
+  align-items: flex-end;
+  justify-content: flex-start;
   overflow: visible;
-  padding-inline: clamp(18px, 2.2vw, 34px);
+  padding: 14px 0;
 }
 
-#menu-overlay .menu-col-b-section-b .menu-list .menu-item:hover{ flex: 1.6 1 0 !important; }
-#menu-overlay .menu-col-b-section-b .menu-list:hover .menu-item{ flex: 0.55 1 0 !important; }
-#menu-overlay .menu-col-b-section-b .menu-list:hover .menu-item:hover{ flex: 1.85 1 0 !important; }
+/* Rail hover flex-expansion disabled for horizontal list baseline */
 
-/* Label (full-lane, right-aligned, centered vertically) */
+/* Label (full-lane, right-aligned, bottom-aligned) */
 #menu-overlay .menu-link{
-  position: absolute;
-  inset: 0;
-  height: 100%;
+  position: relative;
+  height: auto;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  align-items: flex-end;
+  justify-content: flex-start;
 
-  padding-right: clamp(10px, 1.2vw, 22px);
-
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
+  writing-mode: horizontal-tb;
+  text-orientation: initial;
   direction: ltr;
   unicode-bidi: plaintext;
-  text-align: end;
+  text-align: left;
 
-  font-size: clamp(0.95rem, 1.05vw, 1.2rem);
+  font-size: var(--menu-rail-font);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: currentColor;
@@ -762,9 +718,18 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   transition-delay: inherit;
   z-index: 2;
   pointer-events: auto;
+
+  padding-left: 0;
+  padding-right: 0;
 }
 
-#menu-overlay .menu-link-inner{ display: contents; }
+#menu-overlay .menu-link-inner{
+  display: inline-block;
+  transform: none;
+}
+
+/* Icons disabled in this stabilized baseline */
+#menu-overlay .menu-link-icon{ display: none !important; }
 
 /* Sync text with rail stagger (menu.js) */
 #menu-overlay .menu-col-b-section-b .menu-item.menu-animate-in .menu-link{
@@ -840,12 +805,10 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 
 #menu-overlay .menu-pack-icon:active{ transform: scale(0.98); }
 
-/* Pack icon rendering (theme-adaptable + hover accent) */
 #menu-overlay .menu-pack-icon{ color: var(--menu-fg); }
 #menu-overlay .menu-pack-icon:hover,
 #menu-overlay .menu-pack-icon:focus-visible{ color: var(--menu-accent); }
 
-/* Inline SVG */
 #menu-overlay .menu-pack-icon svg,
 #menu-overlay .menu-pack-svg{
   width: 22px;
@@ -860,7 +823,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   stroke: currentColor;
 }
 
-/* Span glyph with --menu-icon */
 #menu-overlay .menu-pack-glyph{
   width: 22px;
   height: 22px;
@@ -869,7 +831,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   background-color: transparent !important;
 }
 
-/* IMG SVGs */
 #menu-overlay .menu-pack-icon img,
 #menu-overlay img.menu-pack-glyph{
   width: 22px;
@@ -878,7 +839,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   background: transparent !important;
 }
 
-/* Theme readability for IMG / background-image glyphs */
 body.dark-mode #menu-overlay .menu-pack-icon img,
 body.dark-mode #menu-overlay img.menu-pack-glyph,
 body.dark-mode #menu-overlay .menu-pack-glyph{ filter: invert(1); }
@@ -887,7 +847,6 @@ body.light-mode #menu-overlay .menu-pack-icon img,
 body.light-mode #menu-overlay img.menu-pack-glyph,
 body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
 
-/* Accent hover */
 #menu-overlay .menu-pack-icon:hover img,
 #menu-overlay .menu-pack-icon:focus-visible img,
 #menu-overlay .menu-pack-icon:hover img.menu-pack-glyph,
@@ -897,7 +856,6 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
   filter: var(--menu-accent-filter) !important;
 }
 
-/* Inline SVG accents */
 #menu-overlay .menu-pack-icon:hover svg,
 #menu-overlay .menu-pack-icon:focus-visible svg,
 #menu-overlay .menu-pack-icon:hover .menu-pack-svg,
@@ -905,9 +863,8 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
   color: var(--menu-accent);
 }
 
-/* Plain logo */
 #menu-overlay .menu-plain-logo{
-  width: clamp(52px, 6vw, 84px);
+  width: 72px;
   height: auto;
   opacity: 0.92;
 }
@@ -973,7 +930,6 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
     grid-template-columns: 1fr;
     gap: 22px;
 
-    /* Mobile shell: equal breathing, fixed (no clamp) */
     padding: 84px 18px 28px;
   }
 
@@ -1003,39 +959,6 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
     gap: 18px;
   }
   #menu-overlay .menu-col-b-section-a{ padding-right: 0; }
-
-  #menu-overlay .menu-col-b-section-b .menu-list{
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    height: auto;
-  }
-
-  #menu-overlay .menu-col-b-section-b .menu-list .menu-sep{
-    width: 100%;
-    height: 1px;
-    flex: 0 0 1px;
-  }
-
-  #menu-overlay .menu-col-b-section-b .menu-list .menu-item{
-    height: auto;
-    flex: 0 0 auto !important;
-    justify-content: flex-start;
-    padding: 14px 0;
-  }
-
-  #menu-overlay .menu-link{
-    position: relative;
-    inset: auto;
-    height: auto;
-    width: 100%;
-    writing-mode: horizontal-tb;
-    direction: ltr;
-    transform: none;
-    letter-spacing: 0.10em;
-    justify-content: flex-start;
-    padding-right: 0;
-  }
 
   #menu-overlay .menu-col-b-section-b .menu-item:hover .menu-link,
   #menu-overlay .menu-link:hover,

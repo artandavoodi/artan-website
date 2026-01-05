@@ -13,7 +13,7 @@
    05) Overlay inner + blueprint layout (wrapper → col A / col B)
    06) Column A (controls / packs / plain logo / typo + essence)
    07) Column B (preview + rail)
-   08) Right rail (vertical labels + breathing lanes)
+   08) Right rail (labels + breathing lanes)
    09) Packs (left bottom)
    10) Close button
    11) Reduced motion
@@ -58,6 +58,12 @@
   /* Shell gutters (match site language; no clamp) */
   --menu-gutter: var(--footer-gutter, 56px);
   --menu-vpad: 90px;
+
+  /* Rail breathing (fixed, no clamp) */
+  --menu-rail-pad: 34px;
+  --menu-rail-label-pad: 34px;
+  --menu-rail-label-pad-right: 34px;
+  --menu-rail-font: 1.08rem;
 }
 
 @supports (color: color-mix(in srgb, #fff 50%, transparent)){
@@ -95,22 +101,22 @@ body.menu-active{ overflow: hidden; }
 #menu-overlay .menu-col-b-section-b .menu-sep,
 #menu-overlay .menu-col-b-section-b .menu-item{
   opacity: 0;
-  transform: translateY(44px);
-  transition: transform 1.25s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease;
-  will-change: transform, opacity;
+  transform: none !important; /* prevent baseline drift / uneven top-bottom gaps */
+  transition: opacity 0.55s ease;
+  will-change: opacity;
 }
 
-/* JS stagger classes (menu.js) — overrides only transform/opacity + delay */
+/* JS stagger classes (menu.js) — opacity only (no translate drift) */
 #menu-overlay .menu-col-b-section-b .menu-sep.menu-animate-in,
 #menu-overlay .menu-col-b-section-b .menu-item.menu-animate-in{
   opacity: 0.9;
-  transform: translateY(0);
+  transform: none !important;
 }
 
 #menu-overlay .menu-col-b-section-b .menu-sep.menu-animate-out,
 #menu-overlay .menu-col-b-section-b .menu-item.menu-animate-out{
   opacity: 0;
-  transform: translateY(52px);
+  transform: none !important;
 }
 
 /* Links: no underline inside menu */
@@ -180,7 +186,8 @@ body.menu-active{ overflow: hidden; }
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 
-  transition: opacity 260ms ease, visibility 260ms ease;
+  /* + theme-change smoothness */
+  transition: opacity 260ms ease, visibility 260ms ease, color 260ms ease;
 }
 
 #menu-overlay.menu-overlay.is-open,
@@ -321,10 +328,8 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   grid-template-columns: max-content 1fr;
   align-items: stretch;
 
-  /* Column A sticks left, Column B sticks right, space lives between */
   column-gap: 0;
 
-  /* Harmonized shell: equal breathing on all edges */
   padding: var(--menu-vpad) var(--menu-gutter);
 }
 
@@ -334,17 +339,13 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 
 #menu-overlay .menu-col-a{
   height: 100%;
-
   display: grid;
 
-  /* Section A stays intrinsic (hug content); separator + Section B follow */
   grid-template-columns: max-content 1px minmax(0, 1fr);
   align-items: stretch;
 
-  /* G1 on both sides of the separator (Section A ↔ line ↔ Section B) */
   column-gap: var(--menu-g1);
 
-  /* Ensure Section A never expands and creates phantom gap */
   justify-content: start;
 }
 
@@ -356,7 +357,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   opacity: 0.9;
 }
 
-/* Column A — Section A (Controls / Packs / Plain logo) */
 #menu-overlay .menu-col-a-section-a{
   height: 100%;
   display: grid;
@@ -368,11 +368,9 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   width: max-content;
   justify-self: start;
 
-  /* No side padding here — separator spacing is owned by Column A (G1) */
   padding: 0;
 }
 
-/* Controls */
 #menu-overlay .menu-controls{
   display: grid;
   gap: 14px;
@@ -381,7 +379,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   justify-self: center;
 }
 
-/* Shared icon button */
 #menu-overlay .menu-control-icon{
   width: 44px;
   height: 44px;
@@ -409,7 +406,7 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 }
 #menu-overlay .menu-control-icon:active{ transform: scale(0.98); }
 
-/* THEME / TEAM TOGGLE (Column A → Section A → Controls) */
+/* THEME / TEAM TOGGLE */
 #menu-overlay #theme-toggle.menu-control-icon,
 #menu-overlay #theme-toggle,
 #menu-overlay .theme-toggle,
@@ -440,15 +437,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   display: block;
   transition: transform var(--menu-hover-duration) var(--menu-hover-ease), opacity var(--menu-hover-opacity-duration) ease;
 }
-#menu-overlay #theme-toggle.menu-control-icon:hover::before,
-#menu-overlay #theme-toggle.menu-control-icon:focus-visible::before,
-#menu-overlay #theme-toggle:hover::before,
-#menu-overlay #theme-toggle:focus-visible::before,
-#menu-overlay .theme-toggle:hover::before,
-#menu-overlay .theme-toggle:focus-visible::before,
-#menu-overlay [data-theme-toggle]:hover::before,
-#menu-overlay [data-theme-toggle]:focus-visible::before{ opacity: 1; }
-
 #menu-overlay #theme-toggle.menu-control-icon:hover,
 #menu-overlay #theme-toggle.menu-control-icon:focus-visible,
 #menu-overlay #theme-toggle:hover,
@@ -459,7 +447,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 #menu-overlay [data-theme-toggle]:focus-visible{
   transform: scale(var(--menu-hover-scale));
 }
-
 #menu-overlay #theme-toggle.menu-control-icon:active,
 #menu-overlay #theme-toggle:active,
 #menu-overlay .theme-toggle:active,
@@ -467,24 +454,7 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   transform: scale(0.98);
 }
 
-#menu-overlay #theme-toggle.menu-control-icon:hover::before,
-#menu-overlay #theme-toggle.menu-control-icon:focus-visible::before,
-#menu-overlay #theme-toggle:hover::before,
-#menu-overlay #theme-toggle:focus-visible::before,
-#menu-overlay .theme-toggle:hover::before,
-#menu-overlay .theme-toggle:focus-visible::before,
-#menu-overlay [data-theme-toggle]:hover::before,
-#menu-overlay [data-theme-toggle]:focus-visible::before{
-  transform: scale(1.04);
-}
-
-/* Packs split (OVERLAYED — one centered footprint, two layers)
-   - Centering: both layers share the exact same grid cell (no drift)
-   - Smoothness: out → gap → in (no flicker)
-   - Clicks: only the visible layer is clickable
-   - JS toggles ONE state:
-     - #menu-overlay.packs-social  OR  #menu-overlay[data-pack-state="social"]
-*/
+/* Packs split (OVERLAYED — one centered footprint, two layers) */
 #menu-overlay .menu-packs-split{
   position: relative;
   display: grid;
@@ -518,7 +488,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   align-items: center;
 }
 
-/* Force both layers to stay centered and never baseline-drop */
 #menu-overlay #menu-pack-music,
 #menu-overlay #menu-pack-social{
   grid-area: 1 / 1;
@@ -530,7 +499,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   transform-origin: center;
 }
 
-/* DEFAULT: MUSIC ON */
 #menu-overlay #menu-pack-music{
   opacity: 1;
   visibility: visible;
@@ -553,7 +521,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
     visibility 0s linear var(--pack-out);
 }
 
-/* SOCIAL ON: music leaves first; social arrives after gap */
 #menu-overlay.packs-social #menu-pack-music,
 #menu-overlay[data-pack-state="social"] #menu-pack-music,
 #menu-overlay .menu-wrapper.packs-social #menu-pack-music,
@@ -586,7 +553,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
     visibility 0s linear;
 }
 
-/* BACK TO MUSIC: social leaves first; music returns after gap */
 #menu-overlay:not(.packs-social):not([data-pack-state="social"]) #menu-pack-music{
   transition:
     opacity var(--pack-in) var(--menu-hover-ease) var(--pack-gap),
@@ -594,13 +560,11 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
     visibility 0s linear;
 }
 
-/* Plain logo bottom */
 #menu-overlay .menu-plain-logo-wrap{
   display: grid;
   align-items: end;
   padding-top: 22px;
 
-  /* KEY: plain logo defines the column centerline */
   justify-items: center;
   width: max-content;
 }
@@ -611,7 +575,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   justify-self: center;
 }
 
-/* Column A — Section B (Typo + Essence) */
 #menu-overlay .menu-col-a-section-b{
   height: 100%;
   display: grid;
@@ -620,7 +583,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   align-items: start;
   justify-items: start;
 
-  /* No left padding here — separator spacing is owned by Column A (G1) */
   padding: 0;
 
   min-width: 0;
@@ -649,17 +611,20 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   height: 100%;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 460px);
+
   align-items: stretch;
   justify-self: end;
 }
 
-/* Preview */
 #menu-overlay .menu-col-b-section-a{
   height: 100%;
   display: grid;
-  align-items: end;
+
+  align-items: stretch;
   justify-items: start;
+
   padding-right: 46px;
+
   padding-bottom: 0;
   margin-bottom: 0;
 
@@ -685,28 +650,49 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   }
 }
 
-/* Rail wrapper */
 #menu-overlay .menu-col-b-section-b{
   height: 100%;
+  width: 100%;
+
   display: flex;
   align-items: stretch;
   justify-content: flex-end;
+
   align-self: stretch;
+  justify-self: end;
+
+  transform: none;
 }
 
 /* =============================================================================
-   08) RIGHT RAIL (VERTICAL LABELS + BREATHING LANES)
+   08) RIGHT RAIL (LABELS + BREATHING LANES)
 ============================================================================= */
 
+/* Theme compatibility + smooth theme-change for MENU ITEMS only */
+#menu-overlay .menu-col-b-section-b,
+#menu-overlay .menu-col-b-section-b .menu-item,
+#menu-overlay .menu-col-b-section-b .menu-link{
+  color: var(--menu-fg);
+  transition: color 260ms ease;
+}
+
+#menu-overlay .menu-col-b-section-b .menu-item:hover,
+#menu-overlay .menu-col-b-section-b .menu-item:focus-within{
+  color: var(--menu-accent);
+}
+
+/* --- RAIL: VERTICAL LANES, BOTTOM→TOP READING --- */
 #menu-overlay .menu-col-b-section-b .menu-list{
   list-style: none;
   margin: 0;
+  padding: 0;
+
   height: 100%;
   width: 100%;
+
   display: flex;
   align-items: stretch;
   justify-content: flex-end;
-  padding: 0;
 }
 
 #menu-overlay .menu-col-b-section-b .menu-list .menu-sep{
@@ -715,35 +701,35 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   background: var(--menu-sep);
   align-self: stretch;
   opacity: inherit;
+  transition: background-color 260ms ease, opacity 260ms ease;
 }
 
 #menu-overlay .menu-col-b-section-b .menu-list .menu-item{
   position: relative;
   height: 100%;
+
   flex: 0.7 1 0;
   display: flex;
   align-items: center;
   justify-content: center;
+
   transition: flex 420ms cubic-bezier(0.22,1,0.36,1);
   overflow: visible;
-  padding-inline: clamp(18px, 2.2vw, 34px);
+
+  padding-inline: var(--menu-rail-pad);
 }
 
-#menu-overlay .menu-col-b-section-b .menu-list .menu-item:hover{ flex: 1.6 1 0 !important; }
-#menu-overlay .menu-col-b-section-b .menu-list:hover .menu-item{ flex: 0.55 1 0 !important; }
-#menu-overlay .menu-col-b-section-b .menu-list:hover .menu-item:hover{ flex: 1.85 1 0 !important; }
-
-/* Label (full-lane, right-aligned, centered vertically) */
+/* NOTE: bottom→top reading is achieved by rotating the label 180deg. */
 #menu-overlay .menu-link{
   position: absolute;
   inset: 0;
   height: 100%;
-  --menu-link-rot: 180deg;
+
   display: flex;
   align-items: center;
   justify-content: flex-end;
 
-  padding-right: clamp(10px, 1.2vw, 22px);
+  padding-right: var(--menu-rail-label-pad-right);
 
   writing-mode: vertical-rl;
   text-orientation: mixed;
@@ -751,94 +737,44 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   unicode-bidi: plaintext;
   text-align: end;
 
-  font-size: clamp(0.95rem, 1.05vw, 1.2rem);
+  font-size: var(--menu-rail-font);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: currentColor;
   line-height: 1;
 
   opacity: 0;
-  /* Custom property line */
-  --menu-link-rot: 180deg;
-  transform: translateY(44px) scale(1) rotate(var(--menu-link-rot));
+  transform: rotate(180deg) scale(1);
   transition: transform 1.25s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease, color 260ms ease;
   transition-delay: inherit;
   z-index: 2;
   pointer-events: auto;
 }
 
-#menu-overlay .menu-link-inner{
-  display: inline-block;
-  transform: rotate(180deg);
-  transform-origin: center;
-}
-
-#menu-overlay .menu-link-icon{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  margin: 0;
-  padding: 0;
-  transform: rotate(180deg);
-  transform-origin: center;
-  will-change: transform, filter;
-  pointer-events: none;
-}
-
-#menu-overlay .menu-link-icon-img{
-  width: 22px;
-  height: 22px;
-  display: block;
-  background: transparent !important;
-}
-
-/* Desktop + Tablet: hide text visually, keep DOM (accessibility + previews); show icons */
-@media (min-width: 641px){
-  #menu-overlay .menu-link-inner{
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  #menu-overlay .menu-link-icon{
-    opacity: 0.88;
-  }
-
-  #menu-overlay .menu-col-b-section-b .menu-item:hover .menu-link-icon,
-  #menu-overlay .menu-link:hover .menu-link-icon,
-  #menu-overlay .menu-link:focus-visible .menu-link-icon{
-    transform: rotate(180deg) scale(var(--menu-hover-scale));
-    opacity: 1;
-  }
-
-  body.dark-mode #menu-overlay .menu-link-icon-img{ filter: invert(1); }
-  body.light-mode #menu-overlay .menu-link-icon-img{ filter: none; }
-
-  #menu-overlay .menu-col-b-section-b .menu-item:hover .menu-link-icon-img,
-  #menu-overlay .menu-link:hover .menu-link-icon-img,
-  #menu-overlay .menu-link:focus-visible .menu-link-icon-img{
-    filter: var(--menu-accent-filter) !important;
-  }
-}
+#menu-overlay .menu-link-inner{ display: contents; }
+#menu-overlay .menu-link-icon{ display: none !important; }
 
 /* Sync text with rail stagger (menu.js) */
 #menu-overlay .menu-col-b-section-b .menu-item.menu-animate-in .menu-link{
   opacity: 0.86;
-  transform: translateY(0) scale(1) rotate(var(--menu-link-rot));
+  transform: rotate(180deg) scale(1);
   transition-delay: inherit;
 }
 
 #menu-overlay .menu-col-b-section-b .menu-item.menu-animate-out .menu-link{
   opacity: 0;
-  transform: translateY(52px) scale(1) rotate(var(--menu-link-rot));
+  transform: rotate(180deg) scale(1);
   transition-delay: inherit;
 }
+
+#menu-overlay .menu-col-b-section-b .menu-list .menu-item:hover{ flex: 1.6 1 0 !important; }
+#menu-overlay .menu-col-b-section-b .menu-list:hover .menu-item{ flex: 0.55 1 0 !important; }
+#menu-overlay .menu-col-b-section-b .menu-list:hover .menu-item:hover{ flex: 1.85 1 0 !important; }
 
 #menu-overlay .menu-col-b-section-b .menu-item:hover .menu-link,
 #menu-overlay .menu-link:hover,
 #menu-overlay .menu-link:focus-visible{
-  transform: translateY(0) scale(1.32) rotate(var(--menu-link-rot));
+  transform: rotate(180deg) scale(1.32);
   opacity: 1;
 }
 
@@ -896,12 +832,10 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 
 #menu-overlay .menu-pack-icon:active{ transform: scale(0.98); }
 
-/* Pack icon rendering (theme-adaptable + hover accent) */
 #menu-overlay .menu-pack-icon{ color: var(--menu-fg); }
 #menu-overlay .menu-pack-icon:hover,
 #menu-overlay .menu-pack-icon:focus-visible{ color: var(--menu-accent); }
 
-/* Inline SVG */
 #menu-overlay .menu-pack-icon svg,
 #menu-overlay .menu-pack-svg{
   width: 22px;
@@ -916,7 +850,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   stroke: currentColor;
 }
 
-/* Span glyph with --menu-icon */
 #menu-overlay .menu-pack-glyph{
   width: 22px;
   height: 22px;
@@ -925,7 +858,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   background-color: transparent !important;
 }
 
-/* IMG SVGs */
 #menu-overlay .menu-pack-icon img,
 #menu-overlay img.menu-pack-glyph{
   width: 22px;
@@ -934,7 +866,6 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   background: transparent !important;
 }
 
-/* Theme readability for IMG / background-image glyphs */
 body.dark-mode #menu-overlay .menu-pack-icon img,
 body.dark-mode #menu-overlay img.menu-pack-glyph,
 body.dark-mode #menu-overlay .menu-pack-glyph{ filter: invert(1); }
@@ -943,7 +874,6 @@ body.light-mode #menu-overlay .menu-pack-icon img,
 body.light-mode #menu-overlay img.menu-pack-glyph,
 body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
 
-/* Accent hover */
 #menu-overlay .menu-pack-icon:hover img,
 #menu-overlay .menu-pack-icon:focus-visible img,
 #menu-overlay .menu-pack-icon:hover img.menu-pack-glyph,
@@ -953,7 +883,6 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
   filter: var(--menu-accent-filter) !important;
 }
 
-/* Inline SVG accents */
 #menu-overlay .menu-pack-icon:hover svg,
 #menu-overlay .menu-pack-icon:focus-visible svg,
 #menu-overlay .menu-pack-icon:hover .menu-pack-svg,
@@ -961,9 +890,8 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
   color: var(--menu-accent);
 }
 
-/* Plain logo */
 #menu-overlay .menu-plain-logo{
-  width: clamp(52px, 6vw, 84px);
+  width: 72px;
   height: auto;
   opacity: 0.92;
 }
@@ -1028,8 +956,6 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
   #menu-overlay .menu-columns{
     grid-template-columns: 1fr;
     gap: 22px;
-
-    /* Mobile shell: equal breathing, fixed (no clamp) */
     padding: 84px 18px 28px;
   }
 
@@ -1060,39 +986,6 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
   }
   #menu-overlay .menu-col-b-section-a{ padding-right: 0; }
 
-  #menu-overlay .menu-col-b-section-b .menu-list{
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    height: auto;
-  }
-
-  #menu-overlay .menu-col-b-section-b .menu-list .menu-sep{
-    width: 100%;
-    height: 1px;
-    flex: 0 0 1px;
-  }
-
-  #menu-overlay .menu-col-b-section-b .menu-list .menu-item{
-    height: auto;
-    flex: 0 0 auto !important;
-    justify-content: flex-start;
-    padding: 14px 0;
-  }
-
-  #menu-overlay .menu-link{
-    position: relative;
-    inset: auto;
-    height: auto;
-    width: 100%;
-    writing-mode: horizontal-tb;
-    direction: ltr;
-    transform: none;
-    letter-spacing: 0.10em;
-    justify-content: flex-start;
-    padding-right: 0;
-  }
-
   #menu-overlay .menu-col-b-section-b .menu-item:hover .menu-link,
   #menu-overlay .menu-link:hover,
   #menu-overlay .menu-link:focus-visible{ transform: none; }
@@ -1101,6 +994,4 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
     left: 18px;
     bottom: 18px;
   }
-  #menu-overlay .menu-link-icon{ display: none; }
-  #menu-overlay .menu-link-inner{ opacity: 1; pointer-events: auto; }
 }
