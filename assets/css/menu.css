@@ -620,7 +620,8 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   height: 100%;
   display: grid;
 
-  align-items: stretch;
+  align-items: end;
+  align-self: end;
   justify-items: start;
 
   padding-right: 46px;
@@ -661,7 +662,7 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   align-self: stretch;
   justify-self: end;
 
-  transform: none;
+  transform: rotate(180deg);
 }
 
 /* =============================================================================
@@ -727,15 +728,16 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
 
-  padding-right: var(--menu-rail-label-pad-right);
+  padding-left: var(--menu-rail-label-pad-right);
+  padding-block: 18px;
 
   writing-mode: vertical-rl;
   text-orientation: mixed;
   direction: ltr;
   unicode-bidi: plaintext;
-  text-align: end;
+  text-align: start;
 
   font-size: var(--menu-rail-font);
   letter-spacing: 0.14em;
@@ -745,6 +747,7 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
 
   opacity: 0;
   transform: rotate(180deg) scale(1);
+  transform-origin: center;
   transition: transform 1.25s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease, color 260ms ease;
   transition-delay: inherit;
   z-index: 2;
