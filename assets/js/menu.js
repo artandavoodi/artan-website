@@ -5,6 +5,12 @@
 
   const menuLinks = menuOverlay.querySelectorAll('.menu-link');
   const menuItems = menuOverlay.querySelectorAll('.menu-item');
+  // Opt menu rail links out of any global "jump" hover transforms (defined elsewhere).
+  // This is structural: we only tag these links, CSS decides the behavior.
+  menuLinks.forEach((a) => {
+    a.classList.add('menu-link-rail');
+    a.setAttribute('data-no-jump', 'true');
+  });
   const animatedNodes = Array.from(
     menuOverlay.querySelectorAll('.menu-col-b-section-b .menu-item, .menu-col-b-section-b .menu-sep')
   );

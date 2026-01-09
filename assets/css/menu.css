@@ -21,6 +21,7 @@
 ============================================================================= */
 
 :root{
+  /* Default; menu overlay re-declares locally for safety */
   --menu-accent: var(--color-primary1);
 }
 
@@ -32,6 +33,7 @@
   --menu-bg: var(--bg-color, #000);
   --menu-fg: var(--text-color, #fff);
   --menu-fg-muted: var(--text-secondary-color, rgba(255,255,255,0.7));
+  --menu-accent: var(--color-primary1);
 
   --menu-border: rgba(255,255,255,0.18);
   --menu-sep: rgba(255,255,255,0.12);
@@ -83,41 +85,53 @@
 #menu-overlay .menu-overlay-inner{
   opacity: 0;
   transform: translateY(24px);
-  transition: transform 0.8s var(--menu-hover-ease), opacity 0.6s ease;
+  transition: transform 0.8s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease;
 }
 #menu-overlay.active .menu-overlay-inner{ opacity: 1; transform: translateY(0); }
 #menu-overlay.closing .menu-overlay-inner{
   opacity: 0;
   transform: translateY(32px);
-  transition: transform 1.1s var(--menu-hover-ease), opacity 0.8s ease;
+  transition: transform 1.1s cubic-bezier(0.22,1,0.36,1), opacity 0.8s ease;
 }
 
 /* Lock scroll while menu is open */
 body.menu-open,
 body.menu-active{ overflow: hidden; }
 
-/* Reveal rail items (separators + lanes) — opacity only (no translate drift) */
+/* Reveal rail items (separators + lanes) */
 #menu-overlay .menu-col-b-section-b .menu-sep,
 #menu-overlay .menu-col-b-section-b .menu-item{
   opacity: 0;
+  transform: none !important; /* prevent baseline drift / uneven top-bottom gaps */
   transition: opacity 0.55s ease;
   will-change: opacity;
 }
 
+/* JS stagger classes (menu.js) — opacity only (no translate drift) */
 #menu-overlay .menu-col-b-section-b .menu-sep.menu-animate-in,
-#menu-overlay .menu-col-b-section-b .menu-item.menu-animate-in{ opacity: 0.9; }
+#menu-overlay .menu-col-b-section-b .menu-item.menu-animate-in{
+  opacity: 0.9;
+  transform: none !important;
+}
 
 #menu-overlay .menu-col-b-section-b .menu-sep.menu-animate-out,
-#menu-overlay .menu-col-b-section-b .menu-item.menu-animate-out{ opacity: 0; }
+#menu-overlay .menu-col-b-section-b .menu-item.menu-animate-out{
+  opacity: 0;
+  transform: none !important;
+}
 
 /* Links: no underline inside menu */
 #menu-overlay a,
 #menu-overlay a:hover,
 #menu-overlay .menu-link,
-#menu-overlay .menu-link:hover{ text-decoration: none !important; }
+#menu-overlay .menu-link:hover{
+  text-decoration: none !important;
+}
 
 /* Menu button */
-#menu-button-container{ width:60px;height:60px;display:flex;justify-content:center;align-items:center;position:relative;order:1; }
+#menu-button-container{
+  width:60px;height:60px;display:flex;justify-content:center;align-items:center;position:relative;order:1;
+}
 #menu-button{
   position:relative;width:35px;height:35px;background:transparent;border:none;border-radius:50%;
   cursor:pointer;display:flex;justify-content:center;align-items:center;transform-origin:center;
@@ -126,7 +140,7 @@ body.menu-active{ overflow: hidden; }
   position:absolute;top:50%;left:50%;
   width:55%;height:1.2px;background-color:var(--text-color);
   transform-origin:center;
-  transition:transform 0.45s var(--menu-hover-ease),background-color 0.3s ease;
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1),background-color 0.3s ease;
   backface-visibility:hidden;
 }
 #menu-button .line-top{transform:translate(-50%,calc(-50% - 4px));}
@@ -135,7 +149,9 @@ body.menu-active{ overflow: hidden; }
 @keyframes menu-hover-pulse{0%{transform:scale(1);}40%{transform:scale(0.88);}70%{transform:scale(1.06);}100%{transform:scale(1);}}
 
 @keyframes menu-icon-breathe{
-  0%{transform:scale(1);} 45%{transform:scale(var(--menu-hover-scale));} 100%{transform:scale(1);}
+  0%{transform:scale(1);}
+  45%{transform:scale(var(--menu-hover-scale));}
+  100%{transform:scale(1);}
 }
 #menu-button.menu-open .line-top{transform:translate(-50%,-50%) rotate(45deg);}
 #menu-button.menu-open .line-bottom{transform:translate(-50%,-50%) rotate(-45deg);}
@@ -570,7 +586,41 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   max-width: 40ch;
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--menu-fg-muted);
+
+  /* Luxury breathe + slightly more visible passing sheen (theme-compatible) */
+  position: relative;
+  display: inline-block;
+
+  background-image: linear-gradient(90deg,
+    color-mix(in srgb, var(--menu-fg-muted) 92%, transparent) 0%,
+    color-mix(in srgb, var(--menu-fg) 28%, transparent) 45%,
+    color-mix(in srgb, var(--menu-fg-muted) 92%, transparent) 100%
+  );
+  background-size: 240% 100%;
+  background-position: 0% 50%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  text-shadow:
+    0 0 22px color-mix(in srgb, var(--menu-fg) 10%, transparent);
+
+  animation:
+    menu-essence-breathe 5.8s var(--menu-hover-ease) infinite,
+    menu-essence-sheen 3.9s var(--menu-hover-ease) infinite;
+}
+
+@keyframes menu-essence-breathe{
+  0%{ transform: translateY(0); }
+  50%{ transform: translateY(-1.6px); }
+  100%{ transform: translateY(0); }
+}
+
+@keyframes menu-essence-sheen{
+  0%{ background-position: 0% 50%; filter: brightness(1); }
+  50%{ background-position: 100% 50%; filter: brightness(1.06); }
+  100%{ background-position: 0% 50%; filter: brightness(1); }
 }
 
 /* =============================================================================
@@ -649,6 +699,7 @@ body.light-mode #menu-overlay .menu-preview-title img{ filter: none; }
   align-self: stretch;
   justify-self: end;
 
+  /* LOCKED BASELINE ROTATION — DO NOT TOUCH */
   transform: rotate(180deg);
   transform-origin: center;
 }
@@ -665,8 +716,13 @@ body.light-mode #menu-overlay .menu-preview-title img{ filter: none; }
   transition: color 260ms ease;
 }
 
+/* Hover color must be Primary 1 */
 #menu-overlay .menu-col-b-section-b .menu-item:hover,
-#menu-overlay .menu-col-b-section-b .menu-item:focus-within{ color: var(--menu-accent); }
+#menu-overlay .menu-col-b-section-b .menu-item:focus-within,
+#menu-overlay .menu-col-b-section-b .menu-link:hover,
+#menu-overlay .menu-col-b-section-b .menu-link:focus-visible{
+  color: var(--color-primary1);
+}
 
 #menu-overlay .menu-col-b-section-b .menu-list{
   list-style: none;
@@ -694,7 +750,9 @@ body.light-mode #menu-overlay .menu-preview-title img{ filter: none; }
   position: relative;
   height: 100%;
 
+  /* Breathing lanes: flex expansion drives separator “movement” */
   flex: 0.7 1 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -709,10 +767,9 @@ body.light-mode #menu-overlay .menu-preview-title img{ filter: none; }
 #menu-overlay .menu-col-b-section-b .menu-list:hover .menu-item{ flex: 0.55 1 0; }
 #menu-overlay .menu-col-b-section-b .menu-list:hover .menu-item:hover{ flex: 1.85 1 0; }
 
-/* Label (full-lane, left-aligned inside the rotated rail)
-   - No translate motion.
-   - No dependency on external/global hover transforms.
-   - Subtle scale only.
+/* Label (full-lane)
+   - Rotation baseline preserved: rotate(180deg)
+   - Scale only on hover (subtle)
 */
 #menu-overlay .menu-col-b-section-b .menu-link{
   position: absolute;
@@ -739,11 +796,14 @@ body.light-mode #menu-overlay .menu-preview-title img{ filter: none; }
   line-height: 1;
 
   opacity: 0;
+
+  /* LOCKED LABEL ORIENTATION — DO NOT TOUCH */
   transform: rotate(180deg) scale(1);
   transform-origin: center;
+  will-change: transform;
 
   transition:
-    transform var(--menu-hover-duration) var(--menu-hover-ease),
+    transform 820ms var(--menu-hover-ease),
     opacity 0.55s ease,
     color 260ms ease;
 
