@@ -215,6 +215,10 @@ window.ARTAN_TRANSLATION = (() => {
     // document.documentElement.dir = RTL_LANGS.includes(nl) ? "rtl" : "ltr";
     document.documentElement.dir = "ltr";
 
+    // Text-direction mode (layout remains LTR; only translated text nodes become RTL).
+    document.documentElement.classList.toggle('lang-rtl', RTL_LANGS.includes(nl));
+    document.documentElement.setAttribute('data-lang', nl);
+
     // Notify other modules (cursor/menu) that a language apply finished.
     window.dispatchEvent(new CustomEvent("artan:language-applied", { detail: { lang: nl, rtl: RTL_LANGS.includes(nl) } }));
   };
@@ -285,6 +289,31 @@ window.ARTAN_TRANSLATION = (() => {
   }
 
   /* ------------------------------------------------------------
+     RTL text-only styling (no layout flipping)
+     - Applies only to nodes with [data-i18n-key]
+  ------------------------------------------------------------ */
+  const applyTextRTL = (el, isRtl) => {
+    if (!el) return;
+
+    if (isRtl) {
+      // Prevent Latin-style tracking from making Arabic/Persian look spaced out.
+      el.style.letterSpacing = 'normal';
+
+      // Make punctuation + runs behave correctly without flipping global layout.
+      el.style.direction = 'rtl';
+      el.style.unicodeBidi = 'isolate';
+
+      // Text alignment for RTL scripts.
+      el.style.textAlign = '';
+    } else {
+      el.style.letterSpacing = '';
+      el.style.direction = '';
+      el.style.unicodeBidi = '';
+      el.style.textAlign = '';
+    }
+  };
+
+  /* ------------------------------------------------------------
      Apply language to DOM
      - Restores EN baseline when lang === 'en'
      - Translates from EN baseline (preferred)
@@ -295,6 +324,7 @@ window.ARTAN_TRANSLATION = (() => {
     await whenDomReady();
 
     lang = normalizeLang(lang);
+    const isRtl = RTL_LANGS.includes(lang);
 
     // Capture baseline once, before any transforms.
     ensureEnglishBaselineCaptured();
@@ -344,6 +374,8 @@ window.ARTAN_TRANSLATION = (() => {
           el.setAttribute("placeholder", await translate(el.dataset.i18nPlaceholderEn, lang));
         }
       }
+
+      applyTextRTL(el, isRtl);
     }
 
     // Additive: cache translations for menu preview keys (data-preview-*-i18n)

@@ -221,3 +221,269 @@
     boot();
   }
 })();
+
+/* =================== HOME (ARTAN) — SCROLL GRADIENT STATES =================== */
+/* Adds body state classes for CSS-driven gradient transitions */
+
+(() => {
+  let raf = false;
+
+  const updateScrollState = () => {
+    const y = window.scrollY || window.pageYOffset || 0;
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const p = h > 0 ? y / h : 0;
+
+    document.body.classList.remove('scroll-top', 'scroll-mid', 'scroll-deep');
+
+    if (p < 0.25) document.body.classList.add('scroll-top');
+    else if (p < 0.65) document.body.classList.add('scroll-mid');
+    else document.body.classList.add('scroll-deep');
+  };
+
+  const onScroll = () => {
+    if (raf) return;
+    raf = true;
+    requestAnimationFrame(() => {
+      raf = false;
+      updateScrollState();
+    });
+  };
+
+  const boot = () => {
+    updateScrollState();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateScrollState, { passive: true });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+
+/* =================== HOME (ARTAN) — HERO HEADLINE SCROLL FOCUS =================== */
+/* Cycles focus across hero headlines, then hides them after hero section */
+
+(() => {
+  if (document.body.classList.contains('hero-lock-enabled')) return;
+
+  const hero = document.querySelector('#home-hero');
+  const headlines = document.querySelectorAll('.home-hero-headline');
+  if (!hero || !headlines.length) return;
+
+  const total = headlines.length; // 4
+  let raf = false;
+
+  const update = () => {
+    const y = window.scrollY || window.pageYOffset || 0;
+    const rect = hero.getBoundingClientRect();
+    const heroTop = rect.top + y;
+    const heroHeight = rect.height;
+
+    const start = heroTop + heroHeight * 0.25;
+    const end   = heroTop + heroHeight * 0.95;
+
+    document.body.classList.remove('hl-1','hl-2','hl-3','hl-4','hl-hide');
+
+    if (y < start) {
+      document.body.classList.add('hl-1');
+      return;
+    }
+
+    if (y > end) {
+      document.body.classList.add('hl-hide');
+      return;
+    }
+
+    const progress = (y - start) / (end - start);
+    const index = Math.min(total - 1, Math.floor(progress * total));
+
+    document.body.classList.add(`hl-${index + 1}`);
+  };
+
+  const onScroll = () => {
+    if (raf) return;
+    raf = true;
+    requestAnimationFrame(() => {
+      raf = false;
+      update();
+    });
+  };
+
+  const boot = () => {
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+
+/* =================== HOME (ARTAN) — HERO 5-SCROLL LOCK (ADDITIVE) =================== */
+(() => {
+  // Disables the legacy scroll-focus block above.
+  document.body.classList.add('hero-lock-enabled');
+
+  const hero = document.querySelector('#home-hero');
+  const headlines = document.querySelectorAll('.home-hero-headline');
+  const wrap = document.querySelector('.home-hero-headlines');
+  if (!hero || !headlines.length || !wrap) return;
+
+  const STEPS = 4;
+
+  let raf = false;
+  let active = false;
+  let released = false;
+
+  // Create a scroll runway (additive, no index.html edits)
+  const ensureSpacer = () => {
+    let spacer = document.querySelector('#hero-scroll-spacer');
+    if (!spacer) {
+      spacer = document.createElement('div');
+      spacer.id = 'hero-scroll-spacer';
+      spacer.setAttribute('aria-hidden', 'true');
+      hero.insertAdjacentElement('afterend', spacer);
+    }
+    return spacer;
+  };
+
+  const spacer = ensureSpacer();
+
+  const restore = {
+    heroStyle: hero.getAttribute('style') || '',
+    wrapStyle: wrap.getAttribute('style') || '',
+  };
+
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  const clearStepClasses = () => {
+    document.body.classList.remove('hl-1', 'hl-2', 'hl-3', 'hl-4');
+  };
+
+  const setStep = (idx0) => {
+    clearStepClasses();
+    const i = clamp(idx0, 0, STEPS - 1);
+    document.body.classList.add(`hl-${i + 1}`);
+  };
+
+  const setRunwayHeight = () => {
+    // ~Apple-like: long, smooth narrative without wheel hijack.
+    // 4 steps over ~3.2 viewports.
+    const h = Math.round(window.innerHeight * 3.2);
+    spacer.style.height = `${h}px`;
+    spacer.style.width = '1px';
+  };
+
+  const setPinned = (on) => {
+    if (on) {
+      // Pin headlines to viewport; hero layout remains as authored in CSS.
+      wrap.style.position = 'fixed';
+      wrap.style.left = '0';
+      wrap.style.top = '58%';
+      wrap.style.transform = 'translateY(-50%)';
+      wrap.style.width = '100%';
+      wrap.style.zIndex = '3';
+
+      document.body.classList.remove('hero-lock-released');
+    } else {
+      if (restore.wrapStyle) wrap.setAttribute('style', restore.wrapStyle);
+      else wrap.removeAttribute('style');
+    }
+  };
+
+  const getRanges = () => {
+    const rect = hero.getBoundingClientRect();
+    const pageY = window.scrollY || window.pageYOffset || 0;
+    const heroTop = rect.top + pageY;
+
+    const start = heroTop + Math.round(window.innerHeight * 0.10);
+    const length = spacer.getBoundingClientRect().height || Math.round(window.innerHeight * 3.2);
+    const end = start + length;
+
+    return { start, end, length, heroTop };
+  };
+
+  const resetIfAboveHero = (y, heroTop) => {
+    if (y < heroTop - 40) {
+      active = false;
+      released = false;
+      document.body.classList.remove('hero-lock-released');
+      clearStepClasses();
+      setPinned(false);
+      return true;
+    }
+    return false;
+  };
+
+  const update = () => {
+    const y = window.scrollY || window.pageYOffset || 0;
+    const { start, end, length, heroTop } = getRanges();
+
+    if (resetIfAboveHero(y, heroTop)) return;
+
+    // After narrative completes, release and let normal scroll continue.
+    if (y >= end) {
+      if (active) {
+        active = false;
+        released = true;
+        setPinned(false);
+      }
+
+      document.body.classList.add('hero-lock-released');
+      // Keep last highlight while exiting upward (CSS handles motion).
+      setStep(STEPS - 1);
+      return;
+    }
+
+    // Before start: show first headline state (no pin)
+    if (y < start) {
+      document.body.classList.remove('hero-lock-released');
+      setPinned(false);
+      setStep(0);
+      active = false;
+      released = false;
+      return;
+    }
+
+    // Inside narrative: pin and map scroll progress to steps.
+    if (!active) {
+      active = true;
+      released = false;
+      setPinned(true);
+    }
+
+    const p = clamp((y - start) / length, 0, 0.999999);
+    const idx = Math.floor(p * STEPS);
+    setStep(idx);
+  };
+
+  const onScroll = () => {
+    if (raf) return;
+    raf = true;
+    requestAnimationFrame(() => {
+      raf = false;
+      update();
+    });
+  };
+
+  const boot = () => {
+    setRunwayHeight();
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      setRunwayHeight();
+      update();
+    }, { passive: true });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();

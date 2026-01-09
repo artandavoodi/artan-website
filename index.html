@@ -79,6 +79,7 @@
 </head>
 
 <body class="site-body">
+<div class="home-scroll-gradient" aria-hidden="true"></div>
 
 <!-- =================== Custom Cursor =================== -->
 <div class="custom-cursor"></div>
@@ -139,17 +140,26 @@
   </div>
 
   <div class="home-hero-overlay" aria-hidden="true"></div>
+
   <!-- Home Hero Logo (must sit ABOVE glass overlay) -->
   <div class="home-hero-logo-layer" aria-hidden="false">
     <a class="home-hero-logo-link" href="index.html" aria-label="ARTAN">
       <img class="home-hero-logo" src="assets/icons/artan-logos/logo-typo.svg" alt="ARTAN" />
     </a>
   </div>
+
+  <!-- Home Hero Headlines (Scroll Focus) -->
+  <div class="home-hero-headlines" aria-hidden="false">
+    <p class="home-hero-headline" data-headline="specific" data-i18n-key="home.hero.headline.specific">SPECIFIC</p>
+    <p class="home-hero-headline" data-headline="different" data-i18n-key="home.hero.headline.different">DIFFERENT</p>
+    <p class="home-hero-headline" data-headline="clear" data-i18n-key="home.hero.headline.clear">CLEAR</p>
+    <p class="home-hero-headline" data-headline="intentional" data-i18n-key="home.hero.headline.intentional">INTENTIONAL</p>
+  </div>
 </section>
 
 <!-- =================== Home — Essence =================== -->
 <section class="home-section home-essence">
-  <div class="home-inner">
+  <div class="home-inner home-rail">
     <p class="home-text" data-i18n-key="home.essence.text">
       A singular field where sound, form, and consciousness converge<br>
       Structure becomes emotion · Silence becomes direction
@@ -159,10 +169,10 @@
 
 <!-- =================== Home — Music =================== -->
 <section class="home-section home-music">
-  <figure class="home-figure">
+  <figure class="home-figure home-rail">
     <img src="assets/images/homepage/placeholder-music.jpg.png" alt="Abstract sound architecture">
   </figure>
-  <div class="home-inner">
+  <div class="home-inner home-rail">
     <h2 class="home-title" data-i18n-key="home.music.title">Sound</h2>
     <p class="home-text" data-i18n-key="home.music.text">
       Composition as architecture<br>
@@ -174,7 +184,7 @@
 
 <!-- =================== Home — Books =================== -->
 <section class="home-section home-books">
-  <div class="home-inner">
+  <div class="home-inner home-rail">
     <h2 class="home-title" data-i18n-key="home.language.title">Language</h2>
     <p class="home-text" data-i18n-key="home.language.text">
       Thought condensed into form<br>
@@ -185,10 +195,10 @@
 
 <!-- =================== Home — Awareness =================== -->
 <section class="home-section home-awareness">
-  <figure class="home-figure">
+  <figure class="home-figure home-rail">
     <img src="assets/images/homepage/placeholder-awareness.png" alt="Light and structure">
   </figure>
-  <div class="home-inner">
+  <div class="home-inner home-rail">
     <h2 class="home-title" data-i18n-key="home.awareness.title">Awareness</h2>
     <p class="home-text" data-i18n-key="home.awareness.text">
       Systems that observe themselves<br>
@@ -200,10 +210,10 @@
 
 <!-- =================== Home — Form =================== -->
 <section class="home-section home-form">
-  <figure class="home-figure">
+  <figure class="home-figure home-rail">
     <img src="assets/images/homepage/placeholder-form.png" alt="Minimal object and material">
   </figure>
-  <div class="home-inner">
+  <div class="home-inner home-rail">
     <h2 class="home-title" data-i18n-key="home.form.title">Form</h2>
     <p class="home-text" data-i18n-key="home.form.text">
       Design guided by clarity<br>
@@ -215,37 +225,40 @@
 
 <!-- =================== Home — Featured Music =================== -->
 <section class="home-section home-featured home-featured-music">
-  <div class="home-inner">
-    <h2 class="home-title" data-i18n-key="home.featuredMusic.title">Featured Sound</h2>
-    <p class="home-text" data-i18n-key="home.featuredMusic.text">A rotating selection of releases and moments.</p>
-
+  <div class="home-inner home-rail">
+    <div class="featured-header">
+      <h2 class="home-title" data-i18n-key="home.featuredMusic.title">Featured Sound</h2>
+      <p class="home-text" data-i18n-key="home.featuredMusic.text">A rotating selection of releases and moments.</p>
+    </div>
     <div id="featured-music" class="featured-grid" role="list" aria-label="Featured music" data-collection="featuredMusic"></div>
   </div>
 </section>
 
 <!-- =================== Home — Featured Objects =================== -->
 <section class="home-section home-featured home-featured-products">
-  <div class="home-inner">
-    <h2 class="home-title" data-i18n-key="home.featuredProducts.title">Featured Objects</h2>
-    <p class="home-text" data-i18n-key="home.featuredProducts.text">Editions and materials shaped by precision.</p>
-
+  <div class="home-inner home-rail">
+    <div class="featured-header">
+      <h2 class="home-title" data-i18n-key="home.featuredProducts.title">Featured Objects</h2>
+      <p class="home-text" data-i18n-key="home.featuredProducts.text">Editions and materials shaped by precision.</p>
+    </div>
     <div id="featured-products" class="featured-grid" role="list" aria-label="Featured products" data-collection="featuredProducts"></div>
   </div>
 </section>
 
 <!-- =================== Home — Notes / News =================== -->
 <section class="home-section home-notes">
-  <div class="home-inner">
-    <h2 class="home-title" data-i18n-key="home.notes.title">Notes</h2>
-    <p class="home-text" data-i18n-key="home.notes.text">Updates, releases, and small signals.</p>
-
+  <div class="home-inner home-rail">
+    <div class="featured-header">
+      <h2 class="home-title" data-i18n-key="home.notes.title">Notes</h2>
+      <p class="home-text" data-i18n-key="home.notes.text">Updates, releases, and small signals.</p>
+    </div>
     <div id="featured-notes" class="notes-list" role="list" aria-label="Notes" data-collection="featuredNotes"></div>
   </div>
 </section>
 
 <!-- =================== Home — Closing =================== -->
 <section class="home-section home-closing">
-  <div class="home-inner">
+  <div class="home-inner home-rail">
     <p class="home-text" data-i18n-key="home.closing.text">
       Everything returns to silence
     </p>
@@ -456,7 +469,7 @@
 <script src="assets/js/translation.js" defer></script>
 <script src="assets/js/country-language.js" defer></script>
 <script src="assets/js/logo-animation.js" defer></script>
-<script src="assets/js/collection.js" defer></script>
+<script src="collections/collections.js" defer></script>
 <script src="assets/js/menu.js" defer></script>
 <script src="assets/js/home.js" defer></script>
 <script src="assets/js/main.js" defer></script>

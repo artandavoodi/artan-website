@@ -157,6 +157,7 @@ body.light-mode div[style*='flex-direction:column'] p{color:var(--color-black);}
 
 /* Keep baseline typography intact */
 
+
  a,
  .country-option,
  #language-toggle,
@@ -164,6 +165,41 @@ body.light-mode div[style*='flex-direction:column'] p{color:var(--color-black);}
  .locale-button{
   letter-spacing:inherit !important;
   word-spacing:normal !important;
+}
+
+/* =============================================================================
+   04B) RTL TEXT OVERRIDES (TEXT-ONLY, NO LAYOUT FLIP)
+============================================================================= */
+
+/* When a RTL language is active, keep layout LTR but fix script typography */
+html.lang-rtl [data-i18n-key]{
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  text-transform: none !important;
+  font-kerning: normal;
+  text-align: start !important;
+}
+
+/* Headings often carry tracking that breaks Arabic/Persian readability */
+html.lang-rtl h1,
+html.lang-rtl h2,
+html.lang-rtl h3,
+html.lang-rtl h4,
+html.lang-rtl h5,
+html.lang-rtl h6{
+  letter-spacing: normal;
+}
+
+/* Locale controls: remove uppercase/spacing styling in RTL */
+html.lang-rtl #language-toggle,
+html.lang-rtl #country-selector,
+html.lang-rtl .language-dropdown button,
+html.lang-rtl .language-dropdown a,
+html.lang-rtl .language-dropdown [role="menuitem"],
+html.lang-rtl .language-dropdown .language-option,
+html.lang-rtl .language-dropdown .lang-option{
+  letter-spacing: normal !important;
+  text-transform: none !important;
 }
 
 /* =============================================================================
@@ -255,6 +291,8 @@ body.menu-open #header-controls .theme-toggle{display:inline-flex;}
   /* Footer rail gutter (responsive) */
   --footer-gutter: clamp(18px, 4vw, 96px);
   --footer-rail-width: calc(100% - (var(--footer-gutter) * 2));
+  --site-gutter: var(--footer-gutter);
+  --site-rail-width: var(--footer-rail-width);
 }
 .footer-separator{
   width: var(--footer-rail-width);

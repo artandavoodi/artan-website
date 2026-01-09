@@ -12,9 +12,9 @@ section p{font-size:1.1rem;line-height:1.6;max-width:800px;margin-bottom:var(--s
 ============================================================================= */
 .featured-section{padding:6rem 0;}
 .featured-header{
-  width:90%;
-  max-width:1200px;
-  margin:0 auto 2.6rem auto;
+  width: var(--site-rail-width);
+  max-width: none;
+  margin: 0 auto 2.6rem auto;
   display:grid;
   gap:0.85rem;
 }
@@ -43,9 +43,9 @@ section p{font-size:1.1rem;line-height:1.6;max-width:800px;margin-bottom:var(--s
   margin:0;
 }
 .featured-grid{
-  width:90%;
-  max-width:1200px;
-  margin:0 auto;
+  width: var(--site-rail-width);
+  max-width: none;
+  margin: 0 auto;
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:1.25rem;
@@ -66,7 +66,7 @@ section p{font-size:1.1rem;line-height:1.6;max-width:800px;margin-bottom:var(--s
   transition:transform 0.55s cubic-bezier(0.22,1,0.36,1),opacity 0.35s ease;
 }
 .featured-card:hover{transform:translateY(-6px);}
-.featured-card-inner{padding:1.35rem 1.25rem 1.2rem;display:grid;gap:0.9rem;}
+.featured-card-inner{padding:1.35rem 1.35rem 1.2rem;display:grid;gap:0.9rem;}
 
 .featured-media{
   width:100%;
@@ -124,7 +124,7 @@ section p{font-size:1.1rem;line-height:1.6;max-width:800px;margin-bottom:var(--s
 @media (max-width:640px){
   .featured-section{padding:4.2rem 0;}
   .featured-grid{grid-template-columns:1fr;gap:1rem;}
-  .featured-card-inner{padding:1.15rem 1.05rem 1.05rem;}
+  .featured-card-inner{padding:1.15rem 1.1rem 1.05rem;}
 }
 
 /* =============================================================================
@@ -145,6 +145,15 @@ section p{font-size:1.1rem;line-height:1.6;max-width:800px;margin-bottom:var(--s
 .comment{border-bottom:1px solid #ddd;padding:1rem 0;}
 .comment:last-child{border-bottom:none;}
 .comment p{font-size:0.95rem;line-height:1.6;color:#222;margin-bottom:var(--spacing-md);}
+
+/* Rail alignment for legacy content blocks (keeps visuals consistent with footer/header gutters) */
+.section-posts .post,
+.section-comments h2,
+.section-comments .comment{
+  width: var(--site-rail-width);
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* =============================================================================
    04) HOME HERO (POST-ENTER) — FULL-BLEED VIDEO + LUX GLASS OVERLAY
@@ -391,7 +400,7 @@ body.light-mode [data-hero="home"]::after{
   z-index: 300; /* above video + glass, below menu */
   display: flex;
   justify-content: flex-start;
-  padding-left: 1.8rem;
+  padding-left: var(--site-gutter);
   pointer-events: auto;
 }
 
@@ -417,7 +426,7 @@ body.hero-logo-scrolled .home-hero-logo-layer svg {
 
   .home-hero-logo-layer {
     top: 4.1rem;
-    padding-left: 1.1rem;
+    padding-left: var(--site-gutter);
   }
 
   body.hero-logo-scrolled .home-hero-logo,
@@ -443,4 +452,199 @@ body.country-overlay-active .home-hero-logo-layer img,
 body.country-overlay-active .home-hero-logo-layer svg {
   opacity: 0 !important;
   pointer-events: none !important;
+}
+
+/* =============================================================================
+   07) HOME SCROLL GRADIENT BACKDROP (EXPERIMENTAL / ADDITIVE)
+   Reference: JescoJets — vertical chromatic fade driven by scroll (CSS-only)
+============================================================================= */
+
+.home-scroll-gradient{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  /* Top = subtle color, Bottom = neutral */
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-primary1) 14%, var(--bg-color)) 0%,
+      color-mix(in srgb, var(--bg-color) 92%, transparent) 55%,
+      var(--bg-color) 100%
+    );
+
+  transition: background 0.9s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* Mid-scroll: slightly richer top tone */
+body.scroll-mid .home-scroll-gradient{
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-primary1) 22%, var(--bg-color)) 0%,
+      color-mix(in srgb, var(--bg-color) 90%, transparent) 50%,
+      var(--bg-color) 100%
+    );
+}
+
+/* Deep-scroll: strongest presence, still neutralized at bottom */
+body.scroll-deep .home-scroll-gradient{
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-primary2) 26%, var(--bg-color)) 0%,
+      color-mix(in srgb, var(--bg-color) 88%, transparent) 45%,
+      var(--bg-color) 100%
+    );
+}
+
+
+/* =============================================================================
+   08) HOME HERO HEADLINES (SCROLL FOCUS)
+============================================================================= */
+
+.home-hero-headlines{
+  position: absolute;
+  left: 0;
+  top: 58%;
+  z-index: 3;
+
+  display: grid;
+  gap: 0.65rem;
+
+  width: 100%;
+  max-width: none;
+  padding: 0 var(--site-gutter);
+
+  transform: translateY(-50%);
+  text-align: left;
+
+  opacity: 1;
+  pointer-events: none;
+
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 820px){
+  .home-hero-headlines{
+    padding: 0 var(--site-gutter);
+    max-width: 92vw;
+  }
+}
+
+.home-hero-headline{
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-color);
+  opacity: 0.22;
+  transform: translateY(0px) scale(0.92);
+  transition:
+    opacity 0.6s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s ease;
+  will-change: transform, opacity;
+  filter: blur(0.6px);
+
+  /* Size: huge, restrained. No clamp(). */
+  font-size: 8.2vw;
+  line-height: 0.92;
+}
+
+@media (min-width: 1200px){
+  .home-hero-headline{font-size: 100px;}
+}
+
+@media (max-width: 820px){
+  .home-hero-headline{font-size: 14vw;}
+}
+
+
+/* Active headline states (JS toggles these on <body>) */
+body.hl-1 .home-hero-headline:nth-child(1),
+body.hl-2 .home-hero-headline:nth-child(2),
+body.hl-3 .home-hero-headline:nth-child(3),
+body.hl-4 .home-hero-headline:nth-child(4){
+  opacity: 0.92;
+  transform: translateY(-2px) scale(1.06);
+  filter: blur(0px);
+}
+
+body.hl-1 .home-hero-headline:not(:nth-child(1)),
+body.hl-2 .home-hero-headline:not(:nth-child(2)),
+body.hl-3 .home-hero-headline:not(:nth-child(3)),
+body.hl-4 .home-hero-headline:not(:nth-child(4)){
+  opacity: 0.14;
+  transform: translateY(2px) scale(0.90);
+  filter: blur(0.9px);
+}
+
+/* Exit motion after the 4th headline completes (JS toggles on <body>) */
+body.hero-lock-released .home-hero-headlines{
+  transform: translateY(calc(-50% - 140px));
+}
+
+
+/* Defensive: hide during overlays */
+body.menu-open .home-hero-headlines,
+body.country-overlay-active .home-hero-headlines{
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
+/* =============================================================================
+   09) HOME RAIL ALIGNMENT (GLOBAL HOME SECTIONS)
+============================================================================= */
+
+/* Unified rail for homepage content blocks (matches footer/header gutter) */
+.home-rail{
+  width: var(--site-rail-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Full-bleed homepage figures (edge-to-edge on all devices) */
+.home-figure.home-rail{
+  width: 100vw;
+  max-width: none;
+  margin-left: 50%;
+  margin-right: 0;
+  transform: translateX(-50%);
+}
+
+.home-figure.home-rail img{
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+
+/* =============================================================================
+   10) RTL HOME ALIGNMENT (TEXT-ONLY, KEEP LTR RAIL)
+============================================================================= */
+
+/* Keep the same left rail alignment in RTL languages (no centering, no layout flip) */
+html.lang-rtl .home-hero-headlines,
+html.lang-rtl .home-inner,
+html.lang-rtl .home-rail,
+html.lang-rtl .featured-header,
+html.lang-rtl .featured-grid,
+html.lang-rtl .section-posts .post,
+html.lang-rtl .section-comments h2,
+html.lang-rtl .section-comments .comment{
+  text-align: left !important;
+}
+
+/* Force translated nodes to respect the left rail (overrides global [data-i18n-key] text-align) */
+html.lang-rtl .home-inner [data-i18n-key],
+html.lang-rtl .home-hero-headlines [data-i18n-key],
+html.lang-rtl .featured-header [data-i18n-key],
+html.lang-rtl .featured-grid [data-i18n-key],
+html.lang-rtl .section-posts [data-i18n-key],
+html.lang-rtl .section-comments [data-i18n-key]{
+  text-align: left !important;
 }
