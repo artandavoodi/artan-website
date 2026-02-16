@@ -141,6 +141,24 @@
       return;
     }
 
+    // Earlier fade: during the hero headline sequence, hide from step 3 onward.
+    // hl-1: original, hl-2: shrunk, hl-3/hl-4: fade out + stay hidden.
+    const inHl1 = document.body.classList.contains('hl-1');
+    const inHl2 = document.body.classList.contains('hl-2');
+    const inHl3 = document.body.classList.contains('hl-3');
+    const inHl4 = document.body.classList.contains('hl-4');
+    const heroReleased = document.body.classList.contains('hero-lock-released');
+
+    if (inHl3 || inHl4 || heroReleased) {
+      logoFadeLock = true;
+      setLogoHidden(true);
+      return;
+    }
+
+    if (logoFadeLock && (inHl1 || inHl2) && !heroReleased) {
+      logoFadeLock = false;
+    }
+
     setLogoHidden(false);
 
     // Fade out the logo as we approach Home — Music (Sound), then keep it hidden below.
@@ -676,14 +694,37 @@
 (() => {
   const section = document.querySelector('.home-essence');
   const wrap = document.querySelector('.home-ink-reveal');
-  const lines = document.querySelectorAll('.home-ink-reveal .ink-line');
+  const lines = document.querySelectorAll(
+    '.home-ink-reveal .home-ink-layer, .home-ink-reveal .ink-line'
+  );
   if (!section || !wrap || lines.length < 3) return;
+
+  // Ensure CSS overlay-sheen has a stable text source (future-proof across i18n swaps)
+  const syncEssenceText = () => {
+    for (const el of lines) {
+      const txt = (el.textContent || '').trim();
+      if (txt) el.setAttribute('data-essence-text', txt);
+    }
+  };
+
+  // Watch for translation updates inside the essence block
+  const mo = new MutationObserver(() => {
+    syncEssenceText();
+  });
+  mo.observe(wrap, { subtree: true, childList: true, characterData: true });
 
   let raf = false;
   let active = false;
   let snapped = false;
 
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  const setOnly = (idx) => {
+    for (let i = 0; i < lines.length; i++) {
+      lines[i].style.opacity = i === idx ? '1' : '0';
+      lines[i].style.visibility = i === idx ? 'visible' : 'hidden';
+    }
+  };
 
   // Create scroll runway (additive; no HTML edits)
   const ensureSpacer = () => {
@@ -739,16 +780,34 @@
       wrap.style.left = '50%';
       wrap.style.top = '50%';
       wrap.style.transform = 'translate(-50%, -50%)';
-      wrap.style.width = 'auto';
+
+      // Stable stage for layered lines (prevents collapse/disappear)
+      wrap.style.width = '100vw';
+      wrap.style.maxWidth = 'none';
+      wrap.style.margin = '0';
+      wrap.style.display = 'flex';
+      wrap.style.alignItems = 'center';
+      wrap.style.justifyContent = 'center';
       wrap.style.zIndex = '3';
+      wrap.style.visibility = 'visible';
+      wrap.style.opacity = '1';
 
       document.body.classList.add('essence-pinned');
       active = true;
+
+      // Ensure layered visibility is controlled by JS (single line at a time)
+      setOnly(0);
     } else {
       backdrop.style.display = 'none';
 
       if (restore.wrapStyle) wrap.setAttribute('style', restore.wrapStyle);
       else wrap.removeAttribute('style');
+
+      // Restore default visibility so normal flow never “loses” the lines
+      for (const el of lines) {
+        el.style.opacity = '';
+        el.style.visibility = '';
+      }
 
       document.body.classList.remove('essence-pinned');
       active = false;
@@ -775,6 +834,8 @@
         el.style.setProperty('--ink', 0);
         el.style.setProperty('--sheen', 0);
         el.style.transform = '';
+        el.style.opacity = '';
+        el.style.visibility = '';
       }
       backdrop.style.display = 'none';
       snapped = false;
@@ -809,6 +870,8 @@
 
   const update = () => {
     const y = window.scrollY || window.pageYOffset || 0;
+    syncEssenceText();
+
     const { start, end, length, top } = getRanges();
 
     if (resetIfAbove(y, top)) return;
@@ -820,8 +883,9 @@
 
       // Magnetic snap: after Essence completes, align Home — Music (the image owner) to the top edge.
       if (!snapped) {
-        const target = document.querySelector('#home-sound-figure')
-          || document.querySelector('#essence-scroll-spacer + section + section');
+        const target =
+          document.querySelector('#home-sound-figure') ||
+          document.querySelector('#essence-scroll-spacer + section + section');
 
         if (target) {
           const r = target.getBoundingClientRect();
@@ -832,10 +896,6 @@
         }
       }
 
-      lines[0].style.setProperty('--ink', 1);
-      lines[1].style.setProperty('--ink', 1);
-      lines[2].style.setProperty('--ink', 1);
-
       setSheen(lines[0], 0);
       setSheen(lines[1], 0);
       setSheen(lines[2], 0);
@@ -843,6 +903,7 @@
       lines[0].style.transform = 'scale(1)';
       lines[1].style.transform = 'scale(1)';
       lines[2].style.transform = 'scale(1)';
+      setOnly(2);
       return;
     }
 
@@ -861,6 +922,12 @@
       lines[0].style.transform = '';
       lines[1].style.transform = '';
       lines[2].style.transform = '';
+
+      // Keep the first line staged but hidden before activation
+      setOnly(0);
+      lines[0].style.opacity = '0';
+      lines[0].style.visibility = 'hidden';
+
       snapped = false;
       return;
     }
@@ -869,6 +936,11 @@
     if (!active) setPinned(true);
 
     const progress = clamp((y - start) / length, 0, 1);
+
+    // One centered line at a time
+    if (progress < 0.55) setOnly(0);
+    else if (progress < 0.90) setOnly(1);
+    else setOnly(2);
 
     // Timeline
     // 0.00 → 0.40 : line 1 light pass
@@ -905,6 +977,7 @@
   };
 
   const boot = () => {
+    syncEssenceText();
     setRunwayHeight();
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
