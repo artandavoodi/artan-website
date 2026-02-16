@@ -1,10 +1,9 @@
-/* =================== HOME (ARTAN) — HERO LOGO STICK + SCALE =================== */
-/*
-  Behavior:
-  - After ENTER (body.site-entered), the Home Hero logo stays in its designed place.
-  - On scroll, it becomes fixed, shrinks hard, and holds in the corner.
-  - Content scrolls behind it. No dependencies.
-*/
+/* =============================================================================
+   01) HOME HERO — LOGO STICK + SCALE
+   - After ENTER (body.site-entered), logo stays in place.
+   - On scroll, logo pins, shrinks, and holds.
+   - Content scrolls behind it.
+============================================================================= */
 
 (() => {
   const hero = document.querySelector('#home-hero');
@@ -222,8 +221,10 @@
   }
 })();
 
-/* =================== HOME (ARTAN) — SCROLL GRADIENT STATES =================== */
-/* Adds body state classes for CSS-driven gradient transitions */
+/* =============================================================================
+   02) HOME — SCROLL GRADIENT STATES
+   - Adds body classes for CSS-driven gradient transitions.
+============================================================================= */
 
 (() => {
   let raf = false;
@@ -262,8 +263,11 @@
   }
 })();
 
-/* =================== HOME (ARTAN) — HERO HEADLINE SCROLL FOCUS =================== */
-/* Cycles focus across hero headlines, then hides them after hero section */
+/* =============================================================================
+   03) HOME HERO — HEADLINE SCROLL FOCUS (LEGACY)
+   - Cycles focus across hero headlines.
+   - Disabled when hero-lock-enabled is present.
+============================================================================= */
 
 (() => {
   if (document.body.classList.contains('hero-lock-enabled')) return;
@@ -324,7 +328,12 @@
   }
 })();
 
-/* =================== HOME (ARTAN) — HERO 5-SCROLL LOCK (ADDITIVE) =================== */
+/* =============================================================================
+   04) HOME HERO — PINNED HEADLINE SEQUENCE (ACTIVE)
+   - Pins the hero headline stack.
+   - Steps through headlines via scroll runway.
+   - Releases scroll after the sequence.
+============================================================================= */
 (() => {
   // Disables the legacy scroll-focus block above.
   document.body.classList.add('hero-lock-enabled');
@@ -522,7 +531,12 @@
   }
 })();
 
-/* =================== HOME (ARTAN) — ESSENCE INK SCROLL SCRUB (PINNED, 3‑STAGE) =================== */
+/* =============================================================================
+   05) HOME ESSENCE — PINNED LIGHT PASS (3-LINE)
+   - Pins the essence lines in-frame.
+   - Drives the internal light sweep via scroll runway.
+   - Releases scroll after completion.
+============================================================================= */
 (() => {
   const section = document.querySelector('.home-essence');
   const wrap = document.querySelector('.home-ink-reveal');
@@ -581,11 +595,9 @@
 
   const setPinned = (on) => {
     if (on) {
-      // Cover the viewport behind the pinned text so the next section can’t bleed in.
       backdrop.style.backgroundColor = getComputedStyle(document.body).backgroundColor;
       backdrop.style.display = 'block';
 
-      // Keep the reveal centered and sized by CSS (do not force width:100%).
       wrap.style.position = 'fixed';
       wrap.style.left = '50%';
       wrap.style.top = '50%';
@@ -611,7 +623,6 @@
     const pageY = window.scrollY || window.pageYOffset || 0;
     const top = rect.top + pageY;
 
-    // Begin pin shortly after the section reaches view
     const start = top + Math.round(window.innerHeight * 0.15);
     const length = spacer.getBoundingClientRect().height || Math.round(window.innerHeight * 4.6);
     const end = start + length;
@@ -622,7 +633,6 @@
   const resetIfAbove = (y, top) => {
     if (y < top - 60) {
       setPinned(false);
-      // Reset reveal vars
       for (const el of lines) {
         el.style.setProperty('--ink', 0);
         el.style.setProperty('--sheen', 0);
@@ -639,24 +649,46 @@
     return 1 + (0.08 * (1 - Math.abs(t - 0.5) * 2));
   };
 
+  // RTL-aware sheen direction:
+  // LTR: 0→1 travels left→right
+  // RTL: 0→1 travels right→left (by inverting t)
+  const isRTL = () => {
+    const html = document.documentElement;
+    return (
+      html.classList.contains('lang-rtl') ||
+      html.getAttribute('dir') === 'rtl' ||
+      document.body.classList.contains('lang-rtl')
+    );
+  };
+
+  const setSheen = (el, t) => {
+    const tt = clamp(t, 0, 1);
+
+    // NOTE: CSS sheen sweep currently moves right→left when --sheen increases.
+    // Flip for LTR so it reads left→right; keep RTL mirrored.
+    const dirT = isRTL() ? tt : (1 - tt);
+
+    el.style.setProperty('--sheen', dirT);
+  };
+
   const update = () => {
     const y = window.scrollY || window.pageYOffset || 0;
     const { start, end, length, top } = getRanges();
 
     if (resetIfAbove(y, top)) return;
 
-    // After completion: release and let page continue.
+    // After completion: release and REMOVE the highlight (do not “stay”).
     if (y >= end) {
       if (active) setPinned(false);
       backdrop.style.display = 'none';
 
-      // Ensure final state is fully revealed.
       lines[0].style.setProperty('--ink', 1);
-      lines[0].style.setProperty('--sheen', 1);
       lines[1].style.setProperty('--ink', 1);
-      lines[1].style.setProperty('--sheen', 1);
       lines[2].style.setProperty('--ink', 1);
-      lines[2].style.setProperty('--sheen', 1);
+
+      setSheen(lines[0], 0);
+      setSheen(lines[1], 0);
+      setSheen(lines[2], 0);
 
       lines[0].style.transform = 'scale(1)';
       lines[1].style.transform = 'scale(1)';
@@ -664,16 +696,17 @@
       return;
     }
 
-    // Before start: keep unpinned, first line ready.
+    // Before start: unpinned, no highlight.
     if (y < start) {
       if (active) setPinned(false);
 
       lines[0].style.setProperty('--ink', 0);
-      lines[0].style.setProperty('--sheen', 0);
       lines[1].style.setProperty('--ink', 0);
-      lines[1].style.setProperty('--sheen', 0);
       lines[2].style.setProperty('--ink', 0);
-      lines[2].style.setProperty('--sheen', 0);
+
+      setSheen(lines[0], 0);
+      setSheen(lines[1], 0);
+      setSheen(lines[2], 0);
 
       lines[0].style.transform = '';
       lines[1].style.transform = '';
@@ -687,24 +720,24 @@
     const progress = clamp((y - start) / length, 0, 1);
 
     // Timeline
-    // 0.00 → 0.40 : line 1 reveal
+    // 0.00 → 0.40 : line 1 light pass
     // 0.40 → 0.55 : line 1 bump
-    // 0.55 → 0.80 : line 2 reveal
+    // 0.55 → 0.80 : line 2 light pass
     // 0.80 → 0.90 : line 2 bump
-    // 0.90 → 1.00 : line 3 reveal + bump
+    // 0.90 → 1.00 : line 3 light pass + bump
 
-    const l1Reveal = clamp(progress / 0.40, 0, 1);
-    const l2Reveal = clamp((progress - 0.55) / 0.25, 0, 1);
-    const l3Reveal = clamp((progress - 0.90) / 0.10, 0, 1);
+    const l1 = clamp(progress / 0.40, 0, 1);
+    const l2 = clamp((progress - 0.55) / 0.25, 0, 1);
+    const l3 = clamp((progress - 0.90) / 0.10, 0, 1);
 
-    lines[0].style.setProperty('--ink', l1Reveal);
-    lines[0].style.setProperty('--sheen', l1Reveal);
+    lines[0].style.setProperty('--ink', l1);
+    setSheen(lines[0], l1);
 
-    lines[1].style.setProperty('--ink', l2Reveal);
-    lines[1].style.setProperty('--sheen', l2Reveal);
+    lines[1].style.setProperty('--ink', l2);
+    setSheen(lines[1], l2);
 
-    lines[2].style.setProperty('--ink', l3Reveal);
-    lines[2].style.setProperty('--sheen', l3Reveal);
+    lines[2].style.setProperty('--ink', l3);
+    setSheen(lines[2], l3);
 
     lines[0].style.transform = `scale(${bump(progress, 0.40, 0.55)})`;
     lines[1].style.transform = `scale(${bump(progress, 0.80, 0.90)})`;
