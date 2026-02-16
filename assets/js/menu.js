@@ -25,6 +25,37 @@
   const packSocial = document.getElementById('menu-pack-social');
   const PACK_FLIP_ENABLED = false;
 
+  // Hide optional links (kept in markup for future use)
+  const hideMenuPackLinks = () => {
+    const icons = Array.from(menuOverlay.querySelectorAll('.menu-pack-icon'));
+
+    icons.forEach((el) => {
+      const label = (el.getAttribute('aria-label') || '').toLowerCase().trim();
+      const href = (el.getAttribute('href') || '').toLowerCase().trim();
+
+      const isYouTubeMusic =
+        label === 'youtube music' ||
+        label === 'youtubemusic' ||
+        href.includes('music.youtube') ||
+        href.includes('youtube.com/music');
+
+      const isGitHub =
+        label === 'github' ||
+        href.includes('github.com');
+
+      if (isYouTubeMusic || isGitHub) {
+        el.hidden = true;
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+        el.style.pointerEvents = 'none';
+      }
+    });
+  };
+
+  // Run immediately and again on open (in case packs are rehydrated/reset)
+  hideMenuPackLinks();
+  document.addEventListener('menuOpen', hideMenuPackLinks);
+
   // Hard-disable the flip UI immediately (even before menu opens).
   if (!PACK_FLIP_ENABLED && menuPackToggle) {
     menuPackToggle.style.opacity = '0';
