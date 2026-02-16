@@ -354,6 +354,36 @@
 
   const spacer = ensureSpacer();
 
+
+  // Backdrop to prevent next section from bleeding in while pinned (no CSS dependency)
+  const ensureBackdrop = () => {
+    let bd = document.querySelector('#hero-pin-backdrop');
+    if (!bd) {
+      bd = document.createElement('div');
+      bd.id = 'hero-pin-backdrop';
+      bd.setAttribute('aria-hidden', 'true');
+      bd.style.position = 'fixed';
+      bd.style.inset = '0';
+      bd.style.pointerEvents = 'none';
+      bd.style.opacity = '1';
+      bd.style.display = 'none';
+      bd.style.zIndex = '2';
+      document.body.appendChild(bd);
+    }
+    return bd;
+  };
+
+  const backdrop = ensureBackdrop();
+
+  const showBackdrop = () => {
+    backdrop.style.backgroundColor = getComputedStyle(document.body).backgroundColor;
+    backdrop.style.display = 'block';
+  };
+
+  const hideBackdrop = () => {
+    backdrop.style.display = 'none';
+  };
+
   const restore = {
     heroStyle: hero.getAttribute('style') || '',
     wrapStyle: wrap.getAttribute('style') || '',
@@ -381,6 +411,7 @@
 
   const setPinned = (on) => {
     if (on) {
+      showBackdrop();
       // Pin headlines to viewport; hero layout remains as authored in CSS.
       wrap.style.position = 'fixed';
       wrap.style.left = '0';
@@ -391,6 +422,7 @@
 
       document.body.classList.remove('hero-lock-released');
     } else {
+      hideBackdrop();
       if (restore.wrapStyle) wrap.setAttribute('style', restore.wrapStyle);
       else wrap.removeAttribute('style');
     }
@@ -415,6 +447,7 @@
       document.body.classList.remove('hero-lock-released');
       clearStepClasses();
       setPinned(false);
+      hideBackdrop();
       return true;
     }
     return false;
@@ -432,6 +465,7 @@
         active = false;
         released = true;
         setPinned(false);
+        hideBackdrop();
       }
 
       document.body.classList.add('hero-lock-released');
@@ -460,6 +494,221 @@
     const p = clamp((y - start) / length, 0, 0.999999);
     const idx = Math.floor(p * STEPS);
     setStep(idx);
+  };
+
+  const onScroll = () => {
+    if (raf) return;
+    raf = true;
+    requestAnimationFrame(() => {
+      raf = false;
+      update();
+    });
+  };
+
+  const boot = () => {
+    setRunwayHeight();
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      setRunwayHeight();
+      update();
+    }, { passive: true });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+
+/* =================== HOME (ARTAN) — ESSENCE INK SCROLL SCRUB (PINNED, 3‑STAGE) =================== */
+(() => {
+  const section = document.querySelector('.home-essence');
+  const wrap = document.querySelector('.home-ink-reveal');
+  const lines = document.querySelectorAll('.home-ink-reveal .ink-line');
+  if (!section || !wrap || lines.length < 3) return;
+
+  let raf = false;
+  let active = false;
+
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  // Create scroll runway (additive; no HTML edits)
+  const ensureSpacer = () => {
+    let spacer = document.querySelector('#essence-scroll-spacer');
+    if (!spacer) {
+      spacer = document.createElement('div');
+      spacer.id = 'essence-scroll-spacer';
+      spacer.setAttribute('aria-hidden', 'true');
+      section.insertAdjacentElement('afterend', spacer);
+    }
+    return spacer;
+  };
+
+  const spacer = ensureSpacer();
+
+  // Backdrop to prevent next section from bleeding in while pinned (no CSS dependency)
+  const ensureBackdrop = () => {
+    let bd = document.querySelector('#essence-pin-backdrop');
+    if (!bd) {
+      bd = document.createElement('div');
+      bd.id = 'essence-pin-backdrop';
+      bd.setAttribute('aria-hidden', 'true');
+      bd.style.position = 'fixed';
+      bd.style.inset = '0';
+      bd.style.pointerEvents = 'none';
+      bd.style.opacity = '1';
+      bd.style.display = 'none';
+      bd.style.zIndex = '2';
+      document.body.appendChild(bd);
+    }
+    return bd;
+  };
+
+  const backdrop = ensureBackdrop();
+
+  const restore = {
+    wrapStyle: wrap.getAttribute('style') || '',
+  };
+
+  const setRunwayHeight = () => {
+    // Slow, readable pace: ~4.6 viewports of runway.
+    const h = Math.round(window.innerHeight * 4.6);
+    spacer.style.height = `${h}px`;
+    spacer.style.width = '1px';
+  };
+
+  const setPinned = (on) => {
+    if (on) {
+      // Cover the viewport behind the pinned text so the next section can’t bleed in.
+      backdrop.style.backgroundColor = getComputedStyle(document.body).backgroundColor;
+      backdrop.style.display = 'block';
+
+      // Keep the reveal centered and sized by CSS (do not force width:100%).
+      wrap.style.position = 'fixed';
+      wrap.style.left = '50%';
+      wrap.style.top = '50%';
+      wrap.style.transform = 'translate(-50%, -50%)';
+      wrap.style.width = 'auto';
+      wrap.style.zIndex = '3';
+
+      document.body.classList.add('essence-pinned');
+      active = true;
+    } else {
+      backdrop.style.display = 'none';
+
+      if (restore.wrapStyle) wrap.setAttribute('style', restore.wrapStyle);
+      else wrap.removeAttribute('style');
+
+      document.body.classList.remove('essence-pinned');
+      active = false;
+    }
+  };
+
+  const getRanges = () => {
+    const rect = section.getBoundingClientRect();
+    const pageY = window.scrollY || window.pageYOffset || 0;
+    const top = rect.top + pageY;
+
+    // Begin pin shortly after the section reaches view
+    const start = top + Math.round(window.innerHeight * 0.15);
+    const length = spacer.getBoundingClientRect().height || Math.round(window.innerHeight * 4.6);
+    const end = start + length;
+
+    return { start, end, length, top };
+  };
+
+  const resetIfAbove = (y, top) => {
+    if (y < top - 60) {
+      setPinned(false);
+      // Reset reveal vars
+      for (const el of lines) {
+        el.style.setProperty('--ink', 0);
+        el.style.setProperty('--sheen', 0);
+        el.style.transform = '';
+      }
+      backdrop.style.display = 'none';
+      return true;
+    }
+    return false;
+  };
+
+  const bump = (p, a, b) => {
+    const t = clamp((p - a) / (b - a), 0, 1);
+    return 1 + (0.08 * (1 - Math.abs(t - 0.5) * 2));
+  };
+
+  const update = () => {
+    const y = window.scrollY || window.pageYOffset || 0;
+    const { start, end, length, top } = getRanges();
+
+    if (resetIfAbove(y, top)) return;
+
+    // After completion: release and let page continue.
+    if (y >= end) {
+      if (active) setPinned(false);
+      backdrop.style.display = 'none';
+
+      // Ensure final state is fully revealed.
+      lines[0].style.setProperty('--ink', 1);
+      lines[0].style.setProperty('--sheen', 1);
+      lines[1].style.setProperty('--ink', 1);
+      lines[1].style.setProperty('--sheen', 1);
+      lines[2].style.setProperty('--ink', 1);
+      lines[2].style.setProperty('--sheen', 1);
+
+      lines[0].style.transform = 'scale(1)';
+      lines[1].style.transform = 'scale(1)';
+      lines[2].style.transform = 'scale(1)';
+      return;
+    }
+
+    // Before start: keep unpinned, first line ready.
+    if (y < start) {
+      if (active) setPinned(false);
+
+      lines[0].style.setProperty('--ink', 0);
+      lines[0].style.setProperty('--sheen', 0);
+      lines[1].style.setProperty('--ink', 0);
+      lines[1].style.setProperty('--sheen', 0);
+      lines[2].style.setProperty('--ink', 0);
+      lines[2].style.setProperty('--sheen', 0);
+
+      lines[0].style.transform = '';
+      lines[1].style.transform = '';
+      lines[2].style.transform = '';
+      return;
+    }
+
+    // Inside pinned narrative
+    if (!active) setPinned(true);
+
+    const progress = clamp((y - start) / length, 0, 1);
+
+    // Timeline
+    // 0.00 → 0.40 : line 1 reveal
+    // 0.40 → 0.55 : line 1 bump
+    // 0.55 → 0.80 : line 2 reveal
+    // 0.80 → 0.90 : line 2 bump
+    // 0.90 → 1.00 : line 3 reveal + bump
+
+    const l1Reveal = clamp(progress / 0.40, 0, 1);
+    const l2Reveal = clamp((progress - 0.55) / 0.25, 0, 1);
+    const l3Reveal = clamp((progress - 0.90) / 0.10, 0, 1);
+
+    lines[0].style.setProperty('--ink', l1Reveal);
+    lines[0].style.setProperty('--sheen', l1Reveal);
+
+    lines[1].style.setProperty('--ink', l2Reveal);
+    lines[1].style.setProperty('--sheen', l2Reveal);
+
+    lines[2].style.setProperty('--ink', l3Reveal);
+    lines[2].style.setProperty('--sheen', l3Reveal);
+
+    lines[0].style.transform = `scale(${bump(progress, 0.40, 0.55)})`;
+    lines[1].style.transform = `scale(${bump(progress, 0.80, 0.90)})`;
+    lines[2].style.transform = `scale(${bump(progress, 0.98, 1.00)})`;
   };
 
   const onScroll = () => {

@@ -648,3 +648,103 @@ html.lang-rtl .section-posts [data-i18n-key],
 html.lang-rtl .section-comments [data-i18n-key]{
   text-align: left !important;
 }
+
+
+/* =============================================================================
+   11) HOME ESSENCE — SCROLL-SCRUBBED INK REVEAL
+============================================================================= */
+
+.home-ink-reveal{
+  width: var(--site-rail-width);
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  gap: 0.75rem;
+
+  text-align: center;
+  justify-items: center;
+  max-width: 74ch;
+}
+
+/* The reveal is driven by CSS variables set by JS:
+   --ink: 0..1 (reveal amount)
+   --sheen: 0..1 (subtle internal sweep)
+*/
+.ink-line{
+  margin: 0;
+  position: relative;
+
+  font-size: 1.35rem;
+  line-height: 1.22;
+  font-weight: 400;
+
+  /* Base typography inherits .home-text; keep it crisp */
+  letter-spacing: 0.01em;
+
+  /* Fallback: always visible text */
+  color: var(--text-color);
+  -webkit-text-fill-color: var(--text-color);
+
+  /* Sheen gradient (safe, no color-mix dependency) */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 40%,
+    var(--text-color) 50%,
+    transparent 62%,
+    transparent 100%
+  );
+  background-size: 320% 100%;
+  background-position: calc(var(--sheen, 0) * 100%) 50%;
+
+  will-change: background-position;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text){
+  .ink-line{
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.ink-line--sub{
+  opacity: 0.86;
+}
+
+/* Mobile breathing room */
+@media (max-width: 820px){
+  .home-ink-reveal{gap: 0.7rem;}
+}
+
+@media (min-width: 1024px){
+  .ink-line{font-size: 1.7rem;}
+}
+
+/* RTL: keep center alignment, but let punctuation shape correctly */
+html.lang-rtl .home-ink-reveal [data-i18n-key]{
+  direction: rtl;
+  unicode-bidi: isolate;
+  text-align: center !important;
+}
+
+
+/* =============================================================================
+   12) POST-ESSENCE SECTION REVEAL (SOFT RISE-IN)
+============================================================================= */
+
+/* Animate the next section in after the Essence pinned narrative releases */
+#essence-scroll-spacer + section{
+  will-change: transform, opacity;
+  transition:
+    transform 1.25s cubic-bezier(0.22,1,0.36,1),
+    opacity 1.05s ease;
+}
+
+/* While Essence is pinned, keep the next section out of view (no sudden pop) */
+body.essence-pinned #essence-scroll-spacer + section{
+  opacity: 0;
+  transform: translateY(70px);
+  pointer-events: none;
+}
