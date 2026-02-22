@@ -263,5 +263,15 @@ cat > "$PUB_INDEX" <<HTML
 </html>
 HTML
 
-# Done
-printf "\n[OK] Synced Obsidian → content_sync and rebuilt Publications index.\n"
+
+# 3) Auto-commit and push website changes
+cd "$SITE_ROOT"
+
+git add .
+if ! git diff --cached --quiet; then
+  git commit -m "Auto sync: Obsidian → Website"
+  git push origin main
+  printf "\n[OK] Synced, rebuilt index, committed, and pushed to GitHub.\n"
+else
+  printf "\n[OK] No changes detected. Sync complete.\n"
+fi
