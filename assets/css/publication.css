@@ -8,10 +8,13 @@
   position:relative;
   z-index:2;
   width:100%;
-  max-width:var(--content-max-width, 1200px);
-  margin:0 auto;
+  max-width:none;
+  margin:0;
+  box-sizing:border-box;
+
   padding-top:6rem;
   padding-bottom:4rem;
+
   /* Align with footer rail */
   padding-left:var(--footer-gutter, 2rem);
   padding-right:var(--footer-gutter, 2rem);
@@ -89,8 +92,8 @@
   right:0;
   top:0;
   height:1px;
-  background:var(--border-color, rgba(255,255,255,0.10));
-  opacity:0.8;
+  background:var(--border-color);
+  opacity:0.6;
 }
 
 .publication-link{
@@ -178,7 +181,7 @@
 }
 
 .publication-link:focus-visible{
-  outline:1px solid var(--border-color, rgba(255,255,255,0.22));
+  outline:1px solid var(--border-color);
   outline-offset:6px;
   border-radius:10px;
 }
