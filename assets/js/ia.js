@@ -1,3 +1,7 @@
+// =================== IA Loader (Information Architecture Backbone) ===================
+// Loads assets/data/ia.json and exposes it globally as window.ARTAN_IA
+// Emits: 'artan:ia:ready' and 'artan:ia:error'
+
 (() => {
   const IA_URL = 'assets/data/ia.json';
 
