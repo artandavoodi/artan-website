@@ -1,37 +1,11 @@
-ARTAN — UPDATE MANUAL
+UPDATE MANUAL
 Local → GitHub (Vault + Website)
 
 ==========================================================================
-0) FULL UPDATE
+FULL UPDATE
 ==========================================================================
 
 cd ~/Library/"Mobile Documents"/iCloud~md~obsidian/Documents/I && git add -A && (git diff --cached --quiet || git commit -m "Vault update") && git push && cd /Users/artan/Documents/Site/artan-website && bash ./sync_from_vault.sh && git add -A && (git diff --cached --quiet || git commit -m "Update site") && git push origin main
-
-==========================================================================
-A) VAULT UPDATE
-==========================================================================
-
-PATH: ~/Library/"Mobile Documents"/iCloud~md~obsidian/Documents/I
-
-cd ~/Library/"Mobile Documents"/iCloud~md~obsidian/Documents/I && git status && git add . && git commit -m "Vault update" && git push
-
-
-==========================================================================
-B) SYNC VAULT → WEBSITE
-==========================================================================
-
-PATH: /Users/artan/Documents/Site/artan-website
-
-cd /Users/artan/Documents/Site/artan-website && ./sync_from_vault.sh
-
-
-==========================================================================
-C) WEBSITE UPDATE
-==========================================================================
-
-PATH: /Users/artan/Documents/Site/artan-website
-
-cd /Users/artan/Documents/Site/artan-website && git status && git add . && git commit -m "Update site" && git push origin main
 
 ==========================================================================
 CORE MODEL

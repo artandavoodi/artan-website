@@ -1,64 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- =================== Basic Meta =================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Title</title>
+    <title>Publication • Artan</title>
+
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/menu.css">
+    <link rel="stylesheet" href="assets/css/country-overlay.css">
     <link rel="stylesheet" href="assets/css/publication.css">
-    <meta name="description" content="Post content page for Artan">
+
+    <meta name="description" content="Publication page for Artan">
+
+    <!-- Markdown Engine -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
     <script src="assets/js/publication.js" defer></script>
+
+    <!-- Core Scripts -->
+    <script src="assets/js/ia.js" defer></script>
     <script src="assets/js/darkmode.js" defer></script>
+    <script src="assets/js/countries.js" defer></script>
+    <script src="assets/js/translation.js" defer></script>
+    <script src="assets/js/country-language.js" defer></script>
+    <script src="assets/js/menu.js" defer></script>
     <script src="assets/js/main.js" defer></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <!-- Header -->
-    <header class="site-header">
-        <div class="container">
-            <h1>Artan</h1>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="music.html">Music</a></li>
-                    <li><a href="projects.html">Projects</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
+
+<body class="site-body">
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Header Controls -->
+    <header id="header-controls" class="site-header">
+        <button id="menu-button" aria-label="Open menu">
+            <span class="line line-top"></span>
+            <span class="line line-bottom"></span>
+        </button>
     </header>
 
-    <!-- Main Content -->
-    <main class="site-main section-inner thin animated fadeIn faster publication-main">
-        <!-- Featured Image -->
-        <div class="bg-img publication-feature"></div>
-
-        <!-- Post Title -->
-        <h1 id="post-title" class="publication-title">Loading…</h1>
-
-        <!-- Post Content -->
-        <div id="post-content" class="content publication-content">
-            <p>Loading…</p>
-        </div>
-
-        <!-- Discussion -->
-        <section id="comments" class="thin">
-            <div class="container">
-                <h2 class="publication-heading">Discussion</h2>
-                <div class="comment" id="publication-comments">
-                    <p class="publication-muted">Comments system is not enabled yet.</p>
-                </div>
+    <!-- =================== Main Publication =================== -->
+    <main class="publication-main">
+        <div class="publication-container">
+            <h1 id="post-title" class="publication-title">Loading…</h1>
+            <div id="post-content" class="publication-content">
+                <p>Loading…</p>
             </div>
-        </section>
+        </div>
     </main>
 
-    <!-- Footer -->
+    <!-- =================== Footer =================== -->
     <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2025 Artan. All rights reserved.</p>
+        <div class="footer-flex">
+            <div class="footer-left">© 2026 ARTAN</div>
+
+            <div class="footer-locale">
+                <div class="locale-item">
+                    <button id="language-toggle" class="locale-button" aria-label="Select language" data-locale-trigger="language">
+                        <span id="current-language">—</span>
+                    </button>
+                    <div id="language-dropdown" class="language-dropdown" aria-hidden="true"></div>
+                </div>
+
+                <span class="footer-separator-dot">•</span>
+
+                <div class="locale-item">
+                    <button id="country-selector" class="locale-button" aria-label="Select country" data-locale-trigger="country">
+                        <span id="current-country">—</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </footer>
+
+    <!-- =================== Country Overlay =================== -->
+    <div id="country-overlay" class="country-overlay" aria-hidden="true">
+        <div class="country-overlay-inner">
+            <div class="overlay-header-container">
+                <h2 class="country-overlay-title" data-i18n-key="overlay.chooseRegion">Choose your country or region</h2>
+                <button id="country-overlay-close" class="global-close-button" aria-label="Close country selector">
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <hr class="footer-separator">
+            <div id="country-regions"></div>
+        </div>
+    </div>
+
+    <!-- =================== Menu Overlay =================== -->
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true" data-pack-state="music">
+      <div class="menu-overlay-inner">
+
+        <!-- =================== Menu Wrapper =================== -->
+        <div class="menu-wrapper">
+
+          <!-- =================== Menu Pack Toggle (Wrapper-level) =================== -->
+          <button id="menu-pack-toggle" class="menu-pack-toggle" aria-label="Toggle social / music" aria-pressed="false" type="button">
+            <img src="assets/icons/utilities/hover-to-social-media-and-music.svg" alt="" aria-hidden="true">
+          </button>
+
+          <!-- =================== Columns =================== -->
+          <div class="menu-columns">
+
+            <!-- =================== Column A =================== -->
+            <div class="menu-col-a">
+
+              <!-- -------- Section A (Controls + Packs + Plain Logo) -------- -->
+              <div class="menu-col-a-section-a">
+
+                <!-- Controls -->
+                <div class="menu-controls">
+                  <a class="menu-control-icon" aria-label="Profile" href="profile.html">
+                    <img src="assets/icons/utilities/profile.svg" alt="" aria-hidden="true">
+                  </a>
+                  <a class="menu-control-icon" aria-label="Email" href="#" data-contact="email">
+                    <img src="assets/icons/utilities/email-me.svg" alt="" aria-hidden="true">
+                  </a>
+                  <button id="theme-toggle" class="menu-control-icon theme-toggle" aria-label="Toggle dark and light mode" type="button"></button>
+                </div>
+
+                <!-- in-Section-A: Packs A/B -->
+                <div class="menu-packs-split" aria-label="Links">
+
+                  <!-- =================== Pack A (Music) =================== -->
+                  <div class="menu-pack-slot" data-pack-slot="music">
+                    <div id="menu-pack-music" class="menu-pack" data-pack="music" aria-label="Music platforms" aria-hidden="false">
+                      <a class="menu-pack-icon" aria-label="Apple Music" href="https://music.apple.com/de/artist/artan/1855183543?l=en-GB" data-stream="apple-music">
+                        <img class="menu-pack-img" src="assets/icons/brands/apple-music.svg" alt="" aria-hidden="true">
+                      </a>
+                      <a class="menu-pack-icon" aria-label="Spotify" href="https://open.spotify.com/artist/4MSdNxckTdTdVQFWtB2OFR" data-stream="spotify">
+                        <img class="menu-pack-img" src="assets/icons/brands/spotify.svg" alt="" aria-hidden="true">
+                      </a>
+                      <a class="menu-pack-icon" aria-label="YouTube Music" href="https://music.youtube.com/channel/UCyFnW2eMq8zyJIDdidwVQrA?si=CsPZyLbHufQh-zmg" data-stream="youtube-music" hidden>
+                        <img class="menu-pack-img" src="assets/icons/brands/youtube-music.svg" alt="" aria-hidden="true">
+                      </a>
+                      <a class="menu-pack-icon" aria-label="SoundCloud" href="https://soundcloud.com/artandavoodi" data-stream="soundcloud">
+                        <img class="menu-pack-img" src="assets/icons/brands/soundcloud.svg" alt="" aria-hidden="true">
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- =================== Pack B (Social) =================== -->
+                  <div class="menu-pack-slot" data-pack-slot="social">
+                    <div id="menu-pack-social" class="menu-pack" data-pack="social" aria-label="Social" aria-hidden="true">
+                      <a class="menu-pack-icon" aria-label="YouTube" href="https://www.youtube.com/@artandavoodi" data-social="youtube">
+                        <img class="menu-pack-img" src="assets/icons/brands/youtube.svg" alt="" aria-hidden="true">
+                      </a>
+                      <a class="menu-pack-icon" aria-label="Instagram" href="https://www.instagram.com/artandavoodi/" data-social="instagram">
+                        <img class="menu-pack-img" src="assets/icons/brands/instagram.svg" alt="" aria-hidden="true">
+                      </a>
+                      <a class="menu-pack-icon" aria-label="TikTok" href="https://www.tiktok.com/@artan.davoodi" data-social="tiktok">
+                        <img class="menu-pack-img" src="assets/icons/brands/tiktok.svg" alt="" aria-hidden="true">
+                      </a>
+                      <a class="menu-pack-icon" aria-label="X" href="https://x.com/artandavoodi" data-social="x">
+                        <img class="menu-pack-img" src="assets/icons/brands/x.svg" alt="" aria-hidden="true">
+                      </a>
+                      <a class="menu-pack-icon" aria-label="GitHub" href="https://github.com/the-one-source" data-social="github" hidden>
+                        <img class="menu-pack-img" src="assets/icons/brands/github.svg" alt="" aria-hidden="true">
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Plain Logo -->
+                <div class="menu-plain-logo-wrap">
+                  <img src="assets/icons/artan-logos/logo-plain.svg" alt="Artan" class="menu-plain-logo">
+                </div>
+
+              </div>
+
+              <!-- -------- Vertical Separation Line -------- -->
+              <div class="menu-col-a-sep" aria-hidden="true"></div>
+
+              <!-- -------- Section B (Typo Logo + Site Essence) -------- -->
+              <div class="menu-col-a-section-b" aria-label="Identity">
+                <img src="assets/icons/artan-logos/logo-typo.svg" alt="ARTAN" class="menu-typo-logo">
+                <p class="menu-site-essence" data-i18n-key="site.essence">SOUND • VISUAL • CONSCIOUSNESS</p>
+              </div>
+
+            </div>
+
+            <!-- =================== Column B =================== -->
+            <div class="menu-col-b">
+
+              <!-- -------- Section A (Menu Preview) -------- -->
+              <div class="menu-col-b-section-a" aria-label="Menu preview">
+                <div class="menu-preview" aria-label="Preview">
+                  <h3 id="menu-preview-title" class="menu-preview-title">
+                    <img id="menu-preview-icon" class="menu-preview-icon" src="assets/icons/utilities/music.svg" alt="" aria-hidden="true" data-preview-icon-default="assets/icons/utilities/music.svg">
+                    <span id="menu-preview-title-text" class="menu-preview-title-text sr-only" data-i18n-key="menu.preview.title">Music</span>
+                  </h3>
+                  <p id="menu-preview-sub" class="menu-preview-sub" data-i18n-key="menu.preview.sub">Sound as structure and intention</p>
+                </div>
+              </div>
+
+              <!-- -------- Section B (Menu List + Vertical Separators) -------- -->
+              <div class="menu-col-b-section-b" aria-label="Menu list">
+                <ul class="menu-list" aria-label="Primary">
+
+                  <li class="menu-sep" aria-hidden="true"></li>
+                  <li class="menu-item" data-preview-title="MUSIC" data-preview-sub="Sound as structure and intention" data-preview-title-i18n="menu.music.title" data-preview-sub-i18n="menu.music.sub" data-preview-icon="assets/icons/utilities/music.svg">
+                    <a href="pages/music/index.html" class="menu-link menu-link--nojump" data-text="Music" data-i18n-key="menu.music" data-preview-title="MUSIC" data-preview-sub="Sound as structure and intention" data-preview-title-i18n="menu.music.title" data-preview-sub-i18n="menu.music.sub" data-preview-icon="assets/icons/utilities/music.svg"><span class="menu-link-inner"><span class="menu-link-text">Music</span></span></a>
+                  </li>
+
+                  <li class="menu-sep" aria-hidden="true"></li>
+                  <li class="menu-item" data-preview-title="BOOKS" data-preview-sub="Thought refined into language" data-preview-title-i18n="menu.books.title" data-preview-sub-i18n="menu.books.sub" data-preview-icon="assets/icons/utilities/book.svg">
+                    <a href="pages/books/index.html" class="menu-link menu-link--nojump" data-text="Books" data-i18n-key="menu.books" data-preview-title="BOOKS" data-preview-sub="Thought refined into language" data-preview-title-i18n="menu.books.title" data-preview-sub-i18n="menu.books.sub" data-preview-icon="assets/icons/utilities/book.svg"><span class="menu-link-inner"><span class="menu-link-text">Books</span></span></a>
+                  </li>
+
+                  <li class="menu-sep" aria-hidden="true"></li>
+                  <li class="menu-item" data-preview-title="EVENTS" data-preview-sub="Presence shared in time" data-preview-title-i18n="menu.events.title" data-preview-sub-i18n="menu.events.sub" data-preview-icon="assets/icons/utilities/event.svg">
+                    <a href="pages/events/index.html" class="menu-link menu-link--nojump" data-text="Events" data-i18n-key="menu.events" data-preview-title="EVENTS" data-preview-sub="Presence shared in time" data-preview-title-i18n="menu.events.title" data-preview-sub-i18n="menu.events.sub" data-preview-icon="assets/icons/utilities/event.svg"><span class="menu-link-inner"><span class="menu-link-text">Events</span></span></a>
+                  </li>
+
+                  <li class="menu-sep" aria-hidden="true"></li>
+                  <li class="menu-item" data-preview-title="PROJECTS" data-preview-sub="Ideas shaped into systems" data-preview-title-i18n="menu.projects.title" data-preview-sub-i18n="menu.projects.sub" data-preview-icon="assets/icons/utilities/project.svg">
+                    <a href="pages/projects/awareness/index.html" class="menu-link menu-link--nojump" data-text="Projects" data-i18n-key="menu.projects" data-preview-title="PROJECTS" data-preview-sub="Ideas shaped into systems" data-preview-title-i18n="menu.projects.title" data-preview-sub-i18n="menu.projects.sub" data-preview-icon="assets/icons/utilities/project.svg"><span class="menu-link-inner"><span class="menu-link-text">Projects</span></span></a>
+                  </li>
+
+                  <li class="menu-sep" aria-hidden="true"></li>
+                  <li class="menu-item" data-preview-title="PRODUCTS" data-preview-sub="Form reduced to purpose" data-preview-title-i18n="menu.products.title" data-preview-sub-i18n="menu.products.sub" data-preview-icon="assets/icons/utilities/product.svg">
+                    <a href="pages/products/index.html" class="menu-link menu-link--nojump" data-text="Products" data-i18n-key="menu.products" data-preview-title="PRODUCTS" data-preview-sub="Form reduced to purpose" data-preview-title-i18n="menu.products.title" data-preview-sub-i18n="menu.products.sub" data-preview-icon="assets/icons/utilities/product.svg"><span class="menu-link-inner"><span class="menu-link-text">Products</span></span></a>
+                  </li>
+
+                  <li class="menu-sep" aria-hidden="true"></li>
+                  <li class="menu-item" data-preview-title="GALLERY" data-preview-sub="Images held in stillness" data-preview-title-i18n="menu.gallery.title" data-preview-sub-i18n="menu.gallery.sub" data-preview-icon="assets/icons/utilities/gallery.svg">
+                    <a href="pages/gallery/index.html" class="menu-link menu-link--nojump" data-text="Gallery" data-i18n-key="menu.gallery" data-preview-title="GALLERY" data-preview-sub="Images held in stillness" data-preview-title-i18n="menu.gallery.title" data-preview-sub-i18n="menu.gallery.sub" data-preview-icon="assets/icons/utilities/gallery.svg"><span class="menu-link-inner"><span class="menu-link-text">Gallery</span></span></a>
+                  </li>
+
+                  <li class="menu-sep" aria-hidden="true"></li>
+
+                </ul>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
 </body>
 </html>
-

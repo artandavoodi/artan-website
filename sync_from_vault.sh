@@ -57,9 +57,16 @@ title_from_filename() {
 LIST_ITEMS=""
 for rel in "${MD_FILES[@]}"; do
   t="$(title_from_filename "$rel")"
-  href="../../single.html?p=${rel}"
-  LIST_ITEMS+="\n        <li class=\"publication-item\"><a class=\"publication-link\" href=\"${href}\">${t}</a></li>"
+  # Minimal URL encoding for query param (spaces)
+  rel_q="${rel// /%20}"
+  href="../../single.html?p=${rel_q}"
+  LIST_ITEMS+=$'      <li class="publication-item"><a class="publication-link" href="'"${href}"'">'"${t}"'</a></li>\n'
 done
+
+# Empty state (keeps layout stable)
+if [[ ${#MD_FILES[@]} -eq 0 ]]; then
+  LIST_ITEMS=$'      <li class="publication-item publication-item--empty"><span class="publication-empty" data-i18n-key="publications.empty">No items yet.</span></li>\n'
+fi
 
 cat > "$PUB_INDEX" <<HTML
 <!DOCTYPE html>
@@ -103,10 +110,10 @@ cat > "$PUB_INDEX" <<HTML
   <!-- =================== Publications Main =================== -->
   <main class="publication-main" id="publications">
     <h1 class="publication-heading">Publications</h1>
-    <p class="publication-sub">Rendered from Obsidian • content_sync</p>
+    <p class="publication-sub" data-i18n-key="publications.subtitle">A living index of essays, notes, research, and visual studies.</p>
 
-    <ul class="publication-list" aria-label="Publications list">${LIST_ITEMS}
-    </ul>
+    <ul class="publication-list" aria-label="Publications list">
+${LIST_ITEMS}    </ul>
   </main>
 
   <!-- =================== Footer =================== -->
