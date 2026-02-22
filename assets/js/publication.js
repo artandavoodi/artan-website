@@ -109,7 +109,7 @@
       const contentEl = document.getElementById('post-content');
 
       const cleanTitle = titleFromPath(p);
-      if (titleEl) titleEl.textContent = cleanTitle;     // removes “.md”
+      if (titleEl) titleEl.textContent = cleanTitle; // removes “.md”
       if (contentEl) contentEl.innerHTML = html;
 
       document.title = `${cleanTitle} • Artan`;

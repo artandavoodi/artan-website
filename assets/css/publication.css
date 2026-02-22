@@ -7,9 +7,14 @@
 .publication-main{
   position:relative;
   z-index:2;
-  max-width:900px;
+  width:100%;
+  max-width:var(--content-max-width, 1200px);
   margin:0 auto;
-  padding:140px 2rem 4rem; /* offset header + breathing space */
+  padding-top:6rem;
+  padding-bottom:4rem;
+  /* Align with footer rail */
+  padding-left:var(--footer-gutter, 2rem);
+  padding-right:var(--footer-gutter, 2rem);
 }
 
 .publication-title{
@@ -49,5 +54,131 @@
 .publication-heading{
   font-family:var(--font-base);
   color:var(--text-color);
-  margin:2rem 0 0.75rem;
+  font-size:2rem;
+  font-weight:600;
+  letter-spacing:-0.02em;
+  margin:0 0 1rem;
+}
+
+.publication-sub{
+  color:var(--text-secondary-color);
+  font-size:0.95rem;
+  margin:0 0 2.25rem;
+  max-width:72ch;
+}
+
+.publication-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+
+.publication-item{
+  margin:0;
+  position:relative;
+  padding:1.15rem 0;
+}
+
+.publication-item:not(:first-child)::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:1px;
+  background:var(--border-color, rgba(255,255,255,0.10));
+  opacity:0.8;
+}
+
+.publication-link{
+  display:flex;
+  flex-direction:column;
+  gap:0.45rem;
+  width:100%;
+  font-family:var(--font-base);
+  color:var(--text-color);
+  text-decoration:none;
+  padding:0;
+  border-radius:0;
+  border:0;
+  background:transparent;
+  transition:opacity .2s ease, transform .2s ease;
+}
+
+.publication-link:hover{
+  transform:translateY(-1px);
+  opacity:0.92;
+}
+
+.publication-item-title{
+  display:block;
+  font-size:1.05rem;
+  font-weight:600;
+  letter-spacing:-0.01em;
+}
+
+.publication-item-meta{
+  display:block;
+  margin-top:0.4rem;
+  font-size:0.9rem;
+  color:var(--text-secondary-color);
+}
+
+/* -------------------- Publications Index — Minimal logo -------------------- */
+.publication-main img{
+  width:auto;
+  height:auto;
+  max-width:92px;
+  max-height:92px;
+  display:block;
+}
+
+.publication-logo,
+.publication-mark,
+.publication-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-start;
+  margin:0 0 1.25rem;
+}
+
+.publication-logo img,
+.publication-mark img,
+.publication-badge img{
+  max-width:72px;
+  max-height:72px;
+}
+
+/* -------------------- Item typography + theme-compatible colors -------------------- */
+.publication-item-title{
+  display:block;
+  font-size:1.05rem;
+  font-weight:600;
+  letter-spacing:-0.01em;
+  color:var(--text-color);
+}
+
+.publication-item-meta{
+  display:block;
+  font-size:0.92rem;
+  color:var(--text-secondary-color);
+  margin:0;
+}
+
+/* If the list renders plain <a> text without spans, keep it clean */
+.publication-link{
+  color:var(--text-color);
+}
+
+.publication-link:visited{
+  color:var(--text-color);
+}
+
+.publication-link:focus-visible{
+  outline:1px solid var(--border-color, rgba(255,255,255,0.22));
+  outline-offset:6px;
+  border-radius:10px;
 }

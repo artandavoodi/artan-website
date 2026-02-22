@@ -55,15 +55,20 @@ title_from_filename() {
   echo "$base" | awk '{ for (i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) } }1'
 }
 
-# Build list items
+# Build list items (structure matches publication.css expectations)
 LIST_ITEMS=""
 for rel in "${MD_FILES[@]}"; do
   t="$(title_from_filename "$rel")"
-  # Minimal URL encoding for query param (spaces)
+
+  # Minimal URL encoding for query param (spaces only)
   rel_q="${rel// /%20}"
   href="../../single.html?p=${rel_q}"
-  # Append one <li> per file with a real newline (never literal \n)
-  LIST_ITEMS+=$(printf '      <li class="publication-item"><a class="publication-link" href="%s">%s</a></li>\n' "$href" "$t")
+
+  LIST_ITEMS+=$(printf '      <li class="publication-item">\n')
+  LIST_ITEMS+=$(printf '        <a class="publication-link" href="%s">\n' "$href")
+  LIST_ITEMS+=$(printf '          <span class="publication-item-title">%s</span>\n' "$t")
+  LIST_ITEMS+=$(printf '        </a>\n')
+  LIST_ITEMS+=$(printf '      </li>\n')
 done
 
 # If any upstream step ever introduced literal backslash-n sequences, normalize them.
