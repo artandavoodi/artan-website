@@ -1,25 +1,3 @@
-
-
-<<<<<<< HEAD
-/* =================== Publication (Sovereign Module) =================== */
-
-.publication-main {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.publication-title {
-  font-family: var(--font-base);
-  color: var(--text-color);
-  margin: 0 0 0.75rem;
-}
-
-.publication-content {
-  text-align: left;
-  color: var(--text-secondary-color);
-=======
 /* ======================================================================== */
 /* PUBLICATION — SOVEREIGN MODULE                                           */
 /* Scoped publication styling. No global overrides.                          */
@@ -40,7 +18,6 @@
 
 .publication-content{
   color:var(--text-secondary-color);
->>>>>>> 58bf571 (Update site)
 }
 
 .publication-content h1,
@@ -48,79 +25,6 @@
 .publication-content h3,
 .publication-content h4,
 .publication-content h5,
-<<<<<<< HEAD
-.publication-content h6 {
-  color: var(--text-color);
-  text-align: left;
-}
-
-.publication-content p,
-.publication-content li {
-  line-height: 1.7;
-}
-
-.publication-content a {
-  color: var(--link-color);
-  text-decoration: none;
-}
-
-.publication-content a:hover {
-  color: var(--link-hover-color);
-  text-decoration: underline;
-}
-
-/* Optional components (activated by single.html blocks) */
-
-.publication-meta {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  margin: 0.5rem 0 1.25rem;
-  font-size: 0.95rem;
-  color: var(--text-secondary-color);
-}
-
-.publication-sep {
-  opacity: 0.6;
-}
-
-.publication-nav {
-  display: flex;
-  justify-content: flex-start;
-  margin: 1rem 0 1.25rem;
-}
-
-.publication-back {
-  text-decoration: none;
-  color: var(--text-secondary-color);
-}
-
-.publication-back:hover {
-  text-decoration: underline;
-}
-
-.publication-section {
-  margin-top: 2.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.publication-heading {
-  font-family: var(--font-base);
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
-  margin: 0 0 0.75rem;
-  color: var(--text-color);
-  text-align: left;
-}
-
-.publication-muted {
-  color: var(--text-secondary-color);
-  font-size: 1rem;
-}
-=======
 .publication-content h6{
   color:var(--text-color);
 }
@@ -145,4 +49,3 @@
   color:var(--text-color);
   margin:2rem 0 0.75rem;
 }
->>>>>>> 58bf571 (Update site)
