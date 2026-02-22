@@ -8,12 +8,16 @@
     { "id": "home", "path": "/index.html" },
     { "id": "about", "path": "/pages/about.html" },
     { "id": "contact", "path": "/pages/contact.html" },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1f38262 (Update site)
     {
       "id": "publications",
       "path": "/pages/publications/index.html",
       "source_root": "/content_sync",
       "streams": [
+<<<<<<< HEAD
         { "id": "essays", "source": "Essays/" },
         { "id": "research", "source": "Research/" },
         { "id": "notes", "source": "Notes/" },
@@ -21,6 +25,14 @@
       ]
     },
 
+=======
+        { "id": "essays", "source": "11_Publish/Essays/" },
+        { "id": "research", "source": "11_Publish/Research/" },
+        { "id": "notes", "source": "11_Publish/Notes/" },
+        { "id": "visual", "source": "11_Publish/Visual/" }
+      ]
+    },
+>>>>>>> 1f38262 (Update site)
     { "id": "projects", "path": "/pages/projects/index.html" },
     { "id": "books", "path": "/pages/books/index.html" },
     { "id": "music", "path": "/pages/music/index.html" },
