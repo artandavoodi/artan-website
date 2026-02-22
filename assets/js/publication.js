@@ -1,69 +1,128 @@
-(() => {
-  function getParam(name) {
-    const url = new URL(window.location.href);
-    return url.searchParams.get(name);
+// =================== Publications Renderer (Sovereign) ===================
+// Deterministic locale-first loading:
+//   1) content_sync/<lang>/<p>
+//   2) content_sync/en/<p>
+//   3) content_sync/<p> (legacy)
+// Where <p> is like: Essays/ENGINE.md
+
+(function () {
+  'use strict';
+
+  function getQueryParam(name) {
+    try {
+      return new URL(window.location.href).searchParams.get(name);
+    } catch {
+      return null;
+    }
   }
 
-  function safePath(p) {
-    if (!p) return null;
-    if (p.includes("..") || p.startsWith("/") || p.startsWith("\\")) return null;
-    return p.replace(/^\/+/, "");
+  function normalizeLang(raw) {
+    const s = String(raw || '').trim();
+    if (!s) return 'en';
+    const base = s.split('-')[0].toLowerCase(); // de-DE -> de
+    if (base === 'fa' || base === 'per' || base === 'fas') return 'fa';
+    return base;
   }
 
-  async function load() {
-    const rawParam = getParam("p");
-    const rel = rawParam ? safePath(decodeURIComponent(rawParam)) : null;
-    // Detect active language (default: en)
-    const activeLang = (window.ARTAN_LOCALE && window.ARTAN_LOCALE.language)
-      ? window.ARTAN_LOCALE.language
-      : (localStorage.getItem('artan_language') || 'en');
-    const titleEl = document.getElementById("post-title");
-    const contentEl = document.getElementById("post-content");
+  function getActiveLang() {
+    // Primary: html lang (country-language.js should set this)
+    const htmlLang = document.documentElement && document.documentElement.getAttribute('lang');
+    if (htmlLang) return normalizeLang(htmlLang);
 
-    if (!rel) {
-      titleEl.textContent = "Missing publication path";
-      titleEl.setAttribute("data-i18n-key", "publication.missingPath");
-      contentEl.innerHTML =
-        "<p>Provide <code>?p=Essays/your-file.md</code> (or Notes/Research/Visual).</p>";
+    // Secondary: browser
+    return normalizeLang((navigator.languages && navigator.languages[0]) || navigator.language);
+  }
+
+  function setLoadingState(titleText) {
+    const t = document.getElementById('post-title');
+    const c = document.getElementById('post-content');
+    if (t) t.textContent = titleText || 'Loading…';
+    if (c) c.innerHTML = '<p>Loading…</p>';
+  }
+
+  function setErrorState(message) {
+    const t = document.getElementById('post-title');
+    const c = document.getElementById('post-content');
+    if (t) t.textContent = 'Publication';
+    if (c) c.innerHTML = `<p>${message}</p>`;
+  }
+
+  function stripMdExtension(display) {
+    return String(display || '').replace(/\.md$/i, '');
+  }
+
+  function titleFromPath(p) {
+    try {
+      const parts = String(p || '').split('/');
+      const file = parts[parts.length - 1] || '';
+      return stripMdExtension(decodeURIComponent(file));
+    } catch {
+      return 'Publication';
+    }
+  }
+
+  async function fetchText(url) {
+    const res = await fetch(url, { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.text();
+  }
+
+  async function loadMarkdownWithLocale(p) {
+    const lang = getActiveLang();
+    const candidates = [
+      `content_sync/${lang}/${p}`,
+      `content_sync/en/${p}`,
+      `content_sync/${p}` // legacy
+    ];
+
+    let lastErr = null;
+    for (const url of candidates) {
+      try {
+        const md = await fetchText(url);
+        return { md, urlUsed: url };
+      } catch (e) {
+        lastErr = e;
+      }
+    }
+    throw lastErr || new Error('Could not load publication');
+  }
+
+  function renderMarkdown(md) {
+    if (!window.marked) throw new Error('marked not loaded');
+    return window.marked.parse(md);
+  }
+
+  async function boot() {
+    const p = getQueryParam('p');
+    if (!p) {
+      setErrorState('Missing publication path. Provide ?p=Essays/your-file.md (published under 11_Publish).');
       return;
     }
 
-    // Try locale-specific file first, then fallback to English
-    const localizedUrl = `content_sync/${activeLang}/${rel}`;
-    const fallbackUrl = `content_sync/en/${rel}`;
+    setLoadingState(titleFromPath(p));
 
     try {
-      let md = null;
-      let res = await fetch(localizedUrl, { cache: "no-cache" });
-      
-      if (!res.ok && activeLang !== 'en') {
-        res = await fetch(fallbackUrl, { cache: "no-cache" });
-      }
-      
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      md = await res.text();
+      const { md } = await loadMarkdownWithLocale(p);
+      const html = renderMarkdown(md);
 
-      const firstH1 = md.match(/^#\s+(.+)$/m);
+      const titleEl = document.getElementById('post-title');
+      const contentEl = document.getElementById('post-content');
 
-      if (firstH1) {
-        titleEl.textContent = firstH1[1].trim();
-      } else {
-        const filename = rel.split("/").pop().replace(/\.md$/i, "");
-        const human = filename.replace(/[_-]+/g, " ");
-        titleEl.textContent = human;
-      }
+      const cleanTitle = titleFromPath(p);
+      if (titleEl) titleEl.textContent = cleanTitle;     // removes “.md”
+      if (contentEl) contentEl.innerHTML = html;
 
-      if (window.marked) {
-        contentEl.innerHTML = window.marked.parse(md);
-      } else {
-        contentEl.textContent = md;
-      }
-    } catch (err) {
-      titleEl.textContent = "Failed to load publication";
-      titleEl.setAttribute("data-i18n-key", "publication.failedLoad");
-      contentEl.innerHTML = `<p>Could not load publication.</p>`;
+      document.title = `${cleanTitle} • Artan`;
+    } catch (e) {
+      setErrorState('Failed to load publication.');
+      console.warn('[publication] load failed', e);
     }
   }
 
-  document.addEventListener("DOMContentLoaded", load);
+  // Let country-language.js set <html lang="..."> before we decide the folder.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(boot, 0));
+  } else {
+    setTimeout(boot, 0);
+  }
 })();

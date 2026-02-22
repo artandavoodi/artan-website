@@ -62,8 +62,12 @@ for rel in "${MD_FILES[@]}"; do
   # Minimal URL encoding for query param (spaces)
   rel_q="${rel// /%20}"
   href="../../single.html?p=${rel_q}"
-  LIST_ITEMS+=$'      <li class="publication-item"><a class="publication-link" href="'"${href}"'">'"${t}"'</a></li>\n'
+  # Append one <li> per file with a real newline (never literal \n)
+  LIST_ITEMS+=$(printf '      <li class="publication-item"><a class="publication-link" href="%s">%s</a></li>\n' "$href" "$t")
 done
+
+# If any upstream step ever introduced literal backslash-n sequences, normalize them.
+LIST_ITEMS="${LIST_ITEMS//\\n/$'\n'}"
 
 # Empty state (keeps layout stable)
 if [[ ${#MD_FILES[@]} -eq 0 ]]; then
@@ -111,7 +115,7 @@ cat > "$PUB_INDEX" <<HTML
 
   <!-- =================== Publications Main =================== -->
   <main class="publication-main" id="publications">
-    <h1 class="publication-heading">Publications</h1>
+    <h1 class="publication-heading" data-i18n-key="publications.title">Publications</h1>
     <p class="publication-sub" data-i18n-key="publications.subtitle">A living index of essays, notes, research, and visual studies.</p>
 
     <ul class="publication-list" aria-label="Publications list">
