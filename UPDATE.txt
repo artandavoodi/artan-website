@@ -1,4 +1,39 @@
-git status
-git add .
-git commit -m "Update site"
-git push origin main
+ARTAN — UPDATE MANUAL
+Local → GitHub (Vault + Website)
+
+
+==========================================================================
+A) VAULT UPDATE
+==========================================================================
+
+PATH: ~/Library/"Mobile Documents"/iCloud~md~obsidian/Documents/I
+
+cd ~/Library/"Mobile Documents"/iCloud~md~obsidian/Documents/I && git status && git add . && git commit -m "Vault update" && git push
+
+
+==========================================================================
+B) SYNC VAULT → WEBSITE
+==========================================================================
+
+PATH: /Users/artan/Documents/Site/artan-website
+
+cd /Users/artan/Documents/Site/artan-website && ./sync_from_vault.sh
+
+
+==========================================================================
+C) WEBSITE UPDATE
+==========================================================================
+
+PATH: /Users/artan/Documents/Site/artan-website
+
+cd /Users/artan/Documents/Site/artan-website && git status && git add . && git commit -m "Update site" && git push origin main
+
+==========================================================================
+CORE MODEL
+==========================================================================
+
+1) Obsidian vault = writing layer. You write Markdown inside 11_Publish/....
+2) content_sync/ = mirror of that vault inside the website. It holds raw .md files only.
+3) single.html = rendering engine. It reads a Markdown file from content_sync and converts it to styled HTML.
+4) pages/publications/index.html = navigation hub. It lists or links to publications.
+5) <publication>.html is not the renderer. single.html is the only renderer.
