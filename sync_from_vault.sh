@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # =================== Obsidian → Website Sync ===================
-# Source of truth: Obsidian vault 11_Publish
-# Mirror:          website/content_sync/en (canonical)
-# Auto-index:      rebuild pages/publications/index.html from mirrored files
+# Canonical content: content_sync (English)
+# Translations (optional future): content_sync/i18n/<lang>
+# Auto-index rebuild: pages/publications/index.html
 
 VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/11_Publish"
 SITE_ROOT="$HOME/Documents/Site/artan-website"
@@ -14,7 +14,7 @@ PUB_INDEX="$SITE_ROOT/pages/publications/index.html"
 
 mkdir -p "$DEST_CANON"
 
-# 1) Mirror published content into the website repo
+# 1) Mirror Obsidian published content
 rsync -av --delete \
   --exclude ".DO_NOT_EDIT" \
   --exclude "DO_NOT_EDIT" \
@@ -22,7 +22,7 @@ rsync -av --delete \
   --exclude "README.md" \
   "$VAULT"/ "$DEST_CANON"/
 
-# 2) Auto-build Publications index from current content_sync tree
+# 2) Rebuild Publications index (inject only between markers)
 mkdir -p "$(dirname "$PUB_INDEX")"
 
 MD_FILES=()
@@ -50,26 +50,57 @@ for rel in "${MD_FILES[@]}"; do
   rel_q="${rel// /%20}"
   href="../../single.html?p=${rel_q}"
 
-  LIST_ITEMS+=$(printf '      <li class="publication-item">\n')
-  LIST_ITEMS+=$(printf '        <a class="publication-link" href="%s">\n' "$href")
-  LIST_ITEMS+=$(printf '          <span class="publication-item-title">%s</span>\n' "$t")
-  LIST_ITEMS+=$(printf '        </a>\n')
-  LIST_ITEMS+=$(printf '      </li>\n')
+  LIST_ITEMS+="      <li class=\"publication-item\">\n"
+  LIST_ITEMS+="        <a class=\"publication-link\" href=\"$href\">\n"
+  LIST_ITEMS+="          <span class=\"publication-item-title\">$t</span>\n"
+  LIST_ITEMS+="        </a>\n"
+  LIST_ITEMS+="      </li>\n"
 done
 
-LIST_ITEMS="${LIST_ITEMS//\\n/$'\n'}"
-
 if [[ ${#MD_FILES[@]} -eq 0 ]]; then
-  LIST_ITEMS=$'      <li class="publication-item publication-item--empty"><span class="publication-empty" data-i18n-key="publications.empty">No items yet.</span></li>\n'
+  LIST_ITEMS="      <li class=\"publication-item publication-item--empty\"><span class=\"publication-empty\" data-i18n-key=\"publications.empty\">No items yet.</span></li>\n"
 fi
 
+# Ensure PUBLIST markers exist inside the publications <ul>. If not, insert them.
 if [[ -f "$PUB_INDEX" ]]; then
+  START_MARK="<!-- PUBLIST:START -->"
+  END_MARK="<!-- PUBLIST:END -->"
+
+  if ! grep -q "$START_MARK" "$PUB_INDEX" || ! grep -q "$END_MARK" "$PUB_INDEX"; then
+    tmp_marked="$(mktemp)"
+
+    # Insert markers inside the first <ul class="publication-list" ...> ... </ul>
+    awk -v START_MARK="$START_MARK" -v END_MARK="$END_MARK" '
+      BEGIN { in_ul=0; inserted=0 }
+      {
+        if (!inserted && $0 ~ /<ul[^>]*class="publication-list"/) {
+          print $0
+          print "    " START_MARK
+          in_ul=1
+          next
+        }
+        if (in_ul) {
+          if ($0 ~ /<\/ul>/) {
+            print "    " END_MARK
+            print $0
+            in_ul=0
+            inserted=1
+          }
+          next
+        }
+        print $0
+      }
+    ' "$PUB_INDEX" > "$tmp_marked"
+
+    mv "$tmp_marked" "$PUB_INDEX"
+  fi
+
   tmp_out="$(mktemp)"
   tmp_list="$(mktemp)"
-  printf "%s" "$LIST_ITEMS" > "$tmp_list"
+  printf "%b" "$LIST_ITEMS" > "$tmp_list"
 
-  awk -v START_MARK="<!-- PUBLIST:START -->" \
-      -v END_MARK="<!-- PUBLIST:END -->" \
+  awk -v START_MARK="$START_MARK" \
+      -v END_MARK="$END_MARK" \
       -v LIST_FILE="$tmp_list" '
     BEGIN { inblock=0 }
     {
@@ -95,14 +126,14 @@ if [[ -f "$PUB_INDEX" ]]; then
   rm -f "$tmp_list"
 fi
 
-# 3) Auto-commit and push website changes
+# 3) Commit and push
 cd "$SITE_ROOT"
 
 git add .
 if ! git diff --cached --quiet; then
   git commit -m "Auto sync: Obsidian → Website"
   git push origin main
-  printf "\n[OK] Synced, rebuilt index, committed, and pushed to GitHub.\n"
+  printf "\n[OK] Synced and rebuilt index.\n"
 else
-  printf "\n[OK] No changes detected. Sync complete.\n"
+  printf "\n[OK] No changes detected.\n"
 fi
