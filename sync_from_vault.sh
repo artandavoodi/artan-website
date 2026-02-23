@@ -53,7 +53,7 @@ if [[ -d "$VAULT_I18N" ]]; then
   done
 fi
 
-# 2) Rebuild Publications index (inject only between markers)
+# 2) Rebuild Publications index (YAML-aware: only published publications)
 mkdir -p "$(dirname "$PUB_INDEX")"
 
 MD_FILES=()
@@ -64,21 +64,40 @@ done < <(
   find Essays Notes Research Visual -type f -name "*.md" 2>/dev/null | LC_ALL=C sort
 )
 
-title_from_filename() {
-  local f="$1"
-  local base
-  base="$(basename "$f")"
-  base="${base%.md}"
-  base="${base//_/ }"
-  base="${base//-/ }"
-  base="$(echo "$base" | tr -s ' ' )"
-  echo "$base" | awk '{ for (i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) } }1'
+extract_yaml_field() {
+  local file="$1"
+  local field="$2"
+  awk -v key="$field:" '
+    BEGIN { in_yaml=0 }
+    /^---$/ { in_yaml = !in_yaml; next }
+    in_yaml && index($0, key)==1 {
+      sub(key"[ ]*", "")
+      gsub(/^"|"$/, "")
+      print
+      exit
+    }
+  ' "$DEST_CANON/$file"
 }
 
 LIST_ITEMS=""
+
 for rel in "${MD_FILES[@]}"; do
-  t="$(title_from_filename "$rel")"
-  # Minimal URL encoding (keeps paths stable for GitHub Pages)
+  type_val="$(extract_yaml_field "$rel" "type")"
+  published_val="$(extract_yaml_field "$rel" "published")"
+
+  if [[ "$type_val" != "publication" ]]; then
+    continue
+  fi
+
+  if [[ "$published_val" != "true" ]]; then
+    continue
+  fi
+
+  title_val="$(extract_yaml_field "$rel" "title")"
+  if [[ -z "$title_val" ]]; then
+    continue
+  fi
+
   rel_q="$rel"
   rel_q="${rel_q//%/%25}"
   rel_q="${rel_q// /%20}"
@@ -90,49 +109,19 @@ for rel in "${MD_FILES[@]}"; do
 
   LIST_ITEMS+="      <li class=\"publication-item\">\n"
   LIST_ITEMS+="        <a class=\"publication-link\" href=\"$href\">\n"
-  LIST_ITEMS+="          <span class=\"publication-item-title\">$t</span>\n"
+  LIST_ITEMS+="          <span class=\"publication-item-title\">$title_val</span>\n"
   LIST_ITEMS+="        </a>\n"
   LIST_ITEMS+="      </li>\n"
 done
 
-if [[ ${#MD_FILES[@]} -eq 0 ]]; then
+if [[ -z "$LIST_ITEMS" ]]; then
   LIST_ITEMS="      <li class=\"publication-item publication-item--empty\"><span class=\"publication-empty\" data-i18n-key=\"publications.empty\">No items yet.</span></li>\n"
 fi
 
-# Ensure PUBLIST markers exist inside the publications <ul>. If not, insert them.
+START_MARK="<!-- PUBLIST:START -->"
+END_MARK="<!-- PUBLIST:END -->"
+
 if [[ -f "$PUB_INDEX" ]]; then
-  START_MARK="<!-- PUBLIST:START -->"
-  END_MARK="<!-- PUBLIST:END -->"
-
-  if ! grep -q "$START_MARK" "$PUB_INDEX" || ! grep -q "$END_MARK" "$PUB_INDEX"; then
-    tmp_marked="$(mktemp)"
-
-    # Insert markers inside the first <ul class="publication-list" ...> ... </ul>
-    awk -v START_MARK="$START_MARK" -v END_MARK="$END_MARK" '
-      BEGIN { in_ul=0; inserted=0 }
-      {
-        if (!inserted && $0 ~ /<ul[^>]*class="publication-list"/) {
-          print $0
-          print "    " START_MARK
-          in_ul=1
-          next
-        }
-        if (in_ul) {
-          if ($0 ~ /<\/ul>/) {
-            print "    " END_MARK
-            print $0
-            in_ul=0
-            inserted=1
-          }
-          next
-        }
-        print $0
-      }
-    ' "$PUB_INDEX" > "$tmp_marked"
-
-    mv "$tmp_marked" "$PUB_INDEX"
-  fi
-
   tmp_out="$(mktemp)"
   tmp_list="$(mktemp)"
   printf "%b" "$LIST_ITEMS" > "$tmp_list"

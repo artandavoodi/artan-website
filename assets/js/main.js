@@ -1,3 +1,20 @@
+/* =================== Global Layout Injection (Future-Proof Chrome) =================== */
+
+async function injectGlobalLayout() {
+  const targets = document.querySelectorAll('[data-include]');
+  for (const el of targets) {
+    const name = el.getAttribute('data-include');
+    try {
+      const res = await fetch(`/partials/${name}.html`, { cache: 'no-store' });
+      if (!res.ok) continue;
+      const html = await res.text();
+      el.innerHTML = html;
+    } catch (_) {}
+  }
+}
+
+injectGlobalLayout();
+
 document.addEventListener("DOMContentLoaded", () => {
   /* =================== Theme Management =================== */
 
