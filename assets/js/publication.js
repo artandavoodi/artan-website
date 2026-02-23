@@ -68,23 +68,12 @@
   }
 
   async function loadMarkdownWithLocale(p) {
-    const lang = getActiveLang();
-    const candidates = [
-      `content_sync/${lang}/${p}`,
-      `content_sync/en/${p}`,
-      `content_sync/${p}` // legacy
-    ];
+    // Canonical source: content_sync/<p>
+    // No locale subfolders (future translations handled at render level)
 
-    let lastErr = null;
-    for (const url of candidates) {
-      try {
-        const md = await fetchText(url);
-        return { md, urlUsed: url };
-      } catch (e) {
-        lastErr = e;
-      }
-    }
-    throw lastErr || new Error('Could not load publication');
+    const url = `content_sync/${p}`;
+    const md = await fetchText(url);
+    return { md, urlUsed: url };
   }
 
   function renderMarkdown(md) {
