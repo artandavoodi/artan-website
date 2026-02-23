@@ -2,15 +2,18 @@
 set -euo pipefail
 
 # =================== Obsidian → Website Sync ===================
-# Canonical content: content_sync (English)
-# Translations (optional future): content_sync/i18n/<lang>
-# Auto-index rebuild: pages/publications/index.html
+# Canonical content (source language): content_sync/* (Essays/Notes/Research/Visual)
+# Optional translations: content_sync/i18n/<lang>/* (mirrors same folder tree)
+# Auto-index rebuild: pages/publications/index.html (lists canonical items)
 
 VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/11_Publish"
 SITE_ROOT="$HOME/Documents/Site/artan-website"
 CONTENT_SYNC_ROOT="$SITE_ROOT/content_sync"
 DEST_CANON="$CONTENT_SYNC_ROOT"
 PUB_INDEX="$SITE_ROOT/pages/publications/index.html"
+
+VAULT_I18N="$VAULT/i18n"
+DEST_I18N="$CONTENT_SYNC_ROOT/i18n"
 
 mkdir -p "$DEST_CANON"
 
@@ -20,7 +23,35 @@ rsync -av --delete \
   --exclude "DO_NOT_EDIT" \
   --exclude "Do Not Edit" \
   --exclude "README.md" \
+  --exclude "i18n/" \
   "$VAULT"/ "$DEST_CANON"/
+
+# 1b) Optional: mirror curated translations (if present)
+# Vault layout: 11_Publish/i18n/<lang>/(Essays|Notes|Research|Visual)/...
+if [[ -d "$VAULT_I18N" ]]; then
+  mkdir -p "$DEST_I18N"
+
+  # Clean removed languages from destination
+  for existing in "$DEST_I18N"/*; do
+    [[ -d "$existing" ]] || continue
+    lang="$(basename "$existing")"
+    [[ -d "$VAULT_I18N/$lang" ]] || rm -rf "$existing"
+  done
+
+  # Sync each language folder
+  for lang_src in "$VAULT_I18N"/*; do
+    [[ -d "$lang_src" ]] || continue
+    lang="$(basename "$lang_src")"
+    mkdir -p "$DEST_I18N/$lang"
+
+    rsync -av --delete \
+      --exclude ".DO_NOT_EDIT" \
+      --exclude "DO_NOT_EDIT" \
+      --exclude "Do Not Edit" \
+      --exclude "README.md" \
+      "$lang_src"/ "$DEST_I18N/$lang"/
+  done
+fi
 
 # 2) Rebuild Publications index (inject only between markers)
 mkdir -p "$(dirname "$PUB_INDEX")"
@@ -47,7 +78,14 @@ title_from_filename() {
 LIST_ITEMS=""
 for rel in "${MD_FILES[@]}"; do
   t="$(title_from_filename "$rel")"
-  rel_q="${rel// /%20}"
+  # Minimal URL encoding (keeps paths stable for GitHub Pages)
+  rel_q="$rel"
+  rel_q="${rel_q//%/%25}"
+  rel_q="${rel_q// /%20}"
+  rel_q="${rel_q//\"/%22}"
+  rel_q="${rel_q//#/%23}"
+  rel_q="${rel_q//\?/%3F}"
+  rel_q="${rel_q//&/%26}"
   href="../../single.html?p=${rel_q}"
 
   LIST_ITEMS+="      <li class=\"publication-item\">\n"
