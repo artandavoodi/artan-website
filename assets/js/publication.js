@@ -1,9 +1,7 @@
 // =================== Publications Renderer (Sovereign) ===================
-// Deterministic locale-first loading:
-//   1) content_sync/<lang>/<p>
-//   2) content_sync/en/<p>
-//   3) content_sync/<p> (legacy)
-// Where <p> is like: Essays/ENGINE.md
+// Loads markdown from `content_sync` and renders it into single.html.
+// Works on custom domains and GitHub Pages project paths.
+// Expected query: single.html?p=Essays/ENGINE.md
 
 (function () {
   'use strict';
@@ -14,23 +12,6 @@
     } catch {
       return null;
     }
-  }
-
-  function normalizeLang(raw) {
-    const s = String(raw || '').trim();
-    if (!s) return 'en';
-    const base = s.split('-')[0].toLowerCase(); // de-DE -> de
-    if (base === 'fa' || base === 'per' || base === 'fas') return 'fa';
-    return base;
-  }
-
-  function getActiveLang() {
-    // Primary: html lang (country-language.js should set this)
-    const htmlLang = document.documentElement && document.documentElement.getAttribute('lang');
-    if (htmlLang) return normalizeLang(htmlLang);
-
-    // Secondary: browser
-    return normalizeLang((navigator.languages && navigator.languages[0]) || navigator.language);
   }
 
   function setLoadingState(titleText) {
@@ -67,12 +48,15 @@
     return await res.text();
   }
 
-  async function loadMarkdownWithLocale(p) {
-    // Always load from site root to avoid relative path issues on GitHub Pages
-    // Add cache-busting query to avoid stale 404 caching
+  async function loadMarkdown(p) {
+    // Determine correct base path dynamically (supports custom domains + project pages)
+    // Example:
+    // - https://artan.live/single.html -> base = https://artan.live
+    // - https://user.github.io/repo/single.html -> base = https://user.github.io/repo
+    const base = window.location.origin + window.location.pathname.split('/single.html')[0];
 
     const cleanPath = String(p || '').replace(/^\/+/, '');
-    const url = `/${`content_sync/${cleanPath}`}?v=${Date.now()}`;
+    const url = `${base}/content_sync/${cleanPath}?v=${Date.now()}`;
 
     const md = await fetchText(url);
     return { md, urlUsed: url };
@@ -103,14 +87,14 @@
   async function boot() {
     const p = getQueryParam('p');
     if (!p) {
-      setErrorState('Missing publication path. Provide ?p=Essays/your-file.md (published under 11_Publish).');
+      setErrorState('Missing publication path. Provide ?p=Essays/your-file.md');
       return;
     }
 
     setLoadingState(titleFromPath(p));
 
     try {
-      const { md } = await loadMarkdownWithLocale(p);
+      const { md } = await loadMarkdown(p);
       const html = renderMarkdown(md);
 
       const titleEl = document.getElementById('post-title');
@@ -127,7 +111,6 @@
     }
   }
 
-  // Let country-language.js set <html lang="..."> before we decide the folder.
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => setTimeout(boot, 0));
   } else {
