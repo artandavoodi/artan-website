@@ -190,15 +190,29 @@ body.menu-active{ overflow: hidden; }
   transition: opacity 260ms ease, visibility 260ms ease, color 260ms ease;
 }
 
-#menu-overlay.menu-overlay.is-open,
-#menu-overlay.active{
+#menu-overlay.menu-overlay.is-open[aria-hidden="false"],
+#menu-overlay.active[aria-hidden="false"]{
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
 
+/* Hard safety: if aria-hidden is true, it must never capture clicks */
+#menu-overlay.menu-overlay[aria-hidden="true"]{
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /* Safety: never let the overlay capture clicks unless JS also marked it open */
 #menu-overlay.menu-overlay[aria-hidden="false"]:not(.active):not(.is-open){
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Safety: if aria-hidden attribute is missing, default to non-interactive unless .active/.is-open */
+#menu-overlay.menu-overlay:not([aria-hidden]):not(.active):not(.is-open){
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -1154,4 +1168,32 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
   #menu-overlay .menu-col-b-section-b .menu-link:focus-visible{ transform: none; }
 
   #menu-overlay .menu-packs{ left: 18px; bottom: 18px; }
+}
+
+/* =============================================================================
+   13) HARD CLICK SAFETY (GLOBAL)
+   Ensures the overlay can NEVER steal clicks unless explicitly opened.
+============================================================================= */
+
+/* Default state: fully non-interactive (strong override) */
+#menu-overlay.menu-overlay{
+  pointer-events: none !important;
+}
+
+/* Only interactive when explicitly opened */
+#menu-overlay.menu-overlay.active,
+#menu-overlay.menu-overlay.is-open,
+#menu-overlay.menu-overlay.active[aria-hidden="false"],
+#menu-overlay.menu-overlay.is-open[aria-hidden="false"]{
+  pointer-events: auto !important;
+}
+
+/* If aria-hidden is false but open classes are missing, still block interaction */
+#menu-overlay.menu-overlay[aria-hidden="false"]:not(.active):not(.is-open){
+  pointer-events: none !important;
+}
+
+/* If aria-hidden is true, block interaction unconditionally */
+#menu-overlay.menu-overlay[aria-hidden="true"]{
+  pointer-events: none !important;
 }

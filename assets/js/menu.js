@@ -3,6 +3,10 @@
   const menuOverlay = document.getElementById('menu-overlay');
   if (!menuButton || !menuOverlay) return;
 
+  // Safety: when the overlay is closed/hidden, it must not intercept clicks.
+  // This prevents any “ghost” clicks that can trigger menu pack links (Spotify/Apple/etc.) underneath.
+  menuOverlay.style.pointerEvents = 'none';
+
   const menuLinks = menuOverlay.querySelectorAll('.menu-link');
   const menuItems = menuOverlay.querySelectorAll('.menu-item');
   // Opt menu rail links out of any global "jump" hover transforms (defined elsewhere).
@@ -342,6 +346,7 @@
     menuButton.classList.add('menu-open');
     menuOverlay.classList.add('active');
     menuOverlay.setAttribute('aria-hidden', 'false');
+    menuOverlay.style.pointerEvents = 'auto';
     animatedNodes.forEach(el => { el.style.transitionDelay = ''; });
     setTimeout(staggerIn, STAGGER_IN_START_DELAY);
     document.body.classList.add('menu-active');
@@ -367,6 +372,7 @@
     isOpen = false;
     menuOverlay.classList.add('closing');
     menuOverlay.setAttribute('aria-hidden', 'true');
+    menuOverlay.style.pointerEvents = 'none';
     staggerOut();
     document.body.classList.remove('menu-active');
 
@@ -374,6 +380,7 @@
 
     setTimeout(() => {
       menuOverlay.classList.remove('active', 'closing');
+      menuOverlay.style.pointerEvents = 'none';
       menuOverlay.setAttribute('aria-hidden', 'true');
       menuButton.classList.remove('menu-open');
       animatedNodes.forEach(el => {
