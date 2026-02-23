@@ -9,10 +9,10 @@ set -euo pipefail
 VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/11_Publish"
 SITE_ROOT="$HOME/Documents/Site/artan-website"
 CONTENT_SYNC_ROOT="$SITE_ROOT/content_sync"
-DEST_EN="$CONTENT_SYNC_ROOT/en"
+DEST_CANON="$CONTENT_SYNC_ROOT"
 PUB_INDEX="$SITE_ROOT/pages/publications/index.html"
 
-mkdir -p "$DEST_EN"
+mkdir -p "$DEST_CANON"
 
 # 1) Mirror published content into the website repo
 rsync -av --delete \
@@ -20,7 +20,7 @@ rsync -av --delete \
   --exclude "DO_NOT_EDIT" \
   --exclude "Do Not Edit" \
   --exclude "README.md" \
-  "$VAULT"/ "$DEST_EN"/
+  "$VAULT"/ "$DEST_CANON"/
 
 # 2) Auto-build Publications index from current content_sync tree
 mkdir -p "$(dirname "$PUB_INDEX")"
@@ -29,7 +29,7 @@ MD_FILES=()
 while IFS= read -r f; do
   MD_FILES+=("$f")
 done < <(
-  cd "$DEST_EN" 2>/dev/null || exit 0
+  cd "$DEST_CANON" 2>/dev/null || exit 0
   find Essays Notes Research Visual -type f -name "*.md" 2>/dev/null | LC_ALL=C sort
 )
 
