@@ -191,19 +191,29 @@ body.menu-active{ overflow: hidden; }
 }
 
 #menu-overlay.menu-overlay.is-open,
-#menu-overlay.menu-overlay[aria-hidden="false"],
 #menu-overlay.active{
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
 
+/* Safety: never let the overlay capture clicks unless JS also marked it open */
+#menu-overlay.menu-overlay[aria-hidden="false"]:not(.active):not(.is-open){
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* During closing animation, do not capture clicks */
+#menu-overlay.closing{
+  pointer-events: none;
+}
+
 /* While menu is open: hide stage circle */
 body.menu-open .stage-circle,
 body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; }
 #menu-overlay.active ~ .stage-circle,
-#menu-overlay.is-open ~ .stage-circle,
-#menu-overlay[aria-hidden="false"] ~ .stage-circle{ opacity: 0 !important; filter: none !important; }
+#menu-overlay.is-open ~ .stage-circle{ opacity: 0 !important; filter: none !important; }
 
 /* =============================================================================
    04) ISOLATION (SCOPE RESET)
