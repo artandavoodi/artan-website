@@ -520,11 +520,6 @@
         menuOverlay.classList.remove('has-preview');
       };
 
-      item.addEventListener('click', (e) => {
-        if (e.target.closest('a')) return;
-        const href = link.getAttribute('href');
-        if (href) window.location.href = href;
-      });
 
       item.__onEnter = onEnter;
       item.__onLeave = onLeave;
