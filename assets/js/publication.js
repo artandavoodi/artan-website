@@ -68,10 +68,12 @@
   }
 
   async function loadMarkdownWithLocale(p) {
-    // Canonical source: content_sync/<p>
-    // No locale subfolders (future translations handled at render level)
+    // Always load from site root to avoid relative path issues on GitHub Pages
+    // Add cache-busting query to avoid stale 404 caching
 
-    const url = `/${`content_sync/${p}`}`;
+    const cleanPath = String(p || '').replace(/^\/+/, '');
+    const url = `/${`content_sync/${cleanPath}`}?v=${Date.now()}`;
+
     const md = await fetchText(url);
     return { md, urlUsed: url };
   }
