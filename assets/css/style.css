@@ -291,11 +291,21 @@ body.menu-open #header-controls .theme-toggle{display:inline-flex;}
    07) FOOTER
 ============================================================================= */
 :root{
-  /* Footer rail gutter (responsive) */
-  --footer-gutter: clamp(18px, 4vw, 96px);
+  /* Footer rail gutter (responsive; no clamp) */
+  --footer-gutter: 4vw;
+  --footer-gutter-min: 18px;
+  --footer-gutter-max: 96px;
   --footer-rail-width: calc(100% - (var(--footer-gutter) * 2));
   --site-gutter: var(--footer-gutter);
   --site-rail-width: var(--footer-rail-width);
+}
+
+@media (max-width: 520px){
+  :root{ --footer-gutter: var(--footer-gutter-min); }
+}
+
+@media (min-width: 2400px){
+  :root{ --footer-gutter: var(--footer-gutter-max); }
 }
 .footer-separator{
   width: var(--footer-rail-width);
@@ -465,8 +475,6 @@ body.light-mode .language-dropdown .lang-option:hover{
   background-color:rgba(0,0,0,0.05);
 }
 
-/* Country overlay styles live in assets/css/country-cverlay.css (sovereign). */
-
 /* =============================================================================
    10) GLOBAL CLOSE BUTTON
 ============================================================================= */
@@ -539,110 +547,3 @@ body[dir="rtl"] .custom-cursor{
   unicode-bidi:isolate;
   transform:translate(-50%,-50%) !important;
 }
-
-/* =============================================================================
-   12) INTRO LOGO ANIMATION (CSS HOOKS)
-============================================================================= */
-body.intro-loading{overflow:hidden;}
-body.intro-loading .stage-circle{opacity:0;background:transparent;}
-body.intro-loading .stage-circle::after{opacity:0;animation:none;}
-
-body.intro-reveal .stage-circle{opacity:1;transition:opacity 0.9s var(--intro-ease);}
-
-body.intro-loading #header-controls,
-body.intro-loading .site-essence,
-body.intro-loading .site-footer,
-body.intro-loading .footer-separator,
-body.intro-loading #menu-overlay{
-  opacity:0;
-  pointer-events:none;
-}
-
-/* Stage text + CTA silent until reveal */
-body.intro-loading #announcement,
-body.intro-loading #enter-button,
-body.intro-loading .enter-button{
-  opacity:0;
-  transform:translateY(18px);
-}
-body.intro-reveal #announcement,
-body.intro-reveal #enter-button,
-body.intro-reveal .enter-button{
-  opacity:1;
-  transform:translateY(0);
-  transition:opacity 0.65s ease,transform 0.85s var(--intro-ease);
-}
-
-/* Intro logo overlay */
-.site-logo.intro-logo{
-  position:fixed;
-  left:50%;
-  top:50%;
-  right:auto;
-  bottom:auto;
-  display:block;
-  width:min(62vw, var(--intro-logo-max));
-  height:auto;
-  margin:0 !important;
-  z-index:300000;
-  opacity:0;
-  transform:translate(-50%,-50%) scale(0.68);
-  transition:opacity var(--intro-pop-duration) ease,transform var(--intro-settle-duration) var(--intro-ease);
-  will-change:transform,opacity;
-  backface-visibility:hidden;
-}
-.site-logo.intro-logo.intro-pop{opacity:1;transform:translate(-50%,-50%) scale(1);}
-.site-logo.intro-logo.intro-settle{transform:translate(-50%,-50%) scale(0.94);}
-.site-logo.intro-logo.intro-fade{
-  opacity:0;
-  transform:translate(-50%,-50%) scale(0.30);
-  transition:opacity var(--intro-fade-duration) ease,transform var(--intro-fade-duration) var(--intro-ease);
-}
-html[dir="rtl"] .site-logo.intro-logo,
-body[dir="rtl"] .site-logo.intro-logo{left:50% !important;right:auto !important;}
-
-.site-logo.intro-docked{
-  position:relative;
-  left:auto;
-  top:auto;
-  transform:none;
-  width:320px;
-  margin:0 auto 2rem auto;
-  z-index:1;
-  opacity:1;
-}
-@media (max-width:640px){
-  .site-logo.intro-logo{width:min(78vw, var(--intro-logo-mobile-max));}
-  .site-logo.intro-docked{width:260px;}
-}
-@media (prefers-reduced-motion: reduce){
-  body.intro-loading{overflow:auto;}
-  .site-logo.intro-logo,
-  .site-logo.intro-logo.intro-fade,
-  body.intro-reveal #announcement,
-  body.intro-reveal #enter-button,
-  body.intro-reveal .enter-button{
-    transition:none !important;
-    animation:none !important;
-    transform:none !important;
-  }
-}
-
-/* =============================================================================
-   13) PRE-ENTER CONTENT GATE (HOMEPAGE)
-============================================================================= */
-
-/* Homepage intro gate ONLY (prevent global lock) */
-body.home:not(.site-entered) section,
-body.home:not(.site-entered) .featured-section,
-body.home:not(.site-entered) .section-posts,
-body.home:not(.site-entered) .section-comments,
-body.home:not(.site-entered) .site-footer,
-body.home:not(.site-entered) .footer-flex,
-body.home:not(.site-entered) .footer-separator{
-  display:none !important;
-}
-
-body.home:not(.site-entered) #stage{display:flex !important;}
-body.home:not(.site-entered) #stage *{display:revert;}
-body.home:not(.site-entered){overflow:hidden;}

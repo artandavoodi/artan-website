@@ -103,7 +103,7 @@
     menuPackToggle.style.pointerEvents = 'none';
   }
 
-  let packMode = 'music'; // default
+  let packMode = 'social'; // default
   let isPackAnimating = false;
 
   const PACK_OUT_DURATION = 520;
@@ -300,8 +300,8 @@
   };
 
   const resetPacksOnOpen = () => {
-    // Unified pack line: show both, disable flip.
-    if (packMusic) setPackVisibility(packMusic, true);
+    // Social-only: keep music pack hidden/disabled
+    if (packMusic) setPackVisibility(packMusic, false);
     if (packSocial) setPackVisibility(packSocial, true);
 
     // Disable the toggle UI interaction (keep markup for future use).
@@ -311,7 +311,7 @@
       menuPackToggle.style.pointerEvents = 'none';
     }
 
-    packMode = 'music';
+    packMode = 'social';
     isPackAnimating = false;
     document.body.classList.add('menu-packs-unified');
   };

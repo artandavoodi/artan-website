@@ -1,5 +1,5 @@
 /**
- * Logo Intro Animation — PinkFloyd-style (CENTER POP → REVEAL)
+ * Logo Intro Animation — ARTAN-style (CENTER POP → REVEAL)
  *
  * Behavior:
  * 1) New tab/session: show ONLY a centered logo overlay (no header/footer, no announcement/enter/essence).
@@ -26,7 +26,13 @@
 
   // Run once per session (normal refresh keeps it done)
   const INTRO_DONE_KEY = "artan_logo_intro_done_v4";
-  const ENTERED_KEY = "artan_site_entered_v1";
+  const ENTERED_KEY = "artan_site_entered_v2";
+
+  // Scroll lock (lock page until ENTER; future-proof, no CSS dependency)
+  const SCROLL_LOCK_KEY = "artan_scroll_lock_v1";
+  let __scrollLocked = false;
+  let __scrollY = 0;
+  let __lockHandlersBound = false;
 
   const qs = (sel) => document.querySelector(sel);
 
@@ -58,6 +64,77 @@
 
   const raf2 = (fn) => requestAnimationFrame(() => requestAnimationFrame(fn));
 
+  const preventScroll = (e) => {
+    if (!__scrollLocked) return;
+    try { e.preventDefault(); } catch (_) {}
+    return false;
+  };
+
+  const preventKeys = (e) => {
+    if (!__scrollLocked) return;
+    const k = e.key;
+    const blocked = [
+      "ArrowUp","ArrowDown","ArrowLeft","ArrowRight",
+      "PageUp","PageDown","Home","End"," ","Spacebar"
+    ];
+    if (blocked.includes(k)) {
+      e.preventDefault();
+      return false;
+    }
+  };
+
+  const bindScrollLockHandlers = () => {
+    if (__lockHandlersBound) return;
+    __lockHandlersBound = true;
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    window.addEventListener("touchmove", preventScroll, { passive: false });
+    window.addEventListener("keydown", preventKeys, { passive: false });
+  };
+
+  const unbindScrollLockHandlers = () => {
+    if (!__lockHandlersBound) return;
+    __lockHandlersBound = false;
+    window.removeEventListener("wheel", preventScroll, { passive: false });
+    window.removeEventListener("touchmove", preventScroll, { passive: false });
+    window.removeEventListener("keydown", preventKeys, { passive: false });
+  };
+
+  const lockScroll = () => {
+    if (__scrollLocked) return;
+    __scrollLocked = true;
+    __scrollY = window.scrollY || window.pageYOffset || 0;
+
+    sessionStorage.setItem(SCROLL_LOCK_KEY, "1");
+
+    document.documentElement.style.scrollBehavior = "auto";
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.width = "100%";
+    document.body.style.top = `-${__scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+
+    bindScrollLockHandlers();
+  };
+
+  const unlockScroll = () => {
+    if (!__scrollLocked) return;
+    __scrollLocked = false;
+
+    sessionStorage.removeItem(SCROLL_LOCK_KEY);
+
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    document.body.style.overflow = "";
+
+    unbindScrollLockHandlers();
+
+    window.scrollTo(0, __scrollY);
+  };
+
   const onReady = (fn) => {
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", fn, { once: true });
@@ -70,12 +147,23 @@
     const body = document.body;
     if (!body || body.hasAttribute("data-disable-logo-intro")) return;
 
+    // Always start at top for the hero intro experience.
+    // (Safe: only affects this tab/session; avoids landing mid-scroll.)
+    try { window.scrollTo(0, 0); } catch (_) {}
+
     const logoEl = qs(".site-logo");
     if (!logoEl) return;
 
     // ===== Session gate =====
     const introDone = sessionStorage.getItem(INTRO_DONE_KEY) === "1";
     const entered = sessionStorage.getItem(ENTERED_KEY) === "1";
+
+    // SAFETY: never start in entered state unless this session explicitly entered.
+    if (!entered) {
+      body.classList.remove("site-entered");
+      body.classList.remove("hero-lock-released");
+      body.classList.remove("hero-released");
+    }
 
     // ===== Core stage elements =====
     const stage = qs("#stage") || qs(".stage-container");
@@ -92,13 +180,12 @@
     const customCursor = qs(".custom-cursor");
 
     // ===== Stage video readiness gate (prevents blank beat before first frame) =====
-    // IMPORTANT: the <video> element should have id="stage-video" in index.html.
-    const stageVideo = qs("#stage-video");
+    // Stage video element (pre-enter background).
+    const stageVideo = qs(".stage-video-media");
     let stageVideoReady = false;
     let maskRevealStarted = false;
 
     if (stageVideo) {
-      // Ensure the browser starts fetching/decoding as early as possible.
       stageVideo.preload = "auto";
       stageVideo.muted = true;
       stageVideo.playsInline = true;
@@ -107,19 +194,14 @@
         stageVideoReady = true;
       };
 
-      // Any of these mean we have (or can get) a real frame.
       stageVideo.addEventListener("loadeddata", markStageVideoReady, { once: true });
       stageVideo.addEventListener("canplay", markStageVideoReady, { once: true });
       stageVideo.addEventListener("playing", markStageVideoReady, { once: true });
 
-      // Try to start playback silently during intro so the first frame is ready.
-      // Autoplay can still be blocked in some cases; we fall back to the gate below.
       stageVideo.play().catch(() => {});
     }
 
     // ===== Stage video mask (keeps video invisible during intro, then reveals softly) =====
-    // IMPORTANT: Must be full-viewport, not constrained by the stage container.
-    // We mount it on <body> as a fixed layer so it never becomes a small “box”.
     const getOrCreateStageVideoMask = () => {
       const existing =
         qs("#stage-video-mask") ||
@@ -133,10 +215,8 @@
       mask.setAttribute("data-stage-video-mask", "true");
       mask.setAttribute("aria-hidden", "true");
 
-      // Mount on <body> so it always covers the full viewport.
       document.body.appendChild(mask);
 
-      // Full-screen, behind stage content, above the video.
       setInline(mask, {
         position: "fixed",
         inset: "0",
@@ -147,7 +227,6 @@
         transition: `opacity 1400ms ${EASE_OUT}, background-color 600ms ${EASE_OUT}`,
       });
 
-      // Ensure stage content sits above the mask (future-proof, minimal impact).
       if (stage) {
         const cs = window.getComputedStyle(stage);
         if (cs.position === "static") stage.style.position = "relative";
@@ -168,7 +247,6 @@
         mask.style.transition = "none";
         mask.style.background = targetBg;
         mask.style.opacity = String(opacity);
-        // restore transition next tick
         requestAnimationFrame(() => {
           mask.style.transition = `opacity 1400ms ${EASE_OUT}, background-color 600ms ${EASE_OUT}`;
         });
@@ -234,12 +312,7 @@
 
     // During intro: hide stage content (and the in-layout logo) so ONLY overlay shows.
     const hideStageContent = () => {
-      if (stageCircle) {
-        stageCircle.setAttribute("aria-hidden", "true");
-        stageCircle.style.pointerEvents = "none";
-      }
-
-      // Hide the in-layout logo during intro overlay.
+      // Removed hiding of stageCircle via aria-hidden and pointerEvents for accessibility.
       setA11yHidden(logoEl, true);
       setInline(logoEl, { opacity: "0", pointerEvents: "none" });
 
@@ -259,7 +332,6 @@
     const revealStageContent = () => {
       mountEssenceIntoStage();
 
-      // Reveal the in-layout logo.
       setA11yHidden(logoEl, false);
       logoEl.style.transition = `opacity 700ms ${EASE_OUT}`;
       logoEl.style.opacity = "1";
@@ -278,11 +350,7 @@
       });
 
       if (enterButton) enterButton.tabIndex = 0;
-
-      if (stageCircle) {
-        stageCircle.removeAttribute("aria-hidden");
-        stageCircle.style.pointerEvents = "";
-      }
+      // Removed reveal of stageCircle via aria-hidden and pointerEvents for accessibility.
     };
 
     const hideIntroOnlyUI = () => {
@@ -298,8 +366,14 @@
       sessionStorage.setItem(ENTERED_KEY, "1");
       body.classList.remove("intro-loading", "intro-reveal");
       body.classList.add("site-entered");
+      body.classList.add("hero-lock-released");
+      body.classList.add("hero-released");
+      // Finalize: fully remove the hero stage after the release transition.
+      window.setTimeout(() => body.classList.add("hero-stage-hidden"), 1600);
 
-      // Hide intro-only elements.
+      // Release the page only when user explicitly enters.
+      unlockScroll();
+
       [announcement, enterButton].forEach((el) => {
         if (!el) return;
         el.style.transition = `opacity 450ms ${EASE_OUT}, transform 600ms ${EASE_OUT}`;
@@ -310,11 +384,11 @@
       });
       if (enterButton) enterButton.tabIndex = -1;
 
-      // Essence returns to footer flow on enter.
-      restoreEssenceToOriginal();
-
-      // Show global chrome.
-      showChrome();
+      // Delay post-enter DOM moves until the hero fade completes (prevents logo snap).
+      window.setTimeout(() => {
+        restoreEssenceToOriginal();
+        showChrome();
+      }, 720);
 
       const mask = qs("#stage-video-mask");
       if (mask) {
@@ -337,39 +411,40 @@
     if (entered) {
       body.classList.remove("intro-loading", "intro-reveal");
       body.classList.add("site-entered");
+      body.classList.add("hero-lock-released");
+      body.classList.add("hero-released");
+      body.classList.add("hero-stage-hidden");
 
-      // Ensure intro-only UI is hidden
       hideIntroOnlyUI();
 
-      // Ensure logo is visible
       setA11yHidden(logoEl, false);
       setInline(logoEl, { opacity: "1", pointerEvents: "" });
 
-      // Put essence back to its original home and show chrome
       restoreEssenceToOriginal();
       showChrome();
-
-      // Ensure stage remains interactive
-      if (stageCircle) {
-        stageCircle.removeAttribute("aria-hidden");
-        stageCircle.style.pointerEvents = "";
-      }
 
       setStageVideoMask({ opacity: 1, hard: true });
       const __mask = qs("#stage-video-mask");
       if (__mask) __mask.style.display = "none";
 
+      // Entered state must never be scroll-locked.
+      unlockScroll();
+
       return;
     }
 
+    // If user has not entered, keep the page locked (even if intro already ran)
     if (introDone) {
-      // Stage revealed, but user hasn't entered yet (keep chrome hidden)
       body.classList.remove("intro-loading", "site-entered");
       body.classList.add("intro-reveal");
       hideChrome();
       hideStageContent();
       setStageVideoMask({ opacity: 0.5, hard: true });
       revealStageContent();
+
+      // Stage is revealed but site is not entered yet: keep the page locked.
+      lockScroll();
+
       return;
     }
 
@@ -381,6 +456,10 @@
       setStageVideoMask({ opacity: 0.5, hard: true });
       body.classList.add("intro-reveal");
       revealStageContent();
+
+      // Reduced motion still follows the same rule: locked until ENTER.
+      lockScroll();
+
       return;
     }
 
@@ -396,26 +475,22 @@
           await logoEl.decode().catch(() => {});
         }
       }
-    } catch (_) {
-      // fail open
-    }
+    } catch (_) {}
 
     await new Promise((r) => requestAnimationFrame(r));
 
-    // Mark intro as done for this session once we begin.
     sessionStorage.setItem(INTRO_DONE_KEY, "1");
 
-    // Start intro immediately (prevents first-paint video flash)
     body.classList.add("intro-loading");
     setStageVideoMask({ opacity: 1, hard: true });
     hideChrome();
     hideStageContent();
 
-    // ===== Video reveal timing (fine-tune) =====
-    // Reveal the video wash after 1s (even while the logo overlay is still running).
-    // We still wait for a real frame when possible to avoid a blank beat.
-    const REVEAL_AFTER_MS = 1000;
+    // During intro, lock the page completely until ENTER.
+    lockScroll();
 
+    // ===== Video reveal timing (fine-tune) =====
+    const REVEAL_AFTER_MS = 1000;
     const fadeMaskToWash = () => setStageVideoMask({ opacity: 0.5 });
 
     window.setTimeout(() => {
@@ -426,7 +501,6 @@
         return;
       }
 
-      // Wait briefly for a playable frame; fall back quickly.
       const fallback = window.setTimeout(() => {
         if (!maskRevealStarted) fadeMaskToWash();
       }, 900);
@@ -460,9 +534,6 @@
 
     const overlayLogo = logoEl.cloneNode(true);
     overlayLogo.removeAttribute("id");
-
-    // Strip any layout/positioning classes from the in-layout logo.
-    // Keep only our intro class so CSS from `.site-logo` cannot shift the overlay logo.
     overlayLogo.className = "intro-logo";
     overlayLogo.removeAttribute("style");
 
@@ -491,8 +562,6 @@
       body.classList.remove("intro-loading");
       body.classList.add("intro-reveal");
 
-      // After the intro: ensure we are at least on the luxury wash.
-      // If the 1s reveal already ran, do nothing.
       if (!maskRevealStarted) {
         const fadeToWash = () => setStageVideoMask({ opacity: 0.5 });
 
@@ -511,25 +580,19 @@
         }
       }
 
-      // Remove overlay
       if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-
-      // Reveal stage content (still no header/footer)
       revealStageContent();
     });
 
     raf2(() => {
-      // Pop up
       overlayLogo.style.transition = `transform ${POP_IN_MS}ms ${EASE_OUT}`;
       overlayLogo.style.transform = "translate3d(0,0,0) scale(1.03)";
 
-      // Settle
       window.setTimeout(() => {
         overlayLogo.style.transition = `transform ${POP_OUT_MS}ms ${EASE_INOUT}`;
         overlayLogo.style.transform = "translate3d(0,0,0) scale(1.0)";
       }, Math.max(0, POP_IN_MS - 120));
 
-      // Hold, then fade away overlay
       window.setTimeout(() => {
         overlay.style.transition = `opacity ${FADE_MS}ms ${EASE_OUT}`;
         overlayLogo.style.transition = `transform ${FADE_MS}ms ${EASE_OUT}, opacity ${FADE_MS}ms ${EASE_OUT}`;
@@ -541,11 +604,9 @@
         window.setTimeout(finishIntro, FADE_MS + 40);
       }, POP_IN_MS + HOLD_MS);
 
-      // Safety: never get stuck.
       window.setTimeout(finishIntro, POP_IN_MS + HOLD_MS + FADE_MS + 1400);
     });
 
-    // BFCache safety.
     window.addEventListener(
       "pageshow",
       () => {
@@ -554,7 +615,6 @@
       { once: true }
     );
 
-    // Escape exits intro.
     window.addEventListener(
       "keydown",
       (e) => {

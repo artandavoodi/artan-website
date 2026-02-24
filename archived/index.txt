@@ -15,13 +15,13 @@
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/menu.css">
     <link rel="stylesheet" href="assets/css/country-overlay.css">
-    <meta name="description" content="ARTAN is an institutional ecosystem hub: Architecture, Intelligence, Systems — spanning Press, Records, and NeuroArtan.">
-    <meta name="keywords" content="ARTAN, Architecture, Intelligence, Systems, Press, Records, NeuroArtan, Publishing, Research, Neuroscience, Cognitive Architecture, AI Systems, Essays, Publications, Music, Albums, Releases, X, YouTube">
+    <meta name="description" content="Artan's visionary creative world.">
+    <meta name="keywords" content="Artan, Davoodi, MONAD, LAW, LOVE, YOU, سکون, Solum, Music, Albums, Singles, Books, Sound, Visual, Consciousness, Spotify, Apple Music, X, Instagram, TikTok">
     <link rel="canonical" href="https://artan.live/">
 
     <!-- =================== Open Graph =================== -->
     <meta property="og:title" content="Artan">
-    <meta property="og:description" content="ARTAN is an ecosystem hub — Architecture • Intelligence • Systems. Press, Records, NeuroArtan.">
+    <meta property="og:description" content="Artan's visionary creative world. SOUND • VISUAL • CONSCIOUSNESS">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://artan.live/">
     <meta property="og:image" content="https://artan.live/assets/images/logo.svg">
@@ -29,7 +29,7 @@
     <!-- =================== Twitter Card =================== -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Artan">
-    <meta name="twitter:description" content="ARTAN is an ecosystem hub — Architecture • Intelligence • Systems. Press, Records, NeuroArtan.">
+    <meta name="twitter:description" content="Artan's visionary creative world. SOUND • VISUAL • CONSCIOUSNESS">
     <meta name="twitter:image" content="https://artan.live/assets/images/logo.svg">
     <meta name="twitter:site" content="@artandavoodi">
 
@@ -37,31 +37,37 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "ARTAN",
+      "@type": "MusicGroup",
+      "name": "Artan",
       "url": "https://artan.live/",
       "logo": "https://artan.live/assets/images/logo.svg",
-      "description": "ARTAN is an institutional ecosystem hub: Architecture, Intelligence, Systems — spanning Press, Records, and NeuroArtan.",
       "sameAs": [
         "https://x.com/artandavoodi",
-        "https://www.youtube.com/@artandavoodi"
+        "https://www.instagram.com/artandavoodi/",
+        "https://www.tiktok.com/@artan.davoodi",
+        "https://open.spotify.com/artist/4MSdNxckTdTdVQFWtB2OFR",
+        "https://music.apple.com/de/artist/artan/1855183543?l=en-GB"
       ],
-      "subOrganization": [
+      "album": [
         {
-          "@type": "Organization",
-          "name": "ARTAN Press",
-          "url": "https://artan.live/press/"
-        },
-        {
-          "@type": "Organization",
-          "name": "ARTAN Records",
-          "url": "https://artan.live/records/"
-        },
-        {
-          "@type": "Organization",
-          "name": "NeuroArtan",
-          "url": "https://artan.live/neuroartan/"
+          "@type": "MusicAlbum",
+          "name": "Solum",
+          "url": "https://artan.live/albums/Solum"
         }
+      ],
+      "hasPart": [
+        {
+          "@type": "MusicRecording",
+          "name": "Single Name",
+          "url": "https://artan.live/singles/gone"
+        }
+      ],
+      "workExample": [
+        { "@type": "Book", "name": "MONAD", "url": "https://books.apple.com/us/book/monad/id6753911336" },
+        { "@type": "Book", "name": "LAW", "url": "https://books.apple.com/us/book/law/id6754649161" },
+        { "@type": "Book", "name": "LOVE", "url": "https://books.apple.com/us/book/love/id6754840664" },
+        { "@type": "Book", "name": "YOU", "url": "https://books.apple.com/us/book/you/id6754849429" },
+        { "@type": "Book", "name": "سکون", "url": "https://books.apple.com/us/book/سکون/id6754879858" }
       ]
     }
     </script>
@@ -93,14 +99,6 @@
 
 <!-- =================== Landing / Stage Circle =================== -->
 <div class="stage-circle">
-<!-- =================== Stage Background Video (Hero) =================== -->
-  <div class="stage-video" aria-hidden="true">
-    <div class="stage-video-overlay" aria-hidden="true"></div>
-
-    <video class="stage-video-media" autoplay muted playsinline preload="metadata" loop>
-      <source src="assets/video/video-1.webm" type="video/webm">
-    </video>
-  </div>
     <div class="stage-container" id="stage">
         <div class="stage-stack">
             <div class="stage-intro" id="stage-intro">
@@ -109,7 +107,7 @@
                 </div>
 
                 <div class="stage-container stage-fade-on-enter" id="stage-announcement">
-                    <p id="announcement" data-i18n-key="announcement.message">ECOSYSTEM IN DEVELOPMENT</p>
+                    <p id="announcement" data-i18n-key="announcement.message">WEBSITE UNDER CONSTRUCTION</p>
                 </div>
 
                 <div class="stage-container-gap stage-fade-on-enter" id="stage-enter">
@@ -118,16 +116,22 @@
                     </button>
                 </div>
 
-                <p class="site-essence stage-fade-on-enter" id="stage-essence" data-i18n-key="site.essence">ARCHITECTURE • INTELLIGENCE • SYSTEMS</p>
+                <p class="site-essence stage-fade-on-enter" id="stage-essence" data-i18n-key="site.essence">SOUND • VISUAL • CONSCIOUSNESS</p>
             </div>
         </div>
     </div>
 </div>
 
+<!-- =================== Stage Background Video (Hero) =================== -->
+<div class="stage-video" aria-hidden="true">
+  <!-- Overlay/scrim for intro + luxury glass control (styled in style.css) -->
+  <div class="stage-video-overlay" aria-hidden="true"></div>
 
-
-<!-- =================== Main Content (Post-Enter) =================== -->
-<main id="site-main">
+  <video class="stage-video-media" autoplay muted playsinline preload="metadata" loop>
+    <!-- LOOP TOGGLE: remove `loop` from the <video> tag to turn looping OFF. Add it back to turn looping ON. -->
+    <source src="assets/video/video-1.webm" type="video/webm">
+  </video>
+</div>
 
 <!-- =================== Home Hero (Post-Enter) =================== -->
 <section id="home-hero" class="home-hero" aria-hidden="true">
@@ -140,16 +144,18 @@
   <div class="home-hero-overlay" aria-hidden="true"></div>
   <div class="home-hero-matte" aria-hidden="true"></div>
 
+  <!-- Home Hero Logo (must sit ABOVE glass overlay) -->
   <div class="home-hero-logo-layer" aria-hidden="false">
     <a class="home-hero-logo-link" href="index.html" aria-label="ARTAN">
       <img class="home-hero-logo" src="assets/icons/artan-logos/logo-typo.svg" alt="ARTAN" />
     </a>
   </div>
 
+  <!-- Home Hero Headlines (Scroll Focus) -->
   <div class="home-hero-headlines" aria-hidden="false">
-    <p class="home-hero-headline" data-headline="architecture" data-i18n-key="home.hero.headline.architecture">ARCHITECTURE</p>
-    <p class="home-hero-headline" data-headline="intelligence" data-i18n-key="home.hero.headline.intelligence">INTELLIGENCE</p>
-    <p class="home-hero-headline" data-headline="systems" data-i18n-key="home.hero.headline.systems">SYSTEMS</p>
+    <p class="home-hero-headline" data-headline="specific" data-i18n-key="home.hero.headline.specific">SPECIFIC</p>
+    <p class="home-hero-headline" data-headline="different" data-i18n-key="home.hero.headline.different">DIFFERENT</p>
+    <p class="home-hero-headline" data-headline="intentional" data-i18n-key="home.hero.headline.intentional">INTENTIONAL</p>
   </div>
 </section>
 
@@ -162,16 +168,16 @@
            aria-hidden="false"
            data-ink-layer="1"
            data-i18n-key="home.essence.line1"
-           data-essence-text="Architecture as the spine of the ecosystem">
-          Architecture as the spine of the ecosystem
+           data-essence-text="One field—sound, form, consciousness">
+          One field—sound, form, consciousness
         </p>
 
         <p class="home-text ink-line ink-line--sub home-ink-layer"
            aria-hidden="false"
            data-ink-layer="2"
            data-i18n-key="home.essence.line2"
-           data-essence-text="Intelligence as research and method">
-          Intelligence as research and method
+           data-essence-text="Structure becomes emotion">
+          Structure becomes emotion
         </p>
 
         <p class="home-text ink-line ink-line--sub home-ink-layer"
@@ -179,8 +185,8 @@
            data-ink-layer="3"
            data-ink-last="true"
            data-i18n-key="home.essence.line3"
-           data-essence-text="Systems as publishing and signal">
-          Systems as publishing and signal
+           data-essence-text="Silence becomes direction">
+          Silence becomes direction
         </p>
       </div>
     </div>
@@ -193,10 +199,10 @@
     <img src="assets/images/homepage/placeholder-music.jpg.png" alt="Abstract sound architecture">
   </figure>
   <div class="home-inner home-rail">
-    <h2 class="home-title" data-i18n-key="home.music.title">Records</h2>
+    <h2 class="home-title" data-i18n-key="home.music.title">Sound</h2>
     <p class="home-text" data-i18n-key="home.music.text">
-      Releases as architecture<br>
-      Rhythm as memory<br>
+      Composition as architecture<br>
+      Rhythm as spatial memory<br>
       Sound shaped through restraint, repetition, and depth
     </p>
   </div>
@@ -205,9 +211,9 @@
 <!-- =================== Home — Books =================== -->
 <section class="home-section home-books">
   <div class="home-inner home-rail">
-    <h2 class="home-title" data-i18n-key="home.language.title">Press</h2>
+    <h2 class="home-title" data-i18n-key="home.language.title">Language</h2>
     <p class="home-text" data-i18n-key="home.language.text">
-      Books, essays, publications<br>
+      Thought condensed into form<br>
       Language as a precise instrument of perception
     </p>
   </div>
@@ -219,11 +225,11 @@
     <img src="assets/images/homepage/placeholder-awareness.png" alt="Light and structure">
   </figure>
   <div class="home-inner home-rail">
-    <h2 class="home-title" data-i18n-key="home.awareness.title">NeuroArtan</h2>
+    <h2 class="home-title" data-i18n-key="home.awareness.title">Awareness</h2>
     <p class="home-text" data-i18n-key="home.awareness.text">
-      Research that observes itself<br>
-      Cognitive architecture as method<br>
-      Measurement before myth
+      Systems that observe themselves<br>
+      Interaction as reflection<br>
+      Presence without instruction
     </p>
   </div>
 </section>
@@ -247,8 +253,8 @@
 <section class="home-section home-featured home-featured-music">
   <div class="home-inner home-rail">
     <div class="featured-header">
-      <h2 class="home-title" data-i18n-key="home.featuredMusic.title">Featured Records</h2>
-      <p class="home-text" data-i18n-key="home.featuredMusic.text">A rotating selection of releases and signals.</p>
+      <h2 class="home-title" data-i18n-key="home.featuredMusic.title">Featured Sound</h2>
+      <p class="home-text" data-i18n-key="home.featuredMusic.text">A rotating selection of releases and moments.</p>
     </div>
     <div id="featured-music" class="featured-grid" role="list" aria-label="Featured music" data-collection="featuredMusic"></div>
   </div>
@@ -277,16 +283,13 @@
 </section>
 
 <!-- =================== Home — Closing =================== -->
-<div class="home-closing reveal-on-scroll" id="home-closing" aria-label="ARTAN status">
-  <p class="home-closing-line" data-i18n-key="home.closing.line1">
-    ARTAN is an evolving ecosystem.
-  </p>
-  <p class="home-closing-line home-closing-line--sub" data-i18n-key="home.closing.line2">
-    Architecture, Intelligence, and Systems are being expanded and refined — publications, releases, and research nodes update continuously.
-  </p>
-</div>
-
-</main>
+<section class="home-section home-closing">
+  <div class="home-inner home-rail">
+    <p class="home-text" data-i18n-key="home.closing.text">
+      This website is under development. For the most current updates, follow Artan Davoodi on X at <a href="https://x.com/artandavoodi" target="_blank" rel="noopener noreferrer">@artandavoodi</a>.
+    </p>
+  </div>
+</section>
 
 <!-- =================== Footer Mount =================== -->
 <div id="footer-mount"></div>
@@ -303,7 +306,6 @@
 <script src="assets/js/logo-animation.js" defer></script>
 <script src="collections/collections.js" defer></script>
 <script src="assets/js/menu.js" defer></script>
-<script src="assets/js/hero.js" defer></script>
 <script src="assets/js/home.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 

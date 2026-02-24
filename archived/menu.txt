@@ -65,7 +65,7 @@
           <!-- -------- Section B (Typo Logo + Site Essence) -------- -->
           <div class="menu-col-a-section-b" aria-label="Identity">
             <img src="/assets/icons/artan-logos/logo-typo.svg" alt="ARTAN" class="menu-typo-logo">
-            <p class="menu-site-essence" data-i18n-key="site.essence">ARCHITECTURE • INTELLIGENCE • SYSTEMS</p>
+            <p class="menu-site-essence" data-i18n-key="site.essence">ARCHITECTURE • PRESS • RECORDS</p>
           </div>
 
         </div>
@@ -77,7 +77,7 @@
           <div class="menu-col-b-section-a" aria-label="Menu preview">
             <div class="menu-preview" aria-label="Preview">
               <h3 id="menu-preview-title" class="menu-preview-title">
-                <img id="menu-preview-icon" class="menu-preview-icon" src="/assets/icons/utilities/project.svg" alt="" aria-hidden="true" data-preview-icon-default="/assets/icons/utilities/project.svg">
+                <img id="menu-preview-icon" class="menu-preview-icon" src="/assets/icons/utilities/music.svg" alt="" aria-hidden="true" data-preview-icon-default="/assets/icons/utilities/project.svg">
                 <span id="menu-preview-title-text" class="menu-preview-title-text sr-only" data-i18n-key="menu.preview.title">Architecture</span>
               </h3>
               <p id="menu-preview-sub" class="menu-preview-sub" data-i18n-key="menu.preview.sub">System vision and structural map</p>
@@ -90,29 +90,49 @@
 
   <li class="menu-sep" aria-hidden="true"></li>
   <li class="menu-item" data-preview-title="ARCHITECTURE" data-preview-sub="System vision and structural map" data-preview-icon="/assets/icons/utilities/project.svg">
-    <a href="/architecture/" class="menu-link menu-link--nojump" data-text="Architecture" data-preview-title="ARCHITECTURE" data-preview-sub="System vision and structural map" data-preview-icon="/assets/icons/utilities/project.svg">
+    <a href="/architecture/" class="menu-link menu-link--nojump" data-text="Architecture"
+       data-preview-title="ARCHITECTURE" data-preview-sub="System vision and structural map" data-preview-icon="/assets/icons/utilities/project.svg">
       <span class="menu-link-inner"><span class="menu-link-text">Architecture</span></span>
     </a>
   </li>
 
   <li class="menu-sep" aria-hidden="true"></li>
   <li class="menu-item" data-preview-title="PRESS" data-preview-sub="Books, essays, publications" data-preview-icon="/assets/icons/utilities/book.svg">
-    <a href="/press/" class="menu-link menu-link--nojump" data-text="Press" data-preview-title="PRESS" data-preview-sub="Books, essays, publications" data-preview-icon="/assets/icons/utilities/book.svg">
+    <a href="/press/" class="menu-link menu-link--nojump" data-text="Press"
+       data-preview-title="PRESS" data-preview-sub="Books, essays, publications" data-preview-icon="/assets/icons/utilities/book.svg">
       <span class="menu-link-inner"><span class="menu-link-text">Press</span></span>
     </a>
   </li>
 
   <li class="menu-sep" aria-hidden="true"></li>
   <li class="menu-item" data-preview-title="RECORDS" data-preview-sub="Releases and sound projects" data-preview-icon="/assets/icons/utilities/music.svg">
-    <a href="/records/" class="menu-link menu-link--nojump" data-text="Records" data-preview-title="RECORDS" data-preview-sub="Releases and sound projects" data-preview-icon="/assets/icons/utilities/music.svg">
+    <a href="/records/" class="menu-link menu-link--nojump" data-text="Records"
+       data-preview-title="RECORDS" data-preview-sub="Releases and sound projects" data-preview-icon="/assets/icons/utilities/music.svg">
       <span class="menu-link-inner"><span class="menu-link-text">Records</span></span>
     </a>
   </li>
 
   <li class="menu-sep" aria-hidden="true"></li>
   <li class="menu-item" data-preview-title="NEUROARTAN" data-preview-sub="Research and cognitive architecture" data-preview-icon="/assets/icons/utilities/brain.svg">
-    <a href="/neuroartan/" class="menu-link menu-link--nojump" data-text="NeuroArtan" data-preview-title="NEUROARTAN" data-preview-sub="Research and cognitive architecture" data-preview-icon="/assets/icons/utilities/brain.svg">
+    <a href="/neuroartan/" class="menu-link menu-link--nojump" data-text="NeuroArtan"
+       data-preview-title="NEUROARTAN" data-preview-sub="Research and cognitive architecture" data-preview-icon="/assets/icons/utilities/brain.svg">
       <span class="menu-link-inner"><span class="menu-link-text">NeuroArtan</span></span>
+    </a>
+  </li>
+
+  <li class="menu-sep" aria-hidden="true"></li>
+  <li class="menu-item" data-preview-title="PLATFORM" data-preview-sub="Publishing engine and system layer" data-preview-icon="/assets/icons/utilities/system.svg">
+    <a href="/platform/" class="menu-link menu-link--nojump" data-text="Platform"
+       data-preview-title="PLATFORM" data-preview-sub="Publishing engine and system layer" data-preview-icon="/assets/icons/utilities/system.svg">
+      <span class="menu-link-inner"><span class="menu-link-text">Platform</span></span>
+    </a>
+  </li>
+
+  <li class="menu-sep" aria-hidden="true"></li>
+  <li class="menu-item" data-preview-title="IDENTITY" data-preview-sub="Founder node and contact" data-preview-icon="/assets/icons/utilities/profile.svg">
+    <a href="/identity/" class="menu-link menu-link--nojump" data-text="Identity"
+       data-preview-title="IDENTITY" data-preview-sub="Founder node and contact" data-preview-icon="/assets/icons/utilities/profile.svg">
+      <span class="menu-link-inner"><span class="menu-link-text">Identity</span></span>
     </a>
   </li>
 
