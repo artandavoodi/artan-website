@@ -554,6 +554,12 @@
     applyTranslation(state.language);
   }
 
+  // Re-bind footer triggers if footer is injected after initial load
+  document.addEventListener('footer-mounted', () => {
+    bindFooterTriggers();
+    setLabels();
+    buildLanguageDropdown(state.language, state.languages);
+  });
   // Defer-safe init
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

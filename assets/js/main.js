@@ -13,52 +13,37 @@ async function injectGlobalLayout() {
   }
 }
 
+
 injectGlobalLayout();
 
+/* =================== Footer Fragment Injection =================== */
+const FOOTER_FRAGMENT_URL = '/assets/fragments/footer.html';
+
+async function injectFooterIfNeeded() {
+  const existing = document.querySelector('footer.site-footer');
+  if (existing) return true;
+
+  const mount = document.getElementById('footer-mount');
+  if (!mount) return false;
+
+  if (mount.dataset.footerInjected === 'true') return true;
+  mount.dataset.footerInjected = 'true';
+
+  try {
+    const res = await fetch(FOOTER_FRAGMENT_URL, { cache: 'no-cache' });
+    if (!res.ok) return false;
+    const html = await res.text();
+    mount.innerHTML = html;
+    // Notify locale systems that footer controls now exist
+    document.dispatchEvent(new Event('footer-mounted'));
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  /* =================== Theme Management =================== */
-
-  const body = document.body;
-  const toggle = document.getElementById("theme-toggle");
-  const footer = document.querySelector("footer");
-
-  const darkBg = "#000000";
-  const darkText = "#ffffff";
-  const lightBg = "#ffffff";
-  const lightText = "#000000";
-
-  const savedTheme = localStorage.getItem("theme");
-  const prefersDark =
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  let currentTheme = savedTheme || (prefersDark ? "dark" : "light");
-
-  function applyTheme(theme) {
-    currentTheme = theme;
-
-    if (theme === "dark") {
-      body.style.backgroundColor = darkBg;
-      body.style.color = darkText;
-      if (toggle) toggle.style.backgroundColor = darkText;
-      if (footer) footer.style.color = darkText;
-    } else {
-      body.style.backgroundColor = lightBg;
-      body.style.color = lightText;
-      if (toggle) toggle.style.backgroundColor = lightText;
-      if (footer) footer.style.color = lightText;
-    }
-
-    localStorage.setItem("theme", theme);
-  }
-
-  applyTheme(currentTheme);
-
-  if (toggle) {
-    toggle.addEventListener("click", () => {
-      applyTheme(currentTheme === "dark" ? "light" : "dark");
-    });
-  }
+  injectFooterIfNeeded();
 
   /* =================== Custom Cursor (RTL-safe + re-init on language/dir change) =================== */
 

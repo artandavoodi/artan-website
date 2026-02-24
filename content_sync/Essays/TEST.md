@@ -1,28 +1,24 @@
 ---
 type: publication
-id: "test-01"
-title: "TEST"
+id: test-01
+title: TEST
 subtitle: ""
-slug: "test"
+slug: test
 status: draft
-published: false
-
+published: true
 date_created: 2026-02-23
 date_published: ""
-
 language: en
 authors:
-  - "Artan Davoodi"
-
+  - Artan Davoodi
 collections: []
-
 topics: []
 tags: []
 cover: ""
 icon: ""
 doi: ""
 url: ""
-license: "All rights reserved"
+license: All rights reserved
 citations: []
 related: []
 summary: ""
