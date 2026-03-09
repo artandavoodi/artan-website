@@ -2,7 +2,8 @@
 /* Central editorial index for featured blocks across the site.
    Baseline: deterministic curation.
    Forward-compat: schema mirrors Obsidian frontmatter so this file can be replaced
-   later by an auto-generated JSON build step (from content_sync).
+   later by an auto-generated JSON build step sourced from the private vault publishing pipeline.
+   
 
    Stress-test readiness built-in:
    - URL encoding for publication paths
@@ -39,7 +40,7 @@
     const it = Object.assign({}, item || {});
 
     // Canonical fields (aligned with Obsidian frontmatter conventions)
-    // title, subtitle, date, cover/icon, tags, lang, featured
+    // title, subtitle, date, cover/icon, tags, lang, featured, status, audience
 
     if (!it.type) it.type = "link";
 
@@ -82,50 +83,50 @@
     return out;
   }
 
-  // ---------- Curated Collections (Deterministic) ----------
+  // ---------- Curated Website Collections (Deterministic) ----------
 
   const COLLECTIONS = {
     // =================== Featured Publications ===================
-    // Schema mirrors Obsidian frontmatter so this can later be generated.
-    // Minimal required: { type: "publication", p: "Essays/FILE.md" }
     featuredPublications: [
       {
         type: "publication",
         p: "Essays/ENGINE V2.md",
-        // Optional overrides (otherwise derived)
         title: "ENGINE V2",
-        subtitle: "",
-        // Optional forward fields
+        subtitle: "Cognitive architecture and system definition.",
         lang: "en",
         date: "",
         icon: "assets/images/logo.svg",
-        tags: []
+        tags: ["publication", "systems"],
+        status: "active",
+        audience: "public"
       },
       {
         type: "publication",
         p: "Essays/ENGINE.md",
         title: "ENGINE",
-        subtitle: "",
+        subtitle: "Foundational publication within the institutional publishing system.",
         lang: "en",
         date: "",
         icon: "assets/images/logo.svg",
-        tags: []
+        tags: ["publication", "research"],
+        status: "active",
+        audience: "public"
       }
     ],
 
     // =================== Featured Notes ===================
     featuredNotes: [
-      // { type: "publication", p: "Notes/NOTE.md", title: "NOTE", subtitle: "", lang: "en" }
+      // Reserved for synced note-type publications and short institutional writing.
     ],
 
-    // =================== Featured Music ===================
-    featuredMusic: [
-      // { type: "link", href: "https://...", title: "...", subtitle: "...", icon: "assets/icons/..." }
-    ],
-
-    // =================== Featured Products ===================
+    // =================== Featured Systems ===================
     featuredProducts: [
-      // { type: "link", href: "pages/products/index.html", title: "...", subtitle: "...", icon: "assets/icons/..." }
+      // Reserved for platform systems, software modules, and strategic outputs.
+    ],
+
+    // =================== Featured Updates ===================
+    featuredUpdates: [
+      // Reserved for announcements, updates, and release-signals once sync paths are expanded.
     ]
   };
 

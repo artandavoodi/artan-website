@@ -1,13 +1,13 @@
 /**
  * ============================================================
- * ARTAN — TRANSLATION ENGINE (LOCKED · SINGLE RESPONSIBILITY)
+ * NEUROARTAN — TRANSLATION ENGINE (LOCKED · SINGLE RESPONSIBILITY)
  * Translates DOM text ONLY.
  * No IP logic · No country logic · No UI logic.
- * Controlled exclusively by countrylanguage.js
+ * Controlled exclusively by country-language.js
  * ============================================================
  */
 
-window.ARTAN_TRANSLATION = (() => {
+window.NEUROARTAN_TRANSLATION = (() => {
 
   /* ------------------------------------------------------------
      State
@@ -220,7 +220,7 @@ window.ARTAN_TRANSLATION = (() => {
     document.documentElement.setAttribute('data-lang', nl);
 
     // Notify other modules (cursor/menu) that a language apply finished.
-    window.dispatchEvent(new CustomEvent("artan:language-applied", { detail: { lang: nl, rtl: RTL_LANGS.includes(nl) } }));
+    window.dispatchEvent(new CustomEvent("neuroartan:language-applied", { detail: { lang: nl, rtl: RTL_LANGS.includes(nl) } }));
   };
 
   /* ------------------------------------------------------------
@@ -424,6 +424,8 @@ window.ARTAN_TRANSLATION = (() => {
     return "";
   }
 
-  return { applyLanguage, t };
+  const api = { applyLanguage, t };
+  window.ARTAN_TRANSLATION = api;
+  return api;
 
 })();

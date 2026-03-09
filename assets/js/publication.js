@@ -1,7 +1,7 @@
 // =================== Publications Renderer (Sovereign) ===================
 // Loads markdown from `content_sync` and renders it into single.html.
 // Works on custom domains and GitHub Pages project paths.
-// Expected query: single.html?p=Essays/ENGINE.md
+// Expected query: single.html?p=Essays/ENGINE.md or other synced publication paths.
 
 (function () {
   'use strict';
@@ -25,6 +25,7 @@
     const t = document.getElementById('post-title');
     const c = document.getElementById('post-content');
     if (t) t.textContent = 'Publication';
+    document.title = 'Publication • Neuroartan';
     if (c) c.innerHTML = `<p>${message}</p>`;
   }
 
@@ -42,6 +43,85 @@
     }
   }
 
+  function extractFrontmatter(md) {
+    const source = String(md || '');
+    if (!source.startsWith('---')) return {};
+
+    const parts = source.split('\n');
+    let endIndex = -1;
+    for (let i = 1; i < parts.length; i++) {
+      if (parts[i].trim() === '---') {
+        endIndex = i;
+        break;
+      }
+    }
+    if (endIndex === -1) return {};
+
+    const frontmatterLines = parts.slice(1, endIndex);
+    const data = {};
+
+    for (const line of frontmatterLines) {
+      const match = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+      if (!match) continue;
+      const key = match[1].trim();
+      let value = match[2].trim();
+      value = value.replace(/^['\"]|['\"]$/g, '');
+      data[key] = value;
+    }
+
+    return data;
+  }
+
+  function updateDocumentMetadata(meta) {
+    const title = String(meta.title || 'Publication').trim();
+    const description = String(
+      meta.description ||
+      meta.summary ||
+      meta.subtitle ||
+      'Publication page for Neuroartan institutional writing, essays, notes, and research.'
+    ).trim();
+    const canonicalUrl = window.location.href;
+
+    document.title = `${title} • Neuroartan`;
+
+    const descriptionTag = document.querySelector('meta[name="description"]');
+    if (descriptionTag) descriptionTag.setAttribute('content', description);
+
+    const canonicalTag = document.getElementById('canonical-link');
+    if (canonicalTag) canonicalTag.setAttribute('href', canonicalUrl);
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', `${title} • Neuroartan`);
+
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) ogDescription.setAttribute('content', description);
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', canonicalUrl);
+
+    const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twitterTitle) twitterTitle.setAttribute('content', `${title} • Neuroartan`);
+
+    const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+    if (twitterDescription) twitterDescription.setAttribute('content', description);
+
+    const schemaTag = document.getElementById('publication-schema');
+    if (schemaTag) {
+      schemaTag.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description,
+        mainEntityOfPage: canonicalUrl,
+        publisher: {
+          '@type': 'Organization',
+          name: 'Neuroartan',
+          url: 'https://neuroartan.com'
+        }
+      }, null, 2);
+    }
+  }
+
   async function fetchText(url) {
     const res = await fetch(url, { cache: 'no-cache' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -51,7 +131,7 @@
   async function loadMarkdown(p) {
     // Determine correct base path dynamically (supports custom domains + project pages)
     // Example:
-    // - https://artan.live/single.html -> base = https://artan.live
+    // - https://neuroartan.com/single.html -> base = https://neuroartan.com
     // - https://user.github.io/repo/single.html -> base = https://user.github.io/repo
     const base = window.location.origin + window.location.pathname.split('/single.html')[0];
 
@@ -96,15 +176,19 @@
     try {
       const { md } = await loadMarkdown(p);
       const html = renderMarkdown(md);
+      const frontmatter = extractFrontmatter(md);
 
       const titleEl = document.getElementById('post-title');
       const contentEl = document.getElementById('post-content');
 
-      const cleanTitle = titleFromPath(p);
-      if (titleEl) titleEl.textContent = cleanTitle; // removes “.md”
+      const cleanTitle = String(frontmatter.title || titleFromPath(p)).trim();
+      if (titleEl) titleEl.textContent = cleanTitle;
       if (contentEl) contentEl.innerHTML = html;
 
-      document.title = `${cleanTitle} • Artan`;
+      updateDocumentMetadata({
+        title: cleanTitle,
+        description: frontmatter.description || frontmatter.summary || frontmatter.subtitle || ''
+      });
     } catch (e) {
       setErrorState('Failed to load publication.');
       console.warn('[publication] load failed', e);

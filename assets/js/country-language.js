@@ -6,7 +6,7 @@
    - Footer locale UI (country label + language toggle dropdown)
    - Country overlay open/close + selection
    - Session-first IP detection (new session => IP, same session => stored)
-   - Calls translation engine via window.ARTAN_TRANSLATION.applyLanguage(lang)
+   - Calls translation engine via window.NEUROARTAN_TRANSLATION.applyLanguage(lang) with ARTAN fallback compatibility
 
    Guarantees
    - No duplicate event bindings
@@ -42,6 +42,15 @@
   };
 
   const STORAGE = {
+    COUNTRY_CODE: 'neuroartan_country_code',
+    COUNTRY_LABEL: 'neuroartan_country_label',
+    LANGUAGE: 'neuroartan_language',
+    LANGUAGES: 'neuroartan_languages',
+    SESSION: 'neuroartan_session',
+    COUNTRY_CACHE: 'neuroartan_country_cache_v1'
+  };
+
+  const LEGACY_STORAGE = {
     COUNTRY_CODE: 'artan_country_code',
     COUNTRY_LABEL: 'artan_country_label',
     LANGUAGE: 'artan_language',
@@ -78,21 +87,31 @@
 
   const qs = (s) => document.querySelector(s);
 
-  const getLS = (k) => {
-    try { return localStorage.getItem(k); } catch { return null; }
+  const getLS = (k, legacyKey = null) => {
+    try {
+      const primary = localStorage.getItem(k);
+      if (primary !== null) return primary;
+      if (legacyKey) return localStorage.getItem(legacyKey);
+      return null;
+    } catch {
+      return null;
+    }
   };
 
-  const setLS = (k, v) => {
-    try { localStorage.setItem(k, v); } catch {}
+  const setLS = (k, v, legacyKey = null) => {
+    try {
+      localStorage.setItem(k, v);
+      if (legacyKey) localStorage.setItem(legacyKey, v);
+    } catch {}
   };
 
   const cache = (() => {
-    try { return JSON.parse(getLS(STORAGE.COUNTRY_CACHE) || '{}') || {}; }
+    try { return JSON.parse(getLS(STORAGE.COUNTRY_CACHE, LEGACY_STORAGE.COUNTRY_CACHE) || '{}') || {}; }
     catch { return {}; }
   })();
 
   const saveCache = () => {
-    try { setLS(STORAGE.COUNTRY_CACHE, JSON.stringify(cache)); } catch {}
+    try { setLS(STORAGE.COUNTRY_CACHE, JSON.stringify(cache), LEGACY_STORAGE.COUNTRY_CACHE); } catch {}
   };
 
   const state = {
@@ -104,7 +123,7 @@
 
   const getStoredLanguages = () => {
     try {
-      const raw = getLS(STORAGE.LANGUAGES);
+      const raw = getLS(STORAGE.LANGUAGES, LEGACY_STORAGE.LANGUAGES);
       const arr = raw ? JSON.parse(raw) : null;
       return Array.isArray(arr) ? arr.map(normalizeLang).filter(Boolean) : null;
     } catch {
@@ -116,7 +135,7 @@
     try {
       const arr = Array.isArray(langs) ? langs.map(normalizeLang).filter(Boolean) : null;
       state.languages = (arr && arr.length) ? Array.from(new Set(arr)) : null;
-      setLS(STORAGE.LANGUAGES, JSON.stringify(state.languages || []));
+      setLS(STORAGE.LANGUAGES, JSON.stringify(state.languages || []), LEGACY_STORAGE.LANGUAGES);
     } catch {
       state.languages = null;
     }
@@ -134,9 +153,14 @@
   };
 
   // Expose read-only state for debugging without coupling.
-  Object.defineProperty(window, 'ARTAN_LOCALE', {
+  Object.defineProperty(window, 'NEUROARTAN_LOCALE', {
     configurable: true,
     get: () => ({ ...state })
+  });
+
+  Object.defineProperty(window, 'ARTAN_LOCALE', {
+    configurable: true,
+    get: () => window.NEUROARTAN_LOCALE
   });
 
   /* =================== UI: Labels =================== */
@@ -163,7 +187,7 @@
   let pendingLang = null;
 
   const applyTranslationNow = (lang) => {
-    const api = window.ARTAN_TRANSLATION;
+    const api = window.NEUROARTAN_TRANSLATION || window.ARTAN_TRANSLATION;
     if (!api || typeof api.applyLanguage !== 'function') return false;
 
     try {
@@ -177,7 +201,7 @@
 
   const forceEnglishFallback = () => {
     state.language = DEFAULT_LANGUAGE;
-    setLS(STORAGE.LANGUAGE, DEFAULT_LANGUAGE);
+    setLS(STORAGE.LANGUAGE, DEFAULT_LANGUAGE, LEGACY_STORAGE.LANGUAGE);
     setLabels();
     buildLanguageDropdown(DEFAULT_LANGUAGE, state.languages);
     applyTranslationNow(DEFAULT_LANGUAGE);
@@ -342,7 +366,7 @@
       btn.textContent = code.toUpperCase();
       btn.addEventListener('click', () => {
         state.language = code;
-        setLS(STORAGE.LANGUAGE, code);
+        setLS(STORAGE.LANGUAGE, code, LEGACY_STORAGE.LANGUAGE);
         closeLanguageDropdown();
         setLabels();
         applyTranslation(code);
@@ -455,8 +479,8 @@
     if (closeBtn) closeBtn.onclick = closeCountryOverlay;
 
     const overlay = qs('#country-overlay');
-    if (overlay && !overlay.__artanBackdropBound) {
-      overlay.__artanBackdropBound = true;
+    if (overlay && !overlay.__neuroartanBackdropBound) {
+      overlay.__neuroartanBackdropBound = true;
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) closeCountryOverlay();
       }, { passive: true });
@@ -469,8 +493,8 @@
 
   const bindCountrySelection = () => {
     const regions = qs('#country-regions');
-    if (!regions || regions.__artanBound) return;
-    regions.__artanBound = true;
+    if (!regions || regions.__neuroartanBound) return;
+    regions.__neuroartanBound = true;
 
     regions.addEventListener('click', async (e) => {
       const target = e.target;
@@ -504,9 +528,9 @@
         setStoredLanguages([state.language]);
       }
 
-      setLS(STORAGE.COUNTRY_CODE, state.countryCode);
-      setLS(STORAGE.COUNTRY_LABEL, state.countryLabel);
-      setLS(STORAGE.LANGUAGE, state.language);
+      setLS(STORAGE.COUNTRY_CODE, state.countryCode, LEGACY_STORAGE.COUNTRY_CODE);
+      setLS(STORAGE.COUNTRY_LABEL, state.countryLabel, LEGACY_STORAGE.COUNTRY_LABEL);
+      setLS(STORAGE.LANGUAGE, state.language, LEGACY_STORAGE.LANGUAGE);
 
       closeCountryOverlay();
       closeLanguageDropdown();
@@ -533,15 +557,15 @@
       state.countryLabel = nativeCountryName(code, lang);
       setStoredLanguages([lang]);
 
-      setLS(STORAGE.COUNTRY_CODE, code);
-      setLS(STORAGE.COUNTRY_LABEL, state.countryLabel);
-      setLS(STORAGE.LANGUAGE, lang);
+      setLS(STORAGE.COUNTRY_CODE, code, LEGACY_STORAGE.COUNTRY_CODE);
+      setLS(STORAGE.COUNTRY_LABEL, state.countryLabel, LEGACY_STORAGE.COUNTRY_LABEL);
+      setLS(STORAGE.LANGUAGE, lang, LEGACY_STORAGE.LANGUAGE);
 
       sessionStorage.setItem(STORAGE.SESSION, '1');
     } else {
-      state.countryCode = (getLS(STORAGE.COUNTRY_CODE) || DEFAULT_COUNTRY_CODE).toUpperCase();
-      state.language = normalizeLang(getLS(STORAGE.LANGUAGE) || DEFAULT_LANGUAGE);
-      state.countryLabel = getLS(STORAGE.COUNTRY_LABEL) || nativeCountryName(state.countryCode, state.language);
+      state.countryCode = (getLS(STORAGE.COUNTRY_CODE, LEGACY_STORAGE.COUNTRY_CODE) || DEFAULT_COUNTRY_CODE).toUpperCase();
+      state.language = normalizeLang(getLS(STORAGE.LANGUAGE, LEGACY_STORAGE.LANGUAGE) || DEFAULT_LANGUAGE);
+      state.countryLabel = getLS(STORAGE.COUNTRY_LABEL, LEGACY_STORAGE.COUNTRY_LABEL) || nativeCountryName(state.countryCode, state.language);
       state.languages = getStoredLanguages();
     }
 

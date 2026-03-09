@@ -2,11 +2,12 @@
 set -euo pipefail
 
 # =================== Obsidian → Website Sync ===================
-# Canonical content (source language): content_sync/* (Essays/Notes/Research/Visual)
-# Optional translations: content_sync/i18n/<lang>/* (mirrors same folder tree)
-# Auto-index rebuild: pages/publications/index.html (lists canonical items)
+# Canonical public website source is pulled from the private Obsidian vault.
+# Current synced branch: Publications only.
+# Source vault branch: 06 - Communication/04 - Publications/01 - Publications
+# Website outputs: content_sync/, pages/publications/, publications/, sitemap.xml block
 
-VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/11_Publish"
+VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/06 - Communication/04 - Publications/01 - Publications"
 SITE_ROOT="$HOME/Documents/Site/artan-website"
 CONTENT_SYNC_ROOT="$SITE_ROOT/content_sync"
 DEST_CANON="$CONTENT_SYNC_ROOT"
@@ -14,6 +15,16 @@ PUB_INDEX="$SITE_ROOT/pages/publications/index.html"
 
 VAULT_I18N="$VAULT/i18n"
 DEST_I18N="$CONTENT_SYNC_ROOT/i18n"
+
+if [[ ! -d "$VAULT" ]]; then
+  echo "[ERROR] Vault source path not found: $VAULT" >&2
+  exit 1
+fi
+
+if [[ ! -d "$SITE_ROOT" ]]; then
+  echo "[ERROR] Website root path not found: $SITE_ROOT" >&2
+  exit 1
+fi
 
 mkdir -p "$DEST_CANON"
 
@@ -27,7 +38,7 @@ rsync -av --delete \
   "$VAULT"/ "$DEST_CANON"/
 
 # 1b) Optional: mirror curated translations (if present)
-# Vault layout: 11_Publish/i18n/<lang>/(Essays|Notes|Research|Visual)/...
+# Vault layout: 06 - Communication/04 - Publications/01 - Publications/i18n/<lang>/(Essays|Notes|Research|Visual)/...
 if [[ -d "$VAULT_I18N" ]]; then
   mkdir -p "$DEST_I18N"
 
@@ -79,6 +90,43 @@ extract_yaml_field() {
   ' "$DEST_CANON/$file"
 }
 
+normalize_bool() {
+  local value="${1:-}"
+  value="$(printf '%s' "$value" | tr '[:upper:]' '[:lower:]' | xargs)"
+  printf '%s' "$value"
+}
+
+is_publishable_publication() {
+  local rel="$1"
+  local type_val published_val visibility_val approval_val status_val
+
+  type_val="$(extract_yaml_field "$rel" "type" | tr '[:upper:]' '[:lower:]' | xargs)"
+  published_val="$(normalize_bool "$(extract_yaml_field "$rel" "published")")"
+  visibility_val="$(extract_yaml_field "$rel" "visibility" | tr '[:upper:]' '[:lower:]' | xargs)"
+  approval_val="$(extract_yaml_field "$rel" "approval_status" | tr '[:upper:]' '[:lower:]' | xargs)"
+  status_val="$(extract_yaml_field "$rel" "status" | tr '[:upper:]' '[:lower:]' | xargs)"
+
+  [[ "$type_val" == "publication" ]] || return 1
+
+  if [[ "$published_val" == "false" || "$published_val" == "no" || "$published_val" == "0" ]]; then
+    return 1
+  fi
+
+  if [[ "$visibility_val" == "private" || "$visibility_val" == "internal" || "$visibility_val" == "restricted" || "$visibility_val" == "confidential" ]]; then
+    return 1
+  fi
+
+  if [[ "$approval_val" == "draft" || "$approval_val" == "archived" ]]; then
+    return 1
+  fi
+
+  if [[ "$status_val" == "draft" || "$status_val" == "archived" ]]; then
+    return 1
+  fi
+
+  return 0
+}
+
 slugify_fallback() {
   # Lowercase, spaces/underscores → hyphen, drop non-url-safe chars, collapse hyphens
   echo "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[ _]+/-/g; s/[^a-z0-9-]+//g; s/-+/-/g; s/^-|-$//g'
@@ -87,14 +135,7 @@ slugify_fallback() {
 LIST_ITEMS=""
 
 for rel in "${MD_FILES[@]}"; do
-  type_val="$(extract_yaml_field "$rel" "type")"
-  published_val="$(extract_yaml_field "$rel" "published")"
-
-  if [[ "$type_val" != "publication" ]]; then
-    continue
-  fi
-
-  if [[ "$published_val" != "true" ]]; then
+  if ! is_publishable_publication "$rel"; then
     continue
   fi
 
@@ -168,6 +209,31 @@ SITEMAP_FILE="$SITE_ROOT/sitemap.xml"
 md_to_html() {
   awk '
     function esc(s){ gsub(/&/,"&amp;",s); gsub(/</,"&lt;",s); gsub(/>/,"&gt;",s); return s }
+    function apply_code(s,   out) {
+      out = ""
+      while (match(s, /`[^`]+`/)) {
+        out = out substr(s, 1, RSTART - 1) "<code>" substr(s, RSTART + 1, RLENGTH - 2) "</code>"
+        s = substr(s, RSTART + RLENGTH)
+      }
+      return out s
+    }
+    function apply_bold(s,   out) {
+      out = ""
+      while (match(s, /\*\*[^*]+\*\*/)) {
+        out = out substr(s, 1, RSTART - 1) "<strong>" substr(s, RSTART + 2, RLENGTH - 4) "</strong>"
+        s = substr(s, RSTART + RLENGTH)
+      }
+      return out s
+    }
+    function apply_italic(s,   out) {
+      out = ""
+      while (match(s, /\*[^*]+\*/)) {
+        out = out substr(s, 1, RSTART - 1) "<em>" substr(s, RSTART + 1, RLENGTH - 2) "</em>"
+        s = substr(s, RSTART + RLENGTH)
+      }
+      return out s
+    }
+    function inline(s){ s=esc(s); s=apply_code(s); s=apply_bold(s); s=apply_italic(s); return s }
     BEGIN{ in_list=0; in_code=0; in_quote=0 }
     /^```/ {
       if(in_code){ print "</code></pre>"; in_code=0 } else { print "<pre><code>"; in_code=1 }
@@ -179,7 +245,7 @@ md_to_html() {
     /^> / {
       if(!in_quote){ print "<blockquote>"; in_quote=1 }
       line=$0; sub(/^> /,"",line)
-      print "<p>" esc(line) "</p>"
+      print "<p>" inline(line) "</p>"
       next
     }
     !/^> / {
@@ -192,18 +258,18 @@ md_to_html() {
     /^- / {
       if(!in_list){ print "<ul>"; in_list=1 }
       line=$0; sub(/^- /,"",line)
-      print "<li>" esc(line) "</li>"
+      print "<li>" inline(line) "</li>"
       next
     }
-    /^###### /{ if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^###### /,"",line); print "<h6>" esc(line) "</h6>"; next }
-    /^##### / { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^##### /,"",line); print "<h5>" esc(line) "</h5>"; next }
-    /^#### /  { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^#### /,"",line); print "<h4>" esc(line) "</h4>"; next }
-    /^### /   { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^### /,"",line); print "<h3>" esc(line) "</h3>"; next }
-    /^## /    { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^## /,"",line); print "<h2>" esc(line) "</h2>"; next }
-    /^# /     { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^# /,"",line);  print "<h1>" esc(line) "</h1>"; next }
+    /^###### /{ if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^###### /,"",line); print "<h6>" inline(line) "</h6>"; next }
+    /^##### / { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^##### /,"",line); print "<h5>" inline(line) "</h5>"; next }
+    /^#### /  { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^#### /,"",line); print "<h4>" inline(line) "</h4>"; next }
+    /^### /   { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^### /,"",line); print "<h3>" inline(line) "</h3>"; next }
+    /^## /    { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^## /,"",line); print "<h2>" inline(line) "</h2>"; next }
+    /^# /     { if(in_list){ print "</ul>"; in_list=0 } line=$0; sub(/^# /,"",line);  print "<h1>" inline(line) "</h1>"; next }
     {
       if(in_list){ print "</ul>"; in_list=0 }
-      print "<p>" esc($0) "</p>"
+      print "<p>" inline($0) "</p>"
     }
     END{
       if(in_list) print "</ul>"
@@ -224,6 +290,61 @@ extract_body_without_yaml() {
   ' "$1"
 }
 
+sanitize_publication_markdown() {
+  local file="$1"
+  local title="$2"
+  local subtitle="$3"
+
+  awk -v title="$title" -v subtitle="$subtitle" '
+    function trim(s) { sub(/^[[:space:]]+/, "", s); sub(/[[:space:]]+$/, "", s); return s }
+    BEGIN {
+      in_yaml = 0
+      started_yaml = 0
+      skip_tail = 0
+      removed_h1 = 0
+      removed_h2 = 0
+      clean_title = trim(title)
+      clean_subtitle = trim(subtitle)
+    }
+    /^---[[:space:]]*$/ {
+      if (!started_yaml) {
+        in_yaml = 1
+        started_yaml = 1
+        next
+      }
+      if (in_yaml) {
+        in_yaml = 0
+        next
+      }
+    }
+    {
+      if (in_yaml || skip_tail) next
+
+      line = $0
+      stripped = trim(line)
+
+      if (stripped == "## Change Log" || stripped == "## Document Control & Validation" || stripped == "END OF DOCUMENT") {
+        skip_tail = 1
+        next
+      }
+
+      if (stripped == "---") next
+
+      if (!removed_h1 && clean_title != "" && stripped == "# " clean_title) {
+        removed_h1 = 1
+        next
+      }
+
+      if (!removed_h2 && clean_subtitle != "" && stripped == "## " clean_subtitle) {
+        removed_h2 = 1
+        next
+      }
+
+      print line
+    }
+  ' "$file"
+}
+
 slugify_fallback() {
   # Lowercase, spaces/underscores → hyphen, drop non-url-safe chars, collapse hyphens
   echo "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[ _]+/-/g; s/[^a-z0-9-]+//g; s/-+/-/g; s/^-|-$//g'
@@ -233,14 +354,12 @@ mkdir -p "$PUB_PAGES_DIR"
 
 # Build pages and collect sitemap URLs
 SITEMAP_URLS=""
-SITE_BASE="https://artan.live"
+SITE_BASE="https://neuroartan.com"
 
 for rel in "${MD_FILES[@]}"; do
-  type_val="$(extract_yaml_field "$rel" "type")"
-  published_val="$(extract_yaml_field "$rel" "published")"
-
-  [[ "$type_val" == "publication" ]] || continue
-  [[ "$published_val" == "true" ]] || continue
+  if ! is_publishable_publication "$rel"; then
+    continue
+  fi
 
   title_val="$(extract_yaml_field "$rel" "title")"
   subtitle_val="$(extract_yaml_field "$rel" "subtitle")"
@@ -263,7 +382,7 @@ for rel in "${MD_FILES[@]}"; do
   src_file="$DEST_CANON/$rel"
   body_md="$(mktemp)"
   body_html="$(mktemp)"
-  extract_body_without_yaml "$src_file" > "$body_md"
+  sanitize_publication_markdown "$src_file" "$title_val" "$subtitle_val" > "$body_md"
   md_to_html < "$body_md" > "$body_html"
 
   # Relative paths from /publications/<slug>/index.html → site root
@@ -275,12 +394,15 @@ for rel in "${MD_FILES[@]}"; do
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title_val} • Artan</title>
+  <title>${title_val} • Neuroartan</title>
+  <meta name="description" content="${subtitle_val:-Publication from Neuroartan institutional writing, research, and publications.}">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta name="theme-color" content="#0a0a0a">
 
-  <link rel="icon" type="image/png" sizes="16x16" href="${ASSET_PREFIX}assets/icons/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="${ASSET_PREFIX}assets/icons/favicon-32x32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="${ASSET_PREFIX}assets/icons/apple-touch-icon.png">
-  <link rel="icon" type="image/svg+xml" href="${ASSET_PREFIX}assets/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
 
   <link rel="stylesheet" href="${ASSET_PREFIX}assets/css/style.css">
   <link rel="stylesheet" href="${ASSET_PREFIX}assets/css/components.css">
@@ -290,13 +412,34 @@ for rel in "${MD_FILES[@]}"; do
 
   <link rel="canonical" href="${SITE_BASE}/publications/${slug_val}/">
 
-  <meta property="og:title" content="${title_val}">
+  <meta property="og:title" content="${title_val} • Neuroartan">
+  <meta property="og:description" content="${subtitle_val:-Publication from Neuroartan institutional writing, research, and publications.}">
   <meta property="og:type" content="article">
   <meta property="og:url" content="${SITE_BASE}/publications/${slug_val}/">
+  <meta property="og:site_name" content="Neuroartan">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${title_val} • Neuroartan">
+  <meta name="twitter:description" content="${subtitle_val:-Publication from Neuroartan institutional writing, research, and publications.}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "${title_val}",
+    "description": "${subtitle_val:-Publication from Neuroartan institutional writing, research, and publications.}",
+    "mainEntityOfPage": "${SITE_BASE}/publications/${slug_val}/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Neuroartan",
+      "url": "https://neuroartan.com"
+    }
+  }
+  </script>
 </head>
 
 <body class="site-body">

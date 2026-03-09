@@ -1,11 +1,11 @@
-/* =================== Global Layout Injection (Future-Proof Chrome) =================== */
+/* =================== Global Layout Injection (Future-Proof Shell) =================== */
 
 async function injectGlobalLayout() {
   const targets = document.querySelectorAll('[data-include]');
   for (const el of targets) {
     const name = el.getAttribute('data-include');
     try {
-      const res = await fetch(`/partials/${name}.html`, { cache: 'no-store' });
+      const res = await fetch(`/assets/fragments/${name}.html`, { cache: 'no-store' });
       if (!res.ok) continue;
       const html = await res.text();
       el.innerHTML = html;
@@ -140,8 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Custom events (if your locale system dispatches any)
   window.addEventListener("languagechange", reinitCursor);
-  window.addEventListener("artan:languageChanged", reinitCursor);
-  window.addEventListener("artan:dirChanged", reinitCursor);
+  window.addEventListener("neuroartan:language-applied", reinitCursor);
+  window.addEventListener("artan:language-applied", reinitCursor);
+  window.addEventListener("neuroartan:languageChanged", reinitCursor);
+  window.addEventListener("neuroartan:dirChanged", reinitCursor);
 
   // Mutation observer: catches dir/lang/class flips on html/body
   const mo = new MutationObserver((mutations) => {

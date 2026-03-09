@@ -474,8 +474,8 @@
 
 /* =============================================================================
    03) COLLECTIONS MODULE — HOME LOADER (SOVEREIGN)
-   - Loads collections.js only on homepage (CSS is linked statically)
-   - Keeps home.js focused on hero/essence
+   - Loads the canonical website collections module only on homepage
+   - Keeps home.js focused on homepage motion and orchestration
 ============================================================================= */
 
 (() => {
@@ -498,6 +498,6 @@
 
     if (!hasCollections) return;
 
-    loadJS('assets/js/collections.js', 'collections-js');
+    loadJS('collections/collections.js', 'collections-js');
   });
 })();

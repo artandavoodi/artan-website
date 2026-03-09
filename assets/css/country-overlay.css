@@ -4,7 +4,7 @@
    Purpose:
    - Owns ONLY the country overlay (layout + motion).
    - Restores the original style from the former style.css section.
-   - Adds luxury open/close motion (overlay + inner + subtle stagger), no hover-jump.
+   - Adds luxury open/close motion (overlay + inner + subtle stagger), with calm institutional hover behavior.
 
    Sections:
    01) Base shell
@@ -299,7 +299,10 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
   color: var(--text-color);
 
   cursor: pointer;
-  transition: color 0.2s;
+  opacity: 0.9;
+  transition:
+    color 220ms ease,
+    opacity 220ms ease;
   text-align: left;
   transform: none !important; /* no hover jump */
 }
@@ -307,6 +310,36 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
 #country-overlay .country-option:hover,
 .country-overlay .country-option:hover{
   color: var(--color-primary1);
+}
+
+#country-overlay .country-option:focus-visible,
+#country-overlay .country-option:active,
+.country-overlay .country-option:focus-visible,
+.country-overlay .country-option:active{
+  color: var(--color-primary1);
+  opacity: 1;
+  transform: none !important;
+  outline: none;
+}
+
+#country-overlay .country-option:hover,
+.country-overlay .country-option:hover{
+  opacity: 1;
+  transform: none !important;
+}
+
+#country-overlay .country-list li:hover,
+#country-overlay .country-list li:focus-within,
+.country-overlay .country-list li:hover,
+.country-overlay .country-list li:focus-within{
+  transform: translateY(0) !important;
+}
+
+#country-overlay .country-option::before,
+#country-overlay .country-option::after,
+.country-overlay .country-option::before,
+.country-overlay .country-option::after{
+  content: none !important;
 }
 
 /* =============================================================================
@@ -331,7 +364,7 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
 .country-overlay .global-close-button:hover,
 .country-overlay .global-close-button:focus-visible{
   color: var(--color-primary7);
-  transform: scale(1.08);
+  transform: none;
   outline: none;
 }
 

@@ -59,8 +59,9 @@
   const menuPackToggle = document.getElementById('menu-pack-toggle');
 
   // ==========================
-  // Packs (Music / Social) Flip
+  // Legacy Pack Flip Layer
   // ==========================
+  // Legacy music/social pack logic is intentionally kept dormant until the menu ontology is fully remapped.
   const packMusic = document.getElementById('menu-pack-music');
   const packSocial = document.getElementById('menu-pack-social');
   const PACK_FLIP_ENABLED = false;
@@ -505,7 +506,7 @@
         '';
 
       const onEnter = () => {
-        const t = window.ARTAN_TRANSLATION;
+        const t = window.NEUROARTAN_TRANSLATION || window.ARTAN_TRANSLATION;
 
         const title = titleKey && t && typeof t.t === 'function'
           ? (t.t(titleKey) || rawTitle)
