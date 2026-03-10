@@ -16,6 +16,61 @@ async function injectGlobalLayout() {
 
 injectGlobalLayout();
 
+/* =================== Institutional Menu Fragment Injection =================== */
+const INSTITUTIONAL_MENU_FRAGMENT_URL = '/assets/fragments/institutional-menu.html';
+const INSTITUTIONAL_MENU_CSS_URL = '/assets/css/institutional-menu.css';
+const INSTITUTIONAL_MENU_JS_URL = '/assets/js/institutional-menu.js';
+
+function loadStylesheetOnce(href) {
+  if (document.querySelector(`link[rel="stylesheet"][href="${href}"]`)) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
+function loadScriptOnce(src) {
+  if (document.querySelector(`script[src="${src}"]`)) return;
+  const script = document.createElement('script');
+  script.src = src;
+  script.defer = true;
+  document.body.appendChild(script);
+}
+
+async function injectInstitutionalMenuIfNeeded() {
+  const header = document.getElementById('header-controls');
+  if (!header) return false;
+
+  if (header.querySelector('#institutional-menu')) {
+    loadStylesheetOnce(INSTITUTIONAL_MENU_CSS_URL);
+    loadScriptOnce(INSTITUTIONAL_MENU_JS_URL);
+    return true;
+  }
+
+  const legacyButton = header.querySelector('#menu-button');
+
+  try {
+    const res = await fetch(INSTITUTIONAL_MENU_FRAGMENT_URL, { cache: 'no-cache' });
+    if (!res.ok) return false;
+
+    const html = await res.text();
+    header.insertAdjacentHTML('afterbegin', html);
+
+    if (legacyButton) {
+      legacyButton.hidden = true;
+      legacyButton.setAttribute('aria-hidden', 'true');
+      legacyButton.tabIndex = -1;
+      legacyButton.style.display = 'none';
+    }
+
+    loadStylesheetOnce(INSTITUTIONAL_MENU_CSS_URL);
+    loadScriptOnce(INSTITUTIONAL_MENU_JS_URL);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
 /* =================== Footer Fragment Injection =================== */
 const FOOTER_FRAGMENT_URL = '/assets/fragments/footer.html';
 
@@ -43,6 +98,7 @@ async function injectFooterIfNeeded() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  injectInstitutionalMenuIfNeeded();
   injectFooterIfNeeded();
 
   /* =================== Custom Cursor (RTL-safe + re-init on language/dir change) =================== */
@@ -169,20 +225,9 @@ document.addEventListener("DOMContentLoaded", () => {
     attributeFilter: ["dir", "lang", "class"],
   });
 
-  /* =================== Text Hover — Letter Drift (Luxury) =================== */
+  /* =================== Text Hover — Subtle Luxury Emphasis =================== */
 
   function initLetterHover(root = document) {
-    const hoverTimers = new WeakMap();
-
-    const clearHoverTimer = (el) => {
-      const t = hoverTimers.get(el);
-      if (t) {
-        clearTimeout(t);
-        hoverTimers.delete(el);
-      }
-    };
-
-    // Include all clickable text surfaces (static + overlays)
     const selectors = [
       "a",
       "button",
@@ -200,50 +245,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ".menu-list button"
     ];
 
-    const RTL_SCRIPT_RE = /[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/; // Hebrew + Arabic ranges
-
-    const isRTLContext = (el) => {
-      if (!el) return false;
-      if (el.closest("[dir='rtl']")) return true;
-      const htmlDir = document.documentElement.getAttribute("dir");
-      const bodyDir = document.body.getAttribute("dir");
-      return htmlDir === "rtl" || bodyDir === "rtl";
-    };
-
-    const segmentGraphemes = (text) => {
-      try {
-        if ("Intl" in window && "Segmenter" in Intl) {
-          const seg = new Intl.Segmenter(undefined, { granularity: "grapheme" });
-          return Array.from(seg.segment(text), (s) => s.segment);
-        }
-      } catch (_) {}
-      return Array.from(text);
-    };
-
-    const shouldSkipLetterify = (el, text) => {
-      // Don’t break RTL languages or RTL context
-      const cs = window.getComputedStyle(el);
-      if (cs.transform && cs.transform !== "none") return true;
-      if (isRTLContext(el)) return true;
-      if (RTL_SCRIPT_RE.test(text)) return true;
-
-      // Don’t break vertical writing-mode by default.
-      // Exception: allow vertical labels inside the menu overlay to use the same global hover.
-      const wm = (cs.writingMode || cs["writing-mode"] || "").toLowerCase();
-      if (wm && wm !== "horizontal-tb") {
-        if (el.closest("#menu-overlay")) return false;
-        return true;
-      }
-
-      return false;
-    };
-
     const elements = root.querySelectorAll(selectors.join(","));
 
     elements.forEach((el) => {
       if (!el || el.dataset.letterified) return;
-
-      // Skip structured controls (icons/SVG)
       if (el.children && el.children.length > 0) return;
       if (el.dataset.noLetterHover === "true") return;
 
@@ -252,78 +257,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!text) return;
 
       el.dataset.letterified = "true";
-
-      // SAFE MODE: keep element layout/transform exactly as CSS defines (prevents menu mirroring)
-      // We only animate inner spans when letterified.
-
-      // For RTL / vertical / non-letterify cases: keep text intact, only micro-opacity
-      if (shouldSkipLetterify(el, text)) {
-        el.style.transition = "opacity 0.35s ease";
-
-        el.addEventListener(
-          "mouseenter",
-          () => {
-            clearHoverTimer(el);
-            el.style.opacity = "0.98";
-          },
-          { passive: true }
-        );
-
-        el.addEventListener(
-          "mouseleave",
-          () => {
-            clearHoverTimer(el);
-            el.style.opacity = "1";
-          },
-          { passive: true }
-        );
-
-        return;
-      }
-
-      // Letter drift (LTR / Latin-like)
-      const originalText = raw;
-      el.textContent = "";
-
-      // Keep element display natural (do NOT force inline-flex; avoids layout shifts)
-      // Only spans are animated.
-      const graphemes = segmentGraphemes(originalText);
-
-      graphemes.forEach((char, i) => {
-        const span = document.createElement("span");
-        span.textContent = char === " " ? "\u00A0" : char;
-        span.style.display = "inline-block";
-        span.style.transition =
-          "transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.45s ease";
-        span.style.willChange = "transform";
-        span.style.transitionDelay = `${i * 18}ms`;
-        el.appendChild(span);
-      });
+      el.style.transition = "color 220ms ease, opacity 220ms ease, transform 220ms ease";
+      el.style.transformOrigin = "center center";
 
       el.addEventListener(
         "mouseenter",
         () => {
-          clearHoverTimer(el);
-
-          const spans = el.querySelectorAll("span");
-          const cs = window.getComputedStyle(el);
-          const wm = (cs.writingMode || cs["writing-mode"] || "").toLowerCase();
-          const isVertical = wm && wm !== "horizontal-tb";
-          const drift = isVertical ? "translateX(-0.35em)" : "translateY(-0.35em)";
-
-          spans.forEach((s) => {
-            s.style.transform = drift;
-            s.style.opacity = "0.95";
-          });
-
-          // Quick impulse: return while hover remains
-          const t = setTimeout(() => {
-            spans.forEach((s) => (s.style.transform = "translateX(0)"));
-            spans.forEach((s) => (s.style.transform = "translateY(0)"));
-            hoverTimers.delete(el);
-          }, 140);
-
-          hoverTimers.set(el, t);
+          el.style.opacity = "1";
+          el.style.transform = "scale(1.01)";
         },
         { passive: true }
       );
@@ -331,12 +272,8 @@ document.addEventListener("DOMContentLoaded", () => {
       el.addEventListener(
         "mouseleave",
         () => {
-          clearHoverTimer(el);
-          el.querySelectorAll("span").forEach((s) => {
-            s.style.transform = "translateX(0)";
-            s.style.transform = "translateY(0)";
-            s.style.opacity = "1";
-          });
+          el.style.opacity = "1";
+          el.style.transform = "scale(1)";
         },
         { passive: true }
       );

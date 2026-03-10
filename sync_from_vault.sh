@@ -4,17 +4,24 @@ set -euo pipefail
 # =================== Obsidian → Website Sync ===================
 # Canonical public website source is pulled from the private Obsidian vault.
 # Current synced branch: Publications only.
-# Source vault branch: 06 - Communication/04 - Publications/01 - Publications
+# Source vault branch: 06 - Communication/04 - Publications
 # Website outputs: content_sync/, pages/publications/, publications/, sitemap.xml block
 
-VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/06 - Communication/04 - Publications/01 - Publications"
+VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/06 - Communication/04 - Publications"
 SITE_ROOT="$HOME/Documents/Site/artan-website"
 CONTENT_SYNC_ROOT="$SITE_ROOT/content_sync"
 DEST_CANON="$CONTENT_SYNC_ROOT"
 PUB_INDEX="$SITE_ROOT/pages/publications/index.html"
 
-VAULT_I18N="$VAULT/i18n"
-DEST_I18N="$CONTENT_SYNC_ROOT/i18n"
+ESSAYS_SRC="$VAULT/01 - Essays/01 - Records"
+NOTES_SRC="$VAULT/02 - Notes/01 - Records"
+RESEARCH_SRC="$VAULT/03 - Research/01 - Records"
+VISUAL_SRC="$VAULT/04 - Visual/01 - Records"
+
+DEST_ESSAYS="$CONTENT_SYNC_ROOT/Essays"
+DEST_NOTES="$CONTENT_SYNC_ROOT/Notes"
+DEST_RESEARCH="$CONTENT_SYNC_ROOT/Research"
+DEST_VISUAL="$CONTENT_SYNC_ROOT/Visual"
 
 if [[ ! -d "$VAULT" ]]; then
   echo "[ERROR] Vault source path not found: $VAULT" >&2
@@ -26,45 +33,38 @@ if [[ ! -d "$SITE_ROOT" ]]; then
   exit 1
 fi
 
-mkdir -p "$DEST_CANON"
+for src_dir in "$ESSAYS_SRC" "$NOTES_SRC" "$RESEARCH_SRC" "$VISUAL_SRC"; do
+  if [[ ! -d "$src_dir" ]]; then
+    echo "[ERROR] Publication source path not found: $src_dir" >&2
+    exit 1
+  fi
+done
 
-# 1) Mirror Obsidian published content
-rsync -av --delete \
-  --exclude ".DO_NOT_EDIT" \
-  --exclude "DO_NOT_EDIT" \
-  --exclude "Do Not Edit" \
-  --exclude "README.md" \
-  --exclude "i18n/" \
-  "$VAULT"/ "$DEST_CANON"/
+mkdir -p "$DEST_CANON" "$DEST_ESSAYS" "$DEST_NOTES" "$DEST_RESEARCH" "$DEST_VISUAL"
 
-# 1b) Optional: mirror curated translations (if present)
-# Vault layout: 06 - Communication/04 - Publications/01 - Publications/i18n/<lang>/(Essays|Notes|Research|Visual)/...
-if [[ -d "$VAULT_I18N" ]]; then
-  mkdir -p "$DEST_I18N"
+# 1) Mirror Obsidian published content from canonical publication records
+sync_publication_bucket() {
+  local src_dir="$1"
+  local dest_dir="$2"
 
-  # Clean removed languages from destination
-  for existing in "$DEST_I18N"/*; do
-    [[ -d "$existing" ]] || continue
-    lang="$(basename "$existing")"
-    [[ -d "$VAULT_I18N/$lang" ]] || rm -rf "$existing"
-  done
+  mkdir -p "$dest_dir"
 
-  # Sync each language folder
-  for lang_src in "$VAULT_I18N"/*; do
-    [[ -d "$lang_src" ]] || continue
-    lang="$(basename "$lang_src")"
-    mkdir -p "$DEST_I18N/$lang"
+  rsync -av --delete \
+    --exclude ".DO_NOT_EDIT" \
+    --exclude "DO_NOT_EDIT" \
+    --exclude "Do Not Edit" \
+    --exclude "README.md" \
+    --exclude ".gitkeep" \
+    "$src_dir"/ "$dest_dir"/
+}
 
-    rsync -av --delete \
-      --exclude ".DO_NOT_EDIT" \
-      --exclude "DO_NOT_EDIT" \
-      --exclude "Do Not Edit" \
-      --exclude "README.md" \
-      "$lang_src"/ "$DEST_I18N/$lang"/
-  done
-fi
+sync_publication_bucket "$ESSAYS_SRC" "$DEST_ESSAYS"
+sync_publication_bucket "$NOTES_SRC" "$DEST_NOTES"
+sync_publication_bucket "$RESEARCH_SRC" "$DEST_RESEARCH"
+sync_publication_bucket "$VISUAL_SRC" "$DEST_VISUAL"
 
-# 2) Rebuild Publications index (YAML-aware: only published publications)
+#
+# 2) Rebuild Publications index from flattened website publication buckets
 mkdir -p "$(dirname "$PUB_INDEX")"
 
 MD_FILES=()
@@ -201,7 +201,7 @@ fi
 
 
 # 2b) Build static publication pages + sitemap block (SEO-friendly)
-# Output: /publications/<slug>/index.html
+# Output: /publications/<slug>/index.html built from flattened content_sync publication buckets
 PUB_PAGES_DIR="$SITE_ROOT/publications"
 SITEMAP_FILE="$SITE_ROOT/sitemap.xml"
 
@@ -356,6 +356,8 @@ mkdir -p "$PUB_PAGES_DIR"
 SITEMAP_URLS=""
 SITE_BASE="https://neuroartan.com"
 
+#
+# Build static pages from the synchronized canonical website buckets
 for rel in "${MD_FILES[@]}"; do
   if ! is_publishable_publication "$rel"; then
     continue
