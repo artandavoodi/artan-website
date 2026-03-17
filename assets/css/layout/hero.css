@@ -296,21 +296,21 @@ body.site-entered.hero-lock-released .hero-video-media{
   inset:0;
   z-index:1; /* above video, below dial + content */
   pointer-events:none;
-  background:radial-gradient(circle at center, rgba(145,124,111,0.14) 0%, rgba(12,10,8,0.34) 50%, rgba(12,10,8,0.58) 100%);
-  backdrop-filter:blur(16px) saturate(1.05);
-  -webkit-backdrop-filter:blur(16px) saturate(1.05);
-  opacity:0.96;
+  background:radial-gradient(circle at center, rgba(145,124,111,0.22) 0%, rgba(145,124,111,0.16) 22%, rgba(12,10,8,0.26) 52%, rgba(12,10,8,0.42) 100%);
+  backdrop-filter:blur(18px) saturate(1.08);
+  -webkit-backdrop-filter:blur(18px) saturate(1.08);
+  opacity:0.98;
   transition:opacity 2.4s cubic-bezier(0.22,1,0.36,1);
 }
 
 body.light-mode .stage-video-overlay{
-  background:radial-gradient(circle at center, rgba(145,124,111,0.12) 0%, rgba(18,14,10,0.22) 50%, rgba(18,14,10,0.38) 100%);
+  background:radial-gradient(circle at center, rgba(145,124,111,0.2) 0%, rgba(145,124,111,0.14) 22%, rgba(18,14,10,0.18) 52%, rgba(18,14,10,0.3) 100%);
 }
 
 /* During intro: video fully masked */
 body.intro-loading .stage-video-overlay{opacity:1;}
 /* After intro reveal: let video breathe */
-body.intro-reveal .stage-video-overlay{opacity:0.84;}
+body.intro-reveal .stage-video-overlay{opacity:0.9;}
 /* Once ENTER is pressed: remove overlay entirely */
 body.site-entered.hero-lock-released .stage-video-overlay{opacity:0;display:none;}
 

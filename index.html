@@ -142,7 +142,7 @@
   <div class="stage-video" aria-hidden="true">
     <div class="stage-video-overlay" aria-hidden="true"></div>
 
-    <video class="stage-video-media" autoplay muted playsinline preload="metadata" loop>
+    <video class="stage-video-media" autoplay muted playsinline preload="metadata">
       <source src="assets/video/core/video-1.webm" type="video/webm">
     </video>
   </div>
@@ -188,7 +188,7 @@
 <!-- =================== Home Hero (Post-Enter) =================== -->
 <section id="home-hero" class="home-hero" aria-hidden="true" data-motion="fade">
   <div class="home-hero-video" aria-hidden="true">
-    <video class="home-hero-video-media" autoplay muted playsinline loop preload="metadata">
+    <video class="home-hero-video-media" autoplay muted playsinline preload="metadata">
       <source src="assets/video/core/video-4.webm" type="video/webm" />
     </video>
   </div>
@@ -258,6 +258,7 @@
 </section>
 
 
+
 <!-- =================== Home — Updates =================== -->
 <section class="home-section home-books" data-motion="lift">
   <div class="home-inner home-rail">
@@ -267,6 +268,17 @@
       Publications, research, and software progression<br>
       Structured communication from the canonical system
     </p>
+  </div>
+</section>
+
+<!-- =================== Home — Featured Systems =================== -->
+<section class="home-section home-featured home-featured-products" data-motion="lift">
+  <div class="home-inner home-rail">
+    <div class="featured-header">
+      <h2 class="home-title" data-i18n-key="home.featuredProducts.title">Featured Systems</h2>
+      <p class="home-text" data-i18n-key="home.featuredProducts.text">Selected systems, software layers, and strategic product surfaces from the active platform.</p>
+    </div>
+    <div id="featured-products" class="featured-grid" role="list" aria-label="Featured systems" data-collection="featuredProducts"></div>
   </div>
 </section>
 
