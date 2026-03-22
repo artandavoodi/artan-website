@@ -1,0 +1,91 @@
+/* =============================================================================
+   LOADING OVERLAY — GLOBAL SYSTEM LAYER
+   - Sovereign reusable loading surface
+   - Translation-first implementation
+   - Reusable for page, fragment, and heavy-content loading states
+============================================================================= */
+
+.loading-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.loading-overlay.is-active{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.loading-overlay__backdrop{
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg-color, #ffffff) 72%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(112%);
+  backdrop-filter: blur(18px) saturate(112%);
+}
+
+.loading-overlay__surface{
+  position: relative;
+  z-index: 1;
+  min-width: 10rem;
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+}
+
+.loading-overlay__spinner{
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--color-primary1) 18%, transparent);
+  border-top-color: var(--color-primary1);
+  animation: loading-overlay-spin 0.95s linear infinite;
+}
+
+.loading-overlay__label{
+  margin: 0;
+  color: var(--text-color);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  opacity: 0.78;
+}
+
+.loading-overlay--compact .loading-overlay__spinner{
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.loading-overlay--compact .loading-overlay__label{
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+
+@keyframes loading-overlay-spin{
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .loading-overlay,
+  .loading-overlay__spinner{
+    transition: none !important;
+    animation: none !important;
+  }
+}

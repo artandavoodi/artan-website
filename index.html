@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="assets/css/layout/home.css">
     <link rel="stylesheet" href="assets/css/layout/collections.css">
     <link rel="stylesheet" href="assets/css/system/system-node.css">
+    <link rel="stylesheet" href="assets/css/system/loading-overlay.css">
     <link rel="stylesheet" href="assets/css/components/components.css">
     <link rel="stylesheet" href="assets/css/navigation/menu.css">
     <link rel="stylesheet" href="assets/css/overlays/country-overlay.css">
@@ -127,6 +128,13 @@
 </head>
 
 <body class="site-body">
+<div id="global-loading-overlay" class="loading-overlay" aria-hidden="true" aria-live="polite">
+  <div class="loading-overlay__backdrop"></div>
+  <div class="loading-overlay__surface" role="status" aria-label="Loading">
+    <div class="loading-overlay__spinner" aria-hidden="true"></div>
+    <p class="loading-overlay__label" data-i18n-key="loading.label">Loading</p>
+  </div>
+</div>
 <div class="home-scroll-gradient" aria-hidden="true"></div>
 
 <!-- =================== Custom Cursor =================== -->
@@ -327,6 +335,7 @@
 <script src="assets/js/i18n/countries.js" defer></script>
 <script src="assets/js/i18n/translation.js" defer></script>
 <script src="assets/js/i18n/country-language.js" defer></script>
+<script src="assets/js/system/loading-overlay.js" defer></script>
 <script src="assets/js/motion/logo-animation.js" defer></script>
 <script src="collections/config/core/collections.js" defer></script>
 <script src="assets/js/navigation/institutional-menu.js" defer></script>

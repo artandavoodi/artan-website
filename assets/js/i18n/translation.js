@@ -13,6 +13,7 @@ window.NEUROARTAN_TRANSLATION = (() => {
      State
   ------------------------------------------------------------ */
   let currentLang = "en";
+  let isApplyingLanguage = false;
   const cache = new Map();
   const keyCache = new Map(); // sync lookup cache for i18n keys (including menu preview keys)
 
@@ -262,6 +263,15 @@ window.NEUROARTAN_TRANSLATION = (() => {
     });
   }
 
+  function emitTranslationLifecycle(type, detail = {}) {
+    document.dispatchEvent(new CustomEvent(`translation:${type}`, {
+      detail: {
+        lang: currentLang,
+        ...detail
+      }
+    }));
+  }
+
   /* ------------------------------------------------------------
      Google Translate fetch
      - Use `sl=auto` so it still works even if the current DOM is not English.
@@ -336,67 +346,81 @@ window.NEUROARTAN_TRANSLATION = (() => {
 
     currentLang = lang;
 
-    keyCache.clear();
-    const nodes = scope.querySelectorAll("[data-i18n-key]");
-
-    for (const el of nodes) {
-      const enText = (el.dataset.i18nEn || "").trim();
-
-      // TextContent
-      if (lang === "en") {
-        if (enText) el.textContent = enText;
-      } else {
-        const source = enText || (el.textContent || "").trim();
-        el.textContent = await translate(source, lang);
-      }
-
-      // aria-label
-      if (el.dataset.i18nAriaEn) {
-        if (lang === "en") {
-          el.setAttribute("aria-label", el.dataset.i18nAriaEn);
-        } else {
-          el.setAttribute("aria-label", await translate(el.dataset.i18nAriaEn, lang));
-        }
-      }
-
-      // title
-      if (el.dataset.i18nTitleEn) {
-        if (lang === "en") {
-          el.setAttribute("title", el.dataset.i18nTitleEn);
-        } else {
-          el.setAttribute("title", await translate(el.dataset.i18nTitleEn, lang));
-        }
-      }
-
-      // placeholder
-      if (el.dataset.i18nPlaceholderEn) {
-        if (lang === "en") {
-          el.setAttribute("placeholder", el.dataset.i18nPlaceholderEn);
-        } else {
-          el.setAttribute("placeholder", await translate(el.dataset.i18nPlaceholderEn, lang));
-        }
-      }
-
-      applyTextRTL(el, isRtl);
+    if (!isApplyingLanguage) {
+      isApplyingLanguage = true;
+      emitTranslationLifecycle("start", { lang });
     }
 
-    // Additive: cache translations for menu preview keys (data-preview-*-i18n)
-    const previewNodes = scope.querySelectorAll('[data-preview-title-i18n], [data-preview-sub-i18n]');
-    for (const el of previewNodes) {
-      const titleKey = (el.getAttribute('data-preview-title-i18n') || '').trim();
-      const subKey = (el.getAttribute('data-preview-sub-i18n') || '').trim();
+    try {
+      keyCache.clear();
+      const nodes = scope.querySelectorAll("[data-i18n-key]");
 
-      if (titleKey) {
-        const enTitle = ((el.getAttribute('data-preview-title') || '')).trim();
-        const val = lang === 'en' ? enTitle : await translate(enTitle, lang);
-        if (val) keyCache.set(titleKey, val);
+      for (const el of nodes) {
+        const enText = (el.dataset.i18nEn || "").trim();
+
+        // TextContent
+        if (lang === "en") {
+          if (enText) el.textContent = enText;
+        } else {
+          const source = enText || (el.textContent || "").trim();
+          el.textContent = await translate(source, lang);
+        }
+
+        // aria-label
+        if (el.dataset.i18nAriaEn) {
+          if (lang === "en") {
+            el.setAttribute("aria-label", el.dataset.i18nAriaEn);
+          } else {
+            el.setAttribute("aria-label", await translate(el.dataset.i18nAriaEn, lang));
+          }
+        }
+
+        // title
+        if (el.dataset.i18nTitleEn) {
+          if (lang === "en") {
+            el.setAttribute("title", el.dataset.i18nTitleEn);
+          } else {
+            el.setAttribute("title", await translate(el.dataset.i18nTitleEn, lang));
+          }
+        }
+
+        // placeholder
+        if (el.dataset.i18nPlaceholderEn) {
+          if (lang === "en") {
+            el.setAttribute("placeholder", el.dataset.i18nPlaceholderEn);
+          } else {
+            el.setAttribute("placeholder", await translate(el.dataset.i18nPlaceholderEn, lang));
+          }
+        }
+
+        applyTextRTL(el, isRtl);
       }
 
-      if (subKey) {
-        const enSub = ((el.getAttribute('data-preview-sub') || '')).trim();
-        const val = lang === 'en' ? enSub : await translate(enSub, lang);
-        if (val) keyCache.set(subKey, val);
+      // Additive: cache translations for menu preview keys (data-preview-*-i18n)
+      const previewNodes = scope.querySelectorAll('[data-preview-title-i18n], [data-preview-sub-i18n]');
+      for (const el of previewNodes) {
+        const titleKey = (el.getAttribute('data-preview-title-i18n') || '').trim();
+        const subKey = (el.getAttribute('data-preview-sub-i18n') || '').trim();
+
+        if (titleKey) {
+          const enTitle = ((el.getAttribute('data-preview-title') || '')).trim();
+          const val = lang === 'en' ? enTitle : await translate(enTitle, lang);
+          if (val) keyCache.set(titleKey, val);
+        }
+
+        if (subKey) {
+          const enSub = ((el.getAttribute('data-preview-sub') || '')).trim();
+          const val = lang === 'en' ? enSub : await translate(enSub, lang);
+          if (val) keyCache.set(subKey, val);
+        }
       }
+
+      emitTranslationLifecycle("complete", { lang, root: scope });
+    } catch (error) {
+      emitTranslationLifecycle("error", { lang, root: scope, error });
+      throw error;
+    } finally {
+      isApplyingLanguage = false;
     }
   }
 
@@ -430,7 +454,7 @@ window.NEUROARTAN_TRANSLATION = (() => {
     return "";
   }
 
-  const api = { applyLanguage, refreshCurrentLanguage, t };
+  const api = { applyLanguage, refreshCurrentLanguage, t, isApplyingLanguage: () => isApplyingLanguage };
   window.ARTAN_TRANSLATION = api;
 
   document.addEventListener("fragment:mounted", async (event) => {

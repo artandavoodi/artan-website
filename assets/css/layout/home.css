@@ -1126,6 +1126,7 @@ body.essence-pinned #essence-scroll-spacer + section{
   color: var(--text-color);
   font-size: 1.35rem;
   line-height: 1.35;
+  text-align: center;
 }
 
 .home-closing-line--sub{
@@ -1137,6 +1138,14 @@ body.essence-pinned #essence-scroll-spacer + section{
   max-width: 78ch;
   margin-left: auto;
   margin-right: auto;
+}
+
+html.lang-rtl .home-closing,
+html.lang-rtl .home-closing-line,
+html.lang-rtl .home-closing-line--sub{
+  direction: rtl;
+  unicode-bidi: isolate;
+  text-align: center !important;
 }
 
 /* Reveal behavior is handled globally by the Motion System (assets/js/motion.js + style.css) */
