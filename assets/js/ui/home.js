@@ -100,7 +100,7 @@
     };
 
     const setRunwayHeight = () => {
-      const h = Math.round(window.innerHeight * 3.15);
+      const h = Math.round(window.innerHeight * 3.7);
       spacer.style.height = `${h}px`;
       spacer.style.width = '1px';
     };
@@ -109,13 +109,16 @@
       if (on) {
         wrap.style.position = 'fixed';
         wrap.style.left = '50%';
+        wrap.style.right = 'auto';
         wrap.style.top = '50%';
         wrap.style.transform = 'translate(-50%, -50%)';
         wrap.style.width = 'min(74ch, calc(100vw - (2 * var(--site-gutter))))';
         wrap.style.maxWidth = 'none';
         wrap.style.margin = '0';
         wrap.style.padding = '0';
-        wrap.style.display = 'block';
+        wrap.style.display = 'flex';
+        wrap.style.alignItems = 'center';
+        wrap.style.justifyContent = 'center';
         wrap.style.textAlign = 'center';
         wrap.style.zIndex = '3';
         wrap.style.visibility = 'visible';
@@ -148,23 +151,22 @@
       const rect = section.getBoundingClientRect();
       const pageY = window.scrollY || window.pageYOffset || 0;
       const top = rect.top + pageY;
-      const start = top - Math.round(window.innerHeight * 0.34);
-      const length = spacer.getBoundingClientRect().height || Math.round(window.innerHeight * 3.15);
+      const start = top - Math.round(window.innerHeight * 0.6);
+      const length = spacer.getBoundingClientRect().height || Math.round(window.innerHeight * 3.7);
       const end = start + length;
       return { start, end, length, top };
     };
 
-    const resetIfAbove = (y, top) => {
-      if (y < top - 60) {
+    const resetIfAbove = (y, start) => {
+      if (y < start) {
         currentProgress = 0;
         targetProgress = 0;
         setPinned(false);
         setNextSectionVisibility(true);
         for (const el of lines) {
-          const isFirst = el.dataset.inkLayer === '1';
-          el.style.setProperty('--ink', isFirst ? 0.5 : 0);
+          el.style.setProperty('--ink', 0);
           el.style.setProperty('--sheen', 0);
-          el.style.opacity = isFirst ? '0.5' : '0';
+          el.style.opacity = '0';
           el.style.transform = 'translateY(0)';
         }
         logoShow();
@@ -195,9 +197,9 @@
     const applyState = (progress) => {
       logoAuto(progress);
 
-      const l1 = lineReveal(progress, 0.00, 0.14, 0.24, 0.32);
-      const l2 = lineReveal(progress, 0.40, 0.52, 0.62, 0.70);
-      const l3 = lineReveal(progress, 0.78, 0.90, 0.98, 1.00);
+      const l1 = lineReveal(progress, 0.00, 0.16, 0.28, 0.38);
+      const l2 = lineReveal(progress, 0.42, 0.56, 0.68, 0.78);
+      const l3 = lineReveal(progress, 0.82, 0.92, 0.982, 1.00);
 
       applyLineState(lines[0], l1);
       applyLineState(lines[1], l2);
@@ -207,13 +209,41 @@
     const tick = () => {
       const y = window.scrollY || window.pageYOffset || 0;
       const { start, end, length, top } = getRanges();
+      const releaseHold = Math.round(window.innerHeight * 0.18);
+      const releasePoint = end + releaseHold;
 
-      if (resetIfAbove(y, top)) {
+      if (resetIfAbove(y, start)) {
         rafTick = 0;
         return;
       }
 
-      if (y >= end) {
+      if (y >= end && y < releasePoint) {
+        currentProgress = 1;
+        targetProgress = 1;
+        if (!active) setPinned(true);
+        setNextSectionVisibility(false);
+
+        lines[0].style.setProperty('--ink', 0);
+        setSheen(lines[0], 0);
+        lines[0].style.opacity = '0';
+        lines[0].style.transform = 'translateY(0)';
+
+        lines[1].style.setProperty('--ink', 0);
+        setSheen(lines[1], 0);
+        lines[1].style.opacity = '0';
+        lines[1].style.transform = 'translateY(0)';
+
+        lines[2].style.setProperty('--ink', 1);
+        setSheen(lines[2], 0);
+        lines[2].style.opacity = '1';
+        lines[2].style.transform = 'translateY(0)';
+
+        logoHide();
+        rafTick = 0;
+        return;
+      }
+
+      if (y >= releasePoint) {
         currentProgress = 1;
         targetProgress = 1;
         if (active) setPinned(false);
@@ -231,30 +261,11 @@
         return;
       }
 
-      if (y < start) {
-        currentProgress = 0;
-        targetProgress = 0;
-        if (active) setPinned(false);
-        setNextSectionVisibility(true);
-
-        for (const el of lines) {
-          const isFirst = el.dataset.inkLayer === '1';
-          el.style.setProperty('--ink', isFirst ? 0.5 : 0);
-          setSheen(el, 0);
-          el.style.opacity = isFirst ? '0.5' : '0';
-          el.style.transform = 'translateY(0)';
-        }
-
-        logoShow();
-        rafTick = 0;
-        return;
-      }
-
       if (!active) setPinned(true);
       setNextSectionVisibility(false);
 
       targetProgress = clamp((y - start) / length, 0, 1);
-      currentProgress = lerp(currentProgress, targetProgress, 0.11);
+      currentProgress = lerp(currentProgress, targetProgress, 0.08);
 
       if (Math.abs(targetProgress - currentProgress) < 0.001) {
         currentProgress = targetProgress;

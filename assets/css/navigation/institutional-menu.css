@@ -51,8 +51,8 @@ body.light-mode .institutional-menu::before{
 }
 
 .institutional-menu-inner{
-  width: 100%;
-  max-width: var(--site-rail-width);
+  width: var(--site-rail-width);
+  max-width: calc(100% - (var(--site-gutter) * 2));
   margin: 0 auto;
   padding: 0;
   display: flex;
@@ -62,8 +62,8 @@ body.light-mode .institutional-menu::before{
   position: relative;
   z-index: 1;
   min-height: 3.55rem;
-  padding-left: 1.18rem;
-  padding-right: 1.18rem;
+  padding-left: 0;
+  padding-right: 0;
   box-sizing: border-box;
 }
 
@@ -265,8 +265,8 @@ body.light-mode .institutional-menu::before{
     gap: 1.2rem;
     justify-content: space-between;
     min-height: 3.3rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .institutional-menu-brand-symbol{
@@ -305,8 +305,8 @@ body.light-mode .institutional-menu::before{
     gap: 1rem;
     justify-content: space-between;
     min-height: 3.18rem;
-    padding-left: 0.96rem;
-    padding-right: 0.96rem;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .institutional-menu-nav{
