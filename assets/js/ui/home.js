@@ -148,7 +148,7 @@
       const rect = section.getBoundingClientRect();
       const pageY = window.scrollY || window.pageYOffset || 0;
       const top = rect.top + pageY;
-      const start = top - Math.round(window.innerHeight * 0.18);
+      const start = top - Math.round(window.innerHeight * 0.34);
       const length = spacer.getBoundingClientRect().height || Math.round(window.innerHeight * 3.15);
       const end = start + length;
       return { start, end, length, top };
@@ -161,10 +161,11 @@
         setPinned(false);
         setNextSectionVisibility(true);
         for (const el of lines) {
-          el.style.setProperty('--ink', 0);
+          const isFirst = el.dataset.inkLayer === '1';
+          el.style.setProperty('--ink', isFirst ? 0.5 : 0);
           el.style.setProperty('--sheen', 0);
-          el.style.opacity = '0';
-          el.style.transform = 'translateY(16px)';
+          el.style.opacity = isFirst ? '0.5' : '0';
+          el.style.transform = 'translateY(0)';
         }
         logoShow();
         return true;
@@ -174,10 +175,11 @@
 
     const lineReveal = (progress, inStart, inEnd, outStart, outEnd) => {
       const reveal = smoothstep(inStart, inEnd, progress);
-      const holdFade = 1 - smoothstep(outStart, outEnd, progress);
+      const emphasis = 1 - smoothstep(outStart, outEnd, progress);
+      const active = clamp(Math.min(reveal, emphasis), 0, 1);
       return {
         reveal,
-        visibility: clamp(Math.min(reveal, holdFade), 0, 1)
+        visibility: active > 0 ? (0.5 + (active * 0.5)) : 0
       };
     };
 
@@ -186,16 +188,16 @@
       const visibility = clamp(state.visibility, 0, 1);
       el.style.setProperty('--ink', visibility);
       setSheen(el, reveal);
-      el.style.opacity = String(0.12 + (visibility * 0.88));
-      el.style.transform = `translateY(${Math.round((1 - visibility) * 14)}px)`;
+      el.style.opacity = visibility > 0 ? String(visibility) : '0';
+      el.style.transform = 'translateY(0)';
     };
 
     const applyState = (progress) => {
       logoAuto(progress);
 
-      const l1 = lineReveal(progress, 0.00, 0.16, 0.30, 0.40);
-      const l2 = lineReveal(progress, 0.36, 0.50, 0.64, 0.74);
-      const l3 = lineReveal(progress, 0.70, 0.84, 0.98, 1.00);
+      const l1 = lineReveal(progress, 0.00, 0.14, 0.24, 0.32);
+      const l2 = lineReveal(progress, 0.40, 0.52, 0.62, 0.70);
+      const l3 = lineReveal(progress, 0.78, 0.90, 0.98, 1.00);
 
       applyLineState(lines[0], l1);
       applyLineState(lines[1], l2);
@@ -236,10 +238,11 @@
         setNextSectionVisibility(true);
 
         for (const el of lines) {
-          el.style.setProperty('--ink', 0);
+          const isFirst = el.dataset.inkLayer === '1';
+          el.style.setProperty('--ink', isFirst ? 0.5 : 0);
           setSheen(el, 0);
-          el.style.opacity = '0';
-          el.style.transform = 'translateY(16px)';
+          el.style.opacity = isFirst ? '0.5' : '0';
+          el.style.transform = 'translateY(0)';
         }
 
         logoShow();
@@ -251,7 +254,7 @@
       setNextSectionVisibility(false);
 
       targetProgress = clamp((y - start) / length, 0, 1);
-      currentProgress = lerp(currentProgress, targetProgress, 0.075);
+      currentProgress = lerp(currentProgress, targetProgress, 0.11);
 
       if (Math.abs(targetProgress - currentProgress) < 0.001) {
         currentProgress = targetProgress;

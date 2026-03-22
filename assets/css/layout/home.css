@@ -657,8 +657,6 @@ html.lang-rtl .featured-grid [data-i18n-key]{
 .home-ink-stack{
   position: relative;
   width: 100%;
-
-  /* Reserve space so lines don’t get clipped while layered */
   min-height: 3.8em;
   display: flex;
   align-items: center;
@@ -684,6 +682,7 @@ html.lang-rtl .featured-grid [data-i18n-key]{
   text-align: center;
   box-sizing: border-box;
   margin-left: 0;
+  opacity: 0;
 }
 
 /* Slightly taller stage on larger viewports */
@@ -713,6 +712,7 @@ html.lang-rtl .featured-grid [data-i18n-key]{
 
   /* Fallback: always visible text */
   color: var(--text-color);
+  opacity: 0.5;
   -webkit-text-fill-color: var(--text-color);
 
   /* Sheen gradient (safe, no color-mix dependency) */
@@ -735,14 +735,16 @@ html.lang-rtl .featured-grid [data-i18n-key]{
   .ink-line{
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    -webkit-text-fill-color: currentColor;
+    color: var(--text-color);
   }
 }
 
 .ink-line--sub{
-  opacity: 0.78;
-  font-size: 1.4rem;
+  opacity: 1;
+  font-size: 1.6rem;
+  line-height: 1.28;
+  font-weight: 300;
 }
 
 /* Mobile breathing room */
@@ -756,7 +758,7 @@ html.lang-rtl .featured-grid [data-i18n-key]{
 }
 
 @media (min-width: 1024px){
-  .ink-line--sub{font-size: 1.75rem;}
+  .ink-line--sub{font-size: 2.05rem;}
 }
 
 /* RTL: keep center alignment, but let punctuation shape correctly */
