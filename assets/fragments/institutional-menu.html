@@ -6,18 +6,124 @@
     </a>
 
     <div class="institutional-menu-group">
-    <nav class="institutional-menu-nav" aria-label="Primary navigation">
-      <a href="/pages/icos/" class="institutional-menu-link" data-i18n-key="menu.primary.icos">ICOS</a>
-      <a href="/pages/knowledge-research/" class="institutional-menu-link" data-i18n-key="menu.primary.knowledgeResearch">Knowledge &amp; Research</a>
-      <a href="/pages/updates/" class="institutional-menu-link" data-i18n-key="menu.primary.updates">Updates</a>
-      <a href="/pages/careers/" class="institutional-menu-link" data-i18n-key="menu.primary.careers">Careers</a>
-    </nav>
+      <nav class="institutional-menu-nav" aria-label="Primary navigation">
+        <button type="button" class="institutional-menu-link institutional-menu-panel-trigger" data-menu-panel="icos" aria-expanded="false" aria-controls="institutional-menu-panel-icos" data-i18n-key="menu.primary.icos">ICOS</button>
+        <button type="button" class="institutional-menu-link institutional-menu-panel-trigger" data-menu-panel="knowledge-research" aria-expanded="false" aria-controls="institutional-menu-panel-knowledge-research" data-i18n-key="menu.primary.knowledgeResearch">Knowledge &amp; Research</button>
+        <button type="button" class="institutional-menu-link institutional-menu-panel-trigger" data-menu-panel="updates" aria-expanded="false" aria-controls="institutional-menu-panel-updates" data-i18n-key="menu.primary.updates">Updates</button>
+        <button type="button" class="institutional-menu-link institutional-menu-panel-trigger" data-menu-panel="careers" aria-expanded="false" aria-controls="institutional-menu-panel-careers" data-i18n-key="menu.primary.careers">Careers</button>
+      </nav>
 
-    <a href="/pages/login/" class="institutional-menu-login" data-i18n-key="menu.primary.login">Login</a>
+      <div class="institutional-menu-utility" aria-label="Utility navigation">
+        <button type="button" class="institutional-menu-utility-button institutional-menu-panel-trigger institutional-menu-search-trigger" data-menu-panel="search" aria-expanded="false" aria-controls="institutional-menu-panel-search" aria-label="Search Neuroartan">
+          <span class="institutional-menu-utility-label" data-i18n-key="menu.primary.search">Search</span>
+        </button>
+        <button type="button" class="institutional-menu-utility-button institutional-menu-panel-trigger institutional-menu-login-trigger" data-menu-panel="account" aria-expanded="false" aria-controls="institutional-menu-panel-account" data-i18n-key="menu.primary.login">Login</button>
+      </div>
     </div>
+
     <button id="institutional-menu-secondary-toggle" class="institutional-menu-secondary-toggle" type="button" aria-label="Open secondary navigation" aria-controls="menu-overlay" aria-expanded="false">
       <span class="institutional-menu-toggle-line institutional-menu-toggle-line--top"></span>
       <span class="institutional-menu-toggle-line institutional-menu-toggle-line--bottom"></span>
     </button>
+  </div>
+
+  <div class="institutional-menu-panels" aria-hidden="true">
+    <div class="institutional-menu-panels-backdrop"></div>
+
+    <section id="institutional-menu-panel-icos" class="institutional-menu-panel" data-menu-panel-content="icos" aria-label="ICOS menu panel">
+      <div class="institutional-menu-panel-shell">
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--primary">
+          <p class="institutional-menu-panel-label">Explore ICOS</p>
+          <a href="/pages/icos/" class="institutional-menu-panel-feature-link">ICOS Overview</a>
+          <a href="/pages/icos/" class="institutional-menu-panel-feature-link">Product Direction</a>
+          <a href="/pages/icos/" class="institutional-menu-panel-feature-link">System Architecture</a>
+        </div>
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--secondary">
+          <p class="institutional-menu-panel-label">Quick Links</p>
+          <a href="/pages/icos/" class="institutional-menu-panel-sub-link">Read the overview</a>
+          <a href="/pages/icos/" class="institutional-menu-panel-sub-link">See the current direction</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="institutional-menu-panel-knowledge-research" class="institutional-menu-panel" data-menu-panel-content="knowledge-research" aria-label="Knowledge and Research menu panel">
+      <div class="institutional-menu-panel-shell">
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--primary">
+          <p class="institutional-menu-panel-label">Knowledge &amp; Research</p>
+          <a href="/pages/knowledge-research/" class="institutional-menu-panel-feature-link">Publications</a>
+          <a href="/pages/knowledge-research/" class="institutional-menu-panel-feature-link">Research Notes</a>
+          <a href="/pages/knowledge-research/" class="institutional-menu-panel-feature-link">Visual Thinking</a>
+        </div>
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--secondary">
+          <p class="institutional-menu-panel-label">Quick Links</p>
+          <a href="/pages/knowledge-research/" class="institutional-menu-panel-sub-link">Browse current work</a>
+          <a href="/pages/knowledge-research/" class="institutional-menu-panel-sub-link">Open the knowledge index</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="institutional-menu-panel-updates" class="institutional-menu-panel" data-menu-panel-content="updates" aria-label="Updates menu panel">
+      <div class="institutional-menu-panel-shell">
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--primary">
+          <p class="institutional-menu-panel-label">Updates</p>
+          <a href="/pages/updates/" class="institutional-menu-panel-feature-link">Latest Updates</a>
+          <a href="/pages/updates/" class="institutional-menu-panel-feature-link">Product Progress</a>
+          <a href="/pages/updates/" class="institutional-menu-panel-feature-link">Institutional Announcements</a>
+        </div>
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--secondary">
+          <p class="institutional-menu-panel-label">Quick Links</p>
+          <a href="/pages/updates/" class="institutional-menu-panel-sub-link">See recent entries</a>
+          <a href="/pages/updates/" class="institutional-menu-panel-sub-link">Open the updates archive</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="institutional-menu-panel-careers" class="institutional-menu-panel" data-menu-panel-content="careers" aria-label="Careers menu panel">
+      <div class="institutional-menu-panel-shell">
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--primary">
+          <p class="institutional-menu-panel-label">Careers</p>
+          <a href="/pages/careers/" class="institutional-menu-panel-feature-link">Open Roles</a>
+          <a href="/pages/careers/" class="institutional-menu-panel-feature-link">Working at Neuroartan</a>
+          <a href="/pages/careers/" class="institutional-menu-panel-feature-link">Hiring Direction</a>
+        </div>
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--secondary">
+          <p class="institutional-menu-panel-label">Quick Links</p>
+          <a href="/pages/careers/" class="institutional-menu-panel-sub-link">View opportunities</a>
+          <a href="/pages/careers/" class="institutional-menu-panel-sub-link">Read the hiring direction</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="institutional-menu-panel-search" class="institutional-menu-panel institutional-menu-panel--search" data-menu-panel-content="search" aria-label="Search panel">
+      <div class="institutional-menu-panel-shell institutional-menu-panel-shell--search">
+        <label for="institutional-menu-search-input" class="institutional-menu-search-field">
+          <span class="institutional-menu-search-icon" aria-hidden="true">⌕</span>
+          <span class="institutional-menu-search-caret" aria-hidden="true"></span>
+          <input id="institutional-menu-search-input" class="institutional-menu-search-input" type="search" name="q" placeholder="Search neuroartan.com" autocomplete="off">
+        </label>
+        <div class="institutional-menu-search-links">
+          <p class="institutional-menu-panel-label">Quick Links</p>
+          <a href="/pages/icos/" class="institutional-menu-panel-sub-link">ICOS</a>
+          <a href="/pages/knowledge-research/" class="institutional-menu-panel-sub-link">Knowledge &amp; Research</a>
+          <a href="/pages/updates/" class="institutional-menu-panel-sub-link">Updates</a>
+          <a href="/pages/careers/" class="institutional-menu-panel-sub-link">Careers</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="institutional-menu-panel-account" class="institutional-menu-panel" data-menu-panel-content="account" aria-label="Account menu panel">
+      <div class="institutional-menu-panel-shell">
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--primary">
+          <p class="institutional-menu-panel-label">Account</p>
+          <a href="/pages/login/" class="institutional-menu-panel-feature-link">Sign In</a>
+          <a href="/pages/register/" class="institutional-menu-panel-feature-link">Create an Account</a>
+        </div>
+        <div class="institutional-menu-panel-column institutional-menu-panel-column--secondary">
+          <p class="institutional-menu-panel-label">Quick Links</p>
+          <a href="/pages/login/" class="institutional-menu-panel-sub-link">Access your profile</a>
+          <a href="/pages/register/" class="institutional-menu-panel-sub-link">Begin registration</a>
+        </div>
+      </div>
+    </section>
   </div>
 </header>

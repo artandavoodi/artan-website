@@ -23,12 +23,21 @@ async function injectGlobalLayout() {
 }
 
 
-injectGlobalLayout();
+injectGlobalLayout().then(() => {
+  injectInstitutionalMenuIfNeeded();
+  injectFooterIfNeeded();
+  initInstitutionalLinksReveal(document);
+  initLetterHover(document);
+  loadStylesheetOnce(CUSTOM_CURSOR_CSS_URL);
+  loadScriptOnce(CUSTOM_CURSOR_JS_URL);
+});
 
 /* =================== Institutional Menu Fragment Injection =================== */
 const INSTITUTIONAL_MENU_FRAGMENT_URL = '/assets/fragments/institutional-menu.html';
 const INSTITUTIONAL_MENU_CSS_URL = '/assets/css/navigation/institutional-menu.css';
 const INSTITUTIONAL_MENU_JS_URL = '/assets/js/navigation/institutional-menu.js';
+const CUSTOM_CURSOR_CSS_URL = '/assets/css/ui/custom-cursor.css';
+const CUSTOM_CURSOR_JS_URL = '/assets/js/ui/custom-cursor.js';
 
 function loadStylesheetOnce(href) {
   if (document.querySelector(`link[rel="stylesheet"][href="${href}"]`)) return;
@@ -50,29 +59,29 @@ async function injectInstitutionalMenuIfNeeded() {
   const header = document.getElementById('header-controls');
   if (!header) return false;
 
-  if (header.querySelector('#institutional-menu')) {
-    loadStylesheetOnce(INSTITUTIONAL_MENU_CSS_URL);
-    loadScriptOnce(INSTITUTIONAL_MENU_JS_URL);
+  loadStylesheetOnce(INSTITUTIONAL_MENU_CSS_URL);
+  loadScriptOnce(INSTITUTIONAL_MENU_JS_URL);
+
+  const existingMenu = header.querySelector('#institutional-menu');
+  if (existingMenu) {
+    document.dispatchEvent(new CustomEvent('institutional-menu:mounted'));
     return true;
   }
 
   const legacyButton = header.querySelector('#menu-button');
 
   try {
-    const res = await fetch(INSTITUTIONAL_MENU_FRAGMENT_URL, { cache: 'no-cache' });
+    const res = await fetch(INSTITUTIONAL_MENU_FRAGMENT_URL, { cache: 'no-store' });
     if (!res.ok) return false;
 
     const html = await res.text();
     header.insertAdjacentHTML('afterbegin', html);
+
     const mountedMenu = header.querySelector('#institutional-menu');
-    if (mountedMenu) {
-      if (window.NeuroMotion && typeof window.NeuroMotion.scan === 'function') {
-        window.NeuroMotion.scan(mountedMenu);
-      }
-      mountedMenu.dispatchEvent(new CustomEvent('fragment:mounted', {
-        bubbles: true,
-        detail: { name: 'institutional-menu', mount: mountedMenu }
-      }));
+    if (!mountedMenu) return false;
+
+    if (window.NeuroMotion && typeof window.NeuroMotion.scan === 'function') {
+      window.NeuroMotion.scan(mountedMenu);
     }
 
     if (legacyButton) {
@@ -82,8 +91,12 @@ async function injectInstitutionalMenuIfNeeded() {
       legacyButton.style.display = 'none';
     }
 
-    loadStylesheetOnce(INSTITUTIONAL_MENU_CSS_URL);
-    loadScriptOnce(INSTITUTIONAL_MENU_JS_URL);
+    mountedMenu.dispatchEvent(new CustomEvent('fragment:mounted', {
+      bubbles: true,
+      detail: { name: 'institutional-menu', mount: mountedMenu }
+    }));
+
+    document.dispatchEvent(new CustomEvent('institutional-menu:mounted'));
     return true;
   } catch (_) {
     return false;
@@ -184,8 +197,6 @@ function initInstitutionalLinksReveal(root = document) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  injectInstitutionalMenuIfNeeded();
-  injectFooterIfNeeded();
   initInstitutionalLinksReveal(document);
 
   initRevealGroup(document, {
@@ -220,7 +231,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener('fragment:mounted', (event) => {
     const root = event?.target instanceof Element ? event.target : document;
+
     initInstitutionalLinksReveal(root);
+    initLetterHover(root);
 
     initRevealGroup(root, {
       sectionSelector: '#home-icos-chapter',
@@ -253,130 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* =================== Custom Cursor (RTL-safe + re-init on language/dir change) =================== */
-
-  let cursorRAF = null;
-
-  function ensureCursorNode() {
-    let node = document.querySelector(".custom-cursor");
-    if (!node) {
-      node = document.createElement("div");
-      node.className = "custom-cursor";
-      document.body.appendChild(node);
-    }
-    return node;
-  }
-
-  function stopCursorLoop() {
-    if (cursorRAF) cancelAnimationFrame(cursorRAF);
-    cursorRAF = null;
-  }
-
-  function initCustomCursor() {
-    stopCursorLoop();
-
-    const customCursor = ensureCursorNode();
-    if (!customCursor) return;
-
-    customCursor.style.display = "";
-    customCursor.style.opacity = "1";
-    customCursor.style.transform = "translate(-50%, -50%) scale(1)";
-
-    let mouseX = 0;
-    let mouseY = 0;
-    let cursorX = 0;
-    let cursorY = 0;
-    const speed = 0.15;
-
-    const onMove = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-
-      // Hard-restore in case RTL/dir switches leave it invisible
-      if (customCursor.style.display === "none") customCursor.style.display = "";
-      if (customCursor.style.opacity === "0") customCursor.style.opacity = "1";
-    };
-
-    document.addEventListener("mousemove", onMove, { passive: true });
-
-    const animateCursor = () => {
-      cursorX += (mouseX - cursorX) * speed;
-      cursorY += (mouseY - cursorY) * speed;
-      customCursor.style.left = cursorX + "px";
-      customCursor.style.top = cursorY + "px";
-      cursorRAF = requestAnimationFrame(animateCursor);
-    };
-
-    animateCursor();
-
-    // Pointer-based interaction feedback (RTL-safe)
-    document.addEventListener(
-      "pointerover",
-      (e) => {
-        const target = e.target;
-        const interactive =
-          target &&
-          target.closest(
-            "button, a, input, select, textarea, [role='button'], .enter-button, .logo-container, .country-option, #country-overlay-close, #country-selector, #language-toggle, #language-dropdown"
-          );
-
-        if (interactive) {
-          customCursor.style.transform = "translate(-50%, -50%) scale(0.4)";
-          customCursor.style.opacity = "0.35";
-        }
-      },
-      { passive: true }
-    );
-
-    document.addEventListener(
-      "pointerout",
-      () => {
-        customCursor.style.transform = "translate(-50%, -50%) scale(1)";
-        customCursor.style.opacity = "1";
-      },
-      { passive: true }
-    );
-  }
-
-  initCustomCursor();
-
-  // Re-init cursor when language / direction changes (RTL flips)
-  const reinitCursor = () => {
-    // next paint: let other scripts finish updating DOM/dir
-    requestAnimationFrame(() => initCustomCursor());
-  };
-
-  // Custom events (if your locale system dispatches any)
-  window.addEventListener("languagechange", reinitCursor);
-  window.addEventListener("neuroartan:language-applied", reinitCursor);
-  window.addEventListener("artan:language-applied", reinitCursor);
-  window.addEventListener("neuroartan:languageChanged", reinitCursor);
-  window.addEventListener("neuroartan:dirChanged", reinitCursor);
-
-  // Mutation observer: catches dir/lang/class flips on html/body
-  const mo = new MutationObserver((mutations) => {
-    for (const m of mutations) {
-      if (
-        m.type === "attributes" &&
-        (m.attributeName === "dir" ||
-          m.attributeName === "lang" ||
-          m.attributeName === "class")
-      ) {
-        reinitCursor();
-        break;
-      }
-    }
-  });
-
-  mo.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["dir", "lang", "class"],
-  });
-  mo.observe(document.body, {
-    attributes: true,
-    attributeFilter: ["dir", "lang", "class"],
-  });
-
   /* =================== Text Hover — Subtle Luxury Emphasis =================== */
 
   function initLetterHover(root = document) {
@@ -403,6 +292,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!el || el.dataset.letterified) return;
       if (el.children && el.children.length > 0) return;
       if (el.dataset.noLetterHover === "true") return;
+      if (
+        el.closest(
+          "#institutional-menu, .institutional-menu, .institutional-menu-panels, .institutional-menu-nav, .institutional-menu-utility"
+        )
+      ) return;
 
       const raw = el.textContent || "";
       const text = raw.trim();
@@ -431,6 +325,11 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
   }
+
+  window.addEventListener('load', () => {
+    initInstitutionalLinksReveal(document);
+    initLetterHover(document);
+  }, { once: true });
 
   // Init once for the page
   initLetterHover(document);

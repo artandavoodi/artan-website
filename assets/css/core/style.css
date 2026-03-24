@@ -513,44 +513,7 @@ body.light-mode .language-dropdown .lang-option:hover{
 .global-close-button:hover span:nth-child(2){transform:rotate(0deg);}
 
 /* =============================================================================
-   11) CUSTOM CURSOR
-============================================================================= */
-html,body,body *{cursor:none !important;}
-.custom-cursor{
-  position:fixed;
-  top:0;
-  left:0;
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:2147483647;
-  background-color:var(--color-primary1);
-  transform:translate(-50%,-50%);
-  transition:background-color 0.3s,transform 0.1s,opacity 0.2s;
-  opacity:1;
-  mix-blend-mode:normal;
-  display:block;
-  visibility:visible;
-  left:0;
-  right:auto;
-  top:0;
-  bottom:auto;
-}
-@media (hover:none) and (pointer:coarse), (max-width:768px){
-  .custom-cursor{display:none !important;}
-  html,body,body *{cursor:auto !important;}
-}
-
-html[dir="rtl"] .custom-cursor,
-body[dir="rtl"] .custom-cursor{
-  direction:ltr;
-  unicode-bidi:isolate;
-  transform:translate(-50%,-50%) !important;
-}
-
-/* =============================================================================
-   12) MOTION SYSTEM — GLOBAL REVEAL BASE
+   11) MOTION SYSTEM — GLOBAL REVEAL BASE
    - Used by assets/js/motion.js
    - Direction-safe (LTR/RTL)
    - Luxury easing + smooth bidirectional transitions

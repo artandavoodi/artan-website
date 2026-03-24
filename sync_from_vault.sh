@@ -4,14 +4,18 @@ set -euo pipefail
 # =================== Obsidian → Website Sync ===================
 # Canonical public website source is pulled from the private Obsidian vault.
 # Current synced branch: Publications only.
-# Source vault branch: 06 - Communication/04 - Publications
+# Canonical website architecture rule: generated pages must mount the same
+# shared runtime fragment system as the rest of the website. No page-specific
+# institutional-menu duplication is allowed inside generated publication output.
 # Website outputs: content_sync/publications/, pages/publications/, publications/, sitemap.xml block
 
-VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/06 - Communication/04 - Publications"
-SITE_ROOT="$HOME/Documents/Site/artan-website"
+PUBLICATIONS_VAULT_DEFAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/06 - Communication/04 - Publications"
+VAULT="${PUBLICATIONS_VAULT_PATH:-$PUBLICATIONS_VAULT_DEFAULT}"
+SITE_ROOT="${NEUROARTAN_SITE_ROOT:-$HOME/Documents/Site/artan-website}"
 CONTENT_SYNC_ROOT="$SITE_ROOT/content_sync"
 DEST_CANON="$CONTENT_SYNC_ROOT"
 PUB_INDEX="$SITE_ROOT/pages/publications/index.html"
+SITE_BASE="${NEUROARTAN_SITE_BASE_URL:-https://neuroartan.com}"
 
 ESSAYS_SRC="$VAULT/01 - Essays/01 - Records"
 NOTES_SRC="$VAULT/02 - Notes/01 - Records"
@@ -25,6 +29,7 @@ DEST_VISUAL="$CONTENT_SYNC_ROOT/publications/visual"
 
 if [[ ! -d "$VAULT" ]]; then
   echo "[ERROR] Vault source path not found: $VAULT" >&2
+  echo "[HINT] Set PUBLICATIONS_VAULT_PATH to the live publications root before running this sync." >&2
   exit 1
 fi
 
@@ -130,6 +135,29 @@ is_publishable_publication() {
 slugify_fallback() {
   # Lowercase, spaces/underscores → hyphen, drop non-url-safe chars, collapse hyphens
   echo "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[ _]+/-/g; s/[^a-z0-9-]+//g; s/-+/-/g; s/^-|-$//g'
+}
+
+escape_html() {
+  local value="${1:-}"
+  value="${value//&/&amp;}"
+  value="${value//</&lt;}"
+  value="${value//>/&gt;}"
+  value="${value//\"/&quot;}"
+  value="${value//\'/&#39;}"
+  printf '%s' "$value"
+}
+
+escape_attr() {
+  escape_html "$1"
+}
+
+escape_json_string() {
+  local value="${1:-}"
+  value="${value//\\/\\\\}"
+  value="${value//\"/\\\"}"
+  value="${value//$'\n'/ }"
+  value="${value//$'\r'/ }"
+  printf '%s' "$value"
 }
 
 LIST_ITEMS=""
@@ -344,16 +372,12 @@ sanitize_publication_markdown() {
   ' "$file"
 }
 
-slugify_fallback() {
-  # Lowercase, spaces/underscores → hyphen, drop non-url-safe chars, collapse hyphens
-  echo "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[ _]+/-/g; s/[^a-z0-9-]+//g; s/-+/-/g; s/^-|-$//g'
-}
+
 
 mkdir -p "$PUB_PAGES_DIR"
 
 # Build pages and collect sitemap URLs
 SITEMAP_URLS=""
-SITE_BASE="https://neuroartan.com"
 
 #
 # Build static pages from the synchronized canonical website buckets
@@ -365,6 +389,13 @@ for rel in "${MD_FILES[@]}"; do
   title_val="$(extract_yaml_field "$rel" "title")"
   subtitle_val="$(extract_yaml_field "$rel" "subtitle")"
   slug_val="$(extract_yaml_field "$rel" "slug")"
+
+  title_html="$(escape_html "$title_val")"
+  subtitle_html="$(escape_html "$subtitle_val")"
+  title_attr="$(escape_attr "$title_val")"
+  subtitle_attr="$(escape_attr "$subtitle_val")"
+  title_json="$(escape_json_string "$title_val")"
+  subtitle_json="$(escape_json_string "$subtitle_val")"
 
   # Required fields
   [[ -n "$title_val" ]] || continue
@@ -395,8 +426,8 @@ for rel in "${MD_FILES[@]}"; do
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title_val} • Neuroartan</title>
-  <meta name="description" content="${subtitle_val:-Publication from Neuroartan institutional writing, research, and publications.}">
+  <title>${title_attr} • Neuroartan</title>
+  <meta name="description" content="${subtitle_attr:-Publication from Neuroartan institutional writing, research, and publications.}">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <meta name="theme-color" content="#0a0a0a">
 
@@ -410,19 +441,18 @@ for rel in "${MD_FILES[@]}"; do
   <link rel="stylesheet" href="${ASSET_PREFIX}assets/css/navigation/menu.css">
   <link rel="stylesheet" href="${ASSET_PREFIX}assets/css/overlays/country-overlay.css">
   <link rel="stylesheet" href="${ASSET_PREFIX}assets/css/layout/publication.css">
-  <link rel="stylesheet" href="${ASSET_PREFIX}assets/css/navigation/institutional-menu.css">
 
   <link rel="canonical" href="${SITE_BASE}/publications/${slug_val}/">
 
-  <meta property="og:title" content="${title_val} • Neuroartan">
-  <meta property="og:description" content="${subtitle_val:-Publication from Neuroartan institutional writing, research, and publications.}">
+  <meta property="og:title" content="${title_attr} • Neuroartan">
+  <meta property="og:description" content="${subtitle_attr:-Publication from Neuroartan institutional writing, research, and publications.}">
   <meta property="og:type" content="article">
   <meta property="og:url" content="${SITE_BASE}/publications/${slug_val}/">
   <meta property="og:site_name" content="Neuroartan">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${title_val} • Neuroartan">
-  <meta name="twitter:description" content="${subtitle_val:-Publication from Neuroartan institutional writing, research, and publications.}">
+  <meta name="twitter:title" content="${title_attr} • Neuroartan">
+  <meta name="twitter:description" content="${subtitle_attr:-Publication from Neuroartan institutional writing, research, and publications.}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -432,8 +462,8 @@ for rel in "${MD_FILES[@]}"; do
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "${title_val}",
-    "description": "${subtitle_val:-Publication from Neuroartan institutional writing, research, and publications.}",
+    "headline": "${title_json}",
+    "description": "${subtitle_json:-Publication from Neuroartan institutional writing, research, and publications.}",
     "mainEntityOfPage": "${SITE_BASE}/publications/${slug_val}/",
     "publisher": {
       "@type": "Organization",
@@ -459,11 +489,11 @@ for rel in "${MD_FILES[@]}"; do
   <div id="menu-mount"></div>
 
   <main class="publication-main home-inner home-rail" id="publication">
-    <h1 class="publication-heading">${title_val}</h1>
+    <h1 class="publication-heading">${title_html}</h1>
 EOF
 
   if [[ -n "$subtitle_val" ]]; then
-    printf "    <p class=\"publication-sub\">%s</p>\n" "$subtitle_val" >> "$out_file"
+    printf "    <p class=\"publication-sub\">%s</p>\n" "$subtitle_html" >> "$out_file"
   fi
 
   cat >> "$out_file" <<EOF
@@ -487,7 +517,6 @@ EOF
   <script src="${ASSET_PREFIX}assets/js/i18n/countries.js" defer></script>
   <script src="${ASSET_PREFIX}assets/js/i18n/translation.js" defer></script>
   <script src="${ASSET_PREFIX}assets/js/i18n/country-language.js" defer></script>
-  <script src="${ASSET_PREFIX}assets/js/navigation/institutional-menu.js" defer></script>
   <script src="${ASSET_PREFIX}assets/js/navigation/menu.js" defer></script>
   <script src="${ASSET_PREFIX}assets/js/core/main.js" defer></script>
 
@@ -525,7 +554,7 @@ if [[ -f "$SITEMAP_FILE" ]]; then
   mv "$tmp_sm" "$SITEMAP_FILE"
 fi
 
-# 3) Commit and push (PUBLICATIONS ONLY — protects homepage + UI modules)
+# 3) Commit and push (PUBLICATIONS ONLY — preserves shared runtime fragments and homepage/UI modules)
 cd "$SITE_ROOT"
 
 # Stage only Obsidian-driven outputs
