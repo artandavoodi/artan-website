@@ -64,21 +64,43 @@ async function injectInstitutionalMenuIfNeeded() {
 
   const existingMenu = header.querySelector('#institutional-menu');
   if (existingMenu) {
-    document.dispatchEvent(new CustomEvent('institutional-menu:mounted'));
-    return true;
+    const hasPanelSystem = existingMenu.querySelector('.institutional-menu-panels');
+    const hasPrimaryTriggers = existingMenu.querySelectorAll('.institutional-menu-panel-trigger').length > 0;
+
+    if (hasPanelSystem && hasPrimaryTriggers) {
+      document.dispatchEvent(new CustomEvent('institutional-menu:mounted'));
+      return true;
+    }
+
+    existingMenu.remove();
   }
 
   const legacyButton = header.querySelector('#menu-button');
 
+  if (header.dataset.institutionalMenuMounting === 'true') return false;
+  header.dataset.institutionalMenuMounting = 'true';
+
   try {
     const res = await fetch(INSTITUTIONAL_MENU_FRAGMENT_URL, { cache: 'no-store' });
-    if (!res.ok) return false;
+    if (!res.ok) {
+      header.dataset.institutionalMenuMounting = 'false';
+      return false;
+    }
 
     const html = await res.text();
+    const staleMenu = header.querySelector('#institutional-menu');
+    if (staleMenu) staleMenu.remove();
+
     header.insertAdjacentHTML('afterbegin', html);
 
     const mountedMenu = header.querySelector('#institutional-menu');
-    if (!mountedMenu) return false;
+    const hasPanelSystem = mountedMenu?.querySelector('.institutional-menu-panels');
+    const hasPrimaryTriggers = mountedMenu?.querySelectorAll('.institutional-menu-panel-trigger').length > 0;
+
+    if (!mountedMenu || !hasPanelSystem || !hasPrimaryTriggers) {
+      header.dataset.institutionalMenuMounting = 'false';
+      return false;
+    }
 
     if (window.NeuroMotion && typeof window.NeuroMotion.scan === 'function') {
       window.NeuroMotion.scan(mountedMenu);
@@ -97,8 +119,10 @@ async function injectInstitutionalMenuIfNeeded() {
     }));
 
     document.dispatchEvent(new CustomEvent('institutional-menu:mounted'));
+    header.dataset.institutionalMenuMounting = 'false';
     return true;
   } catch (_) {
+    header.dataset.institutionalMenuMounting = 'false';
     return false;
   }
 }
