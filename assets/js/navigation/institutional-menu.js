@@ -123,6 +123,7 @@
     const triggers = Array.from(menu.querySelectorAll('.institutional-menu-panel-trigger'));
     const panels = Array.from(menu.querySelectorAll('.institutional-menu-panel'));
     const searchInput = menu.querySelector('#institutional-menu-search-input');
+    const micButton = menu.querySelector('.institutional-menu-mic-button');
     const panelShells = Array.from(menu.querySelectorAll('.institutional-menu-panel-shell'));
     const panelBackdrop = menu.querySelector('.institutional-menu-panels-backdrop');
 
@@ -131,7 +132,10 @@
     menu.__neuroartanPanelsBound = true;
 
     let activePanelKey = null;
+    const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition || null;
     let closeTimer = null;
+    let speechRecognition = null;
+    let speechListening = false;
 
     const isDesktopMenuMode = () => window.matchMedia('(min-width: 761px)').matches;
 
@@ -152,10 +156,25 @@
       closeTimer = null;
     };
 
+    const syncMicState = () => {
+      if (!micButton) return;
+
+      micButton.setAttribute('aria-pressed', speechListening ? 'true' : 'false');
+      micButton.classList.toggle('is-listening', speechListening);
+      micButton.setAttribute(
+        'aria-label',
+        speechListening ? 'Stop voice search' : 'Start voice search'
+      );
+    };
+
     const closePanels = () => {
       activePanelKey = null;
       body.classList.remove('institutional-menu-panel-open');
       panelContainer.setAttribute('aria-hidden', 'true');
+
+      if (speechRecognition && speechListening) {
+        speechRecognition.stop();
+      }
 
       triggers.forEach((trigger) => {
         trigger.setAttribute('aria-expanded', 'false');
@@ -207,8 +226,58 @@
 
     const openFromTrigger = (trigger) => {
       if (!trigger || !isDesktopMenuMode()) return;
+
+      const panelKey = trigger.dataset.menuPanel || '';
+      if (panelKey === 'search') return;
+
       clearCloseTimer();
-      openPanel(trigger.dataset.menuPanel || '');
+      openPanel(panelKey);
+    };
+
+    const ensureSpeechRecognition = () => {
+      if (!SpeechRecognitionCtor) return null;
+      if (speechRecognition) return speechRecognition;
+
+      speechRecognition = new SpeechRecognitionCtor();
+      speechRecognition.continuous = false;
+      speechRecognition.interimResults = true;
+      speechRecognition.maxAlternatives = 1;
+
+      speechRecognition.addEventListener('start', () => {
+        speechListening = true;
+        clearCloseTimer();
+        syncMicState();
+      });
+
+      speechRecognition.addEventListener('result', (event) => {
+        if (!searchInput) return;
+
+        const transcript = Array.from(event.results)
+          .map((result) => result[0]?.transcript || '')
+          .join('')
+          .trim();
+
+        searchInput.value = transcript;
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+
+      speechRecognition.addEventListener('end', () => {
+        speechListening = false;
+        syncMicState();
+
+        if (activePanelKey === 'search' && searchInput) {
+          window.requestAnimationFrame(() => {
+            searchInput.focus();
+          });
+        }
+      });
+
+      speechRecognition.addEventListener('error', () => {
+        speechListening = false;
+        syncMicState();
+      });
+
+      return speechRecognition;
     };
 
     triggers.forEach((trigger) => {
@@ -221,13 +290,22 @@
       });
 
       trigger.addEventListener('focus', () => {
+        const panelKey = trigger.dataset.menuPanel || '';
+        if (panelKey === 'search') return;
         openFromTrigger(trigger);
       });
 
       trigger.addEventListener('click', (event) => {
         event.preventDefault();
+        event.stopPropagation();
         clearCloseTimer();
+
         const panelKey = trigger.dataset.menuPanel || '';
+
+        if (panelKey === 'search') {
+          openPanel('search');
+          return;
+        }
 
         if (activePanelKey === panelKey) {
           closePanels();
@@ -255,6 +333,38 @@
       if (!trigger || !menu.contains(trigger)) return;
       openFromTrigger(trigger);
     });
+
+    if (micButton) {
+      syncMicState();
+
+      micButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        clearCloseTimer();
+
+        if (!isDesktopMenuMode()) return;
+
+        if (activePanelKey !== 'search') {
+          openPanel('search');
+        }
+
+        if (!SpeechRecognitionCtor) {
+          if (searchInput) searchInput.focus();
+          return;
+        }
+
+        const recognition = ensureSpeechRecognition();
+        if (!recognition) return;
+
+        if (speechListening) {
+          recognition.stop();
+          return;
+        }
+
+        recognition.lang = document.documentElement.lang || 'en';
+        recognition.start();
+      });
+    }
 
     menu.addEventListener('mouseleave', () => {
       if (!isDesktopMenuMode()) return;
@@ -315,6 +425,7 @@
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
+        if (speechRecognition && speechListening) speechRecognition.stop();
         clearCloseTimer();
         closePanels();
       }
@@ -328,6 +439,7 @@
 
     window.addEventListener('resize', () => {
       if (!isDesktopMenuMode()) {
+        if (speechRecognition && speechListening) speechRecognition.stop();
         closePanels();
         return;
       }
