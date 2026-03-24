@@ -249,11 +249,20 @@ body.light-mode .institutional-menu::before{
   display: block;
   width: 1rem;
   height: 1rem;
-  object-fit: contain;
-  object-position: center;
   flex: 0 0 auto;
   opacity: 0.82;
-  transition: opacity 220ms ease;
+  background-color: currentColor;
+  -webkit-mask-image: url('/assets/icons/system/search.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: url('/assets/icons/system/search.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  transition:
+    opacity 220ms ease,
+    background-color 220ms ease;
 }
 
 .institutional-menu-search-trigger:hover .institutional-menu-search-trigger-icon,
@@ -494,11 +503,18 @@ body.light-mode .institutional-menu-search-field{
   display: block;
   width: 1.38rem;
   height: 1.38rem;
-  object-fit: contain;
-  object-position: center;
   flex: 0 0 auto;
   align-self: center;
   line-height: 0;
+  background-color: currentColor;
+  -webkit-mask-image: url('/assets/icons/system/search.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: url('/assets/icons/system/search.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
 }
 
 .institutional-menu-search-field > .institutional-menu-search-icon,

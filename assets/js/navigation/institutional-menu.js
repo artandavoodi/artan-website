@@ -113,6 +113,20 @@
     requestApply();
   }
 
+  function applyInstitutionalMenuTranslations() {
+    const translationEngine = window.NEUROARTAN_TRANSLATION;
+    if (!translationEngine || typeof translationEngine.applyLanguage !== 'function') return;
+
+    const storedLanguage =
+      localStorage.getItem('neuroartan_language') ||
+      localStorage.getItem('neuroartan-language') ||
+      document.documentElement.lang ||
+      'en';
+
+    const normalizedLanguage = String(storedLanguage).toLowerCase().split('-')[0] || 'en';
+    translationEngine.applyLanguage(normalizedLanguage);
+  }
+
   function bindInstitutionalMenuPanels() {
     const body = document.body;
     const menu = document.getElementById('institutional-menu');
@@ -210,6 +224,7 @@
 
       window.requestAnimationFrame(() => {
         syncPanelHeight();
+        applyInstitutionalMenuTranslations();
 
         if (panelKey === 'search' && searchInput) {
           searchInput.focus();
@@ -455,6 +470,7 @@
   function initInstitutionalMenu() {
     bindInstitutionalSecondaryToggle();
     bindInstitutionalMenuRibbon();
+    applyInstitutionalMenuTranslations();
 
     const panelsBound = bindInstitutionalMenuPanels();
 

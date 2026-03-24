@@ -248,6 +248,9 @@ window.NEUROARTAN_TRANSLATION = (() => {
       if (el.hasAttribute("placeholder") && !el.dataset.i18nPlaceholderEn) {
         el.dataset.i18nPlaceholderEn = (el.getAttribute("placeholder") || "").trim();
       }
+      if (el.hasAttribute("content") && !el.dataset.i18nContentEn) {
+        el.dataset.i18nContentEn = (el.getAttribute("content") || "").trim();
+      }
     }
   }
 
@@ -390,6 +393,15 @@ window.NEUROARTAN_TRANSLATION = (() => {
             el.setAttribute("placeholder", el.dataset.i18nPlaceholderEn);
           } else {
             el.setAttribute("placeholder", await translate(el.dataset.i18nPlaceholderEn, lang));
+          }
+        }
+
+        // content (meta tags and other content-bearing nodes)
+        if (el.dataset.i18nContentEn) {
+          if (lang === "en") {
+            el.setAttribute("content", el.dataset.i18nContentEn);
+          } else {
+            el.setAttribute("content", await translate(el.dataset.i18nContentEn, lang));
           }
         }
 
