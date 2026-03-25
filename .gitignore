@@ -1,6 +1,13 @@
-# Allow content_sync markdown publications to be tracked
-# Only ignore temporary/system files if needed
+# Canonical local-only noise
+.DS_Store
+**/.DS_Store
+.vscode/
+.obsidian/
 
+# Vault export temporary files
 content_sync/**/*.tmp
 content_sync/**/*.bak
-content_sync/**/.DS_Store
+
+# Optional local editor / OS residue
+**/*~
+**/.Trash

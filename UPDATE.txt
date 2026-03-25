@@ -5,14 +5,19 @@ Local → GitHub (Vault + Website)
 FULL UPDATE
 ==========================================================================
 
-cd ~/Library/"Mobile Documents"/iCloud~md~obsidian/Documents/I && git add -A && (git diff --cached --quiet || git commit -m "Vault update") && git push && cd /Users/artan/Documents/Site/artan-website && bash ./sync_from_vault.sh && git add -A && (git diff --cached --quiet || git commit -m "Update site") && git push origin main
+cd /Users/artan/Documents/Neuroartan/I && git add -A && (git diff --cached --quiet || git commit -m "Vault update") && git push && cd /Users/artan/Documents/Neuroartan/website && bash ./sync_from_vault.sh && git add -A && (git diff --cached --quiet || git commit -m "Update site") && git push origin main
 
 ==========================================================================
 CORE MODEL
 ==========================================================================
 
-1) Obsidian vault = writing layer. You write Markdown inside 11_Publish/....
-2) content_sync/ = mirror of that vault inside the website. It holds raw .md files only.
-3) single.html = rendering engine. It reads a Markdown file from content_sync and converts it to styled HTML.
-4) pages/publications/index.html = navigation hub. It lists or links to publications.
-5) <publication>.html is not the renderer. single.html is the only renderer.
+1) Neuroartan root = canonical local staging root.
+2) Vault path = /Users/artan/Documents/Neuroartan/I
+3) Website path = /Users/artan/Documents/Neuroartan/website
+4) Obsidian vault = private writing and governance layer.
+5) content_sync/ = governed export intake from the Vault into the public website.
+6) collections/ = website-facing curation and configuration layer.
+7) publications/ = rendered public publication surface.
+8) single.html = publication rendering engine.
+9) Root-facing public website remains canonical at website root.
+10) office/, icos/, and investor/ are sovereign layers and are excluded from this public website update path unless later governed procedures explicitly authorize them.

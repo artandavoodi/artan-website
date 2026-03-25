@@ -9,9 +9,10 @@ set -euo pipefail
 # institutional-menu duplication is allowed inside generated publication output.
 # Website outputs: content_sync/publications/, pages/publications/, publications/, sitemap.xml block
 
-PUBLICATIONS_VAULT_DEFAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/I/06 - Communication/04 - Publications"
+ # Canonical local staging root now lives under /Users/artan/Documents/Neuroartan
+PUBLICATIONS_VAULT_DEFAULT="$HOME/Documents/Neuroartan/I/06 - Communication/04 - Publications"
 VAULT="${PUBLICATIONS_VAULT_PATH:-$PUBLICATIONS_VAULT_DEFAULT}"
-SITE_ROOT="${NEUROARTAN_SITE_ROOT:-$HOME/Documents/Site/artan-website}"
+SITE_ROOT="${NEUROARTAN_SITE_ROOT:-$HOME/Documents/Neuroartan/website}"
 CONTENT_SYNC_ROOT="$SITE_ROOT/content_sync"
 DEST_CANON="$CONTENT_SYNC_ROOT"
 PUB_INDEX="$SITE_ROOT/pages/publications/index.html"
