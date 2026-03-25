@@ -19,13 +19,10 @@ window.NEUROARTAN_TRANSLATION = (() => {
   let fragmentRefreshScheduled = false;
   const pendingFragmentRoots = new Set();
   const cache = new Map();
-  const keyCache = new Map(); // sync lookup cache for i18n keys (including menu preview keys)
+  const keyCache = new Map();
 
   /* ------------------------------------------------------------
      Language normalization
-     - Accepts locales like: de-DE, fa-IR, zh-Hans-CN
-     - Translation engine works on the primary subtag only.
-     - Also accepts UI labels/codes coming from the selector (DE, Deutsch, فارسی, ...)
   ------------------------------------------------------------ */
   const normalizeLang = (lang) => {
     if (!lang) return "en";
@@ -191,17 +188,13 @@ window.NEUROARTAN_TRANSLATION = (() => {
       lao: "lo",
       burmese: "my",
     };
-    if (rescue[primary]) return rescue[primary];
 
+    if (rescue[primary]) return rescue[primary];
     return primary || "en";
   };
 
   /* ------------------------------------------------------------
      Direction handling
-     - Professional default: set `lang` attribute always.
-     - RTL flipping is temporarily disabled because it breaks the custom cursor
-       interaction layer in some browsers.
-     - Re-enable once cursor layer is made RTL-safe.
   ------------------------------------------------------------ */
   const RTL_LANGS = ["ar", "fa", "ur", "he"];
   const applyDir = (lang) => {
@@ -210,10 +203,12 @@ window.NEUROARTAN_TRANSLATION = (() => {
 
     document.documentElement.dir = "ltr";
 
-    document.documentElement.classList.toggle('lang-rtl', RTL_LANGS.includes(nl));
-    document.documentElement.setAttribute('data-lang', nl);
+    document.documentElement.classList.toggle("lang-rtl", RTL_LANGS.includes(nl));
+    document.documentElement.setAttribute("data-lang", nl);
 
-    window.dispatchEvent(new CustomEvent("neuroartan:language-applied", { detail: { lang: nl, rtl: RTL_LANGS.includes(nl) } }));
+    window.dispatchEvent(new CustomEvent("neuroartan:language-applied", {
+      detail: { lang: nl, rtl: RTL_LANGS.includes(nl) }
+    }));
   };
 
   /* ------------------------------------------------------------
@@ -289,53 +284,6 @@ window.NEUROARTAN_TRANSLATION = (() => {
     }
   }
 
-  async function translateMany(values, lang, chunkSize = 8) {
-    const tl = normalizeLang(lang);
-    if (!tl || tl === "en") return values;
-
-    const output = new Array(values.length);
-    const pending = [];
-    const seen = new Map();
-
-    values.forEach((value, index) => {
-      const text = String(value || "").trim();
-      if (!text) {
-        output[index] = text;
-        return;
-      }
-
-      const key = `${tl}::${text}`;
-      if (cache.has(key)) {
-        output[index] = cache.get(key);
-        return;
-      }
-
-      if (!seen.has(text)) {
-        seen.set(text, []);
-        pending.push(text);
-      }
-      seen.get(text).push(index);
-    });
-
-    for (let i = 0; i < pending.length; i += chunkSize) {
-      const chunk = pending.slice(i, i + chunkSize);
-      const translatedChunk = await Promise.all(chunk.map((text) => translate(text, tl)));
-
-      translatedChunk.forEach((translated, offset) => {
-        const source = chunk[offset];
-        const resolved = translated || source;
-        cache.set(`${tl}::${source}`, resolved);
-
-        const targetIndexes = seen.get(source) || [];
-        targetIndexes.forEach((targetIndex) => {
-          output[targetIndex] = resolved;
-        });
-      });
-    }
-
-    return output.map((value, index) => value ?? String(values[index] || "").trim());
-  }
-
   /* ------------------------------------------------------------
      RTL text-only styling
   ------------------------------------------------------------ */
@@ -343,15 +291,15 @@ window.NEUROARTAN_TRANSLATION = (() => {
     if (!el) return;
 
     if (isRtl) {
-      el.style.letterSpacing = 'normal';
-      el.style.direction = 'rtl';
-      el.style.unicodeBidi = 'isolate';
-      el.style.textAlign = '';
+      el.style.letterSpacing = "normal";
+      el.style.direction = "rtl";
+      el.style.unicodeBidi = "isolate";
+      el.style.textAlign = "";
     } else {
-      el.style.letterSpacing = '';
-      el.style.direction = '';
-      el.style.unicodeBidi = '';
-      el.style.textAlign = '';
+      el.style.letterSpacing = "";
+      el.style.direction = "";
+      el.style.unicodeBidi = "";
+      el.style.textAlign = "";
     }
   };
 
@@ -394,56 +342,62 @@ window.NEUROARTAN_TRANSLATION = (() => {
         }
         nodes.push(...scope.querySelectorAll("[data-i18n-key]"));
 
-        const textSources = nodes.map((el) => (el.dataset.i18nEn || el.textContent || "").trim());
-        const ariaSources = nodes.map((el) => (el.dataset.i18nAriaEn || "").trim());
-        const titleSources = nodes.map((el) => (el.dataset.i18nTitleEn || "").trim());
-        const placeholderSources = nodes.map((el) => (el.dataset.i18nPlaceholderEn || "").trim());
+        for (const el of nodes) {
+          const enText = (el.dataset.i18nEn || "").trim();
 
-        const translatedTexts = lang === "en" ? textSources : await translateMany(textSources, lang);
-        const translatedAria = lang === "en" ? ariaSources : await translateMany(ariaSources, lang);
-        const translatedTitles = lang === "en" ? titleSources : await translateMany(titleSources, lang);
-        const translatedPlaceholders = lang === "en" ? placeholderSources : await translateMany(placeholderSources, lang);
-
-        nodes.forEach((el, index) => {
-          const textValue = translatedTexts[index];
-          if (textValue) {
-            el.textContent = textValue;
+          if (lang === "en") {
+            if (enText) el.textContent = enText;
+          } else {
+            const source = enText || (el.textContent || "").trim();
+            if (source) {
+              el.textContent = await translate(source, lang);
+            }
           }
 
-          if (ariaSources[index]) {
-            el.setAttribute("aria-label", translatedAria[index] || ariaSources[index]);
+          if (el.dataset.i18nAriaEn) {
+            if (lang === "en") {
+              el.setAttribute("aria-label", el.dataset.i18nAriaEn);
+            } else {
+              el.setAttribute("aria-label", await translate(el.dataset.i18nAriaEn, lang));
+            }
           }
 
-          if (titleSources[index]) {
-            el.setAttribute("title", translatedTitles[index] || titleSources[index]);
+          if (el.dataset.i18nTitleEn) {
+            if (lang === "en") {
+              el.setAttribute("title", el.dataset.i18nTitleEn);
+            } else {
+              el.setAttribute("title", await translate(el.dataset.i18nTitleEn, lang));
+            }
           }
 
-          if (placeholderSources[index]) {
-            el.setAttribute("placeholder", translatedPlaceholders[index] || placeholderSources[index]);
+          if (el.dataset.i18nPlaceholderEn) {
+            if (lang === "en") {
+              el.setAttribute("placeholder", el.dataset.i18nPlaceholderEn);
+            } else {
+              el.setAttribute("placeholder", await translate(el.dataset.i18nPlaceholderEn, lang));
+            }
           }
 
           applyTextRTL(el, isRtl);
-        });
+        }
 
         const previewNodes = Array.from(scope.querySelectorAll('[data-preview-title-i18n], [data-preview-sub-i18n]'));
-        const previewTitleSources = previewNodes.map((el) => ((el.getAttribute('data-preview-title') || '')).trim());
-        const previewSubSources = previewNodes.map((el) => ((el.getAttribute('data-preview-sub') || '')).trim());
+        for (const el of previewNodes) {
+          const titleKey = (el.getAttribute("data-preview-title-i18n") || "").trim();
+          const subKey = (el.getAttribute("data-preview-sub-i18n") || "").trim();
 
-        const translatedPreviewTitles = lang === 'en' ? previewTitleSources : await translateMany(previewTitleSources, lang);
-        const translatedPreviewSubs = lang === 'en' ? previewSubSources : await translateMany(previewSubSources, lang);
-
-        previewNodes.forEach((el, index) => {
-          const titleKey = (el.getAttribute('data-preview-title-i18n') || '').trim();
-          const subKey = (el.getAttribute('data-preview-sub-i18n') || '').trim();
-
-          if (titleKey && translatedPreviewTitles[index]) {
-            keyCache.set(titleKey, translatedPreviewTitles[index]);
+          if (titleKey) {
+            const enTitle = ((el.getAttribute("data-preview-title") || "")).trim();
+            const val = lang === "en" ? enTitle : await translate(enTitle, lang);
+            if (val) keyCache.set(titleKey, val);
           }
 
-          if (subKey && translatedPreviewSubs[index]) {
-            keyCache.set(subKey, translatedPreviewSubs[index]);
+          if (subKey) {
+            const enSub = ((el.getAttribute("data-preview-sub") || "")).trim();
+            const val = lang === "en" ? enSub : await translate(enSub, lang);
+            if (val) keyCache.set(subKey, val);
           }
-        });
+        }
 
         if (isGlobalScope) {
           emitTranslationLifecycle("complete", { lang });
