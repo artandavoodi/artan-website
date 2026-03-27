@@ -1,19 +1,22 @@
 /* =============================================================================
-   FOOTER MODULE — STRUCTURED / MODULAR / REVEAL READY
-   - Fully sovereign (no dependency on style.css except tokens)
-   - Includes luxury spacing
-   - Includes subtle reveal animation (bidirectional ready)
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) BASE FOOTER LAYOUT
+   03) FOOTER INNER LAYOUT
+   04) FOOTER LOCALE SYSTEM
+   05) REVEAL ANIMATION
+   06) RESPONSIVE — 768PX
 ============================================================================= */
 
-/* -----------------------------------------------------------------------------
-   01) BASE FOOTER LAYOUT
------------------------------------------------------------------------------ */
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
 
 .site-footer{
   width:100%;
   font-size:0.9rem;
-  margin:2.6rem 0 0 0;
-  padding:1.2rem 0 1rem 0;
+  margin:0.6rem 0 0 0;
+  padding:0.8rem 0 0.9rem 0;
   background-color:transparent;
   color:var(--text-secondary-color);
   text-align:initial;
@@ -23,6 +26,9 @@
   text-align:left;
 }
 
+/* =============================================================================
+   03) FOOTER INNER LAYOUT
+============================================================================= */
 .footer-flex{
   width: min(var(--site-rail-width), calc(100% - (var(--site-gutter) * 2)));
   margin:0 auto;
@@ -35,6 +41,9 @@
   direction:ltr;
 }
 
+/* =============================================================================
+   02) BASE FOOTER LAYOUT
+============================================================================= */
 .footer-separator{
   opacity:0.35;
 }
@@ -55,6 +64,9 @@
   white-space:nowrap;
 }
 
+/* =============================================================================
+   04) FOOTER LOCALE SYSTEM
+============================================================================= */
 .footer-locale{
   display:inline-flex;
   align-items:center;
@@ -103,10 +115,9 @@
   text-align:right;
 }
 
-/* -----------------------------------------------------------------------------
-   02) REVEAL ANIMATION (LUXURY / SUBTLE)
-   - Matches closing section philosophy
------------------------------------------------------------------------------ */
+/* =============================================================================
+   05) REVEAL ANIMATION
+============================================================================= */
 
 .site-footer{
   opacity:0;
@@ -117,19 +128,18 @@
   will-change:opacity, transform;
 }
 
-/* Activated when visible */
 .site-footer.footer-visible{
   opacity:1;
   transform:translateY(0);
 }
 
-/* -----------------------------------------------------------------------------
-   03) RESPONSIVE TUNING
------------------------------------------------------------------------------ */
+/* =============================================================================
+   06) RESPONSIVE — 768PX
+============================================================================= */
 
 @media (max-width:768px){
   .site-footer{
-    padding:1rem 0 0.9rem 0;
+    padding:0.72rem 0 0.82rem 0;
   }
 
   .footer-flex{

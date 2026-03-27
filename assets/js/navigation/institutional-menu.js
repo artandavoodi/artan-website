@@ -135,6 +135,19 @@
       : null;
   }
 
+  function ensureSearchTitleElement(menu = getMenu()) {
+    const existing = getSearchTitleElement(menu);
+    if (existing) return existing;
+
+    const host = getSearchLinksHost(menu);
+    if (!host || !host.parentElement) return null;
+
+    const title = document.createElement('p');
+    title.className = 'institutional-menu-panel-label institutional-menu-search-links-title';
+    host.parentElement.insertBefore(title, host);
+    return title;
+  }
+
   function getSecondaryToggle() {
     return byId('institutional-menu-secondary-toggle');
   }
@@ -403,13 +416,38 @@
         .trim();
     }
 
+    function cleanupSearchTitleArtifacts() {
+      if (!searchLinksHost || !searchLinksHost.parentElement) return;
+
+      qa('.institutional-menu-search-links-title', searchLinksHost.parentElement).forEach((title) => {
+        if (!searchLinksHost.contains(title)) {
+          title.remove();
+        }
+      });
+    }
+
     function ensureSearchPanelSnapshot() {
       if (searchPanelSnapshot || !searchLinksHost) return;
+      cleanupSearchTitleArtifacts();
 
       searchPanelSnapshot = {
-        title: getSearchTitleElement(menu)?.textContent || 'Quick Links',
         markup: searchLinksHost.innerHTML
       };
+    }
+
+    function ensureSearchTitleElement(label = 'Quick Links') {
+      if (!searchLinksHost) return null;
+      cleanupSearchTitleArtifacts();
+
+      let title = q('.institutional-menu-search-links-title, .institutional-menu-search-results-title, .institutional-menu-panel-label', searchLinksHost);
+      if (!title) {
+        title = document.createElement('p');
+        title.className = 'institutional-menu-panel-label institutional-menu-search-links-title';
+        searchLinksHost.prepend(title);
+      }
+
+      title.textContent = label;
+      return title;
     }
 
     function restoreQuickLinks() {
@@ -417,9 +455,48 @@
       ensureSearchPanelSnapshot();
       if (!searchPanelSnapshot) return;
 
-      const title = getSearchTitleElement(menu);
-      if (title) title.textContent = searchPanelSnapshot.title;
+      cleanupSearchTitleArtifacts();
       searchLinksHost.innerHTML = searchPanelSnapshot.markup;
+    }
+
+    function deriveSearchContextLabel(href = '') {
+      const value = String(href || '').trim();
+      if (!value) return '';
+
+      const normalized = value
+        .replace(/^https?:\/\/[^/]+/i, '')
+        .replace(/^\/+/, '')
+        .replace(/\/index\.html?$/i, '')
+        .replace(/\.html?$/i, '');
+
+      const parts = normalized.split('/').filter(Boolean);
+      if (!parts.length) return '';
+
+      const labelMap = {
+        pages: '',
+        products: 'Products',
+        product: 'Products',
+        icos: 'ICOS',
+        knowledge: 'Knowledge',
+        research: 'Research',
+        updates: 'Updates',
+        update: 'Updates',
+        careers: 'Careers',
+        legal: 'Legal',
+        support: 'Support',
+        business: 'Business',
+        company: 'Company',
+        overview: 'Overview'
+      };
+
+      const labels = parts
+        .map((part) => labelMap[part.toLowerCase()] || '')
+        .filter(Boolean);
+
+      const unique = Array.from(new Set(labels));
+      if (!unique.length) return '';
+      if (unique.length === 1) return unique[0];
+      return `${unique[0]} · ${unique[1]}`;
     }
 
     function collectMenuSearchEntries() {
@@ -437,7 +514,7 @@
         entryMap.set(key, {
           title: cleanTitle,
           href: cleanHref,
-          description: cleanDescription,
+          description: cleanDescription || deriveSearchContextLabel(cleanHref),
           haystack: normalizeSearchValue([cleanTitle, cleanDescription, cleanHref].join(' '))
         });
       };
@@ -494,10 +571,9 @@
           .filter((entry) => entry.haystack.includes(normalizedQuery))
           .slice(0, 8);
 
-        const title = getSearchTitleElement(menu);
-        if (title) title.textContent = 'Suggested Searches';
-
+        cleanupSearchTitleArtifacts();
         searchLinksHost.innerHTML = '';
+        ensureSearchTitleElement('Suggested Searches');
 
         if (!matches.length) {
           const empty = document.createElement('p');
@@ -515,17 +591,17 @@
             item.href = entry.href;
           }
 
+          if (entry.description) {
+            const meta = document.createElement('span');
+            meta.className = 'institutional-menu-search-result-meta';
+            meta.textContent = `${entry.description} `;
+            item.appendChild(meta);
+          }
+
           const itemTitle = document.createElement('span');
           itemTitle.className = 'institutional-menu-search-result-title';
           itemTitle.textContent = entry.title;
           item.appendChild(itemTitle);
-
-          if (entry.description || entry.href) {
-            const meta = document.createElement('span');
-            meta.className = 'institutional-menu-search-result-meta';
-            meta.textContent = entry.description || entry.href;
-            item.appendChild(meta);
-          }
 
           searchLinksHost.appendChild(item);
         });

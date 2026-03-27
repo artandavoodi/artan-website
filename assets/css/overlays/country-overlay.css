@@ -1,22 +1,28 @@
 /* =============================================================================
-   COUNTRY-OVERLAY.CSS — COUNTRY / LANGUAGE OVERLAY (SOVEREIGN)
-
-   Purpose:
-   - Owns ONLY the country overlay (layout + motion).
-   - Restores the original style from the former style.css section.
-   - Adds luxury open/close motion (overlay + inner + subtle stagger), with calm institutional hover behavior.
-
-   Sections:
-   01) Base shell
-   02) Open / close motion
-   03) Inner layout (legacy markup support)
-   04) Headings + separators
-   05) Country list + items
-   06) Close button
-   07) Reduced motion
-   08) Responsive
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ROOT TOKENS
+   03) OVERLAY SURFACE TOKENS
+   04) BASE SHELL
+   05) OPEN / CLOSE MOTION
+   06) INNER LAYOUT
+   07) HEADINGS + SEPARATORS
+   08) COUNTRY LIST + ITEMS
+   09) CLOSE BUTTON
+   10) REDUCED MOTION
+   11) RESPONSIVE — 1280PX
+   12) RESPONSIVE — 1024PX
+   13) RESPONSIVE — 768PX
+   14) RESPONSIVE — 480PX
 ============================================================================= */
 
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+
+/* =============================================================================
+   02) ROOT TOKENS
+============================================================================= */
 :root{
   /* Country overlay accent follows the global palette */
   --country-accent: var(--color-primary1);
@@ -24,8 +30,9 @@
   --country-container-pad: 0px;
 }
 
-/* Overlay-local surface tokens (inherit active theme vars) */
-/* Overlay-local surface tokens (inherit active theme vars) */
+/* =============================================================================
+   03) OVERLAY SURFACE TOKENS
+============================================================================= */
 #country-overlay.country-overlay,
 .country-overlay{
   --co-bg: var(--bg-color, #000);
@@ -47,7 +54,7 @@
 }
 
 /* =============================================================================
-   01) BASE SHELL
+   04) BASE SHELL
 ============================================================================= */
 #country-overlay.country-overlay,
 .country-overlay{
@@ -100,7 +107,7 @@ body.country-open .stage-circle,
 body.country-active .stage-circle{opacity: 0 !important; filter: none !important;}
 
 /* =============================================================================
-   02) OPEN / CLOSE MOTION
+   05) OPEN / CLOSE MOTION
 ============================================================================= */
 #country-overlay .country-overlay-inner,
 .country-overlay .country-overlay-inner{
@@ -144,7 +151,7 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
 }
 
 /* =============================================================================
-   03) INNER LAYOUT (LEGACY MARKUP SUPPORT)
+   06) INNER LAYOUT
 ============================================================================= */
 #country-overlay .overlay-header-container,
 .country-overlay .overlay-header-container{
@@ -155,7 +162,7 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
 }
 
 /* =============================================================================
-   04) HEADINGS + SEPARATORS
+   07) HEADINGS + SEPARATORS
 ============================================================================= */
 #country-overlay .country-overlay-title,
 .country-overlay .country-overlay-title{
@@ -199,7 +206,7 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
 }
 
 /* =============================================================================
-   05) COUNTRY LIST + ITEMS
+   08) COUNTRY LIST + ITEMS
 ============================================================================= */
 #country-overlay .country-list,
 .country-overlay .country-list{
@@ -350,7 +357,7 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
 }
 
 /* =============================================================================
-   06) CLOSE BUTTON (LEGACY ID)
+   09) CLOSE BUTTON
 ============================================================================= */
 #country-overlay #country-overlay-close,
 .country-overlay #country-overlay-close{
@@ -384,7 +391,7 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
 }
 
 /* =============================================================================
-   07) REDUCED MOTION
+   10) REDUCED MOTION
 ============================================================================= */
 @media (prefers-reduced-motion: reduce){
   #country-overlay,
@@ -397,18 +404,24 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
 }
 
 /* =============================================================================
-   08) RESPONSIVE
+   11) RESPONSIVE — 1280PX
 ============================================================================= */
 @media (min-width: 1280px){
   #country-overlay .country-list li,
   .country-overlay .country-list li{flex: 0 1 calc(25% - 1.5rem);}
 }
 
+/* =============================================================================
+   12) RESPONSIVE — 1024PX
+============================================================================= */
 @media (max-width:1024px){
   #country-overlay .country-list li,
   .country-overlay .country-list li{flex: 0 1 calc(50% - 1rem);}
 }
 
+/* =============================================================================
+   13) RESPONSIVE — 768PX
+============================================================================= */
 @media (max-width:768px){
   #country-overlay.country-overlay,
   .country-overlay{padding: 3rem 0;}
@@ -426,6 +439,9 @@ body.country-active .stage-circle{opacity: 0 !important; filter: none !important
   .country-overlay .country-list li{flex: 0 1 100%;}
 }
 
+/* =============================================================================
+   14) RESPONSIVE — 480PX
+============================================================================= */
 @media (max-width:480px){
   #country-overlay .country-overlay-title,
   .country-overlay .country-overlay-title{font-size: 1.4rem;}
