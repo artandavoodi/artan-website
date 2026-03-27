@@ -1,17 +1,30 @@
-/**
- * ============================================================
- * NEUROARTAN — TRANSLATION ENGINE (LOCKED · SINGLE RESPONSIBILITY)
- * Translates DOM text ONLY.
- * No IP logic · No country logic · No UI logic.
- * Controlled exclusively by country-language.js
- * ============================================================
- */
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) RUNTIME STATE
+   03) LANGUAGE NORMALIZATION
+   04) DIRECTION HANDLING
+   05) ENGLISH BASELINE CAPTURE
+   06) DOM READINESS
+   07) TRANSLATION LIFECYCLE EVENTS
+   08) GOOGLE TRANSLATE FETCH
+   09) RTL TEXT-ONLY STYLING
+   10) LANGUAGE APPLICATION
+   11) CURRENT LANGUAGE REFRESH
+   12) PUBLIC HELPER
+   13) API EXPOSURE
+   14) FRAGMENT-MOUNTED REFRESH
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
 
 window.NEUROARTAN_TRANSLATION = (() => {
 
-  /* ------------------------------------------------------------
-     State
-  ------------------------------------------------------------ */
+  /* =============================================================================
+     02) RUNTIME STATE
+  ============================================================================= */
   let currentLang = "en";
   let isApplyingLanguage = false;
   let pendingApplyPromise = null;
@@ -21,9 +34,9 @@ window.NEUROARTAN_TRANSLATION = (() => {
   const cache = new Map();
   const keyCache = new Map();
 
-  /* ------------------------------------------------------------
-     Language normalization
-  ------------------------------------------------------------ */
+  /* =============================================================================
+     03) LANGUAGE NORMALIZATION
+  ============================================================================= */
   const normalizeLang = (lang) => {
     if (!lang) return "en";
 
@@ -193,9 +206,9 @@ window.NEUROARTAN_TRANSLATION = (() => {
     return primary || "en";
   };
 
-  /* ------------------------------------------------------------
-     Direction handling
-  ------------------------------------------------------------ */
+  /* =============================================================================
+     04) DIRECTION HANDLING
+  ============================================================================= */
   const RTL_LANGS = ["ar", "fa", "ur", "he"];
   const applyDir = (lang) => {
     const nl = normalizeLang(lang) || "en";
@@ -229,9 +242,9 @@ window.NEUROARTAN_TRANSLATION = (() => {
     }));
   };
 
-  /* ------------------------------------------------------------
-     Baseline capture
-  ------------------------------------------------------------ */
+  /* =============================================================================
+     05) ENGLISH BASELINE CAPTURE
+  ============================================================================= */
   function ensureEnglishBaselineCaptured(root = document) {
     const scope = root instanceof Element || root instanceof Document ? root : document;
     const nodes = [];
@@ -258,9 +271,9 @@ window.NEUROARTAN_TRANSLATION = (() => {
     }
   }
 
-  /* ------------------------------------------------------------
-     DOM readiness
-  ------------------------------------------------------------ */
+  /* =============================================================================
+     06) DOM READINESS
+  ============================================================================= */
   function whenDomReady() {
     if (document.readyState !== "loading") return Promise.resolve();
     return new Promise((resolve) => {
@@ -268,6 +281,9 @@ window.NEUROARTAN_TRANSLATION = (() => {
     });
   }
 
+  /* =============================================================================
+     07) TRANSLATION LIFECYCLE EVENTS
+  ============================================================================= */
   function emitTranslationLifecycle(type, detail = {}) {
     document.dispatchEvent(new CustomEvent(`translation:${type}`, {
       detail: {
@@ -277,9 +293,9 @@ window.NEUROARTAN_TRANSLATION = (() => {
     }));
   }
 
-  /* ------------------------------------------------------------
-     Google Translate fetch
-  ------------------------------------------------------------ */
+  /* =============================================================================
+     08) GOOGLE TRANSLATE FETCH
+  ============================================================================= */
   async function translate(text, lang) {
     if (!text) return text;
     const tl = normalizeLang(lang);
@@ -302,9 +318,9 @@ window.NEUROARTAN_TRANSLATION = (() => {
     }
   }
 
-  /* ------------------------------------------------------------
-     RTL text-only styling
-  ------------------------------------------------------------ */
+  /* =============================================================================
+     09) RTL TEXT-ONLY STYLING
+  ============================================================================= */
   const applyTextRTL = (el, isRtl) => {
     if (!el) return;
 
@@ -321,9 +337,9 @@ window.NEUROARTAN_TRANSLATION = (() => {
     }
   };
 
-  /* ------------------------------------------------------------
-     Apply language to DOM
-  ------------------------------------------------------------ */
+  /* =============================================================================
+     10) LANGUAGE APPLICATION
+  ============================================================================= */
   async function applyLanguage(lang, root = document) {
     await whenDomReady();
 
@@ -455,13 +471,16 @@ window.NEUROARTAN_TRANSLATION = (() => {
     return run;
   }
 
+  /* =============================================================================
+     11) CURRENT LANGUAGE REFRESH
+  ============================================================================= */
   async function refreshCurrentLanguage(root = document) {
     await applyLanguage(currentLang, root);
   }
 
-  /* ------------------------------------------------------------
-     Public helper
-  ------------------------------------------------------------ */
+  /* =============================================================================
+     12) PUBLIC HELPER
+  ============================================================================= */
   function t(key) {
     if (!key) return "";
     const k = String(key).trim();
@@ -481,10 +500,16 @@ window.NEUROARTAN_TRANSLATION = (() => {
     return "";
   }
 
+  /* =============================================================================
+     13) API EXPOSURE
+  ============================================================================= */
   const api = { applyLanguage, refreshCurrentLanguage, t };
   window.ARTAN_TRANSLATION = api;
   window.NEUROARTAN_TRANSLATION = api;
 
+  /* =============================================================================
+     14) FRAGMENT-MOUNTED REFRESH
+  ============================================================================= */
   document.addEventListener("fragment:mounted", (event) => {
     if (!currentLang || currentLang === "en") return;
 

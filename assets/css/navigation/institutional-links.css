@@ -1,10 +1,31 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) INSTITUTIONAL LINKS
+   02) LINKS GRID
+   03) SEPARATOR LINES
+   04) SOCIAL LINKS ROW
+   05) REVEAL STATES
+   06) COLUMN LAYOUT
+   07) COLUMN TITLES
+   08) NAVIGATION STACK
+   09) NAVIGATION LINKS
+   10) SOCIAL LINKS
+   11) RESPONSIVE — 1280PX
+   12) RESPONSIVE — 900PX
+============================================================================= */
+
+/* =============================================================================
+   01) INSTITUTIONAL LINKS
+============================================================================= */
 .institutional-links{
   width: 100%;
   margin: 0;
   padding: 3.6rem 0 1.6rem 0;
-  border-top: 1px solid color-mix(in srgb, var(--text-primary-color) 10%, transparent);
 }
 
+/* =============================================================================
+   02) LINKS GRID
+============================================================================= */
 .institutional-links-inner{
   display: grid;
   width: var(--footer-rail-width, min(calc(100% - (var(--footer-gutter, var(--site-gutter, 24px)) * 2)), var(--site-max-width, 1320px)));
@@ -16,6 +37,22 @@
   /* direction: inherit; */ 
 }
 
+/* =============================================================================
+   03) SEPARATOR LINES
+============================================================================= */
+.institutional-links-separator{
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 1px;
+  margin: 0.2rem 0;
+  background: color-mix(in srgb, var(--text-primary-color) 16%, transparent);
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* =============================================================================
+   04) SOCIAL LINKS ROW
+============================================================================= */
 .institutional-links-social-row{
   grid-column: 1 / -1;
   display: grid;
@@ -23,12 +60,14 @@
   justify-content: end;
   align-items: center;
   column-gap: 1rem;
-  padding-top: 1.1rem;
-  margin-top: 0.2rem;
+  padding: 0.7rem 0;
+  margin: 0;
   overflow: visible;
-  border-top: 1px solid color-mix(in srgb, var(--text-primary-color) 8%, transparent);
 }
 
+/* =============================================================================
+   05) REVEAL STATES
+============================================================================= */
 .institutional-links-column.motion-init,
 .institutional-links-social-row.motion-init{
   opacity: 0;
@@ -45,6 +84,9 @@
   transform: translateY(0);
 }
 
+/* =============================================================================
+   06) COLUMN LAYOUT
+============================================================================= */
 .institutional-links-column{
   display: flex;
   flex-direction: column;
@@ -52,6 +94,9 @@
   /* text-align: start; */
 }
 
+/* =============================================================================
+   07) COLUMN TITLES
+============================================================================= */
 .institutional-links-title{
   margin: 0;
   font-size: 0.72rem;
@@ -62,6 +107,9 @@
   opacity: 0.56;
 }
 
+/* =============================================================================
+   08) NAVIGATION STACK
+============================================================================= */
 .institutional-links-nav{
   display: flex;
   flex-direction: column;
@@ -70,6 +118,9 @@
   /* text-align: start; */
 }
 
+/* =============================================================================
+   09) NAVIGATION LINKS
+============================================================================= */
 .institutional-links-nav a{
   display: inline-flex;
   align-items: center;
@@ -101,6 +152,9 @@
   content: none !important;
 }
 
+/* =============================================================================
+   10) SOCIAL LINKS
+============================================================================= */
 .institutional-links-social{
   display: grid;
   place-items: center;
@@ -188,6 +242,9 @@
   transform: scale(1);
 }
 
+/* =============================================================================
+   11) RESPONSIVE — 1280PX
+============================================================================= */
 @media (max-width: 1280px){
   .institutional-links-inner{
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -199,11 +256,14 @@
     grid-column: 1 / -1;
     grid-row: auto;
     justify-content: end;
-    padding-top: 1rem;
-    margin-top: 0;
+    padding: 0.7rem 0;
+    margin: 0;
   }
 }
 
+/* =============================================================================
+   12) RESPONSIVE — 900PX
+============================================================================= */
 @media (max-width: 900px){
   .institutional-links{
     padding: 2.6rem 0 1.6rem 0;
@@ -219,7 +279,7 @@
     grid-column: 1;
     grid-row: auto;
     justify-content: end;
-    padding-top: 0.9rem;
-    margin-top: 0.1rem;
+    padding: 0.65rem 0;
+    margin: 0;
   }
 }

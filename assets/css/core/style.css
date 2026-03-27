@@ -1,4 +1,22 @@
 /* --- ARTAN / Unified CSS (Clean) --- */
+
+/* =============================================================================
+   00) FILE INDEX
+   01) DESIGN TOKENS
+   02) THEME MODES
+   03) RESET + BASE
+   04) TYPOGRAPHY + LINKS
+   04A) CLICKABLE TEXT HOVER (GLOBAL — NO JUMP)
+   04B) RTL TEXT OVERRIDES (TEXT-ONLY, NO LAYOUT FLIP)
+   05) UTILITIES
+   06) HEADER + RIBBON (TRANSPARENT BASELINE)
+   07) FOOTER
+   08) THEME TOGGLE
+   09) LOCALE (LANGUAGE)
+   10) GLOBAL CLOSE BUTTON
+   11) MOTION SYSTEM — GLOBAL REVEAL BASE
+============================================================================= */
+
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
 
 /* =============================================================================
@@ -406,7 +424,7 @@ body.light-mode .theme-toggle{background-color:var(--color-black);}
 .theme-toggle:hover{transform:scale(1.15);opacity:0.9;}
 @media (prefers-reduced-motion:reduce){body,.theme-toggle{transition:none !important;}}
 
-/* ============================================================================
+/* =============================================================================
    09) LOCALE (LANGUAGE)
 ============================================================================= */
 #language-toggle{

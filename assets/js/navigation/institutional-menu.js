@@ -1,16 +1,52 @@
-/* =================== Institutional Primary Menu =================== */
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) DOM AND SYSTEM REFERENCES
+   03) STATE FLAGS
+   04) DOM HELPERS
+   05) SCHEDULING HELPERS
+   06) MENU QUERIES
+   07) COUNTRY SELECTOR QUERIES
+   08) PAGE STATE HELPERS
+   09) COUNTRY OVERLAY STATE
+   10) GEOMETRY HELPERS
+   11) SECONDARY TOGGLE BINDING
+   12) RIBBON BINDING
+   13) TRANSLATION APPLICATION
+   14) COUNTRY SELECTOR BINDING
+   15) PANEL SYSTEM BINDING
+   15A) SEARCH INDEX HELPERS
+   15B) SEARCH RESULTS RENDERING
+   16) MAIN INITIALIZATION
+   17) LIFECYCLE HOOKS
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
 
 (function () {
   'use strict';
 
+  /* =============================================================================
+     02) DOM AND SYSTEM REFERENCES
+  ============================================================================= */
   const body = document.body;
   const desktopQuery = window.matchMedia('(min-width: 761px)');
   const MAX_RETRIES = 24;
 
+  /* =============================================================================
+     03) STATE FLAGS
+  ============================================================================= */
   let initScheduled = false;
   let retryCount = 0;
   let globalBound = false;
+  let searchEntriesPromise = null;
+  let searchPanelSnapshot = null;
 
+  /* =============================================================================
+     04) DOM HELPERS
+  ============================================================================= */
   function byId(id) {
     return document.getElementById(id);
   }
@@ -31,6 +67,9 @@
     return value instanceof Element;
   }
 
+  /* =============================================================================
+     05) SCHEDULING HELPERS
+  ============================================================================= */
   function nextFrame(fn) {
     window.requestAnimationFrame(() => window.requestAnimationFrame(fn));
   }
@@ -45,6 +84,9 @@
     });
   }
 
+  /* =============================================================================
+     06) MENU QUERIES
+  ============================================================================= */
   function getMenu() {
     return byId('institutional-menu');
   }
@@ -77,6 +119,22 @@
     return menu ? q('.institutional-menu-mic-button', menu) : null;
   }
 
+  function getSearchPanel(menu = getMenu()) {
+    return menu ? q('#institutional-menu-panel-search', menu) : null;
+  }
+
+  function getSearchLinksHost(menu = getMenu()) {
+    const panel = getSearchPanel(menu);
+    return panel ? q('.institutional-menu-search-links', panel) : null;
+  }
+
+  function getSearchTitleElement(menu = getMenu()) {
+    const panel = getSearchPanel(menu);
+    return panel
+      ? q('.institutional-menu-search-links-title, .institutional-menu-search-results-title, .institutional-menu-panel-label', panel)
+      : null;
+  }
+
   function getSecondaryToggle() {
     return byId('institutional-menu-secondary-toggle');
   }
@@ -89,6 +147,9 @@
     return byId('menu-overlay');
   }
 
+  /* =============================================================================
+     07) COUNTRY SELECTOR QUERIES
+  ============================================================================= */
   function getCountrySelector() {
     return (
       byId('country-selector') ||
@@ -114,10 +175,16 @@
     ].join(','));
   }
 
+  /* =============================================================================
+     08) PAGE STATE HELPERS
+  ============================================================================= */
   function isHomePage() {
     return !!(byId('home-hero') || q('.stage-circle') || byId('home-essence'));
   }
 
+  /* =============================================================================
+     09) COUNTRY OVERLAY STATE
+  ============================================================================= */
   function setCountryOverlayState(open) {
     body.classList.toggle('country-overlay-open', !!open);
     body.classList.toggle('country-selector-open', !!open);
@@ -128,6 +195,9 @@
     }
   }
 
+  /* =============================================================================
+     10) GEOMETRY HELPERS
+  ============================================================================= */
   function getPageTop(el) {
     const rect = el.getBoundingClientRect();
     const pageY = window.scrollY || window.pageYOffset || 0;
@@ -139,6 +209,9 @@
     return rect.height || el.offsetHeight || window.innerHeight || 0;
   }
 
+  /* =============================================================================
+     11) SECONDARY TOGGLE BINDING
+  ============================================================================= */
   function bindSecondaryToggle() {
     const trigger = getSecondaryToggle();
     const overlay = getOverlay();
@@ -168,6 +241,9 @@
     }
   }
 
+  /* =============================================================================
+     12) RIBBON BINDING
+  ============================================================================= */
   function bindRibbon() {
     const menu = getMenu();
     const hero = byId('home-hero');
@@ -228,6 +304,9 @@
     requestApply();
   }
 
+  /* =============================================================================
+     13) TRANSLATION APPLICATION
+  ============================================================================= */
   function applyTranslations() {
     const translationEngine = window.NEUROARTAN_TRANSLATION;
     const menu = getMenu();
@@ -243,6 +322,9 @@
     translationEngine.applyLanguage(normalizedLanguage, menu);
   }
 
+  /* =============================================================================
+     14) COUNTRY SELECTOR BINDING
+  ============================================================================= */
   function bindCountrySelector() {
     const selector = getCountrySelector();
     const options = getCountryOptions();
@@ -284,6 +366,9 @@
     }
   }
 
+  /* =============================================================================
+     15) PANEL SYSTEM BINDING
+  ============================================================================= */
   function bindPanels() {
     const menu = getMenu();
     const container = getPanelContainer(menu);
@@ -302,8 +387,150 @@
     let closeTimer = null;
     let recognition = null;
     let isListening = false;
+    const searchLinksHost = getSearchLinksHost(menu);
 
     const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+
+    /* =============================================================================
+       15A) SEARCH INDEX HELPERS
+    ============================================================================= */
+    function normalizeSearchValue(value) {
+      return String(value || '')
+        .toLowerCase()
+        .replace(/&/g, 'and')
+        .replace(/[^a-z0-9\s-]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function ensureSearchPanelSnapshot() {
+      if (searchPanelSnapshot || !searchLinksHost) return;
+
+      searchPanelSnapshot = {
+        title: getSearchTitleElement(menu)?.textContent || 'Quick Links',
+        markup: searchLinksHost.innerHTML
+      };
+    }
+
+    function restoreQuickLinks() {
+      if (!searchLinksHost) return;
+      ensureSearchPanelSnapshot();
+      if (!searchPanelSnapshot) return;
+
+      const title = getSearchTitleElement(menu);
+      if (title) title.textContent = searchPanelSnapshot.title;
+      searchLinksHost.innerHTML = searchPanelSnapshot.markup;
+    }
+
+    function collectMenuSearchEntries() {
+      const entryMap = new Map();
+
+      const registerEntry = ({ title, href = '', description = '' }) => {
+        const cleanTitle = String(title || '').trim();
+        const cleanHref = String(href || '').trim();
+        const cleanDescription = String(description || '').trim();
+        if (!cleanTitle) return;
+
+        const key = `${cleanTitle}::${cleanHref}`;
+        if (entryMap.has(key)) return;
+
+        entryMap.set(key, {
+          title: cleanTitle,
+          href: cleanHref,
+          description: cleanDescription,
+          haystack: normalizeSearchValue([cleanTitle, cleanDescription, cleanHref].join(' '))
+        });
+      };
+
+      qa('a[href]', menu).forEach((link) => {
+        registerEntry({
+          title: link.textContent,
+          href: link.getAttribute('href') || '',
+          description: link.getAttribute('aria-label') || ''
+        });
+      });
+
+      qa('.institutional-menu-panel-trigger', menu).forEach((trigger) => {
+        const panelKey = trigger.dataset.menuPanel || '';
+        const panel = panelKey ? panels.find((item) => item.dataset.menuPanelContent === panelKey) : null;
+        const firstLink = panel ? q('a[href]', panel) : null;
+
+        registerEntry({
+          title: trigger.textContent,
+          href: firstLink ? firstLink.getAttribute('href') || '' : '',
+          description: trigger.getAttribute('aria-label') || ''
+        });
+      });
+
+      return Array.from(entryMap.values());
+    }
+
+    function loadSearchEntries() {
+      if (!searchEntriesPromise) {
+        searchEntriesPromise = Promise.resolve(collectMenuSearchEntries());
+      }
+      return searchEntriesPromise;
+    }
+
+    /* =============================================================================
+       15B) SEARCH RESULTS RENDERING
+    ============================================================================= */
+    function renderSearchResults(query = '') {
+      if (!searchLinksHost) return;
+
+      ensureSearchPanelSnapshot();
+
+      const normalizedQuery = normalizeSearchValue(query);
+      if (!normalizedQuery) {
+        restoreQuickLinks();
+        return;
+      }
+
+      loadSearchEntries().then((entries) => {
+        if (!menu.isConnected || !searchLinksHost) return;
+
+        const sourceEntries = Array.isArray(entries) ? entries : [];
+        const matches = sourceEntries
+          .filter((entry) => entry.haystack.includes(normalizedQuery))
+          .slice(0, 8);
+
+        const title = getSearchTitleElement(menu);
+        if (title) title.textContent = 'Suggested Searches';
+
+        searchLinksHost.innerHTML = '';
+
+        if (!matches.length) {
+          const empty = document.createElement('p');
+          empty.className = 'institutional-menu-search-results-empty';
+          empty.textContent = `No results for “${query.trim()}”.`;
+          searchLinksHost.appendChild(empty);
+          return;
+        }
+
+        matches.forEach((entry) => {
+          const item = document.createElement(entry.href ? 'a' : 'div');
+          item.className = 'institutional-menu-search-result';
+
+          if (entry.href && item instanceof HTMLAnchorElement) {
+            item.href = entry.href;
+          }
+
+          const itemTitle = document.createElement('span');
+          itemTitle.className = 'institutional-menu-search-result-title';
+          itemTitle.textContent = entry.title;
+          item.appendChild(itemTitle);
+
+          if (entry.description || entry.href) {
+            const meta = document.createElement('span');
+            meta.className = 'institutional-menu-search-result-meta';
+            meta.textContent = entry.description || entry.href;
+            item.appendChild(meta);
+          }
+
+          searchLinksHost.appendChild(item);
+        });
+      });
+    }
 
     function clearCloseTimer() {
       if (!closeTimer) return;
@@ -345,6 +572,7 @@
       });
 
       menu.style.setProperty('--institutional-menu-panel-height', '0px');
+      restoreQuickLinks();
       stopRecognitionIfNeeded();
     }
 
@@ -371,6 +599,9 @@
         syncPanelHeight();
         if (panelKey === 'search' && searchInput) {
           searchInput.focus();
+          renderSearchResults(searchInput.value || '');
+        } else if (panelKey !== 'search') {
+          restoreQuickLinks();
         }
       });
     }
@@ -421,6 +652,7 @@
 
         searchInput.value = transcript;
         searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        renderSearchResults(searchInput.value || '');
       });
 
       recognition.addEventListener('end', () => {
@@ -437,6 +669,20 @@
       });
 
       return recognition;
+    }
+
+    if (searchInput && searchInput.dataset.searchResultsBound !== 'true') {
+      searchInput.dataset.searchResultsBound = 'true';
+      searchInput.setAttribute('autocomplete', 'off');
+      searchInput.setAttribute('spellcheck', 'false');
+
+      searchInput.addEventListener('input', () => {
+        renderSearchResults(searchInput.value || '');
+      });
+
+      searchInput.addEventListener('focus', () => {
+        renderSearchResults(searchInput.value || '');
+      });
     }
 
     triggers.forEach((trigger) => {
@@ -605,6 +851,9 @@
     return true;
   }
 
+  /* =============================================================================
+     16) MAIN INITIALIZATION
+  ============================================================================= */
   function initInstitutionalMenu() {
     bindSecondaryToggle();
     bindRibbon();
@@ -623,6 +872,9 @@
     window.setTimeout(scheduleInit, 120);
   }
 
+  /* =============================================================================
+     17) LIFECYCLE HOOKS
+  ============================================================================= */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', scheduleInit, { once: true });
   } else {

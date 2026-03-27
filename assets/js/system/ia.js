@@ -1,12 +1,23 @@
-// SECTION: INFORMATION ARCHITECTURE LOADER
-// PURPOSE: Load the canonical IA registry and expose it globally as window.ARTAN_IA.
-// EVENTS: Emit 'artan:ia:ready' and 'artan:ia:error'.
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) CANONICAL IA SOURCE
+   03) IA FETCH AND REGISTRATION
+   04) INITIALIZATION
+============================================================================= */
 
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
 (() => {
-  // SECTION: CANONICAL IA SOURCE
+  /* =============================================================================
+     02) CANONICAL IA SOURCE
+  ============================================================================= */
   const IA_URL = '/assets/data/system/ia.json';
 
-  // SECTION: IA FETCH AND REGISTRATION
+  /* =============================================================================
+     03) IA FETCH AND REGISTRATION
+  ============================================================================= */
   async function loadIA() {
     try {
       const res = await fetch(IA_URL, { cache: 'no-cache' });
@@ -21,6 +32,8 @@
     }
   }
 
-  // SECTION: INITIALIZATION
+  /* =============================================================================
+     04) INITIALIZATION
+  ============================================================================= */
   document.addEventListener('DOMContentLoaded', loadIA);
 })();

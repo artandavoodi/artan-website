@@ -1,6 +1,30 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) INSTITUTIONAL PRIMARY MENU
+   01A) MENU SURFACE
+   01B) MENU BACKDROP STATES
+   01C) LIGHT MODE SURFACE
+   02) MENU INNER LAYOUT
+   03) BRAND
+   04) MENU GROUP
+   05) NAVIGATION AND UTILITY LAYOUT
+   06) LINKS AND UTILITY BUTTONS
+   07) SEARCH TRIGGER
+   08) SECONDARY TOGGLE
+   09) MENU PANELS
+   10) PANEL SHELL
+   11) PANEL TYPOGRAPHY AND LINKS
+   12) SEARCH FIELD
+   12A) SEARCH RESULTS
+   13) GLOBAL HEADER SUPPRESSION
+   14) CARET ANIMATION
+   15) RESPONSIVE — 1100PX
+   16) RESPONSIVE — 760PX
+============================================================================= */
 
-
-/* =================== Institutional Primary Menu =================== */
+/* =============================================================================
+   01) INSTITUTIONAL PRIMARY MENU
+============================================================================= */
 
 .institutional-menu{
   position: fixed;
@@ -21,6 +45,9 @@
   transition: padding-top 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* =============================================================================
+   01A) MENU SURFACE
+============================================================================= */
 .institutional-menu::before{
   content: "";
   position: absolute;
@@ -44,6 +71,9 @@
   z-index: 0;
 }
 
+/* =============================================================================
+   01B) MENU BACKDROP STATES
+============================================================================= */
 body.menu-ribbon-active .institutional-menu::before{
   opacity: 1;
   transform: translateY(0);
@@ -55,12 +85,18 @@ body.institutional-menu-panel-open .institutional-menu::before{
   height: 100vh;
 }
 
+/* =============================================================================
+   01C) LIGHT MODE SURFACE
+============================================================================= */
 body.light-mode .institutional-menu::before{
   background: color-mix(in srgb, white 26%, transparent);
   border-color: color-mix(in srgb, black 6%, transparent);
   box-shadow: none;
 }
 
+/* =============================================================================
+   02) MENU INNER LAYOUT
+============================================================================= */
 .institutional-menu-inner{
   width: var(--site-rail-width);
   max-width: calc(100% - (var(--site-gutter) * 2));
@@ -77,6 +113,9 @@ body.light-mode .institutional-menu::before{
   direction: ltr;
 }
 
+/* =============================================================================
+   03) BRAND
+============================================================================= */
 .institutional-menu-brand{
   display: flex !important;
   flex-direction: row !important;
@@ -143,6 +182,9 @@ body.light-mode .institutional-menu::before{
   max-height: none;
 }
 
+/* =============================================================================
+   04) MENU GROUP
+============================================================================= */
 .institutional-menu-group{
   display: inline-flex;
   align-items: center;
@@ -153,6 +195,9 @@ body.light-mode .institutional-menu::before{
   margin-left: auto;
 }
 
+/* =============================================================================
+   05) NAVIGATION AND UTILITY LAYOUT
+============================================================================= */
 .institutional-menu-nav,
 .institutional-menu-utility{
   display: inline-flex;
@@ -180,6 +225,9 @@ body.light-mode .institutional-menu::before{
   flex: 0 0 auto;
 }
 
+/* =============================================================================
+   06) LINKS AND UTILITY BUTTONS
+============================================================================= */
 .institutional-menu-link,
 .institutional-menu-utility-button{
   appearance: none;
@@ -226,6 +274,9 @@ body.light-mode .institutional-menu::before{
   align-items: center;
 }
 
+/* =============================================================================
+   07) SEARCH TRIGGER
+============================================================================= */
 .institutional-menu-search-trigger{
   width: 1rem;
   min-width: 1rem;
@@ -276,6 +327,9 @@ body.light-mode .institutional-menu::before{
   opacity: 1;
 }
 
+/* =============================================================================
+   08) SECONDARY TOGGLE
+============================================================================= */
 .institutional-menu-secondary-toggle{
   display: none !important;
 }
@@ -296,6 +350,9 @@ body.light-mode .institutional-menu::before{
     transform 220ms ease;
 }
 
+/* =============================================================================
+   09) MENU PANELS
+============================================================================= */
 .institutional-menu-panels{
   position: fixed;
   top: 0;
@@ -383,6 +440,9 @@ body:not(.institutional-menu-panel-open) .institutional-menu-panel-shell{
   opacity: 0.001;
 }
 
+/* =============================================================================
+   10) PANEL SHELL
+============================================================================= */
 .institutional-menu-panel-shell{
   width: 100%;
   max-width: none;
@@ -436,6 +496,9 @@ body.light-mode .institutional-menu-search-field{
   justify-content: flex-start;
 }
 
+/* =============================================================================
+   11) PANEL TYPOGRAPHY AND LINKS
+============================================================================= */
 .institutional-menu-panel-label{
   margin: 0 0 1.35rem;
   color: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
@@ -466,6 +529,11 @@ body.light-mode .institutional-menu-search-field{
   display: inline-block;
 }
 
+.institutional-menu-panel-column--primary .institutional-menu-panel-feature-link{
+  font-weight: 300;
+  font-variation-settings: "wght" 300;
+}
+
 .institutional-menu-panel-sub-link{
   margin: 0 0 1rem;
   color: var(--text-secondary-color);
@@ -474,6 +542,11 @@ body.light-mode .institutional-menu-search-field{
   letter-spacing: -0.01em;
   line-height: 1.35;
   display: inline-block;
+}
+
+.institutional-menu-panel-column--primary .institutional-menu-panel-sub-link{
+  font-weight: 300;
+  font-variation-settings: "wght" 300;
 }
 
 .institutional-menu-panel-feature-link:hover,
@@ -486,6 +559,9 @@ body.light-mode .institutional-menu-search-field{
   outline: none;
 }
 
+/* =============================================================================
+   12) SEARCH FIELD
+============================================================================= */
 .institutional-menu-search-field{
   display: inline-flex;
   align-items: center;
@@ -653,6 +729,75 @@ body.light-mode .institutional-menu-search-field{
   gap: 0;
 }
 
+/* =============================================================================
+   12A) SEARCH RESULTS
+============================================================================= */
+.institutional-menu-search-links{
+  width: min(46rem, 100%);
+  margin: 0.9rem auto 0;
+}
+
+.institutional-menu-search-links .institutional-menu-panel-label{
+  margin: 0 0 0.9rem;
+}
+
+.institutional-menu-search-results-empty{
+  margin: 0;
+  padding: 0.95rem 0 0;
+  color: color-mix(in srgb, var(--text-secondary-color) 84%, transparent);
+  font-size: 0.94rem;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.institutional-menu-search-result{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.26rem;
+  width: 100%;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  color: var(--text-primary-color);
+  text-decoration: none;
+  transition:
+    color 220ms ease,
+    opacity 220ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.institutional-menu-search-result:hover,
+.institutional-menu-search-result:focus-visible,
+.institutional-menu-search-result:active{
+  color: var(--text-primary-color);
+  opacity: 1;
+  transform: none;
+  outline: none;
+  text-decoration: none;
+}
+
+.institutional-menu-search-result-title{
+  color: inherit;
+  font-size: 1.02rem;
+  font-weight: 300;
+  font-variation-settings: "wght" 300;
+  letter-spacing: -0.018em;
+  line-height: 1.28;
+}
+
+.institutional-menu-search-result-meta{
+  color: color-mix(in srgb, var(--text-secondary-color) 84%, transparent);
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: -0.008em;
+  line-height: 1.35;
+}
+
+/* =============================================================================
+   13) GLOBAL HEADER SUPPRESSION
+============================================================================= */
 #header-controls,
 #menu-button,
 #menu-button::before,
@@ -660,6 +805,9 @@ body.light-mode .institutional-menu-search-field{
   display: none !important;
 }
 
+/* =============================================================================
+   14) CARET ANIMATION
+============================================================================= */
 @keyframes institutional-menu-search-caret-blink{
   0%, 49%{
     opacity: 0.9;
@@ -669,6 +817,9 @@ body.light-mode .institutional-menu-search-field{
   }
 }
 
+/* =============================================================================
+   15) RESPONSIVE — 1100PX
+============================================================================= */
 @media (max-width: 1100px){
   .institutional-menu-inner{
     gap: 1.2rem;
@@ -735,8 +886,19 @@ body.light-mode .institutional-menu-search-field{
     font-size: 1.62rem;
     padding: 0 0.62rem;
   }
+  
+  .institutional-menu-search-links{
+    width: min(40rem, 100%);
+  }
+
+  .institutional-menu-search-result-title{
+    font-size: 0.96rem;
+  }
 }
 
+/* =============================================================================
+   16) RESPONSIVE — 760PX
+============================================================================= */
 @media (max-width: 760px){
   .institutional-menu{
     left: 0;

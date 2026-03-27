@@ -1,7 +1,27 @@
-/* =================== Global Layout Injection (Future-Proof Shell) =================== */
+/* =============================================================================
+   00) FILE INDEX
+   01) GLOBAL LAYOUT INJECTION
+   02) RUNTIME STATE
+   03) ASSET LOADERS
+   04) ASSET URL CANDIDATES
+   05) TEXT FETCH HELPERS
+   06) GLOBAL LAYOUT INJECTION EXECUTION
+   07) FOOTER FRAGMENT INJECTION
+   08) REVEAL GROUP INITIALIZATION
+   09) INSTITUTIONAL LINKS REVEAL
+   10) TEXT HOVER INITIALIZATION
+   11) DOMCONTENTLOADED LIFECYCLE
+============================================================================= */
+
+/* =============================================================================
+   01) GLOBAL LAYOUT INJECTION
+============================================================================= */
 const CUSTOM_CURSOR_CSS_URL = '/assets/css/ui/custom-cursor.css';
 const CUSTOM_CURSOR_JS_URL = '/assets/js/ui/custom-cursor.js';
 
+/* =============================================================================
+   02) RUNTIME STATE
+============================================================================= */
 const NEURO_MAIN_RUNTIME = (window.__NEURO_MAIN_RUNTIME__ ||= {
   globalLayoutInjected: false,
   footerInjected: false,
@@ -9,6 +29,9 @@ const NEURO_MAIN_RUNTIME = (window.__NEURO_MAIN_RUNTIME__ ||= {
   hoverObserverBound: false
 });
 
+/* =============================================================================
+   03) ASSET LOADERS
+============================================================================= */
 function loadStylesheetOnce(href) {
   const resolvedHref = new URL(href, window.location.origin).href;
   const alreadyLoaded = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).some((link) => {
@@ -47,6 +70,9 @@ function loadScriptOnce(src) {
   document.body.appendChild(script);
 }
 
+/* =============================================================================
+   04) ASSET URL CANDIDATES
+============================================================================= */
 function buildAssetUrlCandidates(path) {
   const normalized = String(path || '').trim();
   if (!normalized) return [];
@@ -62,6 +88,9 @@ function buildAssetUrlCandidates(path) {
   ]));
 }
 
+/* =============================================================================
+   05) TEXT FETCH HELPERS
+============================================================================= */
 async function fetchTextFromCandidates(path, cache = 'no-store') {
   const candidates = buildAssetUrlCandidates(path);
 
@@ -77,6 +106,9 @@ async function fetchTextFromCandidates(path, cache = 'no-store') {
   return { ok: false, text: '', url: '' };
 }
 
+/* =============================================================================
+   06) GLOBAL LAYOUT INJECTION EXECUTION
+============================================================================= */
 async function injectGlobalLayout() {
   if (NEURO_MAIN_RUNTIME.globalLayoutInjected) return;
 
@@ -114,7 +146,9 @@ injectGlobalLayout().then(() => {
   loadScriptOnce(CUSTOM_CURSOR_JS_URL);
 });
 
-/* =================== Footer Fragment Injection =================== */
+/* =============================================================================
+   07) FOOTER FRAGMENT INJECTION
+============================================================================= */
 const FOOTER_FRAGMENT_URL = '/assets/fragments/footer.html';
 
 async function injectFooterIfNeeded() {
@@ -157,6 +191,9 @@ async function injectFooterIfNeeded() {
   }
 }
 
+/* =============================================================================
+   08) REVEAL GROUP INITIALIZATION
+============================================================================= */
 function initRevealGroup(root = document, config = {}) {
   const {
     sectionSelector,
@@ -206,6 +243,9 @@ function initRevealGroup(root = document, config = {}) {
   section.dataset[initializedKey] = 'true';
 }
 
+/* =============================================================================
+   09) INSTITUTIONAL LINKS REVEAL
+============================================================================= */
 function initInstitutionalLinksReveal(root = document) {
   initRevealGroup(root, {
     sectionSelector: '.institutional-links',
@@ -214,7 +254,9 @@ function initInstitutionalLinksReveal(root = document) {
   });
 }
 
-/* =================== Text Hover — Subtle Luxury Emphasis =================== */
+/* =============================================================================
+   10) TEXT HOVER INITIALIZATION
+============================================================================= */
 
 function initLetterHover(root = document) {
   const selectors = [
@@ -274,6 +316,9 @@ function initLetterHover(root = document) {
   });
 }
 
+/* =============================================================================
+   11) DOMCONTENTLOADED LIFECYCLE
+============================================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   if (NEURO_MAIN_RUNTIME.lifecycleBound) return;
   NEURO_MAIN_RUNTIME.lifecycleBound = true;

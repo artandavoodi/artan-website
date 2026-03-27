@@ -1,12 +1,38 @@
 /* =============================================================================
-   01) HOME ESSENCE — SECTION-BY-SECTION DIALOGUE FLOW
-   - Treats each dialogue as its own readable viewport step.
-   - Handoffs from hero → first dialogue sooner.
-   - Keeps the next animation section hidden until the final dialogue is complete.
-   - Avoids theme-shift body toggles and decorative jump behavior.
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ENTER GATE
+   03) DOM REFERENCES
+   04) STATE FLAGS
+   05) MATH HELPERS
+   06) HEADER HELPERS
+   07) SPACER MANAGEMENT
+   08) RTL SHEEN DIRECTION
+   09) RUNWAY HEIGHT
+   10) PINNING STATE
+   11) NEXT SECTION VISIBILITY
+   12) RANGE CALCULATION
+   13) RESET ABOVE START
+   14) LINE REVEAL MODEL
+   15) LINE STATE APPLICATION
+   16) GLOBAL STATE APPLICATION
+   17) ANIMATION TICK
+   18) TICK SCHEDULING
+   19) BOOTSTRAP
+   20) INITIALIZATION
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
 ============================================================================= */
 (() => {
+  /* =============================================================================
+     02) ENTER GATE
+  ============================================================================= */
   window.__artanRunAfterEnter(() => {
+    /* =============================================================================
+       03) DOM REFERENCES
+    ============================================================================= */
     const section = document.querySelector('.home-essence');
     const wrap = document.querySelector('.home-ink-reveal');
     const lines = document.querySelectorAll('.home-ink-reveal .ink-line');
@@ -14,11 +40,17 @@
 
     const nextSection = section.nextElementSibling;
 
+    /* =============================================================================
+       04) STATE FLAGS
+    ============================================================================= */
     let active = false;
     let rafTick = 0;
     let currentProgress = 0;
     let targetProgress = 0;
 
+    /* =============================================================================
+       05) MATH HELPERS
+    ============================================================================= */
     const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
     const lerp = (a, b, t) => a + ((b - a) * t);
     const smoothstep = (edge0, edge1, x) => {
@@ -26,6 +58,9 @@
       return t * t * (3 - (2 * t));
     };
 
+    /* =============================================================================
+       06) HEADER HELPERS
+    ============================================================================= */
     const getHomeHeader = () =>
       document.querySelector('#site-header') ||
       document.querySelector('header') ||
@@ -67,6 +102,9 @@
       header.style.setProperty('pointer-events', t >= 0.98 ? 'none' : '', 'important');
     };
 
+    /* =============================================================================
+       07) SPACER MANAGEMENT
+    ============================================================================= */
     const ensureSpacer = () => {
       let spacer = document.querySelector('#essence-scroll-spacer');
       if (!spacer) {
@@ -85,6 +123,9 @@
       nextStyle: nextSection ? (nextSection.getAttribute('style') || '') : ''
     };
 
+    /* =============================================================================
+       08) RTL SHEEN DIRECTION
+    ============================================================================= */
     const isRTL = () => {
       const html = document.documentElement;
       return (
@@ -99,12 +140,18 @@
       el.style.setProperty('--sheen', isRTL() ? tt : (1 - tt));
     };
 
+    /* =============================================================================
+       09) RUNWAY HEIGHT
+    ============================================================================= */
     const setRunwayHeight = () => {
       const h = Math.round(window.innerHeight * 3.7);
       spacer.style.height = `${h}px`;
       spacer.style.width = '1px';
     };
 
+    /* =============================================================================
+       10) PINNING STATE
+    ============================================================================= */
     const setPinned = (on) => {
       if (on) {
         wrap.style.position = 'fixed';
@@ -131,6 +178,9 @@
       }
     };
 
+    /* =============================================================================
+       11) NEXT SECTION VISIBILITY
+    ============================================================================= */
     const setNextSectionVisibility = (visible) => {
       if (!nextSection) return;
       nextSection.style.transition = 'opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 900ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear';
@@ -147,6 +197,9 @@
       nextSection.style.transform = 'translateY(32px)';
     };
 
+    /* =============================================================================
+       12) RANGE CALCULATION
+    ============================================================================= */
     const getRanges = () => {
       const rect = section.getBoundingClientRect();
       const pageY = window.scrollY || window.pageYOffset || 0;
@@ -157,6 +210,9 @@
       return { start, end, length, top };
     };
 
+    /* =============================================================================
+       13) RESET ABOVE START
+    ============================================================================= */
     const resetIfAbove = (y, start) => {
       if (y < start) {
         currentProgress = 0;
@@ -175,6 +231,9 @@
       return false;
     };
 
+    /* =============================================================================
+       14) LINE REVEAL MODEL
+    ============================================================================= */
     const lineReveal = (progress, inStart, inEnd, outStart, outEnd) => {
       const reveal = smoothstep(inStart, inEnd, progress);
       const emphasis = 1 - smoothstep(outStart, outEnd, progress);
@@ -185,6 +244,9 @@
       };
     };
 
+    /* =============================================================================
+       15) LINE STATE APPLICATION
+    ============================================================================= */
     const applyLineState = (el, state) => {
       const reveal = clamp(state.reveal, 0, 1);
       const visibility = clamp(state.visibility, 0, 1);
@@ -194,6 +256,9 @@
       el.style.transform = 'translateY(0)';
     };
 
+    /* =============================================================================
+       16) GLOBAL STATE APPLICATION
+    ============================================================================= */
     const applyState = (progress) => {
       logoAuto(progress);
 
@@ -206,6 +271,9 @@
       applyLineState(lines[2], l3);
     };
 
+    /* =============================================================================
+       17) ANIMATION TICK
+    ============================================================================= */
     const tick = () => {
       const y = window.scrollY || window.pageYOffset || 0;
       const { start, end, length, top } = getRanges();
@@ -280,11 +348,17 @@
       }
     };
 
+    /* =============================================================================
+       18) TICK SCHEDULING
+    ============================================================================= */
     const requestTick = () => {
       if (rafTick) return;
       rafTick = requestAnimationFrame(tick);
     };
 
+    /* =============================================================================
+       19) BOOTSTRAP
+    ============================================================================= */
     const boot = () => {
       setRunwayHeight();
       requestTick();
@@ -299,6 +373,9 @@
       );
     };
 
+    /* =============================================================================
+       20) INITIALIZATION
+    ============================================================================= */
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', boot);
     } else {

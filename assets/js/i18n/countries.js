@@ -1,8 +1,21 @@
-/* =================== Country & Region Registry =================== */
-/* Source of truth for the Country / Region overlay.
-   Apple-inspired grouping, single-source, no duplicates. */
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) COUNTRY AND REGION REGISTRY
+   03) GLOBAL DATA EXPOSURE
+   04) COUNTRY REGION BUILD
+   05) INITIAL DOMCONTENTLOADED BINDING
+   06) FRAGMENT-MOUNTED REBUILD
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
 
 (function () {
+  /* =============================================================================
+     02) COUNTRY AND REGION REGISTRY
+  ============================================================================= */
   const COUNTRIES_DATA = [
     {
       region: "Africa, Middle East & India",
@@ -163,9 +176,14 @@
     }
   ];
 
-  // Expose for other modules (read-only)
+  /* =============================================================================
+     03) GLOBAL DATA EXPOSURE
+  ============================================================================= */
   window.ARTAN_COUNTRIES_DATA = COUNTRIES_DATA;
 
+  /* =============================================================================
+     04) COUNTRY REGION BUILD
+  ============================================================================= */
   function buildCountryRegions() {
     const container = document.getElementById('country-regions');
     if (!container) return;
@@ -243,9 +261,13 @@
     });
   }
 
-  // Initial attempt (in case overlay already exists)
+  /* =============================================================================
+     05) INITIAL DOMCONTENTLOADED BINDING
+  ============================================================================= */
   document.addEventListener('DOMContentLoaded', buildCountryRegions);
 
-  // Rebuild after fragment injection
+  /* =============================================================================
+     06) FRAGMENT-MOUNTED REBUILD
+  ============================================================================= */
   document.addEventListener('country-overlay-mounted', buildCountryRegions);
 })();

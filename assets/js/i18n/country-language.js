@@ -1,22 +1,34 @@
-/* =========================================================
-   country-language.js
-   SINGLE SOURCE OF TRUTH — DROP-IN REPLACEMENT
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) COUNTRY OVERLAY FRAGMENT INJECTION
+   03) STORAGE KEYS
+   04) DEFAULTS AND LANGUAGE NORMALIZATION
+   05) STORAGE AND CACHE HELPERS
+   06) LANGUAGE STATE HELPERS
+   07) LOCALE STATE EXPOSURE
+   08) UI LABELS
+   09) FOOTER LOCALE UI REFRESH
+   10) TRANSLATION BRIDGE
+   11) COUNTRY OVERLAY
+   12) LANGUAGE DROPDOWN
+   13) IP DETECTION
+   14) COUNTRY RESOLUTION
+   15) FOOTER AND OVERLAY BINDINGS
+   16) MAIN INITIALIZATION
+   17) FRAGMENT-MOUNTED REBINDING
+   18) DEFER-SAFE BOOTSTRAP
+============================================================================= */
 
-   Responsibilities
-   - Footer locale UI (country label + language toggle dropdown)
-   - Country overlay open/close + selection
-   - Session-first IP detection (new session => IP, same session => stored)
-   - Calls translation engine via window.NEUROARTAN_TRANSLATION.applyLanguage(lang) with ARTAN fallback compatibility
-
-   Guarantees
-   - No duplicate event bindings
-   - No regressions to menu/theme/cursor systems
-   - Preserves existing micro-behaviors (CSS owns motion)
-========================================================= */
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
 (() => {
   'use strict';
 
-  /* =================== Fragment Injection =================== */
+  /* =============================================================================
+     02) COUNTRY OVERLAY FRAGMENT INJECTION
+  ============================================================================= */
   const COUNTRY_FRAGMENT_URLS = [
     '/assets/fragments/country-overlay.html',
     'assets/fragments/country-overlay.html'
@@ -46,6 +58,9 @@
     return false;
   };
 
+  /* =============================================================================
+     03) STORAGE KEYS
+  ============================================================================= */
   const STORAGE = {
     COUNTRY_CODE: 'neuroartan_country_code',
     COUNTRY_LABEL: 'neuroartan_country_label',
@@ -64,6 +79,9 @@
     COUNTRY_CACHE: 'artan_country_cache_v1'
   };
 
+  /* =============================================================================
+     04) DEFAULTS AND LANGUAGE NORMALIZATION
+  ============================================================================= */
   const DEFAULT_COUNTRY_CODE = 'DE';
   const DEFAULT_LANGUAGE = 'en';
 
@@ -90,6 +108,9 @@
     return c;
   };
 
+  /* =============================================================================
+     05) STORAGE AND CACHE HELPERS
+  ============================================================================= */
   const qs = (s) => document.querySelector(s);
 
   const getLS = (k, legacyKey = null) => {
@@ -126,6 +147,9 @@
     languages: null
   };
 
+  /* =============================================================================
+     06) LANGUAGE STATE HELPERS
+  ============================================================================= */
   const getStoredLanguages = () => {
     try {
       const raw = getLS(STORAGE.LANGUAGES, LEGACY_STORAGE.LANGUAGES);
@@ -157,7 +181,9 @@
     return arr.length ? Array.from(new Set(arr)) : null;
   };
 
-  // Expose read-only state for debugging without coupling.
+  /* =============================================================================
+     07) LOCALE STATE EXPOSURE
+  ============================================================================= */
   Object.defineProperty(window, 'NEUROARTAN_LOCALE', {
     configurable: true,
     get: () => ({ ...state })
@@ -168,7 +194,9 @@
     get: () => window.NEUROARTAN_LOCALE
   });
 
-  /* =================== UI: Labels =================== */
+  /* =============================================================================
+     08) UI LABELS
+  ============================================================================= */
 
   const nativeCountryName = (countryCode, langCode) => {
     try {
@@ -194,6 +222,9 @@
     state.languages = getStoredLanguages();
   };
 
+  /* =============================================================================
+     09) FOOTER LOCALE UI REFRESH
+  ============================================================================= */
   const refreshFooterLocaleUI = async () => {
     hydrateStateFromStorage();
     bindFooterTriggers();
@@ -206,7 +237,9 @@
     buildLanguageDropdown(state.language, state.languages);
   };
 
-  /* =================== Translation Bridge (safe + retry + fallback) =================== */
+  /* =============================================================================
+     10) TRANSLATION BRIDGE
+  ============================================================================= */
 
   let pendingLang = null;
 
@@ -261,7 +294,9 @@
     }, 80);
   };
 
-  /* =================== Overlay: Country =================== */
+  /* =============================================================================
+     11) COUNTRY OVERLAY
+  ============================================================================= */
 
   const CO_CLOSE_DURATION = 520;
   const CO_STAGGER_IN_START_DELAY = 180;
@@ -334,7 +369,9 @@
     }, CO_CLOSE_DURATION);
   };
 
-  /* =================== Dropdown: Language =================== */
+  /* =============================================================================
+     12) LANGUAGE DROPDOWN
+  ============================================================================= */
 
   const closeLanguageDropdown = () => {
     const dd = qs('#language-dropdown');
@@ -430,7 +467,9 @@
     }
   };
 
-  /* =================== IP Detection (new session) =================== */
+  /* =============================================================================
+     13) IP DETECTION
+  ============================================================================= */
 
   async function detectIP() {
     try {
@@ -453,7 +492,9 @@
     }
   }
 
-  /* =================== Country Resolve (fallback) =================== */
+  /* =============================================================================
+     14) COUNTRY RESOLUTION
+  ============================================================================= */
 
   async function resolveCountryFromName(name) {
     const key = String(name || '').trim();
@@ -485,7 +526,9 @@
     }
   }
 
-  /* =================== Bindings =================== */
+  /* =============================================================================
+     15) FOOTER AND OVERLAY BINDINGS
+  ============================================================================= */
 
   const bindFooterTriggers = () => {
     const countryBtn = qs('#country-selector');
@@ -564,7 +607,9 @@
     }, { passive: true });
   };
 
-  /* =================== Init =================== */
+  /* =============================================================================
+     16) MAIN INITIALIZATION
+  ============================================================================= */
 
   async function init() {
     hydrateStateFromStorage();
@@ -594,7 +639,9 @@
     applyTranslation(state.language);
   }
 
-  // Re-bind footer triggers if footer is injected after initial load
+  /* =============================================================================
+     17) FRAGMENT-MOUNTED REBINDING
+  ============================================================================= */
   document.addEventListener('footer-mounted', () => {
     refreshFooterLocaleUI();
   });
@@ -609,7 +656,9 @@
       refreshFooterLocaleUI();
     }
   });
-  // Defer-safe init
+  /* =============================================================================
+     18) DEFER-SAFE BOOTSTRAP
+  ============================================================================= */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
