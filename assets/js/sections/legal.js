@@ -47,6 +47,59 @@
     return documentId;
   }
 
+  function validateLegalContract(data, shell) {
+    const contractVersion = String(data?.contract_version || '').trim();
+    const destinationClass = String(data?.destination_class || '').trim();
+    const routeFamily = String(data?.route_family || '').trim();
+    const routePath = String(data?.route_path || '').trim();
+    const shellFamily = String(data?.shell_family || '').trim();
+    const renderFamily = String(data?.render_family || '').trim();
+    const page = String(data?.page || '').trim();
+    const expectedPage = String(shell?.dataset?.legalPage || '').trim();
+
+    if (!contractVersion) {
+      throw new Error('Legal sync source is missing required contract_version.');
+    }
+
+    if (destinationClass !== 'legal_page') {
+      throw new Error(`Legal sync source has invalid destination_class: ${destinationClass || 'undefined'}`);
+    }
+
+    if (routeFamily !== 'pages/legal') {
+      throw new Error(`Legal sync source has invalid route_family: ${routeFamily || 'undefined'}`);
+    }
+
+    if (!routePath) {
+      throw new Error('Legal sync source is missing required route_path.');
+    }
+
+    if (shellFamily !== 'legal') {
+      throw new Error(`Legal sync source has invalid shell_family: ${shellFamily || 'undefined'}`);
+    }
+
+    if (renderFamily !== 'legal') {
+      throw new Error(`Legal sync source has invalid render_family: ${renderFamily || 'undefined'}`);
+    }
+
+    if (!page) {
+      throw new Error('Legal sync source is missing required page.');
+    }
+
+    if (expectedPage && page !== expectedPage) {
+      throw new Error(`Legal sync page mismatch. Expected ${expectedPage}, received ${page}.`);
+    }
+
+    return {
+      contractVersion,
+      destinationClass,
+      routeFamily,
+      routePath,
+      shellFamily,
+      renderFamily,
+      page
+    };
+  }
+
   function createMetaItem(text) {
     const item = document.createElement('li');
     item.textContent = text;
@@ -171,6 +224,7 @@
   function applyDocumentMetadata(data) {
     if (!data) return;
     const documentId = requireDocumentId(data);
+    const contract = validateLegalContract(data, getLegalShell());
 
     if (data.pageTitle) {
       document.title = data.pageTitle;
@@ -197,6 +251,9 @@
       upsertMeta('meta[name="robots"]', 'content', data.robots);
     }
     upsertMeta('meta[name="document-id"]', 'content', documentId);
+    upsertMeta('meta[name="legal-contract-version"]', 'content', contract.contractVersion);
+    upsertMeta('meta[name="legal-route-family"]', 'content', contract.routeFamily);
+    upsertMeta('meta[name="legal-route-path"]', 'content', contract.routePath);
 
     if (data.lang) {
       document.documentElement.lang = data.lang;
@@ -223,11 +280,17 @@
   function renderLegalPage(data) {
     if (!data) return;
     const documentId = requireDocumentId(data);
-
     const shell = getLegalShell();
+    const contract = validateLegalContract(data, shell);
+
     if (shell) {
       shell.setAttribute('data-legal-render-state', 'ready');
       shell.setAttribute('data-legal-document-id', documentId);
+      shell.setAttribute('data-legal-contract-version', contract.contractVersion);
+      shell.setAttribute('data-legal-route-family', contract.routeFamily);
+      shell.setAttribute('data-legal-route-path', contract.routePath);
+      shell.setAttribute('data-legal-shell-family', contract.shellFamily);
+      shell.setAttribute('data-legal-render-family', contract.renderFamily);
 
       if (data.effectiveDate) {
         shell.setAttribute('data-effective-date', data.effectiveDate);
@@ -256,6 +319,11 @@
         siteMain.setAttribute('data-last-updated', data.lastUpdated);
       }
     }
+    if (siteMain) {
+      siteMain.setAttribute('data-contract-version', contract.contractVersion);
+      siteMain.setAttribute('data-route-family', contract.routeFamily);
+      siteMain.setAttribute('data-route-path', contract.routePath);
+    }
 
     const metaList = q('[data-legal-meta]');
     if (metaList) {
@@ -281,9 +349,14 @@
       shell.dispatchEvent(new CustomEvent('legal:rendered', {
         bubbles: true,
         detail: {
-          page: shell.dataset.legalPage || '',
+          page: contract.page,
           syncPath: shell.dataset.legalSyncPath || '',
           documentId,
+          contractVersion: contract.contractVersion,
+          routeFamily: contract.routeFamily,
+          routePath: contract.routePath,
+          shellFamily: contract.shellFamily,
+          renderFamily: contract.renderFamily,
           effectiveDate: data.effectiveDate || '',
           lastUpdated: data.lastUpdated || ''
         }
@@ -297,6 +370,7 @@
     if (!shell) return;
 
     shell.setAttribute('data-legal-render-state', 'loading');
+    shell.setAttribute('data-legal-shell-family', 'legal');
 
     try {
       const data = await loadLegalData(shell);

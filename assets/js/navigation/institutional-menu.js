@@ -114,6 +114,9 @@
     ].join(','));
   }
 
+  function isHomePage() {
+    return !!(byId('home-hero') || q('.stage-circle') || byId('home-essence'));
+  }
 
   function setCountryOverlayState(open) {
     body.classList.toggle('country-overlay-open', !!open);
@@ -170,6 +173,7 @@
     const hero = byId('home-hero');
     const stage = q('.stage-circle');
     const essence = byId('home-essence');
+    const siteMain = byId('site-main');
 
     if (!body || !menu || menu.dataset.ribbonBound === 'true') return;
     menu.dataset.ribbonBound = 'true';
@@ -179,16 +183,22 @@
       const scrollY = window.scrollY || window.pageYOffset || 0;
       let threshold = Number.POSITIVE_INFINITY;
 
-      if (essence) {
-        threshold = getPageTop(essence) + 48;
-      } else if (hero) {
-        threshold = getPageTop(hero) + getOuterHeight(hero) + 220;
-      } else if (stage) {
-        threshold = getPageTop(stage) + getOuterHeight(stage) + 220;
+      if (isHomePage()) {
+        if (essence) {
+          threshold = getPageTop(essence) + 48;
+        } else if (hero) {
+          threshold = getPageTop(hero) + getOuterHeight(hero) + 220;
+        } else if (stage) {
+          threshold = getPageTop(stage) + getOuterHeight(stage) + 220;
+        }
+      } else if (siteMain) {
+        threshold = Math.max(12, getPageTop(siteMain) + 12);
+      } else {
+        threshold = 12;
       }
 
       if (!Number.isFinite(threshold)) {
-        threshold = Number.POSITIVE_INFINITY;
+        threshold = 12;
       }
 
       body.classList.toggle('menu-ribbon-active', scrollY > threshold);
@@ -209,7 +219,12 @@
     window.addEventListener('orientationchange', requestApply, { passive: true });
     window.addEventListener('load', requestApply, { passive: true, once: true });
 
-    nextFrame(requestApply);
+    nextFrame(() => {
+      requestApply();
+      if (!isHomePage()) {
+        body.classList.add('menu-ribbon-active');
+      }
+    });
     requestApply();
   }
 
@@ -371,7 +386,6 @@
       if (!isElement(target)) return false;
       return menu.contains(target) || container.contains(target);
     }
-
 
     function openFromTrigger(trigger) {
       if (!isDesktop() || !trigger) return;

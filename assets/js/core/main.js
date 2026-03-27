@@ -2,8 +2,26 @@
 const CUSTOM_CURSOR_CSS_URL = '/assets/css/ui/custom-cursor.css';
 const CUSTOM_CURSOR_JS_URL = '/assets/js/ui/custom-cursor.js';
 
+const NEURO_MAIN_RUNTIME = (window.__NEURO_MAIN_RUNTIME__ ||= {
+  globalLayoutInjected: false,
+  footerInjected: false,
+  lifecycleBound: false,
+  hoverObserverBound: false
+});
+
 function loadStylesheetOnce(href) {
-  if (document.querySelector(`link[rel="stylesheet"][href="${href}"]`)) return;
+  const resolvedHref = new URL(href, window.location.origin).href;
+  const alreadyLoaded = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).some((link) => {
+    const currentHref = link.getAttribute('href') || '';
+    try {
+      return new URL(currentHref, window.location.origin).href === resolvedHref;
+    } catch (_) {
+      return currentHref === href;
+    }
+  });
+
+  if (alreadyLoaded) return;
+
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = href;
@@ -11,7 +29,18 @@ function loadStylesheetOnce(href) {
 }
 
 function loadScriptOnce(src) {
-  if (document.querySelector(`script[src="${src}"]`)) return;
+  const resolvedSrc = new URL(src, window.location.origin).href;
+  const alreadyLoaded = Array.from(document.querySelectorAll('script[src]')).some((script) => {
+    const currentSrc = script.getAttribute('src') || '';
+    try {
+      return new URL(currentSrc, window.location.origin).href === resolvedSrc;
+    } catch (_) {
+      return currentSrc === src;
+    }
+  });
+
+  if (alreadyLoaded) return;
+
   const script = document.createElement('script');
   script.src = src;
   script.defer = true;
@@ -49,14 +78,19 @@ async function fetchTextFromCandidates(path, cache = 'no-store') {
 }
 
 async function injectGlobalLayout() {
+  if (NEURO_MAIN_RUNTIME.globalLayoutInjected) return;
+
   const targets = document.querySelectorAll('[data-include]');
   for (const el of targets) {
+    if (el.dataset.includeMounted === 'true') continue;
+
     const name = el.getAttribute('data-include');
     try {
       const result = await fetchTextFromCandidates(`/assets/fragments/${name}.html`, 'no-store');
       if (!result.ok) continue;
       const html = result.text;
       el.innerHTML = html;
+      el.dataset.includeMounted = 'true';
 
       if (window.NeuroMotion && typeof window.NeuroMotion.scan === 'function') {
         window.NeuroMotion.scan(el);
@@ -68,8 +102,9 @@ async function injectGlobalLayout() {
       }));
     } catch (_) {}
   }
-}
 
+  NEURO_MAIN_RUNTIME.globalLayoutInjected = true;
+}
 
 injectGlobalLayout().then(() => {
   injectFooterIfNeeded();
@@ -84,17 +119,23 @@ const FOOTER_FRAGMENT_URL = '/assets/fragments/footer.html';
 
 async function injectFooterIfNeeded() {
   const existing = document.querySelector('footer.site-footer');
-  if (existing) return true;
+  if (existing) {
+    NEURO_MAIN_RUNTIME.footerInjected = true;
+    return true;
+  }
 
   const mount = document.getElementById('footer-mount');
   if (!mount) return false;
 
-  if (mount.dataset.footerInjected === 'true') return true;
+  if (NEURO_MAIN_RUNTIME.footerInjected || mount.dataset.footerInjected === 'true') return true;
   mount.dataset.footerInjected = 'true';
 
   try {
     const result = await fetchTextFromCandidates(FOOTER_FRAGMENT_URL, 'no-cache');
-    if (!result.ok) return false;
+    if (!result.ok) {
+      delete mount.dataset.footerInjected;
+      return false;
+    }
     const html = result.text;
     mount.innerHTML = html;
     const mountedFooter = mount.querySelector('footer.site-footer');
@@ -107,10 +148,11 @@ async function injectFooterIfNeeded() {
         detail: { name: 'footer', root: mountedFooter, mount: mountedFooter }
       }));
     }
-    // Notify locale systems that footer controls now exist
     document.dispatchEvent(new Event('footer-mounted'));
+    NEURO_MAIN_RUNTIME.footerInjected = true;
     return true;
   } catch (_) {
+    delete mount.dataset.footerInjected;
     return false;
   }
 }
@@ -233,6 +275,9 @@ function initLetterHover(root = document) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (NEURO_MAIN_RUNTIME.lifecycleBound) return;
+  NEURO_MAIN_RUNTIME.lifecycleBound = true;
+
   initInstitutionalLinksReveal(document);
 
   initRevealGroup(document, {
@@ -307,20 +352,20 @@ document.addEventListener("DOMContentLoaded", () => {
     initLetterHover(document);
   }, { once: true });
 
-  // Init once for the page
   initLetterHover(document);
 
-  // Re-init for dynamically injected overlay items (country/language/menu)
-  const hoverMO = new MutationObserver((mutations) => {
-    for (const m of mutations) {
-      if (m.type === "childList" && (m.addedNodes?.length || 0) > 0) {
-        m.addedNodes.forEach((n) => {
-          if (n && n.nodeType === 1) initLetterHover(n);
-        });
+  if (!NEURO_MAIN_RUNTIME.hoverObserverBound) {
+    const hoverMO = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type === "childList" && (m.addedNodes?.length || 0) > 0) {
+          m.addedNodes.forEach((n) => {
+            if (n && n.nodeType === 1) initLetterHover(n);
+          });
+        }
       }
-    }
-  });
+    });
 
-  hoverMO.observe(document.body, { childList: true, subtree: true });
-
+    hoverMO.observe(document.body, { childList: true, subtree: true });
+    NEURO_MAIN_RUNTIME.hoverObserverBound = true;
+  }
 });
