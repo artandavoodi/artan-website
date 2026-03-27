@@ -1,0 +1,73 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) ACCOUNT DRAWER
+     01A) BACKDROP
+     01B) DRAWER SHELL
+     01C) DRAWER HEADER
+     01D) CLOSE CONTROL
+     01E) DRAWER BODY
+     01F) ACCOUNT INTRO
+     01G) PRIMARY ACTIONS
+     01H) SECONDARY NOTES
+============================================================================= -->
+
+<!-- =============================================================================
+     01) ACCOUNT DRAWER
+============================================================================= -->
+<aside id="account-drawer" class="account-drawer" aria-hidden="true" aria-labelledby="account-drawer-title" data-account-drawer="true">
+
+  <!-- =============================================================================
+       01A) BACKDROP
+  ============================================================================= -->
+  <div class="account-drawer-backdrop" data-account-drawer-close="true"></div>
+
+  <!-- =============================================================================
+       01B) DRAWER SHELL
+  ============================================================================= -->
+  <div class="account-drawer-shell" role="dialog" aria-modal="true" aria-labelledby="account-drawer-title">
+
+    <!-- =============================================================================
+         01C) DRAWER HEADER
+    ============================================================================= -->
+    <div class="account-drawer-header">
+      <p class="account-drawer-eyebrow">Private Access</p>
+      <h2 id="account-drawer-title" class="account-drawer-title">Enter Your Neuroartan Profile</h2>
+
+      <!-- =============================================================================
+           01D) CLOSE CONTROL
+      ============================================================================= -->
+      <button type="button" class="account-drawer-close" aria-label="Close account drawer" data-account-drawer-close="true">
+        <span class="account-drawer-close-line account-drawer-close-line--first" aria-hidden="true"></span>
+        <span class="account-drawer-close-line account-drawer-close-line--second" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <!-- =============================================================================
+         01E) DRAWER BODY
+    ============================================================================= -->
+    <div class="account-drawer-body">
+
+      <!-- =============================================================================
+           01F) ACCOUNT INTRO
+      ============================================================================= -->
+      <div class="account-drawer-intro">
+        <p class="account-drawer-copy">A private surface for your profile, continuity, and future system access across the Neuroartan environment.</p>
+      </div>
+
+      <!-- =============================================================================
+           01G) PRIMARY ACTIONS
+      ============================================================================= -->
+      <div class="account-drawer-actions">
+        <a href="/pages/account/sign-in/index.html" class="account-drawer-action account-drawer-action--primary">Continue to Sign In</a>
+        <a href="/pages/account/create/index.html" class="account-drawer-action account-drawer-action--secondary">Create Your Account</a>
+      </div>
+
+      <!-- =============================================================================
+           01H) SECONDARY NOTES
+      ============================================================================= -->
+      <div class="account-drawer-notes">
+        <p class="account-drawer-note">Account access is being introduced as a sovereign website layer with profile continuity, future authentication, and governed entry control.</p>
+      </div>
+    </div>
+  </div>
+</aside>

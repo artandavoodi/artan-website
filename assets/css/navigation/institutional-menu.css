@@ -10,6 +10,7 @@
    05) NAVIGATION AND UTILITY LAYOUT
    06) LINKS AND UTILITY BUTTONS
    07) SEARCH TRIGGER
+   07A) ACCOUNT TRIGGER
    08) SECONDARY TOGGLE
    09) MENU PANELS
    10) PANEL SHELL
@@ -278,10 +279,10 @@ body.light-mode .institutional-menu::before{
    07) SEARCH TRIGGER
 ============================================================================= */
 .institutional-menu-search-trigger{
-  width: 1rem;
-  min-width: 1rem;
-  height: 1rem;
-  min-height: 1rem;
+  width: 1.12rem;
+  min-width: 1.12rem;
+  height: 1.12rem;
+  min-height: 1.12rem;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -302,8 +303,8 @@ body.light-mode .institutional-menu::before{
 
 .institutional-menu-search-trigger-icon{
   display: block;
-  width: 1rem;
-  height: 1rem;
+  width: 1.12rem;
+  height: 1.12rem;
   flex: 0 0 auto;
   opacity: 0.82;
   background-color: currentColor;
@@ -320,10 +321,55 @@ body.light-mode .institutional-menu::before{
     background-color 220ms ease;
 }
 
+
 .institutional-menu-search-trigger:hover .institutional-menu-search-trigger-icon,
 .institutional-menu-search-trigger:focus-visible .institutional-menu-search-trigger-icon,
 .institutional-menu-search-trigger:active .institutional-menu-search-trigger-icon,
 .institutional-menu-panel-trigger[aria-expanded="true"] .institutional-menu-search-trigger-icon{
+  opacity: 1;
+}
+
+/* =============================================================================
+   07A) ACCOUNT TRIGGER
+============================================================================= */
+.institutional-menu-account-trigger{
+  width: 1.46rem;
+  min-width: 1.46rem;
+  height: 1.46rem;
+  min-height: 1.46rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.institutional-menu-account-trigger-icon{
+  display: block;
+  width: 1.46rem;
+  height: 1.46rem;
+  min-width: 1.46rem;
+  min-height: 1.46rem;
+  aspect-ratio: 1 / 1;
+  flex: 0 0 auto;
+  opacity: 0.82;
+  background-color: currentColor;
+  -webkit-mask-image: url('../../icons/system/account-icon.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  mask-image: url('../../icons/system/account-icon.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 100% 100%;
+  transition:
+    opacity 220ms ease,
+    background-color 220ms ease;
+}
+
+.institutional-menu-account-trigger:hover .institutional-menu-account-trigger-icon,
+.institutional-menu-account-trigger:focus-visible .institutional-menu-account-trigger-icon,
+.institutional-menu-account-trigger:active .institutional-menu-account-trigger-icon,
+.institutional-menu-account-trigger[aria-expanded="true"] .institutional-menu-account-trigger-icon{
   opacity: 1;
 }
 
@@ -847,15 +893,30 @@ body.light-mode .institutional-menu-search-field{
   }
 
   .institutional-menu-search-trigger{
-    width: 0.92rem;
-    min-width: 0.92rem;
-    height: 0.92rem;
-    min-height: 0.92rem;
+    width: 1rem;
+    min-width: 1rem;
+    height: 1rem;
+    min-height: 1rem;
+  }
+
+  .institutional-menu-account-trigger{
+    width: 1.28rem;
+    min-width: 1.28rem;
+    height: 1.28rem;
+    min-height: 1.28rem;
   }
 
   .institutional-menu-search-trigger-icon{
-    width: 0.92rem;
-    height: 0.92rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .institutional-menu-account-trigger-icon{
+    width: 1.28rem;
+    height: 1.28rem;
+    min-width: 1.28rem;
+    min-height: 1.28rem;
+    aspect-ratio: 1 / 1;
   }
 
   .institutional-menu-search-icon,

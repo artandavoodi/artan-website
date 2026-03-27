@@ -6,6 +6,7 @@
    04) ASSET URL CANDIDATES
    05) TEXT FETCH HELPERS
    06) GLOBAL LAYOUT INJECTION EXECUTION
+   06A) ACCOUNT DRAWER MOUNT DISPATCH
    07) FOOTER FRAGMENT INJECTION
    08) REVEAL GROUP INITIALIZATION
    09) INSTITUTIONAL LINKS REVEAL
@@ -132,6 +133,14 @@ async function injectGlobalLayout() {
         bubbles: true,
         detail: { name, root: el, mount: el }
       }));
+      /* =============================================================================
+         06A) ACCOUNT DRAWER MOUNT DISPATCH
+      ============================================================================= */
+      if (name === 'account-drawer') {
+        document.dispatchEvent(new CustomEvent('account-drawer:mounted', {
+          detail: { name, root: el, mount: el }
+        }));
+      }
     } catch (_) {}
   }
 

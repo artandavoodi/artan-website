@@ -17,6 +17,7 @@
    15) PANEL SYSTEM BINDING
    15A) SEARCH INDEX HELPERS
    15B) SEARCH RESULTS RENDERING
+   15C) ACCOUNT DRAWER TRIGGER BINDING
    16) MAIN INITIALIZATION
    17) LIFECYCLE HOOKS
 ============================================================================= */
@@ -117,6 +118,10 @@
 
   function getMicButton(menu = getMenu()) {
     return menu ? q('.institutional-menu-mic-button', menu) : null;
+  }
+
+  function getAccountDrawerTrigger(menu = getMenu()) {
+    return menu ? q('[data-account-drawer-trigger="true"]', menu) : null;
   }
 
   function getSearchPanel(menu = getMenu()) {
@@ -391,6 +396,35 @@
     const shells = getShells(menu);
     const searchInput = getSearchInput(menu);
     const micButton = getMicButton(menu);
+    const accountDrawerTrigger = getAccountDrawerTrigger(menu);
+    /* =============================================================================
+       15C) ACCOUNT DRAWER TRIGGER BINDING
+    ============================================================================= */
+    if (accountDrawerTrigger && accountDrawerTrigger.dataset.accountDrawerBound !== 'true') {
+      accountDrawerTrigger.dataset.accountDrawerBound = 'true';
+      accountDrawerTrigger.setAttribute('aria-expanded', 'false');
+
+      accountDrawerTrigger.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        clearCloseTimer();
+        closePanels();
+
+        document.dispatchEvent(new CustomEvent('account-drawer:open-request', {
+          detail: {
+            source: 'institutional-menu'
+          }
+        }));
+      });
+
+      document.addEventListener('account-drawer:opened', () => {
+        accountDrawerTrigger.setAttribute('aria-expanded', 'true');
+      });
+
+      document.addEventListener('account-drawer:closed', () => {
+        accountDrawerTrigger.setAttribute('aria-expanded', 'false');
+      });
+    }
 
     if (!body || !menu || !container || !triggers.length || !panels.length || !backdrop) return false;
     if (menu.dataset.panelsBound === 'true') return true;
