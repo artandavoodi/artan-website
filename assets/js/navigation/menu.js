@@ -57,6 +57,7 @@
   const menuList = menuOverlay.querySelector('.menu-col-b-section-b .menu-list');
   const menuClose = menuOverlay.querySelector('.menu-close');
   const menuPackToggle = document.getElementById('menu-pack-toggle');
+  let overlaySyncBound = false;
 
   // ==========================
   // Legacy Pack Flip Layer
@@ -474,6 +475,35 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && isOpen) closeMenu();
   });
+
+  // ==================================
+  // Overlay Coordination
+  // ==================================
+  // When premium overlays open, the legacy menu overlay must close cleanly
+  // so panel systems never compete for focus, pointer, or scroll state.
+  if (!overlaySyncBound) {
+    overlaySyncBound = true;
+
+    document.addEventListener('account-drawer:open-request', () => {
+      if (!isOpen) return;
+      closeMenu();
+    });
+
+    document.addEventListener('account-drawer:opened', () => {
+      if (!isOpen) return;
+      closeMenu();
+    });
+
+    document.addEventListener('cookie-consent:open-request', () => {
+      if (!isOpen) return;
+      closeMenu();
+    });
+
+    document.addEventListener('cookie-consent:opened', () => {
+      if (!isOpen) return;
+      closeMenu();
+    });
+  }
 
   /* ===================
      Hover Preview Logic

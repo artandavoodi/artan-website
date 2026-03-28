@@ -16,6 +16,8 @@
      11B) INSTITUTIONAL MENU MOUNT
      11C) SECONDARY MENU MOUNT
      11D) ACCOUNT DRAWER MOUNT
+     11E) AUTH FLOW MOUNT
+     11F) PROFILE SHELL MOUNT
      12) HOME HERO
      13) HOME ESSENCE
      14) HOME ICOS CHAPTER
@@ -26,6 +28,7 @@
      19) INSTITUTIONAL LINKS MOUNT
      20) FOOTER MOUNT
      21) COUNTRY OVERLAY MOUNT
+     21A) COOKIE CONSENT MOUNT
      22) SCRIPTS
 ============================================================================= -->
 <!DOCTYPE html>
@@ -52,6 +55,7 @@
     <link rel="stylesheet" href="assets/css/navigation/institutional-menu.css">
     <link rel="stylesheet" href="assets/css/overlays/country-overlay.css">
     <link rel="stylesheet" href="assets/css/overlays/account-drawer.css">
+    <link rel="stylesheet" href="assets/css/overlays/cookie-consent.css">
     <link rel="stylesheet" href="assets/css/navigation/footer.css">
     <link rel="stylesheet" href="assets/css/navigation/institutional-links.css">
     <link rel="stylesheet" href="assets/css/ui/custom-cursor.css">
@@ -266,6 +270,23 @@
 <div id="account-drawer-mount" data-include="account-drawer"></div>
 
 <!-- =============================================================================
+     11E) AUTH FLOW MOUNT
+============================================================================= -->
+<div id="auth-flow-mount"
+     data-auth-state="guest"
+     data-auth-surface="entry"
+     data-auth-providers="apple google email phone"
+     aria-hidden="true"></div>
+
+<!-- =============================================================================
+     11F) PROFILE SHELL MOUNT
+============================================================================= -->
+<div id="profile-shell-mount"
+     data-profile-state="empty"
+     data-profile-visibility="private"
+     aria-hidden="true"></div>
+
+<!-- =============================================================================
      12) HOME HERO
 ============================================================================= -->
 <section id="home-hero" class="home-hero" aria-hidden="true" data-motion="fade">
@@ -424,6 +445,15 @@
 <div id="country-overlay-mount"></div>
 
 <!-- =============================================================================
+     21A) COOKIE CONSENT MOUNT
+============================================================================= -->
+<div id="cookie-consent-mount"
+     data-consent-state="pending"
+     data-consent-surface="banner"
+     data-consent-settings="available"
+     aria-hidden="true"></div>
+
+<!-- =============================================================================
      22) SCRIPTS
 ============================================================================= -->
 <script src="assets/js/system/ia.js" defer></script>
@@ -441,6 +471,9 @@
 <script src="assets/js/navigation/footer.js" defer></script>
 <script src="assets/js/navigation/institutional-menu.js" defer></script>
 <script src="assets/js/overlays/account-drawer.js" defer></script>
+<script src="assets/js/overlays/cookie-consent.js" defer></script>
+<!-- Future auth/profile mount orchestration attaches here. -->
+<!-- Future cookie consent / settings orchestration attaches here. -->
 <script src="assets/js/ui/custom-cursor.js" defer></script>
 <script src="assets/js/core/main.js" defer></script>
 

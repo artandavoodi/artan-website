@@ -7,6 +7,7 @@
    05) TEXT FETCH HELPERS
    06) GLOBAL LAYOUT INJECTION EXECUTION
    06A) ACCOUNT DRAWER MOUNT DISPATCH
+   06B) COOKIE CONSENT MOUNT DISPATCH
    07) FOOTER FRAGMENT INJECTION
    08) REVEAL GROUP INITIALIZATION
    09) INSTITUTIONAL LINKS REVEAL
@@ -27,7 +28,9 @@ const NEURO_MAIN_RUNTIME = (window.__NEURO_MAIN_RUNTIME__ ||= {
   globalLayoutInjected: false,
   footerInjected: false,
   lifecycleBound: false,
-  hoverObserverBound: false
+  hoverObserverBound: false,
+  accountDrawerMountDispatched: false,
+  cookieConsentMountDispatched: false
 });
 
 /* =============================================================================
@@ -108,6 +111,38 @@ async function fetchTextFromCandidates(path, cache = 'no-store') {
 }
 
 /* =============================================================================
+   06A) ACCOUNT DRAWER MOUNT DISPATCH
+============================================================================= */
+function dispatchAccountDrawerMount(mount) {
+  if (NEURO_MAIN_RUNTIME.accountDrawerMountDispatched) return;
+
+  const root = mount || document.querySelector('[data-include="account-drawer"]');
+  if (!root) return;
+
+  document.dispatchEvent(new CustomEvent('account-drawer:mounted', {
+    detail: { name: 'account-drawer', root, mount: root }
+  }));
+
+  NEURO_MAIN_RUNTIME.accountDrawerMountDispatched = true;
+}
+
+/* =============================================================================
+   06B) COOKIE CONSENT MOUNT DISPATCH
+============================================================================= */
+function dispatchCookieConsentMount() {
+  if (NEURO_MAIN_RUNTIME.cookieConsentMountDispatched) return;
+
+  const mount = document.getElementById('cookie-consent-mount');
+  if (!mount) return;
+
+  document.dispatchEvent(new CustomEvent('cookie-consent:mounted', {
+    detail: { name: 'cookie-consent', root: mount, mount }
+  }));
+
+  NEURO_MAIN_RUNTIME.cookieConsentMountDispatched = true;
+}
+
+/* =============================================================================
    06) GLOBAL LAYOUT INJECTION EXECUTION
 ============================================================================= */
 async function injectGlobalLayout() {
@@ -137,9 +172,7 @@ async function injectGlobalLayout() {
          06A) ACCOUNT DRAWER MOUNT DISPATCH
       ============================================================================= */
       if (name === 'account-drawer') {
-        document.dispatchEvent(new CustomEvent('account-drawer:mounted', {
-          detail: { name, root: el, mount: el }
-        }));
+        dispatchAccountDrawerMount(el);
       }
     } catch (_) {}
   }
@@ -153,6 +186,7 @@ injectGlobalLayout().then(() => {
   initLetterHover(document);
   loadStylesheetOnce(CUSTOM_CURSOR_CSS_URL);
   loadScriptOnce(CUSTOM_CURSOR_JS_URL);
+  dispatchCookieConsentMount();
 });
 
 /* =============================================================================
@@ -407,6 +441,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { once: true });
 
   initLetterHover(document);
+  dispatchAccountDrawerMount();
+  dispatchCookieConsentMount();
 
   if (!NEURO_MAIN_RUNTIME.hoverObserverBound) {
     const hoverMO = new MutationObserver((mutations) => {

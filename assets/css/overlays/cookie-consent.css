@@ -1,0 +1,499 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ROOT TOKENS
+   03) BASE OVERLAY SHELL
+   04) OPEN / CLOSE STATES
+   04A) PAGE SCROLL LOCK
+   05) BACKDROP
+   06) PANEL
+   07) HEADER
+   08) CLOSE CONTROL
+   09) BODY
+   10) TYPOGRAPHY
+   11) ACTIONS
+   12) SETTINGS ROWS
+   12A) SURFACE REFINEMENT
+   12B) ACTION / ROW MICRO-REFINEMENT
+   13) REDUCED MOTION
+   14) RESPONSIVE — 1024PX
+   15) RESPONSIVE — 768PX
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+
+/* =============================================================================
+   02) ROOT TOKENS
+============================================================================= */
+:root{
+  --cookie-consent-panel-width: min(32rem, calc(100vw - (2 * var(--site-gutter, 24px))));
+  --cookie-consent-surface: rgba(255, 255, 255, 0.82);
+  --cookie-consent-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --cookie-consent-backdrop: rgba(0, 0, 0, 0.16);
+  --cookie-consent-muted: color-mix(in srgb, var(--text-secondary-color) 84%, transparent);
+  --cookie-consent-row-surface: color-mix(in srgb, var(--bg-primary-color) 72%, transparent);
+  --cookie-consent-row-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  --cookie-consent-row-shadow: 0 14px 34px rgba(0, 0, 0, 0.04);
+  --cookie-consent-banner-surface: color-mix(in srgb, var(--bg-primary-color) 72%, transparent);
+  --cookie-consent-banner-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  --cookie-consent-banner-shadow: 0 14px 34px rgba(0, 0, 0, 0.04);
+  --cookie-consent-support-text: color-mix(in srgb, var(--text-primary-color) 48%, transparent);
+  --cookie-consent-row-title-secondary: color-mix(in srgb, var(--text-primary-color) 76%, transparent);
+  --cookie-consent-row-divider: color-mix(in srgb, var(--text-primary-color) 5%, transparent);
+  --cookie-consent-action-tertiary-hover: color-mix(in srgb, var(--text-primary-color) 4%, transparent);
+}
+
+body.light-mode{
+  --cookie-consent-surface: rgba(255, 255, 255, 0.84);
+  --cookie-consent-row-surface: rgba(255, 255, 255, 0.56);
+  --cookie-consent-row-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  --cookie-consent-row-shadow: 0 14px 34px rgba(0, 0, 0, 0.035);
+  --cookie-consent-banner-surface: rgba(255, 255, 255, 0.56);
+  --cookie-consent-banner-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  --cookie-consent-banner-shadow: 0 14px 34px rgba(0, 0, 0, 0.035);
+  --cookie-consent-support-text: color-mix(in srgb, var(--text-primary-color) 42%, transparent);
+  --cookie-consent-row-title-secondary: color-mix(in srgb, var(--text-primary-color) 70%, transparent);
+  --cookie-consent-row-divider: color-mix(in srgb, var(--text-primary-color) 5%, transparent);
+  --cookie-consent-action-tertiary-hover: rgba(0, 0, 0, 0.022);
+}
+
+body.dark-mode{
+  --cookie-consent-surface: rgba(0, 0, 0, 0.84);
+  --cookie-consent-row-surface: rgba(255, 255, 255, 0.035);
+  --cookie-consent-row-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  --cookie-consent-row-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+  --cookie-consent-banner-surface: rgba(255, 255, 255, 0.035);
+  --cookie-consent-banner-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  --cookie-consent-banner-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+  --cookie-consent-support-text: color-mix(in srgb, var(--text-primary-color) 56%, transparent);
+  --cookie-consent-row-title-secondary: color-mix(in srgb, var(--text-primary-color) 82%, transparent);
+  --cookie-consent-row-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  --cookie-consent-action-tertiary-hover: rgba(255, 255, 255, 0.03);
+}
+
+/* =============================================================================
+   03) BASE OVERLAY SHELL
+============================================================================= */
+.cookie-consent{
+  position: fixed;
+  inset: 0;
+  z-index: 1450;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* =============================================================================
+   04) OPEN / CLOSE STATES
+============================================================================= */
+body.cookie-consent-open .cookie-consent,
+body.cookie-consent-closing .cookie-consent{
+  pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* =============================================================================
+   04A) PAGE SCROLL LOCK
+============================================================================= */
+body.cookie-consent-open,
+body.cookie-consent-closing{
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* =============================================================================
+   05) BACKDROP
+============================================================================= */
+.cookie-consent-backdrop{
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: var(--cookie-consent-backdrop);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 0;
+  transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.cookie-consent-open .cookie-consent-backdrop{
+  opacity: 1;
+}
+
+body.cookie-consent-closing .cookie-consent-backdrop{
+  opacity: 0;
+}
+
+/* =============================================================================
+   06) PANEL
+============================================================================= */
+.cookie-consent-panel{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--cookie-consent-panel-width);
+  max-width: 100%;
+  min-height: 24rem;
+  padding: 1.52rem 1.52rem 1.42rem;
+  background-color: var(--cookie-consent-surface);
+  border-left: 1px solid var(--cookie-consent-border);
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.08);
+  transform: translateX(100%);
+  transition:
+    transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms ease,
+    border-color 220ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  overflow: visible;
+}
+
+body.cookie-consent-open .cookie-consent-panel{
+  transform: translateX(0);
+}
+
+body.cookie-consent-closing .cookie-consent-panel{
+  transform: translateX(100%);
+}
+
+/* =============================================================================
+   07) HEADER
+============================================================================= */
+.cookie-consent-header{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.42rem;
+  padding: 0 0 1.22rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+}
+
+/* =============================================================================
+   08) CLOSE CONTROL
+============================================================================= */
+.cookie-consent-close{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1rem;
+  min-width: 1rem;
+  height: 1rem;
+  min-height: 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary-color);
+  cursor: pointer;
+  opacity: 1;
+  transition:
+    opacity 150ms ease,
+    color 220ms ease;
+}
+
+.cookie-consent-close-line{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform-origin: center;
+  opacity: 1;
+  transition:
+    transform 220ms ease,
+    background-color 220ms ease,
+    opacity 220ms ease;
+}
+
+.cookie-consent-close-line--first{
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.cookie-consent-close-line--second{
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.cookie-consent-close:hover,
+.cookie-consent-close:focus-visible,
+.cookie-consent-close:active{
+  color: var(--color-primary7);
+  outline: none;
+}
+
+body.cookie-consent-closing .cookie-consent-close{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cookie-consent-close:hover .cookie-consent-close-line,
+.cookie-consent-close:focus-visible .cookie-consent-close-line,
+.cookie-consent-close:active .cookie-consent-close-line{
+  opacity: 1;
+}
+
+.cookie-consent-close:hover .cookie-consent-close-line--first,
+.cookie-consent-close:focus-visible .cookie-consent-close-line--first,
+.cookie-consent-close:active .cookie-consent-close-line--first{
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.cookie-consent-close:hover .cookie-consent-close-line--second,
+.cookie-consent-close:focus-visible .cookie-consent-close-line--second,
+.cookie-consent-close:active .cookie-consent-close-line--second{
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* =============================================================================
+   09) BODY
+============================================================================= */
+.cookie-consent-body,
+.cookie-consent-banner,
+.cookie-consent-settings{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0.92rem;
+}
+
+.cookie-consent-body{
+  padding-top: 1.28rem;
+}
+
+/* =============================================================================
+   10) TYPOGRAPHY
+============================================================================= */
+.cookie-consent-eyebrow{
+  margin: 0;
+  color: color-mix(in srgb, var(--text-primary-color) 14%, transparent);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.cookie-consent-title{
+  margin: 0;
+  color: var(--text-primary-color);
+  font-size: 1.52rem;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.cookie-consent-copy,
+.cookie-consent-note{
+  margin: 0;
+  color: var(--cookie-consent-muted);
+  font-size: 0.96rem;
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  line-height: 1.58;
+}
+
+/* =============================================================================
+   11) ACTIONS
+============================================================================= */
+.cookie-consent-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.58rem;
+}
+
+.cookie-consent-action{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.82rem 1.02rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  color: var(--text-primary-color);
+  background: transparent;
+  text-decoration: none;
+  font-size: 0.94rem;
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    opacity 220ms ease;
+}
+
+.cookie-consent-action--primary{
+  background: var(--text-primary-color);
+  color: var(--bg-primary-color);
+  border-color: var(--text-primary-color);
+}
+
+.cookie-consent-action--secondary,
+.cookie-consent-action--tertiary{
+  background: transparent;
+}
+
+
+.cookie-consent-action:hover,
+.cookie-consent-action:focus-visible,
+.cookie-consent-action:active{
+  opacity: 1;
+  text-decoration: none;
+  outline: none;
+}
+
+.cookie-consent-action--tertiary:hover,
+.cookie-consent-action--tertiary:focus-visible,
+.cookie-consent-action--tertiary:active{
+  background: var(--cookie-consent-action-tertiary-hover);
+}
+
+/* =============================================================================
+   12) SETTINGS ROWS
+============================================================================= */
+.cookie-consent-row{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.92rem;
+  padding: 1rem;
+  border: 1px solid var(--cookie-consent-row-border);
+  background: var(--cookie-consent-row-surface);
+  box-shadow: var(--cookie-consent-row-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--cookie-consent-row-divider);
+}
+
+.cookie-consent-row-copy{
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+}
+
+.cookie-consent-row-copy strong{
+  color: var(--cookie-consent-row-title-secondary);
+  font-size: 0.94rem;
+  font-weight: 400;
+  letter-spacing: -0.016em;
+  line-height: 1.2;
+}
+
+.cookie-consent-row-copy span{
+  color: var(--cookie-consent-muted);
+  font-size: 0.84rem;
+  font-weight: 300;
+  letter-spacing: -0.012em;
+  line-height: 1.5;
+}
+
+.cookie-consent-row input[type="checkbox"]{
+  margin-top: 0.08rem;
+}
+
+/* =============================================================================
+   12A) SURFACE REFINEMENT
+============================================================================= */
+.cookie-consent-banner{
+  padding: 1rem;
+  border: 1px solid var(--cookie-consent-banner-border);
+  background: var(--cookie-consent-banner-surface);
+  box-shadow: var(--cookie-consent-banner-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.cookie-consent-settings{
+  gap: 0.72rem;
+}
+
+.cookie-consent-banner .cookie-consent-note{
+  color: var(--cookie-consent-support-text);
+}
+
+.cookie-consent-settings > .cookie-consent-actions,
+.cookie-consent-banner > .cookie-consent-actions{
+  padding-top: 0.08rem;
+}
+
+/* =============================================================================
+   12B) ACTION / ROW MICRO-REFINEMENT
+============================================================================= */
+.cookie-consent-banner + .cookie-consent-settings{
+  padding-top: 0.08rem;
+}
+
+.cookie-consent-settings .cookie-consent-row + .cookie-consent-row{
+  margin-top: -0.08rem;
+}
+
+/* =============================================================================
+   13) REDUCED MOTION
+============================================================================= */
+@media (prefers-reduced-motion: reduce){
+  .cookie-consent,
+  .cookie-consent-backdrop,
+  .cookie-consent-panel,
+  .cookie-consent-close-line,
+  .cookie-consent-action{
+    transition: none !important;
+  }
+}
+
+/* =============================================================================
+   14) RESPONSIVE — 1024PX
+============================================================================= */
+@media (max-width:1024px){
+  .cookie-consent-panel{
+    padding: 1.24rem 1.24rem 1.14rem;
+  }
+}
+
+/* =============================================================================
+   15) RESPONSIVE — 768PX
+============================================================================= */
+@media (max-width:768px){
+  :root{
+    --cookie-consent-panel-width: min(100vw, calc(100vw - (1.05 * var(--site-gutter, 20px))));
+  }
+
+  .cookie-consent-panel{
+    padding: 1.08rem 1.08rem 1rem;
+  }
+
+  .cookie-consent-header{
+    padding: 0 0 1.04rem 0;
+  }
+
+  .cookie-consent-body{
+    padding-top: 1.02rem;
+  }
+
+  .cookie-consent-banner,
+  .cookie-consent-row{
+    padding: 0.92rem;
+  }
+
+  .cookie-consent-title{
+    font-size: 1.36rem;
+  }
+
+  .cookie-consent-copy,
+  .cookie-consent-note,
+  .cookie-consent-action,
+  .cookie-consent-row-copy strong{
+    font-size: 0.9rem;
+  }
+
+  .cookie-consent-row-copy span{
+    font-size: 0.78rem;
+  }
+}

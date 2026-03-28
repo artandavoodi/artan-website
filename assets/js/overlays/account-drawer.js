@@ -3,14 +3,25 @@
    01) MODULE IDENTITY
    02) DOM HELPERS
    03) DRAWER QUERIES
+   03A) AUTH / PROFILE QUERIES
+   03B) AUTH / PROFILE STATE APPLICATION
+   03C) STATE METADATA APPLICATION
+   03D) EVENT DETAIL NORMALIZATION
    04) STATE FLAGS
    04A) TIMING CONSTANTS
+   04B) STATE GUARDS
    05) CLOSE CONTROL QUERIES
+   05A) SUPPORT LINK QUERIES
    06) OPEN STATE APPLICATION
    07) CLOSE STATE APPLICATION
    08) ESCAPE KEY BINDING
    09) CLOSE CONTROL BINDING
    10) OPEN REQUEST BINDING
+   10A) AUTH / PROFILE REQUEST BINDING
+   10B) GUEST ENTRY REQUEST BINDING
+   10C) OPEN REQUEST DETAIL ROUTING
+   10D) CONSENT SETTINGS REQUEST BINDING
+   10E) CLOSE REQUEST BINDING
    11) INITIALIZATION
 ============================================================================= */
 
@@ -43,6 +54,78 @@
     return drawer ? q('.account-drawer-shell', drawer) : null;
   }
 
+  /* =============================================================================
+     03A) AUTH / PROFILE QUERIES
+  ============================================================================= */
+  function getAuthState() {
+    const drawer = getDrawer();
+    return drawer ? q('[data-auth-state]', drawer) : null;
+  }
+
+  function getProfileState() {
+    const drawer = getDrawer();
+    return drawer ? q('[data-profile-state]', drawer) : null;
+  }
+
+  /* =============================================================================
+     03B) AUTH / PROFILE STATE APPLICATION
+  ============================================================================= */
+  function showAuthState() {
+    const authState = getAuthState();
+    const profileState = getProfileState();
+
+    if (authState) {
+      authState.hidden = false;
+      authState.dataset.authState = 'guest';
+      authState.dataset.authSurface = 'entry';
+    }
+
+    if (profileState) {
+      profileState.hidden = true;
+      profileState.dataset.profileState = 'empty';
+    }
+    applyDrawerStateMetadata('auth');
+  }
+
+  function showProfileState() {
+    const authState = getAuthState();
+    const profileState = getProfileState();
+
+    if (authState) {
+      authState.hidden = true;
+    }
+
+    if (profileState) {
+      profileState.hidden = false;
+      profileState.dataset.profileState = 'ready';
+    }
+    applyDrawerStateMetadata('profile');
+  }
+
+  /* =============================================================================
+     03C) STATE METADATA APPLICATION
+  ============================================================================= */
+  function applyDrawerStateMetadata(state) {
+    const drawer = getDrawer();
+    if (!drawer) return;
+
+    if (state === 'profile') {
+      drawer.dataset.accountDrawerView = 'profile';
+      return;
+    }
+
+    drawer.dataset.accountDrawerView = 'auth';
+  }
+
+  /* =============================================================================
+     03D) EVENT DETAIL NORMALIZATION
+  ============================================================================= */
+  function getEventDetail(event) {
+    return event && event.detail && typeof event.detail === 'object'
+      ? event.detail
+      : {};
+  }
+
   function clearCloseTimer() {
     if (!closeTimer) return;
     window.clearTimeout(closeTimer);
@@ -62,6 +145,13 @@
   let closeTimer = null;
 
   /* =============================================================================
+     04B) STATE GUARDS
+  ============================================================================= */
+  function isDrawerClosing() {
+    return document.body.classList.contains('account-drawer-closing');
+  }
+
+  /* =============================================================================
      05) CLOSE CONTROL QUERIES
   ============================================================================= */
   function getCloseControls() {
@@ -70,11 +160,21 @@
   }
 
   /* =============================================================================
+     05A) SUPPORT LINK QUERIES
+  ============================================================================= */
+  function getConsentSettingsLinks() {
+    const drawer = getDrawer();
+    return drawer ? qa('a[href="#cookie-consent-mount"]', drawer) : [];
+  }
+
+  /* =============================================================================
      06) OPEN STATE APPLICATION
   ============================================================================= */
   function openDrawer() {
     const drawer = getDrawer();
     if (!drawer) return;
+
+    if (isOpen && !isDrawerClosing()) return;
 
     clearCloseTimer();
     drawer.removeAttribute('hidden');
@@ -97,6 +197,8 @@
   function closeDrawer() {
     const drawer = getDrawer();
     if (!drawer) return;
+
+    if (!isOpen && !isDrawerClosing()) return;
 
     clearCloseTimer();
     drawer.dataset.accountDrawerState = 'closing';
@@ -155,8 +257,107 @@
     if (document.documentElement.dataset.accountDrawerOpenRequestBound === 'true') return;
     document.documentElement.dataset.accountDrawerOpenRequestBound = 'true';
 
-    document.addEventListener('account-drawer:open-request', () => {
+    document.addEventListener('account-drawer:open-request', (event) => {
+      routeOpenRequest(event);
+    });
+  }
+
+  /* =============================================================================
+     10A) AUTH / PROFILE REQUEST BINDING
+  ============================================================================= */
+  function bindAuthProfileRequests() {
+    if (document.documentElement.dataset.accountDrawerStateRequestBound === 'true') return;
+    document.documentElement.dataset.accountDrawerStateRequestBound = 'true';
+
+    document.addEventListener('account-drawer:show-auth', (event) => {
+      const detail = getEventDetail(event);
+      showAuthState();
+
+      const authState = getAuthState();
+      if (authState && detail.surface) {
+        authState.dataset.authSurface = detail.surface;
+      }
+    });
+
+    document.addEventListener('account-drawer:show-profile', () => {
+      showProfileState();
+    });
+  }
+
+  /* =============================================================================
+     10B) GUEST ENTRY REQUEST BINDING
+  ============================================================================= */
+  function bindGuestEntryRequests() {
+    if (document.documentElement.dataset.accountDrawerGuestEntryBound === 'true') return;
+    document.documentElement.dataset.accountDrawerGuestEntryBound = 'true';
+
+    document.addEventListener('account-drawer:guest-entry', (event) => {
+      const detail = getEventDetail(event);
+      showAuthState();
+
+      const authState = getAuthState();
+      if (authState && detail.surface) {
+        authState.dataset.authSurface = detail.surface;
+      }
+
       openDrawer();
+    });
+  }
+
+  /* =============================================================================
+     10C) OPEN REQUEST DETAIL ROUTING
+  ============================================================================= */
+  function routeOpenRequest(event) {
+    const detail = getEventDetail(event);
+    const requestedState = detail.state;
+    const requestedSurface = detail.surface;
+
+    if (requestedState === 'profile') {
+      showProfileState();
+      openDrawer();
+      return;
+    }
+
+    showAuthState();
+
+    const authState = getAuthState();
+    if (authState && requestedSurface) {
+      authState.dataset.authSurface = requestedSurface;
+    }
+
+    openDrawer();
+  }
+
+  /* =============================================================================
+     10D) CONSENT SETTINGS REQUEST BINDING
+  ============================================================================= */
+  function bindConsentSettingsRequests() {
+    getConsentSettingsLinks().forEach((link) => {
+      if (link.dataset.cookieConsentBound === 'true') return;
+      link.dataset.cookieConsentBound = 'true';
+
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        document.dispatchEvent(new CustomEvent('cookie-consent:open-request', {
+          detail: {
+            source: 'account-drawer',
+            surface: 'settings'
+          }
+        }));
+      });
+    });
+  }
+
+  /* =============================================================================
+     10E) CLOSE REQUEST BINDING
+  ============================================================================= */
+  function bindCloseRequests() {
+    if (document.documentElement.dataset.accountDrawerCloseRequestBound === 'true') return;
+    document.documentElement.dataset.accountDrawerCloseRequestBound = 'true';
+
+    document.addEventListener('account-drawer:close-request', () => {
+      closeDrawer();
     });
   }
 
@@ -172,11 +373,16 @@
     drawer.setAttribute('aria-hidden', 'true');
     drawer.setAttribute('hidden', 'hidden');
     drawer.dataset.accountDrawerState = 'closed';
+    showAuthState();
     isBound = true;
 
     bindEscapeKey();
     bindCloseControls();
     bindOpenRequests();
+    bindAuthProfileRequests();
+    bindGuestEntryRequests();
+    bindConsentSettingsRequests();
+    bindCloseRequests();
   }
 
   if (document.readyState === 'loading') {

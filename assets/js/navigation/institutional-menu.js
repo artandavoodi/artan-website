@@ -18,6 +18,9 @@
    15A) SEARCH INDEX HELPERS
    15B) SEARCH RESULTS RENDERING
    15C) ACCOUNT DRAWER TRIGGER BINDING
+   15D) ACCOUNT DRAWER STATE SYNCHRONIZATION
+   15E) ACCOUNT DRAWER OPEN-REQUEST ROUTING
+   15F) COOKIE CONSENT OVERLAY COORDINATION
    16) MAIN INITIALIZATION
    17) LIFECYCLE HOOKS
 ============================================================================= */
@@ -412,17 +415,51 @@
 
         document.dispatchEvent(new CustomEvent('account-drawer:open-request', {
           detail: {
-            source: 'institutional-menu'
+            source: 'institutional-menu',
+            state: 'guest',
+            surface: 'entry'
           }
         }));
       });
+    }
+
+    /* =============================================================================
+       15D) ACCOUNT DRAWER STATE SYNCHRONIZATION
+    ============================================================================= */
+    if (!document.documentElement.dataset.accountDrawerMenuSyncBound) {
+      document.documentElement.dataset.accountDrawerMenuSyncBound = 'true';
 
       document.addEventListener('account-drawer:opened', () => {
-        accountDrawerTrigger.setAttribute('aria-expanded', 'true');
+        const liveTrigger = getAccountDrawerTrigger(getMenu());
+        if (!liveTrigger) return;
+        liveTrigger.setAttribute('aria-expanded', 'true');
       });
 
       document.addEventListener('account-drawer:closed', () => {
-        accountDrawerTrigger.setAttribute('aria-expanded', 'false');
+        const liveTrigger = getAccountDrawerTrigger(getMenu());
+        if (!liveTrigger) return;
+        liveTrigger.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    /* =============================================================================
+       15E) ACCOUNT DRAWER OPEN-REQUEST ROUTING
+    ============================================================================= */
+
+    /* =============================================================================
+       15F) COOKIE CONSENT OVERLAY COORDINATION
+    ============================================================================= */
+    if (!document.documentElement.dataset.cookieConsentMenuSyncBound) {
+      document.documentElement.dataset.cookieConsentMenuSyncBound = 'true';
+
+      document.addEventListener('cookie-consent:open-request', () => {
+        clearCloseTimer();
+        closePanels();
+      });
+
+      document.addEventListener('cookie-consent:opened', () => {
+        clearCloseTimer();
+        closePanels();
       });
     }
 

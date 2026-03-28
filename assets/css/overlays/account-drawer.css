@@ -13,6 +13,13 @@
    10) TYPOGRAPHY
    11) ACTIONS
    12) NOTES
+   12A) AUTH / PROFILE SHELLS
+   12B) AUTH ENTRY CARD
+   12C) IDENTITY OPTIONS
+   12D) LEGAL / SUPPORT META
+   12E) INTERACTION REFINEMENT
+   12F) STATE VIEW REFINEMENT
+   12G) ENTRY MICRO-STRUCTURE
    13) REDUCED MOTION
    14) RESPONSIVE — 1024PX
    15) RESPONSIVE — 768PX
@@ -31,14 +38,74 @@
   --account-drawer-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
   --account-drawer-muted: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
   --account-drawer-backdrop: rgba(0, 0, 0, 0.14);
+  --account-drawer-card-surface: color-mix(in srgb, var(--bg-primary-color) 72%, transparent);
+  --account-drawer-card-border: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  --account-drawer-card-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-drawer-card-shadow: 0 14px 34px rgba(0, 0, 0, 0.04);
+  --account-drawer-badge-surface: color-mix(in srgb, var(--text-primary-color) 5%, transparent);
+  --account-drawer-badge-text: color-mix(in srgb, var(--text-primary-color) 72%, transparent);
+  --account-drawer-option-hover-surface: color-mix(in srgb, var(--text-primary-color) 3%, transparent);
+  --account-drawer-option-meta-strong: color-mix(in srgb, var(--text-primary-color) 52%, transparent);
+  --account-drawer-legal-hover: color-mix(in srgb, var(--text-primary-color) 86%, transparent);
+  --account-drawer-profile-surface: color-mix(in srgb, var(--bg-primary-color) 76%, transparent);
+  --account-drawer-profile-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  --account-drawer-profile-shadow: 0 16px 36px rgba(0, 0, 0, 0.05);
+  --account-drawer-entry-context: color-mix(in srgb, var(--text-primary-color) 46%, transparent);
+  --account-drawer-entry-path-surface: color-mix(in srgb, var(--text-primary-color) 3%, transparent);
+  --account-drawer-entry-path-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-drawer-profile-note: color-mix(in srgb, var(--text-primary-color) 44%, transparent);
+  --account-drawer-support-surface-soft: color-mix(in srgb, var(--text-primary-color) 2%, transparent);
+  --account-drawer-entry-context-secondary: color-mix(in srgb, var(--text-primary-color) 34%, transparent);
 }
 
 body.light-mode{
   --account-drawer-surface: rgba(255, 255, 255, 0.82);
 }
 
+body.light-mode{
+  --account-drawer-card-surface: rgba(255, 255, 255, 0.52);
+  --account-drawer-card-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  --account-drawer-card-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-drawer-card-shadow: 0 14px 34px rgba(0, 0, 0, 0.035);
+  --account-drawer-badge-surface: color-mix(in srgb, var(--text-primary-color) 4%, transparent);
+  --account-drawer-badge-text: color-mix(in srgb, var(--text-primary-color) 62%, transparent);
+  --account-drawer-option-hover-surface: rgba(0, 0, 0, 0.025);
+  --account-drawer-option-meta-strong: color-mix(in srgb, var(--text-primary-color) 46%, transparent);
+  --account-drawer-legal-hover: color-mix(in srgb, var(--text-primary-color) 88%, transparent);
+  --account-drawer-profile-surface: rgba(255, 255, 255, 0.56);
+  --account-drawer-profile-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  --account-drawer-profile-shadow: 0 16px 36px rgba(0, 0, 0, 0.04);
+  --account-drawer-entry-context: color-mix(in srgb, var(--text-primary-color) 40%, transparent);
+  --account-drawer-entry-path-surface: rgba(0, 0, 0, 0.022);
+  --account-drawer-entry-path-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-drawer-profile-note: color-mix(in srgb, var(--text-primary-color) 38%, transparent);
+  --account-drawer-support-surface-soft: rgba(0, 0, 0, 0.018);
+  --account-drawer-entry-context-secondary: color-mix(in srgb, var(--text-primary-color) 30%, transparent);
+}
+
 body.dark-mode{
   --account-drawer-surface: rgba(0, 0, 0, 0.82);
+}
+
+body.dark-mode{
+  --account-drawer-card-surface: rgba(255, 255, 255, 0.03);
+  --account-drawer-card-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  --account-drawer-card-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  --account-drawer-card-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+  --account-drawer-badge-surface: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  --account-drawer-badge-text: color-mix(in srgb, var(--text-primary-color) 74%, transparent);
+  --account-drawer-option-hover-surface: rgba(255, 255, 255, 0.035);
+  --account-drawer-option-meta-strong: color-mix(in srgb, var(--text-primary-color) 58%, transparent);
+  --account-drawer-legal-hover: color-mix(in srgb, var(--text-primary-color) 92%, transparent);
+  --account-drawer-profile-surface: rgba(255, 255, 255, 0.035);
+  --account-drawer-profile-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  --account-drawer-profile-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+  --account-drawer-entry-context: color-mix(in srgb, var(--text-primary-color) 52%, transparent);
+  --account-drawer-entry-path-surface: rgba(255, 255, 255, 0.032);
+  --account-drawer-entry-path-border: color-mix(in srgb, var(--text-primary-color) 9%, transparent);
+  --account-drawer-profile-note: color-mix(in srgb, var(--text-primary-color) 54%, transparent);
+  --account-drawer-support-surface-soft: rgba(255, 255, 255, 0.026);
+  --account-drawer-entry-context-secondary: color-mix(in srgb, var(--text-primary-color) 42%, transparent);
 }
 
 /* =============================================================================
@@ -318,6 +385,265 @@ body.account-drawer-closing .account-drawer-close{
 }
 
 /* =============================================================================
+   12A) AUTH / PROFILE SHELLS
+============================================================================= */
+.account-drawer-auth,
+.account-drawer-profile,
+.account-drawer-state{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0.92rem;
+}
+
+.account-drawer-state[hidden],
+.account-drawer-auth[hidden],
+.account-drawer-profile[hidden]{
+  display: none !important;
+}
+
+/* =============================================================================
+   12B) AUTH ENTRY CARD
+============================================================================= */
+.account-drawer-entry-card{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0.96rem;
+  padding: 1.06rem;
+  border: 1px solid var(--account-drawer-card-border);
+  background: var(--account-drawer-card-surface);
+  box-shadow: var(--account-drawer-card-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.account-drawer-entry-badge{
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.66rem;
+  padding: 0.3rem 0.58rem;
+  background: var(--account-drawer-badge-surface);
+  color: var(--account-drawer-badge-text);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.account-drawer-entry-title,
+.account-drawer-entry-copy{
+  margin: 0;
+}
+
+.account-drawer-entry-title{
+  color: var(--text-primary-color);
+  font-size: 1.04rem;
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  line-height: 1.16;
+}
+
+.account-drawer-entry-copy{
+  color: var(--account-drawer-muted);
+  font-size: 0.94rem;
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  line-height: 1.58;
+}
+
+/* =============================================================================
+   12C) IDENTITY OPTIONS
+============================================================================= */
+.account-drawer-identity-options{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.account-drawer-identity-option{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.78rem;
+  min-height: 3.1rem;
+  padding: 0.82rem 0.94rem;
+  border-top: 1px solid var(--account-drawer-card-divider);
+  color: var(--text-primary-color);
+  background: transparent;
+  text-decoration: none;
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
+}
+
+.account-drawer-identity-option:first-child{
+  border-top: 0;
+}
+
+.account-drawer-identity-label,
+.account-drawer-identity-meta{
+  margin: 0;
+}
+
+.account-drawer-identity-label{
+  color: var(--text-primary-color);
+  font-size: 0.95rem;
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.account-drawer-identity-meta{
+  color: var(--account-drawer-option-meta-strong);
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.account-drawer-identity-option:hover,
+.account-drawer-identity-option:focus-visible,
+.account-drawer-identity-option:active{
+  background: var(--account-drawer-option-hover-surface);
+  outline: none;
+}
+
+/* =============================================================================
+   12D) LEGAL / SUPPORT META
+============================================================================= */
+.account-drawer-legal,
+.account-drawer-support{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.3rem;
+}
+
+.account-drawer-legal-link,
+.account-drawer-support-link{
+  color: var(--account-drawer-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 300;
+  letter-spacing: -0.012em;
+  line-height: 1.45;
+  transition: color 220ms ease;
+}
+
+.account-drawer-legal-link:hover,
+.account-drawer-legal-link:focus-visible,
+.account-drawer-legal-link:active,
+.account-drawer-support-link:hover,
+.account-drawer-support-link:focus-visible,
+.account-drawer-support-link:active{
+  color: var(--account-drawer-legal-hover);
+  outline: none;
+}
+
+/* =============================================================================
+   12E) INTERACTION REFINEMENT
+============================================================================= */
+.account-drawer-actions + .account-drawer-legal{
+  padding-top: 0.08rem;
+}
+
+.account-drawer-legal + .account-drawer-support{
+  padding-top: 0.02rem;
+}
+
+/* =============================================================================
+   12F) STATE VIEW REFINEMENT
+============================================================================= */
+.account-drawer[data-account-drawer-view="auth"] .account-drawer-profile{
+  opacity: 0;
+}
+
+.account-drawer[data-account-drawer-view="profile"] .account-drawer-auth{
+  opacity: 0;
+}
+
+.account-drawer[data-account-drawer-view="profile"] .account-drawer-profile .account-drawer-entry-card{
+  background: var(--account-drawer-profile-surface);
+  border-color: var(--account-drawer-profile-border);
+  box-shadow: var(--account-drawer-profile-shadow);
+}
+
+.account-drawer-profile .account-drawer-entry-title{
+  max-width: 19ch;
+}
+
+.account-drawer-profile .account-drawer-entry-copy{
+  max-width: 42ch;
+}
+
+/* =============================================================================
+   12G) ENTRY MICRO-STRUCTURE
+============================================================================= */
+.account-drawer-entry-card .account-drawer-note{
+  color: var(--account-drawer-entry-context);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.account-drawer-entry-card .account-drawer-note + .account-drawer-note{
+  color: var(--account-drawer-entry-context-secondary);
+  margin-top: -0.32rem;
+}
+
+.account-drawer-entry-card + .account-drawer-support{
+  margin-top: -0.08rem;
+}
+
+.account-drawer-entry-card + .account-drawer-support .account-drawer-note{
+  color: var(--account-drawer-entry-context);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.account-drawer-entry-card + .account-drawer-support{
+  padding: 0.08rem 0;
+}
+
+.account-drawer-entry-card + .account-drawer-support + .account-drawer-support{
+  margin-top: -0.34rem;
+  padding: 0.62rem 0.86rem;
+  border: 1px solid var(--account-drawer-entry-path-border);
+  background: var(--account-drawer-entry-path-surface);
+}
+
+.account-drawer-entry-card + .account-drawer-support + .account-drawer-support .account-drawer-support-link{
+  color: var(--text-primary-color);
+  font-size: 0.84rem;
+  letter-spacing: -0.012em;
+}
+
+.account-drawer-profile .account-drawer-entry-card .account-drawer-note{
+  color: var(--account-drawer-profile-note);
+}
+
+.account-drawer-legal + .account-drawer-support{
+  padding: 0.18rem 0.76rem 0;
+  background: var(--account-drawer-support-surface-soft);
+}
+
+.account-drawer-legal + .account-drawer-support .account-drawer-support-link{
+  font-size: 0.8rem;
+}
+
+.account-drawer-legal + .account-drawer-support + .account-drawer-support{
+  padding-top: 0;
+}
+
+/* =============================================================================
    13) REDUCED MOTION
 ============================================================================= */
 @media (prefers-reduced-motion: reduce){
@@ -370,5 +696,39 @@ body.account-drawer-closing .account-drawer-close{
 
   .account-drawer-title{
     font-size: 1.42rem;
+  }
+
+  .account-drawer-entry-card{
+    padding: 0.96rem;
+  }
+
+  .account-drawer-entry-title{
+    font-size: 0.98rem;
+  }
+
+  .account-drawer-entry-copy,
+  .account-drawer-identity-label{
+    font-size: 0.9rem;
+  }
+
+  .account-drawer-identity-meta,
+  .account-drawer-legal-link,
+  .account-drawer-support-link{
+    font-size: 0.78rem;
+  }
+
+  .account-drawer-entry-card .account-drawer-note,
+  .account-drawer-entry-card + .account-drawer-support .account-drawer-note,
+  .account-drawer-entry-card + .account-drawer-support + .account-drawer-support .account-drawer-support-link{
+    font-size: 0.76rem;
+  }
+
+  .account-drawer-legal + .account-drawer-support .account-drawer-support-link{
+    font-size: 0.76rem;
+  }
+
+  .account-drawer-profile .account-drawer-entry-title,
+  .account-drawer-profile .account-drawer-entry-copy{
+    max-width: none;
   }
 }
