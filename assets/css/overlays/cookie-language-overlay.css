@@ -12,7 +12,7 @@
    09) SEARCH FIELD
    10) REGIONS MOUNT
    10A) COUNTRY ITEM
-   11) PLACEHOLDER STATE
+   11) HIDDEN STATUS CARRIER
    13) REDUCED MOTION
    14) RESPONSIVE — 768PX
 ============================================================================= */
@@ -383,19 +383,10 @@ body.cookie-language-overlay-closing .cookie-language-overlay-inner{
 }
 
 /* =============================================================================
-   11) PLACEHOLDER STATE
+   11) HIDDEN STATUS CARRIER
 ============================================================================= */
-.cookie-language-overlay-regions:empty::before{
-  content: "Cookie language and region entries will be mounted here.";
-  display: block;
-  padding: 1rem;
-  border: 1px dashed var(--cookie-language-overlay-divider);
-  border-radius: 1rem;
-  color: var(--cookie-language-overlay-muted);
-  font-size: 0.88rem;
-  font-weight: 300;
-  letter-spacing: -0.012em;
-  line-height: 1.5;
+.cookie-consent-language-status[hidden]{
+  display: none !important;
 }
 
 /* =============================================================================

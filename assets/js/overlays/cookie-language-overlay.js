@@ -6,15 +6,16 @@
    04) OVERLAY RESOLUTION
    05) OPEN / CLOSE STATE
    06) LANGUAGE VALUE / STATUS
-   06A) COUNTRY DATA HELPERS
-   06AB) LANGUAGE LABEL HELPERS
-   06AC) COUNTRY LABEL HELPERS
-   06B) REGIONS RENDERING
-   06C) SEARCH FILTERING
-   06CA) REGIONS SCROLL BEHAVIOR
-   06D) COUNTRY SELECTION BRIDGE
-   06E) COOKIE RETURN FLOW
-   06F) PLACEHOLDER / INITIAL RENDER STATE
+   06A) STATUS MESSAGE HELPERS
+   06B) COUNTRY DATA HELPERS
+   06BA) LANGUAGE LABEL HELPERS
+   06BB) COUNTRY LABEL HELPERS
+   06C) REGIONS RENDERING
+   06D) SEARCH FILTERING
+   06DA) REGIONS SCROLL BEHAVIOR
+   06E) COUNTRY SELECTION BRIDGE
+   06F) COOKIE RETURN FLOW
+   06G) PLACEHOLDER / INITIAL RENDER STATE
    07) BINDINGS
    08) EVENT BRIDGE
    08A) OVERLAY COORDINATION
@@ -70,7 +71,9 @@
 
   function getStatusNode() {
     const overlay = getOverlay();
-    return overlay ? q('[data-cookie-language-overlay-status="true"]', overlay) : null;
+    const overlayNode = overlay ? q('[data-cookie-language-overlay-status="true"]', overlay) : null;
+    if (overlayNode) return overlayNode;
+    return q('[data-cookie-language-overlay-status="true"]');
   }
 
   function getRegionsMount() {
@@ -190,15 +193,60 @@
     if (selectedCountry) {
       const countryName = String(selectedCountry.name || 'Selected region').trim();
       const languageLabel = getCountryLanguageLabel(selectedCountry);
-      statusNode.textContent = `Current selection: ${countryName} · ${languageLabel}. Choosing a different option will update the website language and return you to cookie settings.`;
+      statusNode.textContent = getSelectedStatusMessage(countryName, languageLabel);
       return;
     }
 
-    statusNode.textContent = `Current selection: ${getPreferredLanguageLabel()} detected automatically. Choose a language or region to update the website and return to cookie settings.`;
+    statusNode.textContent = getAutoDetectedStatusMessage(getPreferredLanguageLabel());
   }
 
   /* =============================================================================
-     06A) COUNTRY DATA HELPERS
+     06A) STATUS MESSAGE HELPERS
+  ============================================================================= */
+  function formatStatusMessage(template, replacements = {}) {
+    return String(template || '').replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (_, token) => {
+      const value = replacements[token];
+      return value == null ? '' : String(value);
+    });
+  }
+
+  function getStatusTemplate(key, fallback) {
+    const statusNode = getStatusNode();
+    if (!statusNode) return fallback;
+
+    const attrName = `cookieLanguageOverlay${key}`;
+    const datasetValue = statusNode.dataset?.[attrName];
+    const value = String(datasetValue || '').trim();
+    return value || fallback;
+  }
+
+  function getSelectedStatusMessage(countryName, languageLabel) {
+    return formatStatusMessage(
+      getStatusTemplate(
+        'statusSelected',
+        'Current selection: {{country}} · {{language}}. Choosing a different option will update the website language and return you to cookie settings.'
+      ),
+      {
+        country: countryName,
+        language: languageLabel
+      }
+    );
+  }
+
+  function getAutoDetectedStatusMessage(languageLabel) {
+    return formatStatusMessage(
+      getStatusTemplate(
+        'statusAuto',
+        'Current selection: {{language}} detected automatically. Choose a language or region to update the website and return to cookie settings.'
+      ),
+      {
+        language: languageLabel
+      }
+    );
+  }
+
+  /* =============================================================================
+     06B) COUNTRY DATA HELPERS
   ============================================================================= */
   function getCountriesData() {
     const raw = Array.isArray(window.ARTAN_COUNTRIES_DATA) ? window.ARTAN_COUNTRIES_DATA : [];
@@ -233,7 +281,7 @@
   }
 
   /* =============================================================================
-     06AB) LANGUAGE LABEL HELPERS
+     06BA) LANGUAGE LABEL HELPERS
   ============================================================================= */
   function getLanguageCodes(country) {
     const codes = [];
@@ -281,7 +329,7 @@
   }
 
   /* =============================================================================
-     06AC) COUNTRY LABEL HELPERS
+     06BB) COUNTRY LABEL HELPERS
   ============================================================================= */
   function getCountryCode(country) {
     return String(country?.code || country?.countryCode || '').trim().toUpperCase();
@@ -330,7 +378,7 @@
   }
 
   /* =============================================================================
-     06B) REGIONS RENDERING
+     06C) REGIONS RENDERING
   ============================================================================= */
   function buildCountryItemMarkup(country) {
     const countryMeta = getCountrySearchMeta(country);
@@ -387,7 +435,7 @@
   }
 
   /* =============================================================================
-     06C) SEARCH FILTERING
+     06D) SEARCH FILTERING
   ============================================================================= */
   function filterRegions(query) {
     const normalized = String(query || '').trim().toLowerCase();
@@ -435,7 +483,7 @@
   }
 
   /* =============================================================================
-     06CA) REGIONS SCROLL BEHAVIOR
+     06DA) REGIONS SCROLL BEHAVIOR
   ============================================================================= */
   function bindRegionsScrollBehavior() {
     const mount = getRegionsMount();
@@ -453,7 +501,7 @@
   }
 
   /* =============================================================================
-     06D) COUNTRY SELECTION BRIDGE
+     06E) COUNTRY SELECTION BRIDGE
   ============================================================================= */
   function dispatchCountrySelection(code) {
     if (!code) return;
@@ -478,7 +526,7 @@
   }
 
   /* =============================================================================
-     06E) COOKIE RETURN FLOW
+     06F) COOKIE RETURN FLOW
   ============================================================================= */
   function requestReturnToCookieConsent() {
     document.dispatchEvent(new CustomEvent('cookie-language-overlay:return-to-cookie-consent', {
@@ -489,7 +537,7 @@
   }
 
   /* =============================================================================
-     06F) PLACEHOLDER / INITIAL RENDER STATE
+     06G) PLACEHOLDER / INITIAL RENDER STATE
   ============================================================================= */
   function syncPlaceholderState() {
     const mount = getRegionsMount();

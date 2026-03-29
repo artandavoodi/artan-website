@@ -175,6 +175,18 @@
     return event && event.detail && typeof event.detail === 'object' ? event.detail : {};
   }
 
+  function getSelectedCountryCode() {
+    const storageKeys = ['countryCode', 'localeCountryCode'];
+
+    for (const key of storageKeys) {
+      const value = window.localStorage.getItem(key);
+      const normalized = String(value || '').trim().toUpperCase();
+      if (/^[A-Z]{2}$/.test(normalized)) return normalized;
+    }
+
+    return '';
+  }
+
   function isHomePage() {
     const path = window.location.pathname || '';
     return path === '/' || path.endsWith('/index.html');
@@ -311,29 +323,64 @@
   /* =============================================================================
      07B) LANGUAGE / REGION HELPERS
   ============================================================================= */
-  function getPreferredLanguageLabel() {
+  function getPreferredLanguageLabel(preferredLanguageCode = '') {
+    const explicitCode = String(preferredLanguageCode || '').trim().toLowerCase();
+
+    if (explicitCode) {
+      try {
+        const explicitDisplayNames = new Intl.DisplayNames([explicitCode], { type: 'language' });
+        const explicitLabel = String(explicitDisplayNames.of(explicitCode) || '').trim();
+        if (explicitLabel) return explicitLabel;
+      } catch {}
+    }
+
+    const selectedCountryCode = getSelectedCountryCode();
+
+    if (selectedCountryCode && Array.isArray(window.ARTAN_COUNTRIES_DATA)) {
+      const selectedCountry = window.ARTAN_COUNTRIES_DATA
+        .flatMap((region) => Array.isArray(region?.countries) ? region.countries : [])
+        .find((country) => {
+          const code = String(country?.code || country?.countryCode || '').trim().toUpperCase();
+          return code === selectedCountryCode;
+        }) || null;
+
+      const languageCode = String(
+        selectedCountry?.language ||
+        selectedCountry?.primaryLanguage ||
+        (Array.isArray(selectedCountry?.languages) ? selectedCountry.languages[0] : '') ||
+        ''
+      ).trim().toLowerCase();
+
+      if (languageCode) {
+        try {
+          const displayNames = new Intl.DisplayNames([languageCode], { type: 'language' });
+          const label = String(displayNames.of(languageCode) || '').trim();
+          if (label) return label;
+        } catch {}
+      }
+    }
+
     const docLang = (document.documentElement.getAttribute('lang') || '').trim();
     const navLang = (navigator.language || '').trim();
     const raw = docLang || navLang;
     if (!raw) return 'Auto';
 
     const normalized = raw.replace('_', '-');
+    const languageCode = normalized.split('-')[0].toLowerCase();
 
     try {
-      const [label] = new Intl.DisplayNames([normalized], { type: 'language' }).of(normalized.split('-')[0])
-        ? [new Intl.DisplayNames([normalized], { type: 'language' }).of(normalized.split('-')[0])]
-        : ['Auto'];
-
+      const displayNames = new Intl.DisplayNames([languageCode || normalized], { type: 'language' });
+      const label = String(displayNames.of(languageCode) || '').trim();
       return label || normalized.toUpperCase();
     } catch {
       return normalized.toUpperCase();
     }
   }
 
-  function syncLanguageValue() {
+  function syncLanguageValue(preferredLanguageCode = '') {
     const valueNode = getLanguageValueNode();
     if (!valueNode) return;
-    valueNode.textContent = getPreferredLanguageLabel();
+    valueNode.textContent = getPreferredLanguageLabel(preferredLanguageCode);
   }
 
   /* =============================================================================
@@ -356,6 +403,7 @@
   ============================================================================= */
   function requestReturnFromCookieLanguageOverlay() {
     openConsent('settings');
+    syncLanguageValue();
 
     getLanguageControls().forEach((control) => {
       control.setAttribute('aria-expanded', 'false');
@@ -839,6 +887,18 @@
 
     document.addEventListener('cookie-language-overlay:return-to-cookie-consent', () => {
       requestReturnFromCookieLanguageOverlay();
+    });
+    document.addEventListener('country-selected', (event) => {
+      const detail = getEventDetail(event);
+      syncLanguageValue(detail.language || '');
+    });
+    document.addEventListener('translation:complete', (event) => {
+      const detail = getEventDetail(event);
+      const completedLanguage = detail.language || detail.lang || '';
+
+      window.requestAnimationFrame(() => {
+        syncLanguageValue(completedLanguage);
+      });
     });
   }
 

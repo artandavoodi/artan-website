@@ -17,6 +17,7 @@
      01K) LEGAL / LANGUAGE FOOTER BAR
      01KA) LEGAL LINKS
      01KB) COOKIE LANGUAGE / REGION TRIGGER
+     01KC) COOKIE LANGUAGE STATUS
 ============================================================================= -->
 
 <!-- =============================================================================
@@ -265,6 +266,22 @@
             <span class="cookie-consent-footer-language-label" data-i18n-key="cookieConsent.language.label">Language</span>
             <span class="cookie-consent-footer-language-value" data-cookie-consent-language-value="true" data-i18n-key="cookieConsent.language.auto">Auto</span>
           </button>
+          <!-- =============================================================================
+               01KC) COOKIE LANGUAGE STATUS
+               Hidden translation carrier for cookie-language overlay status messaging.
+               The overlay JS reads translated templates from these data attributes.
+          ============================================================================= -->
+          <p
+            class="cookie-consent-language-status"
+            data-cookie-language-overlay-status="true"
+            data-cookie-language-overlay-status-selected="Current selection: {{country}} · {{language}}. Choosing a different option will update the website language and return you to cookie settings."
+            data-cookie-language-overlay-status-auto="Current selection: {{language}} detected automatically. Choose a language or region to update the website and return to cookie settings."
+            data-i18n-data-attrs="data-cookie-language-overlay-status-selected,data-cookie-language-overlay-status-auto"
+            data-i18n-key="cookieConsent.language.statusAuto"
+            hidden
+          >
+            Current selection: Auto detected automatically. Choose a language or region to update the website and return to cookie settings.
+          </p>
         </div>
       </div>
     </div>
