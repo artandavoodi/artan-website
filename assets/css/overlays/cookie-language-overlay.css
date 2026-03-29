@@ -37,6 +37,8 @@
   --cookie-language-overlay-muted: color-mix(in srgb, var(--text-primary-color) 58%, transparent);
   --cookie-language-overlay-soft: color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --cookie-language-overlay-soft-strong: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --cookie-language-overlay-sticky-toolbar-surface: transparent;
+  --cookie-language-overlay-sticky-toolbar-divider: color-mix(in srgb, var(--text-secondary-color) 35%, transparent);
   --cookie-language-overlay-search-border: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
   --cookie-language-overlay-status-surface: color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --cookie-language-overlay-country-surface: color-mix(in srgb, var(--text-primary-color) 2%, transparent);
@@ -64,6 +66,8 @@ body.dark-mode{
   --cookie-language-overlay-muted: rgba(255, 255, 255, 0.68);
   --cookie-language-overlay-soft: rgba(255, 255, 255, 0.03);
   --cookie-language-overlay-soft-strong: rgba(255, 255, 255, 0.05);
+  --cookie-language-overlay-sticky-toolbar-surface: transparent;
+  --cookie-language-overlay-sticky-toolbar-divider: color-mix(in srgb, var(--text-secondary-color) 35%, transparent);
   --cookie-language-overlay-search-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
   --cookie-language-overlay-status-surface: rgba(255, 255, 255, 0.03);
   --cookie-language-overlay-country-surface: rgba(255, 255, 255, 0.022);
@@ -127,7 +131,7 @@ body.cookie-language-overlay-closing{
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 1.5rem;
+  padding: 1.92rem 1.5rem;
   border: 1px solid var(--cookie-language-overlay-border);
   border-radius: var(--cookie-language-overlay-radius);
   background: var(--cookie-language-overlay-surface);
@@ -153,7 +157,7 @@ body.cookie-language-overlay-closing .cookie-language-overlay-inner{
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
-  padding-bottom: 1rem;
+  padding-bottom: 1.42rem;
   border-bottom: 1px solid var(--cookie-language-overlay-divider);
 }
 
@@ -187,7 +191,6 @@ body.cookie-language-overlay-closing .cookie-language-overlay-inner{
   align-self: center;
 }
 
-
 .cookie-language-overlay-title{
   margin: 0;
   color: var(--text-primary-color);
@@ -197,7 +200,6 @@ body.cookie-language-overlay-closing .cookie-language-overlay-inner{
   line-height: 1.08;
   min-width: 0;
 }
-
 
 /* =============================================================================
    07) BACK CONTROL
@@ -233,14 +235,29 @@ body.cookie-language-overlay-closing .cookie-language-overlay-inner{
    08) TOOLBAR
 ============================================================================= */
 .cookie-language-overlay-toolbar{
+  position: sticky;
+  top: 0;
+  z-index: 6;
   display: flex;
   flex-direction: column;
   gap: 0.44rem;
-  padding-top: 0.68rem;
-  padding-bottom: 0.32rem;
+  padding-top: 1.02rem;
+  padding-bottom: 1.02rem;
   flex: 0 0 auto;
   min-height: 0;
   overflow: visible;
+  background: var(--cookie-language-overlay-sticky-toolbar-surface);
+}
+
+.cookie-language-overlay-toolbar::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--cookie-language-overlay-sticky-toolbar-divider);
+  pointer-events: none;
 }
 
 /* =============================================================================
@@ -283,11 +300,11 @@ body.cookie-language-overlay-closing .cookie-language-overlay-inner{
   background: var(--cookie-language-overlay-soft-strong);
 }
 
-
 /* =============================================================================
    10) REGIONS MOUNT
 ============================================================================= */
 .cookie-language-overlay-regions{
+  position: relative;
   min-height: 14rem;
   height: auto;
   flex: 1 1 auto;
@@ -297,14 +314,15 @@ body.cookie-language-overlay-closing .cookie-language-overlay-inner{
   overscroll-behavior: contain;
   scrollbar-gutter: auto;
   scrollbar-width: none;
-  border-top: 1px solid var(--cookie-language-overlay-divider);
-  padding-top: 0.38rem;
+  padding-top: 1.02rem;
   padding-right: 0;
+  padding-bottom: 1.02rem;
   display: flex;
   align-items: stretch;
   align-content: flex-start;
   flex-direction: column;
   gap: 0.56rem;
+  border-bottom: 1px solid var(--cookie-language-overlay-sticky-toolbar-divider);
 }
 
 .cookie-language-overlay-regions::-webkit-scrollbar{
@@ -414,16 +432,28 @@ body.cookie-language-overlay-closing .cookie-language-overlay-inner{
 
   .cookie-language-overlay-regions{
     min-height: 12rem;
-    padding-top: 0.32rem;
+    padding-top: 0.82rem;
+    padding-bottom: 0.82rem;
   }
 
   .cookie-language-overlay-inner{
-    padding: 1rem;
+    padding: 1.28rem 1rem;
     border-radius: 1.5rem;
   }
 
   .cookie-language-overlay-header{
     gap: 0.82rem;
+    padding-bottom: 1.12rem;
+  }
+
+  .cookie-language-overlay-toolbar{
+    padding-top: 0.82rem;
+    padding-bottom: 0.82rem;
+  }
+
+  .cookie-language-overlay-toolbar::after{
+    left: 0;
+    right: 0;
   }
 
   .cookie-language-overlay-country{
