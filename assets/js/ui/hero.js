@@ -25,9 +25,9 @@
   const ENTER_SCROLL_THRESHOLD = 24;
   const ENTER_TOUCH_THRESHOLD = 18;
   const EXIT_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
-  const EXIT_DURATION = 820;
-  const SCROLL_DELAY = 170;
-  const STAGE_HIDE_DELAY = 1180;
+  const EXIT_DURATION = 760;
+  const SCROLL_DELAY = 140;
+  const STAGE_HIDE_DELAY = 980;
 
   let isEntering = false;
   let touchStartY = null;
@@ -39,7 +39,7 @@
     return (window.scrollY || window.pageYOffset || 0) < 40;
   };
 
-  const animateOut = (element, transformValue, opacityValue = '0', blurValue = '6px') => {
+  const animateOut = (element, transformValue, opacityValue = '0', blurValue = '0px') => {
     if (!(element instanceof HTMLElement)) return;
 
     element.style.transition = [
@@ -63,11 +63,11 @@
     const circle = document.querySelector('.stage-circle');
     const overlay = document.querySelector('.stage-video-overlay');
 
-    animateOut(logo, 'translate3d(0, 26px, 0) scale(0.985)', '0', '5px');
-    animateOut(announcement, 'translate3d(0, 34px, 0)', '0', '6px');
-    animateOut(essence, 'translate3d(0, 38px, 0)', '0', '6px');
-    animateOut(cta, 'translate3d(0, 42px, 0)', '0', '7px');
-    animateOut(enter, 'translate3d(0, 46px, 0)', '0', '7px');
+    animateOut(logo, 'translate3d(0, -10px, 0) scale(1.035)', '0', '0px');
+    animateOut(announcement, 'translate3d(0, -8px, 0) scale(1.02)', '0', '0px');
+    animateOut(essence, 'translate3d(0, -6px, 0) scale(1.02)', '0', '0px');
+    animateOut(cta, 'translate3d(0, -4px, 0) scale(1.018)', '0', '0px');
+    animateOut(enter, 'translate3d(0, -2px, 0) scale(1.016)', '0', '0px');
 
     if (circle instanceof HTMLElement) {
       circle.style.transition = [
@@ -76,15 +76,20 @@
         `filter ${EXIT_DURATION}ms ${EXIT_EASE}`
       ].join(', ');
       circle.style.willChange = 'opacity, transform, filter';
-      circle.style.transform = 'translate3d(0, 18px, 0) scale(0.96)';
+      circle.style.transformOrigin = 'center center';
+      circle.style.transform = 'translate3d(0, 0, 0) scale(1.08)';
       circle.style.opacity = '0';
-      circle.style.filter = 'blur(10px)';
+      circle.style.filter = 'blur(0px)';
       circle.style.pointerEvents = 'none';
     }
 
     if (overlay instanceof HTMLElement) {
-      overlay.style.transition = `opacity ${EXIT_DURATION}ms ${EXIT_EASE}`;
-      overlay.style.opacity = '0.24';
+      overlay.style.transition = [
+        `opacity ${EXIT_DURATION}ms ${EXIT_EASE}`,
+        `transform ${EXIT_DURATION}ms ${EXIT_EASE}`
+      ].join(', ');
+      overlay.style.transform = 'scale(1.04)';
+      overlay.style.opacity = '0';
     }
   };
 
