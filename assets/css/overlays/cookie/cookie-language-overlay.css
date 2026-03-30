@@ -27,7 +27,7 @@
 :root{
   --cookie-language-overlay-backdrop: rgba(0, 0, 0, 0.16);
   --cookie-language-overlay-surface: rgba(255, 255, 255, 0.96);
-  --cookie-language-overlay-border: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  --cookie-language-overlay-border: rgba(255, 255, 255, 0.08);
   --cookie-language-overlay-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
   --cookie-language-overlay-width: min(36rem, calc(100vw - (2 * var(--site-gutter, 24px))));
   --cookie-language-overlay-max-height: min(46rem, calc(100vh - 3rem));
@@ -60,7 +60,7 @@ body.light-mode{
 body.dark-mode{
   --cookie-language-overlay-backdrop: rgba(0, 0, 0, 0.28);
   --cookie-language-overlay-surface: rgba(10, 10, 10, 0.96);
-  --cookie-language-overlay-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  --cookie-language-overlay-border: rgba(255, 255, 255, 0.08);
   --cookie-language-overlay-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
   --cookie-language-overlay-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
   --cookie-language-overlay-muted: rgba(255, 255, 255, 0.68);
@@ -132,7 +132,7 @@ body.cookie-language-overlay-closing{
   flex-direction: column;
   overflow: hidden;
   padding: 1.25rem;
-  border: 1px solid var(--cookie-language-overlay-border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--cookie-language-overlay-radius);
   background: var(--cookie-language-overlay-surface);
   box-shadow: var(--cookie-language-overlay-shadow);

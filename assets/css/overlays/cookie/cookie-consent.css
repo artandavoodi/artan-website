@@ -38,7 +38,7 @@
 :root{
   --cookie-consent-backdrop: rgba(0, 0, 0, 0.16);
   --cookie-consent-surface: rgb(255, 255, 255);
-  --cookie-consent-border: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  --cookie-consent-border: rgba(255, 255, 255, 0.08);
   --cookie-consent-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
   --cookie-consent-width: min(36rem, calc(100vw - (2 * var(--cookie-consent-min-viewport-gap))));
   --cookie-consent-min-viewport-gap: 24px;
@@ -125,7 +125,7 @@ body.light-mode{
 body.dark-mode{
   --cookie-consent-backdrop: rgba(0, 0, 0, 0.28);
   --cookie-consent-surface: rgb(10, 10, 10);
-  --cookie-consent-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  --cookie-consent-border: rgba(255, 255, 255, 0.08);
   --cookie-consent-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
   --cookie-consent-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
   --cookie-consent-header-divider: color-mix(in srgb, var(--text-secondary-color) 35%, transparent);
