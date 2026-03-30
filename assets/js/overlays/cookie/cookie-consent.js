@@ -46,6 +46,7 @@
   let initScheduled = false;
   let initCompleted = false;
   let initAttempts = 0;
+  let lastBodyScrollTop = 0;
   const MAX_INIT_ATTEMPTS = 24;
 
   /* =============================================================================
@@ -255,6 +256,21 @@
     });
   }
 
+  function rememberBodyScrollPosition() {
+    const body = getBody();
+    if (!body) return;
+    lastBodyScrollTop = body.scrollTop;
+  }
+
+  function restoreBodyScrollPosition() {
+    const body = getBody();
+    if (!body) return;
+
+    window.requestAnimationFrame(() => {
+      body.scrollTop = lastBodyScrollTop;
+    });
+  }
+
   /* =============================================================================
      07) ROW / TOGGLE HELPERS
   ============================================================================= */
@@ -414,6 +430,7 @@
   function requestCookieLearningOverlay(key) {
     if (!key) return;
 
+    rememberBodyScrollPosition();
     document.dispatchEvent(new CustomEvent('cookie-learning-overlay:open-request', {
       detail: {
         source: MODULE_ID,
@@ -424,6 +441,7 @@
 
   function requestReturnFromCookieLearningOverlay() {
     openConsent('settings');
+    restoreBodyScrollPosition();
 
     qa('[data-cookie-consent-learning-expand]', getOverlay() || document).forEach((control) => {
       if (!(control instanceof HTMLElement)) return;
@@ -585,7 +603,7 @@
 
     const body = getBody();
     if (body) {
-      body.scrollTop = 0;
+      body.scrollTop = surface === 'settings' ? lastBodyScrollTop : 0;
     }
 
     document.dispatchEvent(new CustomEvent('cookie-consent:opened', {
