@@ -142,10 +142,12 @@
       return false;
     }
 
-    const bodyRect = scrollBody.getBoundingClientRect();
-    const experienceRect = experienceRow.getBoundingClientRect();
+    const threshold = Math.max(
+      0,
+      (experienceRow.offsetTop + experienceRow.offsetHeight) - scrollBody.clientHeight
+    );
 
-    return experienceRect.bottom <= (bodyRect.bottom + 1);
+    return scrollBody.scrollTop >= threshold;
   }
 
   /* =============================================================================
@@ -206,7 +208,9 @@
     setLastScrollTop(root, scrollBody.scrollTop);
 
     scrollBody.addEventListener('scroll', requestUpdate, { passive: true });
+    scrollBody.addEventListener('touchmove', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate);
+    window.addEventListener('load', requestUpdate);
     requestUpdate();
   }
 

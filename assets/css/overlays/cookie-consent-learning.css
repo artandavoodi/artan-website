@@ -1,34 +1,30 @@
 /* =============================================================================
    00) FILE INDEX
    01) LEARNING ROOT
-   02) EXTERNAL LEARNING LAYER
-   03) DRAWER STATES
-   04) EDUCATION SHELL
-   05) HORIZONTAL RAIL
-   06) LEARNING CARDS
-   07) CARD ICON
-   08) CARD COPY
-   09) EXPAND CONTROL
-   10) DETAIL PANEL
-   11) REDUCED MOTION
-   12) RESPONSIVE — 768PX
+   02) BASELINE LEARNING LAYER
+   03) EDUCATION SHELL
+   04) HORIZONTAL RAIL
+   05) LEARNING CARDS
+   06) CARD ICON
+   07) CARD COPY
+   08) EXPAND CONTROL
+   09) DETAIL PANEL
+   10) REDUCED MOTION
+   11) RESPONSIVE — 768PX
 ============================================================================= */
 
 /* =============================================================================
    01) LEARNING ROOT
 ============================================================================= */
 :root{
-  --cookie-consent-learning-panel-inset: calc(var(--cookie-consent-content-gutter) + var(--cookie-consent-body-edge-inset));
-  --cookie-consent-learning-bleed: 1.25rem;
+  --cookie-consent-learning-panel-inset: 0;
+  --cookie-consent-learning-section-spacing: 1rem;
   --cookie-consent-learning-card-width-min: 14.8rem;
   --cookie-consent-learning-card-width-max: 16.6rem;
-  --cookie-consent-learning-drawer-offset: 1.2rem;
-  --cookie-consent-learning-drawer-duration: 320ms;
-  --cookie-consent-learning-drawer-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* =============================================================================
-   02) EXTERNAL LEARNING LAYER
+   02) BASELINE LEARNING LAYER
 ============================================================================= */
 .cookie-consent-learning-layer{
   position: relative;
@@ -37,110 +33,52 @@
   flex-direction: column;
   gap: 0;
   flex-shrink: 0;
-  width: calc(100% + (2 * var(--cookie-consent-learning-bleed)));
-  margin-left: calc(-1 * var(--cookie-consent-learning-bleed));
-  margin-right: calc(-1 * var(--cookie-consent-learning-bleed));
-  margin-bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
+  width: 100%;
+  margin: 0 0 var(--cookie-consent-learning-section-spacing) 0;
+  padding: 0;
   background: transparent;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  max-height: 0;
-}
-
-/* =============================================================================
-   03) DRAWER STATES
-============================================================================= */
-.cookie-consent-learning-layer{
-  opacity: 0;
-  transform: translateY(var(--cookie-consent-learning-drawer-offset));
-  pointer-events: none;
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  visibility: hidden;
-}
-.cookie-consent-learning-layer[data-cookie-consent-drawer-state="hidden"]{
-  opacity: 0;
-  transform: translateY(var(--cookie-consent-learning-drawer-offset));
-  pointer-events: none;
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  visibility: hidden;
-}
-
-.cookie-consent-learning-layer[data-cookie-consent-drawer-state="visible"]{
+  overflow: visible;
+  max-height: none;
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
   pointer-events: auto;
-  max-height: 32rem;
-  padding-top: 0.72rem;
-  padding-bottom: 0.72rem;
   visibility: visible;
 }
 
-.cookie-consent-learning-layer{
-  transition:
-    opacity var(--cookie-consent-learning-drawer-duration) var(--cookie-consent-learning-drawer-ease),
-    transform var(--cookie-consent-learning-drawer-duration) var(--cookie-consent-learning-drawer-ease),
-    max-height var(--cookie-consent-learning-drawer-duration) var(--cookie-consent-learning-drawer-ease);
-  will-change: opacity, transform, max-height;
-}
-
 /* =============================================================================
-   04) EDUCATION SHELL
+   03) EDUCATION SHELL
 ============================================================================= */
 .cookie-consent-education{
   display: flex;
   flex-direction: column;
   gap: 0.82rem;
   width: 100%;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
+  margin: 0;
+  padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* =============================================================================
-   05) HORIZONTAL RAIL
+   04) HORIZONTAL RAIL
 ============================================================================= */
 .cookie-consent-learning-rail{
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(var(--cookie-consent-learning-card-width-min), var(--cookie-consent-learning-card-width-max));
-  justify-content: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.82rem;
   width: 100%;
   box-sizing: border-box;
-  padding-left: var(--cookie-consent-learning-panel-inset);
+  padding-top: var(--cookie-consent-learning-section-spacing);
   padding-right: var(--cookie-consent-learning-panel-inset);
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-bottom: 0.12rem;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  scroll-padding-left: var(--cookie-consent-learning-panel-inset);
-  scroll-padding-right: var(--cookie-consent-learning-panel-inset);
-}
-
-.cookie-consent-learning-rail::-webkit-scrollbar{
-  display: none;
-}
-
-.cookie-consent-learning-rail > *{
-  min-width: 0;
+  padding-bottom: var(--cookie-consent-learning-section-spacing);
+  padding-left: var(--cookie-consent-learning-panel-inset);
+  overflow: visible;
 }
 
 /* =============================================================================
-   06) LEARNING CARDS
+   05) LEARNING CARDS
 ============================================================================= */
 .cookie-consent-learning-card{
   position: relative;
@@ -152,6 +90,7 @@
   border: 1px solid var(--cookie-consent-education-border);
   border-radius: 1rem;
   background: var(--cookie-consent-subitem-surface);
+  min-width: 0;
   scroll-snap-align: start;
 }
 
@@ -163,7 +102,7 @@
 }
 
 /* =============================================================================
-   07) CARD ICON
+   06) CARD ICON
 ============================================================================= */
 .cookie-consent-learning-icon{
   display: inline-flex;
@@ -176,7 +115,7 @@
 }
 
 /* =============================================================================
-   08) CARD COPY
+   07) CARD COPY
 ============================================================================= */
 .cookie-consent-learning-copy{
   display: flex;
@@ -205,7 +144,7 @@
 }
 
 /* =============================================================================
-   09) EXPAND CONTROL
+   08) EXPAND CONTROL
 ============================================================================= */
 .cookie-consent-learning-expand,
 .cookie-consent-learning-close{
@@ -280,12 +219,14 @@
 }
 
 /* =============================================================================
-   10) DETAIL PANEL
+   09) DETAIL PANEL
 ============================================================================= */
 .cookie-consent-learning-details{
   display: block;
-  padding-left: var(--cookie-consent-learning-panel-inset);
+  padding-top: 0;
   padding-right: var(--cookie-consent-learning-panel-inset);
+  padding-bottom: var(--cookie-consent-learning-section-spacing);
+  padding-left: var(--cookie-consent-learning-panel-inset);
 }
 
 .cookie-consent-learning-details[hidden]{
@@ -331,10 +272,9 @@
 }
 
 /* =============================================================================
-   11) REDUCED MOTION
+   10) REDUCED MOTION
 ============================================================================= */
 @media (prefers-reduced-motion: reduce){
-  .cookie-consent-learning-layer,
   .cookie-consent-learning-expand-line,
   .cookie-consent-learning-close-line{
     transition: none !important;
@@ -343,17 +283,18 @@
 }
 
 /* =============================================================================
-   12) RESPONSIVE — 768PX
+   11) RESPONSIVE — 768PX
 ============================================================================= */
 @media (max-width:768px){
   :root{
-    --cookie-consent-learning-panel-inset: calc(var(--cookie-consent-content-gutter) + var(--cookie-consent-body-edge-inset));
-    --cookie-consent-learning-bleed: 0.95rem;
+    --cookie-consent-learning-panel-inset: 0;
+    --cookie-consent-learning-section-spacing: 1rem;
     --cookie-consent-learning-card-width-min: 13.4rem;
     --cookie-consent-learning-card-width-max: 15rem;
   }
 
   .cookie-consent-learning-rail{
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.72rem;
   }
 
