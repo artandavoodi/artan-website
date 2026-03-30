@@ -24,6 +24,10 @@
   const ENTER_TRIGGER_SELECTOR = '#enter-button';
   const ENTER_SCROLL_THRESHOLD = 24;
   const ENTER_TOUCH_THRESHOLD = 18;
+  const EXIT_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+  const EXIT_DURATION = 820;
+  const SCROLL_DELAY = 170;
+  const STAGE_HIDE_DELAY = 1180;
 
   let isEntering = false;
   let touchStartY = null;
@@ -35,6 +39,55 @@
     return (window.scrollY || window.pageYOffset || 0) < 40;
   };
 
+  const animateOut = (element, transformValue, opacityValue = '0', blurValue = '6px') => {
+    if (!(element instanceof HTMLElement)) return;
+
+    element.style.transition = [
+      `opacity ${EXIT_DURATION}ms ${EXIT_EASE}`,
+      `transform ${EXIT_DURATION}ms ${EXIT_EASE}`,
+      `filter ${EXIT_DURATION}ms ${EXIT_EASE}`
+    ].join(', ');
+    element.style.willChange = 'opacity, transform, filter';
+    element.style.transform = transformValue;
+    element.style.opacity = opacityValue;
+    element.style.filter = `blur(${blurValue})`;
+    element.style.pointerEvents = 'none';
+  };
+
+  const runStageExit = () => {
+    const logo = document.querySelector('#stage .site-logo');
+    const announcement = document.querySelector('#announcement');
+    const essence = document.querySelector('#stage-essence, #stage .site-essence');
+    const cta = document.querySelector('#stage-cta');
+    const enter = document.querySelector('#stage-enter');
+    const circle = document.querySelector('.stage-circle');
+    const overlay = document.querySelector('.stage-video-overlay');
+
+    animateOut(logo, 'translate3d(0, 26px, 0) scale(0.985)', '0', '5px');
+    animateOut(announcement, 'translate3d(0, 34px, 0)', '0', '6px');
+    animateOut(essence, 'translate3d(0, 38px, 0)', '0', '6px');
+    animateOut(cta, 'translate3d(0, 42px, 0)', '0', '7px');
+    animateOut(enter, 'translate3d(0, 46px, 0)', '0', '7px');
+
+    if (circle instanceof HTMLElement) {
+      circle.style.transition = [
+        `opacity ${EXIT_DURATION}ms ${EXIT_EASE}`,
+        `transform ${EXIT_DURATION}ms ${EXIT_EASE}`,
+        `filter ${EXIT_DURATION}ms ${EXIT_EASE}`
+      ].join(', ');
+      circle.style.willChange = 'opacity, transform, filter';
+      circle.style.transform = 'translate3d(0, 18px, 0) scale(0.96)';
+      circle.style.opacity = '0';
+      circle.style.filter = 'blur(10px)';
+      circle.style.pointerEvents = 'none';
+    }
+
+    if (overlay instanceof HTMLElement) {
+      overlay.style.transition = `opacity ${EXIT_DURATION}ms ${EXIT_EASE}`;
+      overlay.style.opacity = '0.24';
+    }
+  };
+
   const enterSite = () => {
     if (isEntering) return;
 
@@ -42,19 +95,24 @@
     if (!target) return;
 
     isEntering = true;
+    document.body.classList.add('pre-home-entering');
+    runStageExit();
 
-    document.body.classList.add('site-entered');
-    document.body.classList.add('hero-lock-released');
-    document.body.classList.add('hero-released');
+    window.setTimeout(() => {
+      document.body.classList.add('site-entered');
+      document.body.classList.add('hero-lock-released');
+      document.body.classList.add('hero-released');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, SCROLL_DELAY);
+
     window.setTimeout(() => {
       document.body.classList.add('hero-stage-hidden');
-    }, 1200);
-
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.body.classList.remove('pre-home-entering');
+    }, STAGE_HIDE_DELAY);
 
     window.setTimeout(() => {
       isEntering = false;
-    }, 1200);
+    }, STAGE_HIDE_DELAY);
   };
 
   document.addEventListener('click', (event) => {
