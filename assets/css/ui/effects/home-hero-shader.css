@@ -1,0 +1,192 @@
+/* =============================================================================
+   HOME HERO SHADER.CSS
+   Modular shader background layer for premium reusable hero effects.
+
+   FILE INDEX
+   01) ROOT SHELL
+   02) HOST MOUNT LAYER
+   03) SHADER ROOT
+   04) CANVAS SHELL
+   05) CANVAS SURFACE
+   05A) SOFT VEIL LAYER
+   06) GLASS MATTE LAYER
+   07) INTERACTION FIELD
+   08) VISIBILITY / STATE
+   09) RESPONSIVE
+============================================================================= */
+
+/* =============================================================================
+   01) ROOT SHELL
+============================================================================= */
+:root{
+  --home-hero-shader-z-index: 0;
+  --home-hero-shader-opacity: 1;
+  --home-hero-shader-matte-opacity: 0.42;
+  --home-hero-shader-matte-blur: 28px;
+  --home-hero-shader-matte-surface-light: rgba(255, 255, 255, 0.08);
+  --home-hero-shader-matte-surface-dark: rgba(0, 0, 0, 0.14);
+  --home-hero-shader-veil-opacity: 0.22;
+  --home-hero-shader-veil-blur: 56px;
+  --home-hero-shader-canvas-softness: 14px;
+  --home-hero-shader-transition: 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* =============================================================================
+   02) HOST MOUNT LAYER
+============================================================================= */
+#stage .home-hero-shader,
+#home-hero-shader{
+  position: absolute;
+  inset: 0;
+  z-index: var(--home-hero-shader-z-index);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--home-hero-shader-opacity);
+  isolation: isolate;
+}
+
+#stage .stage-video,
+#stage .stage-video-overlay,
+#stage .stage-circle,
+#stage #stage-intro,
+#stage #stage-top,
+#stage #stage-center,
+#stage #stage-copy,
+#stage #stage-actions,
+#stage #stage-bottom{
+  position: relative;
+}
+
+#stage .stage-video,
+#stage .stage-video-overlay{
+  z-index: 0;
+}
+
+#stage .stage-circle{
+  z-index: 1;
+}
+
+#stage #stage-intro,
+#stage #stage-top,
+#stage #stage-center,
+#stage #stage-copy,
+#stage #stage-actions,
+#stage #stage-bottom{
+  z-index: 2;
+}
+
+/* =============================================================================
+   03) SHADER ROOT
+============================================================================= */
+.home-hero-shader{
+  display: block;
+}
+
+/* =============================================================================
+   04) CANVAS SHELL
+============================================================================= */
+.home-hero-shader-canvas-shell{
+  position: absolute;
+  inset: -8%;
+  width: calc(100% + 16%);
+  height: calc(100% + 16%);
+  overflow: hidden;
+}
+
+/* =============================================================================
+   05) CANVAS SURFACE
+============================================================================= */
+.home-hero-shader-canvas{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: translateZ(0) scale(1.02);
+  filter: blur(var(--home-hero-shader-canvas-softness));
+  opacity: 0.96;
+}
+
+/* =============================================================================
+   05A) SOFT VEIL LAYER
+============================================================================= */
+.home-hero-shader-veil{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--home-hero-shader-veil-opacity);
+  backdrop-filter: blur(var(--home-hero-shader-veil-blur));
+  -webkit-backdrop-filter: blur(var(--home-hero-shader-veil-blur));
+}
+
+/* =============================================================================
+   06) GLASS MATTE LAYER
+============================================================================= */
+.home-hero-shader-matte{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  backdrop-filter: blur(var(--home-hero-shader-matte-blur));
+  -webkit-backdrop-filter: blur(var(--home-hero-shader-matte-blur));
+  opacity: calc(var(--home-hero-shader-matte-opacity) + 0.06);
+  transition: opacity var(--home-hero-shader-transition);
+}
+
+body.light-mode .home-hero-shader-matte,
+body.theme-light .home-hero-shader-matte{
+  background: var(--home-hero-shader-matte-surface-light);
+}
+
+body.dark-mode .home-hero-shader-matte,
+body.theme-dark .home-hero-shader-matte{
+  background: var(--home-hero-shader-matte-surface-dark);
+}
+
+/* =============================================================================
+   07) INTERACTION FIELD
+============================================================================= */
+.home-hero-shader-interaction{
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  background: transparent;
+}
+
+#stage #stage-intro,
+#stage #stage-logo,
+#stage #stage-essence,
+#stage #stage-cta,
+#stage #stage-enter,
+#stage #try-icos-button,
+#stage #enter-button{
+  position: relative;
+  z-index: 3;
+}
+
+/* =============================================================================
+   08) VISIBILITY / STATE
+============================================================================= */
+.home-hero-shader[hidden]{
+  display: none;
+}
+
+body.site-entered .home-hero-shader,
+body.hero-stage-hidden .home-hero-shader{
+  opacity: 0;
+  transition: opacity var(--home-hero-shader-transition);
+}
+
+/* =============================================================================
+   09) RESPONSIVE
+============================================================================= */
+@media (max-width: 820px){
+  :root{
+    --home-hero-shader-matte-blur: 20px;
+    --home-hero-shader-matte-opacity: 0.32;
+    --home-hero-shader-veil-opacity: 0.18;
+    --home-hero-shader-veil-blur: 34px;
+    --home-hero-shader-canvas-softness: 10px;
+  }
+}
