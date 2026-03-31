@@ -1,13 +1,24 @@
 /* =============================================================================
-   MOTION SYSTEM — SOVEREIGN GLOBAL ENGINE
-   - One observer
-   - Explicit local opt-in via data-motion
-   - Fragment-aware via standard mount event
-   - Hero / essence choreography excluded
-   - Footer stays on its own local controller
+   FILE INDEX
+   01) MODULE IDENTITY
+   02) SELECTORS / EXCLUSIONS / STATE
+   03) TYPE HELPERS
+   04) COLLECTION FILTERING
+   05) OBSERVER FACTORY
+   06) NODE PREPARATION
+   07) SCAN API
+   08) INITIALIZATION
+   09) DOCUMENT READY HANDOFF
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
 ============================================================================= */
 
 (() => {
+  /* =============================================================================
+     02) SELECTORS / EXCLUSIONS / STATE
+  ============================================================================= */
   const SELECTOR = '[data-motion]';
 
   const EXCLUDE = [
@@ -24,9 +35,15 @@
 
   const observed = new WeakSet();
 
+  /* =============================================================================
+     03) TYPE HELPERS
+  ============================================================================= */
   const isElement = (value) => value instanceof Element;
   const isDocument = (value) => value instanceof Document;
 
+  /* =============================================================================
+     04) COLLECTION FILTERING
+  ============================================================================= */
   const isExcluded = (el) => {
     return EXCLUDE.some((selector) => el.matches(selector) || el.closest(selector));
   };
@@ -46,6 +63,9 @@
     return nodes;
   };
 
+  /* =============================================================================
+     05) OBSERVER FACTORY
+  ============================================================================= */
   const createObserver = () => {
     if (!('IntersectionObserver' in window)) return null;
 
@@ -70,6 +90,9 @@
 
   const observer = createObserver();
 
+  /* =============================================================================
+     06) NODE PREPARATION
+  ============================================================================= */
   const prepareNode = (el) => {
     if (observed.has(el)) return;
 
@@ -88,10 +111,16 @@
     observed.add(el);
   };
 
+  /* =============================================================================
+     07) SCAN API
+  ============================================================================= */
   const scan = (root = document) => {
     collectNodes(root).forEach(prepareNode);
   };
 
+  /* =============================================================================
+     08) INITIALIZATION
+  ============================================================================= */
   const initMotion = () => {
     scan(document);
 
@@ -103,6 +132,9 @@
 
   window.NeuroMotion = Object.freeze({ scan });
 
+  /* =============================================================================
+     09) DOCUMENT READY HANDOFF
+  ============================================================================= */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initMotion, { once: true });
   } else {
