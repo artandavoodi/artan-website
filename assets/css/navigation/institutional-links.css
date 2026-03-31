@@ -45,6 +45,7 @@
   grid-column: 1 / -1;
   display: block;
   width: 100%;
+  min-height: 1px;
   margin: 0;
   padding: 0;
   pointer-events: none;
@@ -82,7 +83,7 @@ body.dark-mode .institutional-links-separator{
   justify-content: end;
   align-items: center;
   column-gap: 1rem;
-  padding: 0.08rem 0 0 0;
+  padding: 0.08rem 0 0.08rem 0;
   margin: 0;
   overflow: visible;
 }
@@ -92,8 +93,7 @@ body.dark-mode .institutional-links-separator{
 ============================================================================= */
 .institutional-links-column.motion-init,
 .institutional-links-social-row.motion-init,
-.institutional-links-separator-row.motion-init,
-.institutional-links-separator.motion-init{
+.institutional-links-separator-row.motion-init{
   opacity: 0;
   transform: translateY(22px);
   transition:
@@ -104,10 +104,17 @@ body.dark-mode .institutional-links-separator{
 
 .institutional-links-column.motion-visible,
 .institutional-links-social-row.motion-visible,
-.institutional-links-separator-row.motion-visible,
-.institutional-links-separator.motion-visible{
+.institutional-links-separator-row.motion-visible{
   opacity: 1;
   transform: translateY(0);
+}
+
+.institutional-links-separator-row--bottom.motion-init,
+.institutional-links-separator-row--bottom.motion-visible{
+  opacity: 1;
+  transform: none;
+  transition: none;
+  will-change: auto;
 }
 
 /* =============================================================================
@@ -272,7 +279,7 @@ body.dark-mode .institutional-links-separator{
     grid-column: 1 / -1;
     grid-row: auto;
     justify-content: end;
-    padding: 0.08rem 0 0 0;
+    padding: 0.08rem 0 0.08rem 0;
     margin: 0;
   }
 }
@@ -295,7 +302,7 @@ body.dark-mode .institutional-links-separator{
     grid-column: 1;
     grid-row: auto;
     justify-content: end;
-    padding: 0.06rem 0 0 0;
+    padding: 0.06rem 0 0.06rem 0;
     margin: 0;
   }
 }
