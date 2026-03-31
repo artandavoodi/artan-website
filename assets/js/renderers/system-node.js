@@ -1,16 +1,26 @@
-
+/* =============================================================================
+   FILE INDEX
+   01) MODULE IDENTITY
+   02) MOUNT CONSTANTS
+   03) FRAGMENT MOUNT
+   04) BOOTSTRAP
+   05) DOCUMENT READY HANDOFF
+============================================================================= */
 
 /* =============================================================================
-   SYSTEM NODE — FRAGMENT LOADER (SOVEREIGN)
-   - Does NOT touch main.js
-   - Mounts /assets/fragments/system-node.html into #system-node-mount
-   - Safe with fragment-based site (waits for mount)
+   01) MODULE IDENTITY
 ============================================================================= */
 
 (() => {
+  /* =============================================================================
+     02) MOUNT CONSTANTS
+  ============================================================================= */
   const MOUNT_ID = 'system-node-mount';
-  const FRAGMENT_URL = 'assets/fragments/system-node.html';
+  const FRAGMENT_URL = 'assets/fragments/system/system-node.html';
 
+  /* =============================================================================
+     03) FRAGMENT MOUNT
+  ============================================================================= */
   const mount = async () => {
     const host = document.getElementById(MOUNT_ID);
     if (!host) return false;
@@ -28,6 +38,9 @@
     }
   };
 
+  /* =============================================================================
+     04) BOOTSTRAP
+  ============================================================================= */
   const boot = () => {
     // Try immediately
     mount().then((ok) => {
@@ -43,6 +56,9 @@
     });
   };
 
+  /* =============================================================================
+     05) DOCUMENT READY HANDOFF
+  ============================================================================= */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
   } else {
