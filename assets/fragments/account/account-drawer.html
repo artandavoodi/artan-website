@@ -56,29 +56,46 @@
       <section class="account-drawer-state account-drawer-auth" data-auth-state="guest" data-auth-surface="entry">
         <div class="account-drawer-intro"></div>
 
+        <!-- =============================================================================
+             01G) CONTENT STAGE
+        ============================================================================= -->
         <div class="account-drawer-content-stage">
+
           <!-- =============================================================================
                01H) ENTRY CARD
           ============================================================================= -->
-          <div class="account-drawer-entry-card">
-            <h3 class="account-drawer-entry-title">Already have an account?</h3>
-          </div>
+          <!-- Entry card intentionally removed for this simplified guest-entry state. -->
 
           <!-- =============================================================================
                01I) IDENTITY OPTIONS
           ============================================================================= -->
           <div class="account-drawer-identity-options" aria-label="Available sign-in pathways">
-            <a href="/pages/account/sign-in/index.html?provider=apple" class="account-drawer-identity-option">
-              <p class="account-drawer-identity-label">Continue with Apple</p>
+            <a href="/pages/account/sign-in/index.html?provider=apple" class="account-drawer-identity-option account-drawer-identity-option--apple">
+              <span class="account-drawer-identity-content">
+                <img src="/assets/icons/brand/apple.svg" alt="" class="account-drawer-identity-icon" aria-hidden="true">
+                <span class="account-drawer-identity-label">Continue with Apple</span>
+              </span>
             </a>
-            <a href="/pages/account/sign-in/index.html?provider=google" class="account-drawer-identity-option">
-              <p class="account-drawer-identity-label">Continue with Google</p>
+
+            <a href="/pages/account/sign-in/index.html?provider=google" class="account-drawer-identity-option account-drawer-identity-option--google">
+              <span class="account-drawer-identity-content">
+                <img src="/assets/icons/brand/signin-google.svg" alt="" class="account-drawer-identity-icon" aria-hidden="true">
+                <span class="account-drawer-identity-label">Continue with Google</span>
+              </span>
             </a>
-            <a href="/pages/account/sign-in/index.html?provider=email" class="account-drawer-identity-option">
-              <p class="account-drawer-identity-label">Continue with email</p>
+
+            <a href="/pages/account/sign-in/index.html?provider=email" class="account-drawer-identity-option account-drawer-identity-option--email">
+              <span class="account-drawer-identity-content">
+                <img src="/assets/icons/system/signin-email.svg" alt="" class="account-drawer-identity-icon" aria-hidden="true">
+                <span class="account-drawer-identity-label">Continue with email</span>
+              </span>
             </a>
-            <a href="/pages/account/sign-in/index.html?provider=phone" class="account-drawer-identity-option">
-              <p class="account-drawer-identity-label">Continue with phone number</p>
+
+            <a href="/pages/account/sign-in/index.html?provider=phone" class="account-drawer-identity-option account-drawer-identity-option--phone">
+              <span class="account-drawer-identity-content">
+                <img src="/assets/icons/system/signin-phone.svg" alt="" class="account-drawer-identity-icon" aria-hidden="true">
+                <span class="account-drawer-identity-label">Continue with phone number</span>
+              </span>
             </a>
           </div>
 
@@ -86,8 +103,9 @@
                01J) PRIMARY ACTIONS
           ============================================================================= -->
           <div class="account-drawer-actions">
-            <a href="/pages/account/sign-in/index.html" class="account-drawer-action account-drawer-action--primary">Continue to Sign In</a>
-            <a href="/pages/account/create/index.html" class="account-drawer-action account-drawer-action--secondary">Create Your Account</a>
+            <a href="/pages/account/sign-in/index.html" class="account-drawer-action account-drawer-action--primary">
+              <span class="account-drawer-action-label">Continue to Sign In</span>
+            </a>
           </div>
 
           <!-- =============================================================================
