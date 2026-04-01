@@ -873,12 +873,20 @@
       trigger.addEventListener('focus', () => openFromTrigger(trigger));
 
       trigger.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
         clearCloseTimer();
 
         const panelKey = trigger.dataset.menuPanel || '';
         if (!panelKey) return;
+
+        const isAnchorTrigger = trigger instanceof HTMLAnchorElement && !!trigger.getAttribute('href');
+
+        if (isAnchorTrigger) {
+          openPanel(panelKey);
+          return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
 
         if (activePanelKey === panelKey) {
           closePanels();
