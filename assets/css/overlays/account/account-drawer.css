@@ -320,7 +320,11 @@ body.account-drawer-closing .account-drawer-close{
   font-weight: 300;
   letter-spacing: -0.015em;
   line-height: 1.62;
-  max-width: var(--account-drawer-copy-max);
+  max-width: none;
+}
+
+.account-drawer-legal-note{
+  text-align: center;
 }
 
 /* =============================================================================
@@ -507,16 +511,14 @@ body.account-drawer-closing .account-drawer-close{
   cursor: pointer;
   transition: opacity 180ms ease, border-color 180ms ease, background-color 180ms ease, color 180ms ease;
 }
-
+ 
 .account-drawer-identity-content{
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.82rem;
-  line-height: 1;
   min-height: 48px;
 }
-
 
 .account-drawer-identity-icon{
   width: 1.1rem;
@@ -526,18 +528,17 @@ body.account-drawer-closing .account-drawer-close{
   object-fit: contain;
 }
 
-.account-drawer-identity-option--apple .account-drawer-identity-icon,
-.account-drawer-identity-option--email .account-drawer-identity-icon,
-.account-drawer-identity-option--phone .account-drawer-identity-icon{
+.account-drawer-identity-icon--theme-aware{
   filter: none;
 }
 
-body.dark-mode .account-drawer-identity-option--apple .account-drawer-identity-icon,
-body.dark-mode .account-drawer-identity-option--email .account-drawer-identity-icon,
-body.dark-mode .account-drawer-identity-option--phone .account-drawer-identity-icon{
+body.dark-mode .account-drawer-identity-icon--theme-aware{
   filter: brightness(0) invert(1);
 }
 
+.account-drawer-identity-icon--brand{
+  filter: none;
+}
 
 .account-drawer-identity-label{
   margin: 0;
@@ -573,13 +574,35 @@ body.dark-mode .account-drawer-identity-option--phone .account-drawer-identity-i
 
 .account-drawer-legal-link,
 .account-drawer-support-link{
-  color: var(--account-drawer-muted);
-  text-decoration: none;
+  display: inline;
+  color: var(--text-primary-color);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
+  text-decoration-skip-ink: auto;
   font-size: 0.82rem;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -0.012em;
   line-height: 1.45;
-  transition: color 220ms ease;
+  transition: color 220ms ease, text-decoration-color 220ms ease, opacity 220ms ease;
+}
+
+.account-drawer-legal-note-link{
+  display: inline;
+  color: var(--text-primary-color);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
+  text-decoration-skip-ink: auto;
+  font-size: inherit;
+  font-weight: 400;
+  letter-spacing: inherit;
+  line-height: inherit;
+  transition: color 220ms ease, text-decoration-color 220ms ease, opacity 220ms ease;
 }
 
 .account-drawer-legal-link:hover,
@@ -587,8 +610,13 @@ body.dark-mode .account-drawer-identity-option--phone .account-drawer-identity-i
 .account-drawer-legal-link:active,
 .account-drawer-support-link:hover,
 .account-drawer-support-link:focus-visible,
-.account-drawer-support-link:active{
+.account-drawer-support-link:active,
+.account-drawer-legal-note-link:hover,
+.account-drawer-legal-note-link:focus-visible,
+.account-drawer-legal-note-link:active{
   color: var(--account-drawer-legal-hover);
+  text-decoration-color: var(--account-drawer-legal-hover);
+  opacity: 1;
   outline: none;
 }
 
