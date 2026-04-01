@@ -1,4 +1,17 @@
+<!-- =========================================================
+     00. FILE INDEX
+     01. DOCUMENT HEAD
+     02. PAGE BODY
+     03. SHADER MOUNT
+     04. ERROR 404 SHELL
+     05. ERROR 404 COPY
+     06. ERROR 404 ACTIONS
+     07. PAGE SCRIPTS
+     ========================================================= -->
 <!DOCTYPE html>
+<!-- =========================================================
+     01. DOCUMENT HEAD
+     ========================================================= -->
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
@@ -9,11 +22,24 @@
   <link rel="icon" href="/assets/icons/brand/logos/neuroartan/logo-plain.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/css/pages/404.css">
 </head>
+<!-- =========================================================
+     02. PAGE BODY
+     ========================================================= -->
 <body class="page-404">
+  <!-- =========================================================
+       03. SHADER MOUNT
+       ========================================================= -->
+  <div data-404-shader-mount aria-hidden="true"></div>
+  <!-- =========================================================
+       04. ERROR 404 SHELL
+       ========================================================= -->
   <main class="error404" aria-labelledby="error404-title">
     <section class="error404-shell">
       <div class="error404-mark">404</div>
 
+      <!-- =========================================================
+           05. ERROR 404 COPY
+           ========================================================= -->
       <div class="error404-copy">
         <p class="error404-eyebrow" data-i18n-key="404.eyebrow">Neuroartan</p>
         <h1 id="error404-title" class="error404-title" data-i18n-key="404.heading">This destination is under active development.</h1>
@@ -25,6 +51,9 @@
         </p>
       </div>
 
+      <!-- =========================================================
+           06. ERROR 404 ACTIONS
+           ========================================================= -->
       <div class="error404-actions" aria-label="404 recovery actions">
         <a href="/" class="error404-primary-link" data-404-home-link data-i18n-key="404.actions.home">Return to Active Homepage</a>
         <button type="button" class="error404-secondary-button" data-404-back-button data-i18n-key="404.actions.back">Go Back</button>
@@ -32,6 +61,9 @@
     </section>
   </main>
 
+  <!-- =========================================================
+       07. PAGE SCRIPTS
+       ========================================================= -->
   <script src="/assets/js/i18n/translation.js" defer></script>
   <script src="/assets/js/i18n/country-language.js" defer></script>
   <script src="/assets/js/pages/404.js" defer></script>
