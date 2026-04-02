@@ -1,27 +1,4 @@
-<!-- =============================================================================
-     00) FILE INDEX
-     01) SIGN-IN DRAWER
-     01A) BACKDROP
-     01B) DRAWER SHELL
-     01C) CLOSE CONTROL
-     01D) DRAWER HEADER
-     01DA) HEADER BRAND MARK
-     01DB) HEADER TITLE STAGE
-     01E) DRAWER BODY
-     01F) SIGN-IN STATE
-     01G) CONTENT STAGE
-     01H) SIGN-IN FORM
-     01I) PRIMARY ACTIONS
-     01IA) ACTION DIVIDER
-     01IB) PROVIDER ACTIONS
-     01J) SECONDARY ACTIONS
-     01JA) BACK CONTROL
-============================================================================= -->
-
-<!-- =============================================================================
-     01) SIGN-IN DRAWER
-============================================================================= -->
-<aside id="account-sign-in-drawer" class="account-sign-in-drawer" aria-hidden="true" aria-labelledby="account-sign-in-drawer-title" data-account-sign-in-drawer="true">
+<aside id="account-sign-in-drawer" class="account-sign-in-drawer" aria-hidden="true" aria-label="Sign in drawer" data-account-sign-in-drawer="true">
 
   <!-- =============================================================================
        01A) BACKDROP
@@ -31,7 +8,7 @@
   <!-- =============================================================================
        01B) DRAWER SHELL
   ============================================================================= -->
-  <div class="account-sign-in-drawer-shell" role="dialog" aria-modal="true" aria-labelledby="account-sign-in-drawer-title">
+  <div class="account-sign-in-drawer-shell account-drawer-shell" role="dialog" aria-modal="true" aria-label="Sign in drawer">
 
     <!-- =============================================================================
          01C) CLOSE CONTROL
@@ -42,28 +19,9 @@
     </button>
 
     <!-- =============================================================================
-         01D) DRAWER HEADER
-    ============================================================================= -->
-    <div class="account-sign-in-drawer-header">
-      <!-- =============================================================================
-           01DA) HEADER BRAND MARK
-      ============================================================================= -->
-      <div class="account-sign-in-drawer-header-brand-mark" aria-hidden="true">
-        <img src="./assets/icons/brand/logos/neuroartan/logo-plain.svg" alt="" class="account-sign-in-drawer-header-brand-icon">
-      </div>
-
-      <!-- =============================================================================
-           01DB) HEADER TITLE STAGE
-      ============================================================================= -->
-      <div class="account-sign-in-drawer-header-title-stage">
-        <h2 id="account-sign-in-drawer-title" class="account-sign-in-drawer-title"><span data-i18n-key="account_sign_in_title_prefix">Sign in to</span> <span translate="no">Neuroartan</span></h2>
-      </div>
-    </div>
-
-    <!-- =============================================================================
          01E) DRAWER BODY
     ============================================================================= -->
-    <div class="account-sign-in-drawer-body">
+    <div class="account-sign-in-drawer-body account-drawer-body">
 
       <!-- =============================================================================
            01F) SIGN-IN STATE
@@ -73,12 +31,17 @@
         <!-- =============================================================================
              01G) CONTENT STAGE
         ============================================================================= -->
-        <div class="account-sign-in-drawer-content-stage">
+        <div class="account-sign-in-drawer-content-stage account-drawer-content-stage">
+
 
           <!-- =============================================================================
                01H) SIGN-IN FORM
           ============================================================================= -->
-          <form class="account-sign-in-drawer-form" data-account-sign-in-form="true" novalidate>
+          <form id="account-sign-in-drawer-form" class="account-sign-in-drawer-form" data-account-sign-in-form="true" novalidate>
+            <div class="account-sign-in-drawer-center-stage">
+            <div class="account-sign-in-drawer-header-brand-mark" aria-hidden="true">
+              <img src="./assets/icons/brand/logos/neuroartan/logo-plain.svg" alt="" class="account-sign-in-drawer-header-brand-icon">
+            </div>
             <div class="account-sign-in-drawer-field-group">
               <input
                 id="account-sign-in-identity"
@@ -103,13 +66,14 @@
                 placeholder="Password"
               >
             </div>
+            </div>
           </form>
 
           <!-- =============================================================================
                01I) PRIMARY ACTIONS
           ============================================================================= -->
           <div class="account-sign-in-drawer-actions">
-            <button type="submit" form="" class="account-sign-in-drawer-action account-sign-in-drawer-action--primary" data-account-sign-in-submit="true">
+            <button type="submit" form="account-sign-in-drawer-form" class="account-sign-in-drawer-action account-sign-in-drawer-action--primary" data-account-sign-in-submit="true">
               <span class="account-sign-in-drawer-action-label" data-i18n-key="account_sign_in_submit">Continue</span>
             </button>
           </div>

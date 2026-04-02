@@ -7,11 +7,8 @@
    04A) PAGE SCROLL LOCK
    05) BACKDROP
    06) DRAWER PANEL
-   07) HEADER
    07A) HEADER BRAND MARK
-   07B) HEADER TITLE STAGE
    08) CLOSE CONTROL
-   09) BODY
    10) TYPOGRAPHY
    11) FORM
    12) ACTIONS
@@ -92,8 +89,6 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer{
   visibility: visible;
 }
 
-
-
 /* =============================================================================
    04A) PAGE SCROLL LOCK
 ============================================================================= */
@@ -124,7 +119,6 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-backdrop{
   transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-
 body.account-sign-in-drawer-closing .account-sign-in-drawer-backdrop{
   opacity: 0;
 }
@@ -138,7 +132,6 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-backdrop{
   width: min(40rem, 100vw);
   max-width: 100%;
   height: 100%;
-  padding: 1.6rem 2rem;
   background-color: var(--account-sign-in-surface);
   background-image: var(--account-sign-in-shell-highlight);
   border-right: 1px solid var(--account-sign-in-border);
@@ -151,7 +144,6 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-backdrop{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: stretch;
   overflow: visible;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -166,24 +158,16 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-shell{
 }
 
 /* =============================================================================
-   07) HEADER
-============================================================================= */
-.account-sign-in-drawer-header{
-  width: 100%;
-  display: block;
-  padding: 0 0 1.22rem 0;
-  border-bottom: 1px solid var(--account-sign-in-header-divider);
-}
-
-/* =============================================================================
    07A) HEADER BRAND MARK
 ============================================================================= */
 .account-sign-in-drawer-header-brand-mark{
-  width: 100%;
+  position: static;
+  width: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 0 1.18rem 0;
+  margin: 0 auto 4rem auto;
+  pointer-events: none;
 }
 
 .account-sign-in-drawer-header-brand-icon{
@@ -191,16 +175,6 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-shell{
   height: 2.4rem;
   display: block;
   object-fit: contain;
-}
-
-/* =============================================================================
-   07B) HEADER TITLE STAGE
-============================================================================= */
-.account-sign-in-drawer-header-title-stage{
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
 }
 
 /* =============================================================================
@@ -283,42 +257,8 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
 }
 
 /* =============================================================================
-   09) BODY
-============================================================================= */
-.account-sign-in-drawer-body{
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  gap: var(--account-sign-in-section-gap);
-  padding-top: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.account-sign-in-drawer-body::-webkit-scrollbar{
-  display: none;
-}
-
-/* =============================================================================
    10) TYPOGRAPHY
 ============================================================================= */
-.account-sign-in-drawer-title{
-  margin: 0;
-  grid-column: 2;
-  width: auto;
-  color: var(--text-primary-color);
-  font-size: 1.68rem;
-  font-weight: 300;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  max-width: none;
-  white-space: nowrap;
-  text-align: center;
-}
-
 .account-sign-in-drawer-note,
 .account-sign-in-drawer-label{
   margin: 0;
@@ -333,17 +273,13 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   text-align: center;
 }
 
-.account-sign-in-drawer-content-stage{
-  display: flex;
-  flex-direction: column;
-  gap: var(--account-sign-in-section-gap);
-  padding-inline: 4.8rem;
-}
-
 /* =============================================================================
    11) FORM
 ============================================================================= */
 .account-sign-in-drawer-form{
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 0.96rem;
@@ -428,7 +364,6 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   line-height: 1;
   text-align: center;
 }
-
 
 .account-sign-in-drawer-action--primary:hover,
 .account-sign-in-drawer-action--primary:focus-visible{
@@ -521,7 +456,7 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 .account-sign-in-drawer-back-icon{
@@ -554,14 +489,6 @@ body.dark-mode .account-sign-in-drawer-back-icon{
    15) RESPONSIVE — 1024PX
 ============================================================================= */
 @media (max-width:1024px){
-  .account-sign-in-drawer-shell{
-    padding: 1.36rem 1.7rem;
-  }
-
-  .account-sign-in-drawer-content-stage{
-    padding-inline: 3.2rem;
-  }
-
   .account-sign-in-drawer-close{
     top: 0.82rem;
     right: 0.82rem;
@@ -573,39 +500,10 @@ body.dark-mode .account-sign-in-drawer-back-icon{
    16) RESPONSIVE — 768PX
 ============================================================================= */
 @media (max-width:768px){
-  .account-sign-in-drawer-shell{
-    padding: 1.2rem 1.28rem;
-  }
-
-  .account-sign-in-drawer-content-stage{
-    padding-inline: 1.8rem;
-  }
-
   .account-sign-in-drawer-close{
     top: 0.68rem;
     right: 0.68rem;
     left: auto;
-  }
-
-  .account-sign-in-drawer-header{
-    width: 100%;
-    display: block;
-    padding: 0 0 1.04rem 0;
-  }
-
-  .account-sign-in-drawer-header-title-stage{
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-  }
-
-  .account-sign-in-drawer-title{
-    grid-column: 2;
-    width: auto;
-    font-size: 1.42rem;
-    white-space: normal;
-    text-align: center;
   }
 
   .account-sign-in-drawer-note{
