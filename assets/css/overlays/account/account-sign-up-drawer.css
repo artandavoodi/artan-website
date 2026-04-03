@@ -31,48 +31,66 @@
    02) ROOT TOKENS
 ============================================================================= */
 :root{
-  --account-sign-in-panel-width: min(40rem, calc(100vw - (2 * var(--site-gutter, 24px))));
-  --account-sign-in-surface: #ffffff;
-  --account-sign-in-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-sign-in-muted: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
-  --account-sign-in-backdrop: rgba(0, 0, 0, 0.14);
-  --account-sign-in-shell-inner-shadow: inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
-  --account-sign-in-shell-highlight: linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
-  --account-sign-in-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-sign-in-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.06);
-  --account-sign-in-section-gap: 1.22rem;
-  --account-sign-in-input-border: rgba(255, 255, 255, 0.16);
-  --account-sign-in-input-surface: transparent;
-  --account-sign-in-input-focus: rgba(255, 255, 255, 0.3);
-  --account-sign-in-control-height: 48px;
-  --account-sign-in-control-inline-padding: 22px;
-  --account-sign-in-divider-line: rgba(128, 128, 128, 0.28);
+  --account-sign-up-panel-width: min(40rem, calc(100vw - (2 * var(--site-gutter, 24px))));
+  --account-sign-up-surface: #ffffff;
+  --account-sign-up-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-sign-up-muted: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
+  --account-sign-up-backdrop: rgba(0, 0, 0, 0.14);
+  --account-sign-up-shell-inner-shadow: inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
+  --account-sign-up-shell-highlight: linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
+  --account-sign-up-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-sign-up-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.06);
+  --account-sign-up-section-gap: 1.22rem;
+  --account-sign-up-header-padding-bottom: 1.22rem;
+  --account-sign-up-header-padding-bottom-mobile: 1.04rem;
+  --account-sign-up-header-brand-margin-bottom: 1.18rem;
+  --account-sign-up-content-stage-padding-inline: 4.8rem;
+  --account-sign-up-content-stage-padding-inline-tablet: 3.2rem;
+  --account-sign-up-content-stage-padding-inline-mobile: 1.8rem;
+  --account-sign-up-form-gap: 0.96rem;
+  --account-sign-up-field-group-gap: 0.46rem;
+  --account-sign-up-actions-gap: 0.72rem;
+  --account-sign-up-divider-gap: 0.82rem;
+  --account-sign-up-divider-padding-inline: 12px;
+  --account-sign-up-secondary-actions-gap: 0.52rem;
+  --account-sign-up-note-size: 1rem;
+  --account-sign-up-note-size-mobile: 0.94rem;
+  --account-sign-up-label-size: 0.88rem;
+  --account-sign-up-action-label-size: 0.94rem;
+  --account-sign-up-divider-label-size: 0.82rem;
+  --account-sign-up-text-action-size: 0.82rem;
+  --account-sign-up-input-border: rgba(255, 255, 255, 0.16);
+  --account-sign-up-input-surface: transparent;
+  --account-sign-up-input-focus: rgba(255, 255, 255, 0.3);
+  --account-sign-up-control-height: 48px;
+  --account-sign-up-control-inline-padding: 22px;
+  --account-sign-up-divider-line: rgba(128, 128, 128, 0.28);
 }
 
 body.light-mode{
-  --account-sign-in-surface: rgba(255, 255, 255, 0.82);
-  --account-sign-in-shell-inner-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.03);
-  --account-sign-in-shell-highlight: linear-gradient(180deg, rgba(0, 0, 0, 0.022) 0%, transparent 22%);
-  --account-sign-in-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-sign-in-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.05);
-  --account-sign-in-input-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
-  --account-sign-in-input-focus: color-mix(in srgb, var(--text-primary-color) 18%, transparent);
-  --account-sign-in-divider-line: rgba(0, 0, 0, 0.16);
+  --account-sign-up-surface: rgba(255, 255, 255, 0.82);
+  --account-sign-up-shell-inner-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.03);
+  --account-sign-up-shell-highlight: linear-gradient(180deg, rgba(0, 0, 0, 0.022) 0%, transparent 22%);
+  --account-sign-up-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-sign-up-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.05);
+  --account-sign-up-input-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  --account-sign-up-input-focus: color-mix(in srgb, var(--text-primary-color) 18%, transparent);
+  --account-sign-up-divider-line: rgba(0, 0, 0, 0.16);
 }
 
 body.dark-mode{
-  --account-sign-in-surface: rgba(0, 0, 0, 0.82);
-  --account-sign-in-shell-inner-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
-  --account-sign-in-shell-highlight: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 22%);
-  --account-sign-in-header-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
-  --account-sign-in-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
-  --account-sign-in-divider-line: rgba(255, 255, 255, 0.16);
+  --account-sign-up-surface: rgba(0, 0, 0, 0.82);
+  --account-sign-up-shell-inner-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
+  --account-sign-up-shell-highlight: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 22%);
+  --account-sign-up-header-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  --account-sign-up-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
+  --account-sign-up-divider-line: rgba(255, 255, 255, 0.16);
 }
 
 /* =============================================================================
    03) BASE DRAWER SHELL
 ============================================================================= */
-.account-sign-in-drawer{
+.account-sign-up-drawer{
   position: fixed;
   inset: 0;
   z-index: 1410;
@@ -85,20 +103,18 @@ body.dark-mode{
 /* =============================================================================
    04) OPEN / CLOSE STATES
 ============================================================================= */
-body.account-sign-in-drawer-open .account-sign-in-drawer,
-body.account-sign-in-drawer-closing .account-sign-in-drawer{
+body.account-sign-up-drawer-open .account-sign-up-drawer,
+body.account-sign-up-drawer-closing .account-sign-up-drawer{
   pointer-events: auto;
   opacity: 1;
   visibility: visible;
 }
 
-
-
 /* =============================================================================
    04A) PAGE SCROLL LOCK
 ============================================================================= */
-body.account-sign-in-drawer-open,
-body.account-sign-in-drawer-closing{
+body.account-sign-up-drawer-open,
+body.account-sign-up-drawer-closing{
   overflow: hidden;
   touch-action: none;
 }
@@ -106,43 +122,42 @@ body.account-sign-in-drawer-closing{
 /* =============================================================================
    05) BACKDROP
 ============================================================================= */
-.account-sign-in-drawer-backdrop{
+.account-sign-up-drawer-backdrop{
   position: absolute;
   inset: 0;
-  background: var(--account-sign-in-backdrop);
+  background: var(--account-sign-up-backdrop);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   opacity: 0;
   transition: none;
 }
 
-body.account-sign-in-drawer-open .account-sign-in-drawer-backdrop{
+body.account-sign-up-drawer-open .account-sign-up-drawer-backdrop{
   opacity: 1;
 }
 
-body.account-sign-in-drawer-closing .account-sign-in-drawer-backdrop{
+body.account-sign-up-drawer-closing .account-sign-up-drawer-backdrop{
   transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-
-body.account-sign-in-drawer-closing .account-sign-in-drawer-backdrop{
+body.account-sign-up-drawer-closing .account-sign-up-drawer-backdrop{
   opacity: 0;
 }
 
 /* =============================================================================
    06) DRAWER PANEL
 ============================================================================= */
-.account-sign-in-drawer-shell{
+.account-sign-up-drawer-shell{
   position: absolute;
   inset: 0 auto 0 0;
   width: min(40rem, 100vw);
   max-width: 100%;
   height: 100%;
   padding: 1.6rem 2rem;
-  background-color: var(--account-sign-in-surface);
-  background-image: var(--account-sign-in-shell-highlight);
-  border-right: 1px solid var(--account-sign-in-border);
-  box-shadow: var(--account-sign-in-primary-shadow), var(--account-sign-in-shell-inner-shadow);
+  background-color: var(--account-sign-up-surface);
+  background-image: var(--account-sign-up-shell-highlight);
+  border-right: 1px solid var(--account-sign-up-border);
+  box-shadow: var(--account-sign-up-primary-shadow), var(--account-sign-up-shell-inner-shadow);
   transform: none;
   transition:
     transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -157,36 +172,36 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-backdrop{
   -webkit-overflow-scrolling: touch;
 }
 
-body.account-sign-in-drawer-open .account-sign-in-drawer-shell{
+body.account-sign-up-drawer-open .account-sign-up-drawer-shell{
   transform: none;
 }
 
-body.account-sign-in-drawer-closing .account-sign-in-drawer-shell{
+body.account-sign-up-drawer-closing .account-sign-up-drawer-shell{
   transform: translateX(-100%);
 }
 
 /* =============================================================================
    07) HEADER
 ============================================================================= */
-.account-sign-in-drawer-header{
+.account-sign-up-drawer-header{
   width: 100%;
   display: block;
-  padding: 0 0 1.22rem 0;
-  border-bottom: 1px solid var(--account-sign-in-header-divider);
+  padding: 0 0 var(--account-sign-up-header-padding-bottom) 0;
+  border-bottom: 1px solid var(--account-sign-up-header-divider);
 }
 
 /* =============================================================================
    07A) HEADER BRAND MARK
 ============================================================================= */
-.account-sign-in-drawer-header-brand-mark{
+.account-sign-up-drawer-header-brand-mark{
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 0 1.18rem 0;
+  margin: 0 0 var(--account-sign-up-header-brand-margin-bottom) 0;
 }
 
-.account-sign-in-drawer-header-brand-icon{
+.account-sign-up-drawer-header-brand-icon{
   width: 2.4rem;
   height: 2.4rem;
   display: block;
@@ -196,7 +211,7 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-shell{
 /* =============================================================================
    07B) HEADER TITLE STAGE
 ============================================================================= */
-.account-sign-in-drawer-header-title-stage{
+.account-sign-up-drawer-header-title-stage{
   width: 100%;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -206,7 +221,7 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-shell{
 /* =============================================================================
    08) CLOSE CONTROL
 ============================================================================= */
-.account-sign-in-drawer-close{
+.account-sign-up-drawer-close{
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -228,7 +243,7 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-shell{
     transform 220ms ease;
 }
 
-.account-sign-in-drawer-close-line{
+.account-sign-up-drawer-close-line{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -243,54 +258,54 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-shell{
     opacity 220ms ease;
 }
 
-.account-sign-in-drawer-close-line--first{
+.account-sign-up-drawer-close-line--first{
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.account-sign-in-drawer-close-line--second{
+.account-sign-up-drawer-close-line--second{
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.account-sign-in-drawer-close:hover,
-.account-sign-in-drawer-close:focus-visible,
-.account-sign-in-drawer-close:active{
+.account-sign-up-drawer-close:hover,
+.account-sign-up-drawer-close:focus-visible,
+.account-sign-up-drawer-close:active{
   color: var(--color-primary7);
   transform: scale(1.08);
   outline: none;
 }
 
-body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
+body.account-sign-up-drawer-closing .account-sign-up-drawer-close{
   opacity: 0;
   pointer-events: none;
 }
 
-.account-sign-in-drawer-close:hover .account-sign-in-drawer-close-line,
-.account-sign-in-drawer-close:focus-visible .account-sign-in-drawer-close-line,
-.account-sign-in-drawer-close:active .account-sign-in-drawer-close-line{
+.account-sign-up-drawer-close:hover .account-sign-up-drawer-close-line,
+.account-sign-up-drawer-close:focus-visible .account-sign-up-drawer-close-line,
+.account-sign-up-drawer-close:active .account-sign-up-drawer-close-line{
   opacity: 1;
 }
 
-.account-sign-in-drawer-close:hover .account-sign-in-drawer-close-line--first,
-.account-sign-in-drawer-close:focus-visible .account-sign-in-drawer-close-line--first,
-.account-sign-in-drawer-close:active .account-sign-in-drawer-close-line--first{
+.account-sign-up-drawer-close:hover .account-sign-up-drawer-close-line--first,
+.account-sign-up-drawer-close:focus-visible .account-sign-up-drawer-close-line--first,
+.account-sign-up-drawer-close:active .account-sign-up-drawer-close-line--first{
   transform: translate(-50%, -50%) rotate(0deg);
 }
 
-.account-sign-in-drawer-close:hover .account-sign-in-drawer-close-line--second,
-.account-sign-in-drawer-close:focus-visible .account-sign-in-drawer-close-line--second,
-.account-sign-in-drawer-close:active .account-sign-in-drawer-close-line--second{
+.account-sign-up-drawer-close:hover .account-sign-up-drawer-close-line--second,
+.account-sign-up-drawer-close:focus-visible .account-sign-up-drawer-close-line--second,
+.account-sign-up-drawer-close:active .account-sign-up-drawer-close-line--second{
   transform: translate(-50%, -50%) rotate(0deg);
 }
 
 /* =============================================================================
    09) BODY
 ============================================================================= */
-.account-sign-in-drawer-body{
+.account-sign-up-drawer-body{
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-  gap: var(--account-sign-in-section-gap);
+  gap: var(--account-sign-up-section-gap);
   padding-top: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -298,14 +313,14 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   -ms-overflow-style: none;
 }
 
-.account-sign-in-drawer-body::-webkit-scrollbar{
+.account-sign-up-drawer-body::-webkit-scrollbar{
   display: none;
 }
 
 /* =============================================================================
    10) TYPOGRAPHY
 ============================================================================= */
-.account-sign-in-drawer-title{
+.account-sign-up-drawer-title{
   margin: 0;
   grid-column: 2;
   width: auto;
@@ -319,56 +334,56 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   text-align: center;
 }
 
-.account-sign-in-drawer-note,
-.account-sign-in-drawer-label{
+.account-sign-up-drawer-note,
+.account-sign-up-drawer-label{
   margin: 0;
-  color: var(--account-sign-in-muted);
+  color: var(--account-sign-up-muted);
   letter-spacing: -0.015em;
 }
 
-.account-sign-in-drawer-note{
-  font-size: 1rem;
+.account-sign-up-drawer-note{
+  font-size: var(--account-sign-up-note-size);
   font-weight: 300;
   line-height: 1.62;
   text-align: center;
 }
 
-.account-sign-in-drawer-content-stage{
+.account-sign-up-drawer-content-stage{
   display: flex;
   flex-direction: column;
-  gap: var(--account-sign-in-section-gap);
-  padding-inline: 4.8rem;
+  gap: var(--account-sign-up-section-gap);
+  padding-inline: var(--account-sign-up-content-stage-padding-inline);
 }
 
 /* =============================================================================
    11) FORM
 ============================================================================= */
-.account-sign-in-drawer-form{
+.account-sign-up-drawer-form{
   display: flex;
   flex-direction: column;
-  gap: 0.96rem;
+  gap: var(--account-sign-up-form-gap);
 }
 
-.account-sign-in-drawer-field-group{
+.account-sign-up-drawer-field-group{
   display: flex;
   flex-direction: column;
-  gap: 0.46rem;
+  gap: var(--account-sign-up-field-group-gap);
 }
 
-.account-sign-in-drawer-label{
-  font-size: 0.88rem;
+.account-sign-up-drawer-label{
+  font-size: var(--account-sign-up-label-size);
   font-weight: 400;
   line-height: 1.4;
 }
 
-.account-sign-in-drawer-input{
+.account-sign-up-drawer-input{
   width: 100%;
-  height: var(--account-sign-in-control-height);
-  padding: 0 var(--account-sign-in-control-inline-padding);
+  height: var(--account-sign-up-control-height);
+  padding: 0 var(--account-sign-up-control-inline-padding);
   box-sizing: border-box;
-  border: 1px solid var(--account-sign-in-input-border);
+  border: 1px solid var(--account-sign-up-input-border);
   border-radius: 999px;
-  background: var(--account-sign-in-input-surface);
+  background: var(--account-sign-up-input-surface);
   color: var(--text-primary-color);
   font: inherit;
   line-height: 1;
@@ -378,32 +393,32 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   appearance: none;
 }
 
-.account-sign-in-drawer-input::placeholder{
-  color: var(--account-sign-in-muted);
+.account-sign-up-drawer-input::placeholder{
+  color: var(--account-sign-up-muted);
 }
 
-.account-sign-in-drawer-input:focus{
-  border-color: var(--account-sign-in-input-focus);
+.account-sign-up-drawer-input:focus{
+  border-color: var(--account-sign-up-input-focus);
 }
 
 /* =============================================================================
    12) ACTIONS
 ============================================================================= */
-.account-sign-in-drawer-actions{
+.account-sign-up-drawer-actions{
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.72rem;
+  gap: var(--account-sign-up-actions-gap);
 }
 
-.account-sign-in-drawer-action{
+.account-sign-up-drawer-action{
   appearance: none;
   -webkit-appearance: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: var(--account-sign-in-control-height);
-  padding: 0 var(--account-sign-in-control-inline-padding);
+  height: var(--account-sign-up-control-height);
+  padding: 0 var(--account-sign-up-control-inline-padding);
   box-sizing: border-box;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
@@ -414,24 +429,23 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   transition: opacity 180ms ease, border-color 180ms ease, background-color 180ms ease, color 180ms ease;
 }
 
-.account-sign-in-drawer-action-label{
+.account-sign-up-drawer-action-label{
   margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: var(--account-sign-in-control-height);
+  height: var(--account-sign-up-control-height);
   color: #f5f5f7;
-  font-size: 0.94rem;
+  font-size: var(--account-sign-up-action-label-size);
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1;
   text-align: center;
 }
 
-
-.account-sign-in-drawer-action--primary:hover,
-.account-sign-in-drawer-action--primary:focus-visible{
+.account-sign-up-drawer-action--primary:hover,
+.account-sign-up-drawer-action--primary:focus-visible{
   opacity: 0.92;
   border-color: rgba(255, 255, 255, 0.24);
   background: rgba(255, 255, 255, 0.08);
@@ -441,28 +455,28 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
 /* =============================================================================
    12A) ACTION DIVIDER
 ============================================================================= */
-.account-sign-in-drawer-divider{
+.account-sign-up-drawer-divider{
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.82rem;
+  gap: var(--account-sign-up-divider-gap);
   width: 100%;
   max-width: 100%;
   align-self: stretch;
   box-sizing: border-box;
-  padding-inline: 12px;
+  padding-inline: var(--account-sign-up-divider-padding-inline);
 }
 
-.account-sign-in-drawer-divider-line{
+.account-sign-up-drawer-divider-line{
   flex: 1 1 0;
   min-width: 0;
   height: 1px;
-  background: var(--account-sign-in-divider-line);
+  background: var(--account-sign-up-divider-line);
 }
 
-.account-sign-in-drawer-divider-label{
-  color: var(--account-sign-in-muted);
-  font-size: 0.82rem;
+.account-sign-up-drawer-divider-label{
+  color: var(--account-sign-up-muted);
+  font-size: var(--account-sign-up-divider-label-size);
   font-weight: 400;
   letter-spacing: -0.012em;
   line-height: 1;
@@ -473,14 +487,14 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
 /* =============================================================================
    13) SECONDARY ACTIONS
 ============================================================================= */
-.account-sign-in-drawer-secondary-actions{
+.account-sign-up-drawer-secondary-actions{
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.52rem;
+  gap: var(--account-sign-up-secondary-actions-gap);
 }
 
-.account-sign-in-drawer-text-action{
+.account-sign-up-drawer-text-action{
   display: inline;
   color: var(--text-primary-color);
   cursor: pointer;
@@ -489,16 +503,16 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   text-decoration-thickness: 1px;
   text-underline-offset: 0.14em;
   text-decoration-skip-ink: auto;
-  font-size: 0.82rem;
+  font-size: var(--account-sign-up-text-action-size);
   font-weight: 400;
   letter-spacing: -0.012em;
   line-height: 1.45;
   transition: color 220ms ease, text-decoration-color 220ms ease, opacity 220ms ease;
 }
 
-.account-sign-in-drawer-text-action:hover,
-.account-sign-in-drawer-text-action:focus-visible,
-.account-sign-in-drawer-text-action:active{
+.account-sign-up-drawer-text-action:hover,
+.account-sign-up-drawer-text-action:focus-visible,
+.account-sign-up-drawer-text-action:active{
   color: var(--color-primary1);
   text-decoration-color: var(--color-primary1);
   outline: none;
@@ -507,7 +521,7 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
 /* =============================================================================
    13A) BACK CONTROL
 ============================================================================= */
-.account-sign-in-drawer-back-control{
+.account-sign-up-drawer-back-control{
   appearance: none;
   -webkit-appearance: none;
   width: 1.2rem;
@@ -524,7 +538,7 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   margin-top: 1rem;
 }
 
-.account-sign-in-drawer-back-icon{
+.account-sign-up-drawer-back-icon{
   width: 1.12rem;
   height: 1.12rem;
   display: block;
@@ -532,7 +546,7 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   filter: none;
 }
 
-body.dark-mode .account-sign-in-drawer-back-icon{
+body.dark-mode .account-sign-up-drawer-back-icon{
   filter: brightness(0) invert(1);
 }
 
@@ -540,12 +554,12 @@ body.dark-mode .account-sign-in-drawer-back-icon{
    14) REDUCED MOTION
 ============================================================================= */
 @media (prefers-reduced-motion: reduce){
-  .account-sign-in-drawer,
-  .account-sign-in-drawer-backdrop,
-  .account-sign-in-drawer-shell,
-  .account-sign-in-drawer-close-line,
-  .account-sign-in-drawer-action,
-  .account-sign-in-drawer-input{
+  .account-sign-up-drawer,
+  .account-sign-up-drawer-backdrop,
+  .account-sign-up-drawer-shell,
+  .account-sign-up-drawer-close-line,
+  .account-sign-up-drawer-action,
+  .account-sign-up-drawer-input{
     transition: none !important;
   }
 }
@@ -554,15 +568,15 @@ body.dark-mode .account-sign-in-drawer-back-icon{
    15) RESPONSIVE — 1024PX
 ============================================================================= */
 @media (max-width:1024px){
-  .account-sign-in-drawer-shell{
+  .account-sign-up-drawer-shell{
     padding: 1.36rem 1.7rem;
   }
 
-  .account-sign-in-drawer-content-stage{
-    padding-inline: 3.2rem;
+  .account-sign-up-drawer-content-stage{
+    padding-inline: var(--account-sign-up-content-stage-padding-inline-tablet);
   }
 
-  .account-sign-in-drawer-close{
+  .account-sign-up-drawer-close{
     top: 0.82rem;
     right: 0.82rem;
     left: auto;
@@ -573,34 +587,34 @@ body.dark-mode .account-sign-in-drawer-back-icon{
    16) RESPONSIVE — 768PX
 ============================================================================= */
 @media (max-width:768px){
-  .account-sign-in-drawer-shell{
+  .account-sign-up-drawer-shell{
     padding: 1.2rem 1.28rem;
   }
 
-  .account-sign-in-drawer-content-stage{
-    padding-inline: 1.8rem;
+  .account-sign-up-drawer-content-stage{
+    padding-inline: var(--account-sign-up-content-stage-padding-inline-mobile);
   }
 
-  .account-sign-in-drawer-close{
+  .account-sign-up-drawer-close{
     top: 0.68rem;
     right: 0.68rem;
     left: auto;
   }
 
-  .account-sign-in-drawer-header{
+  .account-sign-up-drawer-header{
     width: 100%;
     display: block;
-    padding: 0 0 1.04rem 0;
+    padding: 0 0 var(--account-sign-up-header-padding-bottom-mobile) 0;
   }
 
-  .account-sign-in-drawer-header-title-stage{
+  .account-sign-up-drawer-header-title-stage{
     width: 100%;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
   }
 
-  .account-sign-in-drawer-title{
+  .account-sign-up-drawer-title{
     grid-column: 2;
     width: auto;
     font-size: 1.42rem;
@@ -608,7 +622,7 @@ body.dark-mode .account-sign-in-drawer-back-icon{
     text-align: center;
   }
 
-  .account-sign-in-drawer-note{
-    font-size: 0.94rem;
+  .account-sign-up-drawer-note{
+    font-size: var(--account-sign-up-note-size-mobile);
   }
 }

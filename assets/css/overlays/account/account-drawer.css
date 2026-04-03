@@ -52,6 +52,21 @@
   --account-drawer-title-max: 14ch;
   --account-drawer-copy-max: 34ch;
   --account-drawer-section-gap: 1.22rem;
+  --account-drawer-header-padding-bottom: 1.22rem;
+  --account-drawer-header-padding-bottom-mobile: 1.04rem;
+  --account-drawer-content-stage-padding-inline: 4.8rem;
+  --account-drawer-content-stage-padding-inline-tablet: 3.2rem;
+  --account-drawer-content-stage-padding-inline-mobile: 1.8rem;
+  --account-drawer-body-gap-mobile: 1.04rem;
+  --account-drawer-entry-card-padding: 1.06rem;
+  --account-drawer-entry-card-padding-mobile: 0.96rem;
+  --account-drawer-entry-title-size: 1.04rem;
+  --account-drawer-entry-title-size-mobile: 0.98rem;
+  --account-drawer-entry-copy-size: 0.94rem;
+  --account-drawer-entry-copy-size-mobile: 0.9rem;
+  --account-drawer-meta-link-size: 0.82rem;
+  --account-drawer-meta-link-size-mobile: 0.78rem;
+  --account-drawer-action-label-size: 0.94rem;
   --account-drawer-card-radius: 1rem;
   --account-drawer-soft-radius: 0.82rem;
   --account-drawer-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.06);
@@ -199,7 +214,7 @@ body.account-drawer-closing .account-drawer-shell{
 .account-drawer-header{
   width: 100%;
   display: block;
-  padding: 0 0 1.22rem 0;
+  padding: 0 0 var(--account-drawer-header-padding-bottom) 0;
   border-bottom: 1px solid var(--account-drawer-header-divider);
 }
 
@@ -361,7 +376,7 @@ body.account-drawer-closing .account-drawer-close{
   width: 100%;
   min-height: 48px;
   color: #f5f5f7;
-  font-size: 0.94rem;
+  font-size: var(--account-drawer-action-label-size);
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1;
@@ -421,7 +436,7 @@ body.account-drawer-closing .account-drawer-close{
   display: flex;
   flex-direction: column;
   gap: var(--account-drawer-section-gap);
-  padding-inline: 4.8rem;
+  padding-inline: var(--account-drawer-content-stage-padding-inline);
 }
 
 /* =============================================================================
@@ -434,7 +449,7 @@ body.account-drawer-closing .account-drawer-close{
   align-items: stretch;
   justify-content: flex-start;
   gap: 0.96rem;
-  padding: 1.06rem;
+  padding: var(--account-drawer-entry-card-padding);
   border: 1px solid var(--account-drawer-card-border);
   background: var(--account-drawer-card-surface);
   box-shadow: var(--account-drawer-card-shadow);
@@ -466,7 +481,7 @@ body.account-drawer-closing .account-drawer-close{
 
 .account-drawer-entry-title{
   color: var(--text-primary-color);
-  font-size: 1.04rem;
+  font-size: var(--account-drawer-entry-title-size);
   font-weight: 400;
   letter-spacing: -0.022em;
   line-height: 1.16;
@@ -474,7 +489,7 @@ body.account-drawer-closing .account-drawer-close{
 
 .account-drawer-entry-copy{
   color: var(--account-drawer-muted);
-  font-size: 0.94rem;
+  font-size: var(--account-drawer-entry-copy-size);
   font-weight: 300;
   letter-spacing: -0.015em;
   line-height: 1.58;
@@ -544,7 +559,7 @@ body.dark-mode .account-drawer-identity-icon--theme-aware{
   align-items: center;
   justify-content: center;
   color: #f5f5f7;
-  font-size: 0.94rem;
+  font-size: var(--account-drawer-action-label-size);
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1;
@@ -580,7 +595,7 @@ body.dark-mode .account-drawer-identity-icon--theme-aware{
   text-decoration-thickness: 1px;
   text-underline-offset: 0.14em;
   text-decoration-skip-ink: auto;
-  font-size: 0.82rem;
+  font-size: var(--account-drawer-meta-link-size);
   font-weight: 400;
   letter-spacing: -0.012em;
   line-height: 1.45;
@@ -606,7 +621,6 @@ body.dark-mode .account-drawer-identity-icon--theme-aware{
   line-height: inherit;
   transition: color 220ms ease, text-decoration-color 220ms ease, opacity 220ms ease;
 }
-
 
 .account-drawer-legal-link:hover,
 .account-drawer-legal-link:focus-visible,
@@ -680,7 +694,7 @@ body.dark-mode .account-drawer-identity-icon--theme-aware{
   }
 
   .account-drawer-content-stage{
-    padding-inline: 3.2rem;
+    padding-inline: var(--account-drawer-content-stage-padding-inline-tablet);
   }
 
   .account-drawer-close{
@@ -703,7 +717,7 @@ body.dark-mode .account-drawer-identity-icon--theme-aware{
   }
 
   .account-drawer-content-stage{
-    padding-inline: 1.8rem;
+    padding-inline: var(--account-drawer-content-stage-padding-inline-mobile);
   }
 
   .account-drawer-close{
@@ -715,18 +729,16 @@ body.dark-mode .account-drawer-identity-icon--theme-aware{
   .account-drawer-header{
     width: 100%;
     display: block;
-    padding: 0 0 1.04rem 0;
+    padding: 0 0 var(--account-drawer-header-padding-bottom-mobile) 0;
   }
 
-
   .account-drawer-body{
-    gap: 1.04rem;
+    gap: var(--account-drawer-body-gap-mobile);
     padding-top: 0;
   }
 
-
   .account-drawer-entry-card{
-    padding: 0.96rem;
+    padding: var(--account-drawer-entry-card-padding-mobile);
   }
 
   .account-drawer-action{
@@ -734,30 +746,22 @@ body.dark-mode .account-drawer-identity-icon--theme-aware{
     padding: 0 22px;
   }
 
-  .account-drawer-action-label{
-    font-size: 0.94rem;
-  }
-
   .account-drawer-identity-option{
     min-height: 48px;
     padding: 0 22px;
   }
 
-  .account-drawer-identity-label{
-    font-size: 0.94rem;
-  }
-
   .account-drawer-entry-title{
-    font-size: 0.98rem;
+    font-size: var(--account-drawer-entry-title-size-mobile);
   }
 
   .account-drawer-entry-copy{
-    font-size: 0.9rem;
+    font-size: var(--account-drawer-entry-copy-size-mobile);
   }
 
   .account-drawer-legal-link,
   .account-drawer-support-link{
-    font-size: 0.78rem;
+    font-size: var(--account-drawer-meta-link-size-mobile);
   }
 
   .account-drawer-profile .account-drawer-entry-title,
