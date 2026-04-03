@@ -1,13 +1,1 @@
-# Canonical local-only noise
-.DS_Store
-**/.DS_Store
-.vscode/
-.obsidian/
-
-# Vault export temporary files
-content_sync/**/*.tmp
-content_sync/**/*.bak
-
-# Optional local editor / OS residue
-**/*~
-**/.Trash
+development/
