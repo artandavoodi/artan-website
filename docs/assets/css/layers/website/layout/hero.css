@@ -1,32 +1,32 @@
 /* =============================================================================
-   FILE INDEX
-   0) GLOBAL SAFETY
-   1) ANNOUNCEMENT + CTA
-   1A) ENTER BUTTON ICON
-   2) STAGE CIRCLE (ATMOSPHERE) — LUXURY BREATHING DIAL (STRONG)
-   3) STAGE BACKGROUND VIDEO (HERO) — CLEAN SELECTORS
-   4) STAGE VIDEO OVERLAY (THEME-ADAPTABLE GLASS)
-   5) HERO / LANDING STACK (LUXURY SPACING)
-   5A) STAGE REGION LAYOUT
-   5B) STAGE GLASS VESSEL
-   5C) STAGE COGNITIVE CORE SHELL
-   5D) STAGE MICROPHONE TRIGGER
-   5E) STAGE VOICE INTERACTION SHELL
-   6) HERO — ON ENTER: HIDE STAGE INTRO GROUP
-   7) HERO — MOBILE / TABLET REFINEMENTS
-   8) HERO SEAL — CLIP + PAINT CONTAIN
-   9) PRE-ENTER ISOLATION — HIDE GLOBAL UI + POST-ENTER CONTENT
-   10) INTRO LOGO ANIMATION (HERO-OWNED — PRE-ENTER SYSTEM)
+   00) FILE INDEX
+   01) GLOBAL SAFETY
+   02) ANNOUNCEMENT + CTA
+   03) ENTER BUTTON ICON
+   04) STAGE CIRCLE (ATMOSPHERE) — LUXURY BREATHING DIAL (STRONG)
+   05) STAGE BACKGROUND VIDEO (HERO) — CLEAN SELECTORS
+   06) STAGE VIDEO OVERLAY (THEME-ADAPTABLE GLASS)
+   07) HERO / LANDING STACK (LUXURY SPACING)
+   08) STAGE REGION LAYOUT
+   09) STAGE GLASS VESSEL
+   10) STAGE COGNITIVE CORE SHELL
+   11) STAGE MICROPHONE TRIGGER
+   12) STAGE VOICE INTERACTION SHELL
+   13) HERO — ON ENTER: HIDE STAGE INTRO GROUP
+   14) HERO — MOBILE / TABLET REFINEMENTS
+   15) HERO SEAL — CLIP + PAINT CONTAIN
+   16) PRE-ENTER ISOLATION — HIDE GLOBAL UI + POST-ENTER CONTENT
+   17) INTRO LOGO ANIMATION (HERO-OWNED — PRE-ENTER SYSTEM)
 ============================================================================= */
 
 /* =============================================================================
-   0) GLOBAL SAFETY
+   01) GLOBAL SAFETY
 ============================================================================= */
 html, body{height:100%;}
 body{margin:0;overflow-x:hidden;}
 
 /* =============================================================================
-   1) ANNOUNCEMENT + CTA
+   02) ANNOUNCEMENT + CTA
 ============================================================================= */
 #announcement{
   max-width:90%;
@@ -135,7 +135,7 @@ body.theme-light .enter-button{border-color:rgba(0,0,0,0.35);}
 body.theme-dark .enter-button{border-color:rgba(255,255,255,0.35);}
 
 /* =============================================================================
-   1A) ENTER BUTTON ICON
+   03) ENTER BUTTON ICON
 ============================================================================= */
 .enter-button-icon{
   display:block;
@@ -176,7 +176,7 @@ body.theme-light{--dial-rgb:145,124,111;}
 body.theme-dark{--dial-rgb:145,124,111;}
 
 /* =============================================================================
-   2) STAGE CIRCLE (ATMOSPHERE) — LUXURY BREATHING DIAL (STRONG)
+   04) STAGE CIRCLE (ATMOSPHERE) — LUXURY BREATHING DIAL (STRONG)
 ============================================================================= */
 .stage-circle{
   position:fixed;
@@ -261,7 +261,7 @@ body.theme-dark{--dial-rgb:145,124,111;}
 }
 
 /* =============================================================================
-   3) STAGE BACKGROUND VIDEO (HERO) — CLEAN SELECTORS
+   05) STAGE BACKGROUND VIDEO (HERO) — CLEAN SELECTORS
 ============================================================================= */
 .stage-video,
 #hero-video,
@@ -313,7 +313,7 @@ body.site-entered.hero-lock-released .hero-video-media{
 }
 
 /* =============================================================================
-   4) STAGE VIDEO OVERLAY (THEME-ADAPTABLE GLASS)
+   06) STAGE VIDEO OVERLAY (THEME-ADAPTABLE GLASS)
 ============================================================================= */
 .stage-video-overlay{
   position:absolute;
@@ -365,7 +365,7 @@ body.site-entered #institutional-menu-mount{
 }
 
 /* =============================================================================
-   5) HERO / LANDING STACK (LUXURY SPACING)
+   07) HERO / LANDING STACK (LUXURY SPACING)
 ============================================================================= */
 #stage{
   width:100%;
@@ -452,7 +452,7 @@ body.site-entered #institutional-menu-mount{
 }
 
 /* =============================================================================
-   5A) STAGE REGION LAYOUT
+   08) STAGE REGION LAYOUT
 ============================================================================= */
 #stage-intro{
   position:relative;
@@ -551,7 +551,7 @@ body.site-entered #institutional-menu-mount{
 }
 
 /* =============================================================================
-   5B) STAGE GLASS VESSEL
+   09) STAGE GLASS VESSEL
 ============================================================================= */
 #stage-glass-vessel{
   position:relative;
@@ -604,7 +604,7 @@ body.theme-light #stage-glass-vessel-inner{
 }
 
 /* =============================================================================
-   5C) STAGE COGNITIVE CORE SHELL
+   10) STAGE COGNITIVE CORE SHELL
 ============================================================================= */
 #stage-cognitive-core-shell{
   position:absolute;
@@ -659,7 +659,7 @@ body.theme-light #stage-glass-vessel-inner{
 }
 
 /* =============================================================================
-   5D) STAGE MICROPHONE TRIGGER
+   11) STAGE MICROPHONE TRIGGER
 ============================================================================= */
 #stage #stage-microphone{
   display:flex;
@@ -717,8 +717,8 @@ body.theme-light #stage-glass-vessel-inner{
   opacity:0.9;
   transition:transform 0.22s ease, opacity 0.22s ease;
   background-color:currentColor;
-  -webkit-mask-image:url("../../icons/system/mic.svg");
-  mask-image:url("../../icons/system/mic.svg");
+  -webkit-mask-image:url("../../../../icons/core/interface/actions/mic.svg");
+  mask-image:url("../../../../icons/core/interface/actions/mic.svg");
   -webkit-mask-repeat:no-repeat;
   mask-repeat:no-repeat;
   -webkit-mask-position:center;
@@ -743,7 +743,7 @@ body.theme-light #stage-glass-vessel-inner{
 }
 
 /* =============================================================================
-   5E) STAGE VOICE INTERACTION SHELL
+   12) STAGE VOICE INTERACTION SHELL
 ============================================================================= */
 #stage-voice-interaction-shell{
   display:flex;
@@ -767,7 +767,7 @@ body.theme-light #stage-glass-vessel-inner{
 }
 
 /* =============================================================================
-   6) HERO — ON ENTER: HIDE STAGE INTRO GROUP
+   13) HERO — ON ENTER: HIDE STAGE INTRO GROUP
 ============================================================================= */
 body.site-entered.hero-lock-released #stage-intro{
   opacity:0;
@@ -813,7 +813,7 @@ body:not(.site-entered) .stage-circle{
 }
 
 /* =============================================================================
-   7) HERO — MOBILE / TABLET REFINEMENTS
+   14) HERO — MOBILE / TABLET REFINEMENTS
 ============================================================================= */
 @media (max-width:820px){
   :root{
@@ -959,7 +959,7 @@ body:not(.site-entered) .stage-circle{
 }
 
 /* =============================================================================
-   8) HERO SEAL — CLIP + PAINT CONTAIN
+   15) HERO SEAL — CLIP + PAINT CONTAIN
 ============================================================================= */
 #stage,
 .stage-video,
@@ -973,7 +973,7 @@ body:not(.site-entered) .stage-circle{
 }
 
 /* =============================================================================
-   9) PRE-ENTER ISOLATION — HIDE GLOBAL UI + POST-ENTER CONTENT
+   16) PRE-ENTER ISOLATION — HIDE GLOBAL UI + POST-ENTER CONTENT
 ============================================================================= */
 body:not(.site-entered) #menu-mount,
 body:not(.site-entered) #footer-mount,
@@ -993,7 +993,7 @@ body:not(.site-entered) main{
 }
 
 /* =============================================================================
-   10) INTRO LOGO ANIMATION (HERO-OWNED — PRE-ENTER SYSTEM)
+   17) INTRO LOGO ANIMATION (HERO-OWNED — PRE-ENTER SYSTEM)
 ============================================================================= */
 body.intro-loading{overflow:hidden;}
 

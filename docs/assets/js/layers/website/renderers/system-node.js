@@ -1,10 +1,11 @@
 /* =============================================================================
-   FILE INDEX
+   00) FILE INDEX
    01) MODULE IDENTITY
    02) MOUNT CONSTANTS
-   03) FRAGMENT MOUNT
-   04) BOOTSTRAP
-   05) DOCUMENT READY HANDOFF
+   03) MOUNT RESOLUTION
+   04) FRAGMENT MOUNT SIGNAL
+   05) IMMEDIATE INITIALIZATION
+   06) FRAGMENT-MOUNT LIFECYCLE
 ============================================================================= */
 
 /* =============================================================================
@@ -16,52 +17,36 @@
      02) MOUNT CONSTANTS
   ============================================================================= */
   const MOUNT_ID = 'system-node-mount';
-  const FRAGMENT_URL = 'assets/fragments/system/system-node.html';
 
   /* =============================================================================
-     03) FRAGMENT MOUNT
+     03) MOUNT RESOLUTION
   ============================================================================= */
-  const mount = async () => {
-    const host = document.getElementById(MOUNT_ID);
-    if (!host) return false;
-    if (host.dataset.mounted === '1') return true;
+  const getMount = () => document.getElementById(MOUNT_ID);
 
-    try {
-      const res = await fetch(FRAGMENT_URL, { cache: 'no-store' });
-      if (!res.ok) return false;
-      const html = await res.text();
-      host.innerHTML = html;
-      host.dataset.mounted = '1';
-      return true;
-    } catch {
-      return false;
-    }
+  /* =============================================================================
+     04) FRAGMENT MOUNT SIGNAL
+  ============================================================================= */
+  const markMounted = () => {
+    const host = getMount();
+    if (!(host instanceof HTMLElement)) return false;
+    if (host.dataset.systemNodeBound === 'true') return true;
+    if (!host.querySelector('.system-node')) return false;
+
+    host.dataset.systemNodeBound = 'true';
+    return true;
   };
 
   /* =============================================================================
-     04) BOOTSTRAP
+     05) IMMEDIATE INITIALIZATION
   ============================================================================= */
-  const boot = () => {
-    // Try immediately
-    mount().then((ok) => {
-      if (ok) return;
-
-      // If mount not yet present, observe DOM
-      const mo = new MutationObserver(() => {
-        mount().then((done) => {
-          if (done) mo.disconnect();
-        });
-      });
-      mo.observe(document.body, { childList: true, subtree: true });
-    });
-  };
+  markMounted();
 
   /* =============================================================================
-     05) DOCUMENT READY HANDOFF
+     06) FRAGMENT-MOUNT LIFECYCLE
   ============================================================================= */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
+  document.addEventListener('fragment:mounted', (event) => {
+    const name = event?.detail?.name;
+    if (name !== 'system-node') return;
+    markMounted();
+  });
 })();

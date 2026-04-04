@@ -1,20 +1,36 @@
 <!-- =============================================================================
-     SYSTEM NODE — VECTOR ANIMATION FRAGMENT (SOVEREIGN)
-     - Fully reusable fragment
-     - No inline JS
-     - No inline CSS
-     - Mounted via #system-node-mount
+00) FILE INDEX
+01) SYSTEM NODE SHELL
+02) VISUAL LAYER
+03) SVG NODE
+04) SVG DEFINITIONS
+05) CORE GLOW
+06) OUTER RING
+07) INNER RING
+08) CAPTION LAYER
+09) END OF FRAGMENT
 ============================================================================= -->
 
+<!-- =============================================================================
+01) SYSTEM NODE SHELL
+============================================================================= -->
 <section class="system-node" data-motion="lift" aria-label="Cognitive system animation">
 
-  <!-- Canvas / SVG Layer -->
+  <!-- ==========================================================================
+  02) VISUAL LAYER
+  ========================================================================== -->
   <div class="system-node-visual" aria-hidden="true">
+    <!-- ========================================================================
+    03) SVG NODE
+    ======================================================================== -->
     <svg
       class="system-node-svg"
       viewBox="0 0 600 600"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <!-- ======================================================================
+      04) SVG DEFINITIONS
+      ====================================================================== -->
       <defs>
         <radialGradient id="systemNodeGradient" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stop-color="currentColor" stop-opacity="0.85" />
@@ -24,6 +40,9 @@
         </radialGradient>
       </defs>
 
+      <!-- ======================================================================
+      05) CORE GLOW
+      ====================================================================== -->
       <circle
         class="system-node-core"
         cx="300"
@@ -32,6 +51,9 @@
         fill="url(#systemNodeGradient)"
       />
 
+      <!-- ======================================================================
+      06) OUTER RING
+      ====================================================================== -->
       <circle
         class="system-node-ring"
         cx="300"
@@ -43,6 +65,9 @@
         stroke-opacity="0.25"
       />
 
+      <!-- ======================================================================
+      07) INNER RING
+      ====================================================================== -->
       <circle
         class="system-node-ring system-node-ring--inner"
         cx="300"
@@ -56,10 +81,16 @@
     </svg>
   </div>
 
-  <!-- Optional Caption Layer -->
+  <!-- ==========================================================================
+  08) CAPTION LAYER
+  ========================================================================== -->
   <div class="system-node-caption">
     <h2 class="system-node-title" aria-hidden="true"></h2>
     <p class="system-node-text" aria-hidden="true"></p>
   </div>
 
 </section>
+
+<!-- =============================================================================
+09) END OF FRAGMENT
+============================================================================= -->

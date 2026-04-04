@@ -52,7 +52,8 @@
 
 .system-node-svg{
   display:block;
-  width: clamp(280px, 40vw, 520px);
+  width: min(40vw, 520px);
+  min-width: 280px;
   height:auto;
   margin-inline:auto;
   color: var(--color-primary1);
