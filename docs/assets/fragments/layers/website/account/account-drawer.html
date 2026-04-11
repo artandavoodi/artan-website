@@ -8,11 +8,12 @@
      01E) DRAWER BODY
      01F) AUTH STATE
      01G) CONTENT STAGE
-     01H) ENTRY CARD
+     01H) SEGMENT TITLE
      01I) IDENTITY OPTIONS
      01J) PRIMARY ACTIONS
      01K) LEGAL / SUPPORT META
-     01L) PROFILE PLACEHOLDER
+     01L) INNER VIEW MOUNT ZONE
+     01M) PROFILE PLACEHOLDER
 ============================================================================= -->
 
 <!-- =============================================================================
@@ -61,51 +62,54 @@
         <div class="account-drawer-content-stage">
 
           <!-- =============================================================================
-               01H) ENTRY CARD
+               01H) SEGMENT TITLE
           ============================================================================= -->
-          <!-- Entry card intentionally removed for this simplified guest-entry state. -->
+          <div class="account-drawer-segment-header">
+            <h2 class="account-drawer-segment-title" data-i18n-key="account_segment_title_create_account">Create an account</h2>
+          </div>
 
           <!-- =============================================================================
                01I) IDENTITY OPTIONS
           ============================================================================= -->
           <div class="account-drawer-identity-options" aria-label="Available sign-in pathways">
-            <a href="/pages/account/sign-in/index.html?provider=apple" class="account-drawer-identity-option account-drawer-identity-option--apple">
+            <button type="button" class="account-drawer-identity-option account-drawer-identity-option--apple" data-account-provider-apple-submit="true">
               <span class="account-drawer-identity-content">
-                <img src="assets/icons/layers/website/brand/signin/apple.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware" aria-hidden="true">
+                <img src="assets/icons/layers/website/brand/signin/apple.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware ui-icon-theme-aware" aria-hidden="true">
                 <span class="account-drawer-identity-label" data-i18n-key="account_drawer_continue_with_apple">Continue with Apple</span>
               </span>
-            </a>
+            </button>
 
-            <a href="/pages/account/sign-in/index.html?provider=google" class="account-drawer-identity-option account-drawer-identity-option--google">
+            <button type="button" class="account-drawer-identity-option account-drawer-identity-option--google" data-account-provider-google-submit="true">
               <span class="account-drawer-identity-content">
                 <img src="assets/icons/layers/website/brand/signin/google-signin.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--brand" aria-hidden="true">
                 <span class="account-drawer-identity-label" data-i18n-key="account_drawer_continue_with_google">Continue with Google</span>
               </span>
-            </a>
+            </button>
 
-            <a href="/pages/account/sign-in/index.html?provider=email" class="account-drawer-identity-option account-drawer-identity-option--email">
+            <button type="button" class="account-drawer-identity-option account-drawer-identity-option--email" data-account-route="email-auth">
               <span class="account-drawer-identity-content">
-                <img src="assets/icons/layers/website/system/auth/signin-email.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware" aria-hidden="true">
+                <img src="assets/icons/layers/website/system/auth/signin-email.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware ui-icon-theme-aware" aria-hidden="true">
                 <span class="account-drawer-identity-label" data-i18n-key="account_drawer_continue_with_email">Continue with email</span>
               </span>
-            </a>
+            </button>
 
-            <a href="/pages/account/sign-in/index.html?provider=phone" class="account-drawer-identity-option account-drawer-identity-option--phone">
+            <button type="button" class="account-drawer-identity-option account-drawer-identity-option--phone" data-account-route="phone-auth">
               <span class="account-drawer-identity-content">
-                <img src="assets/icons/layers/website/system/auth/signin-phone.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware" aria-hidden="true">
+                <img src="assets/icons/layers/website/system/auth/signin-phone.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware ui-icon-theme-aware" aria-hidden="true">
                 <span class="account-drawer-identity-label" data-i18n-key="account_drawer_continue_with_phone">Continue with phone number</span>
               </span>
-            </a>
+            </button>
           </div>
 
           <!-- =============================================================================
                01J) PRIMARY ACTIONS
           ============================================================================= -->
           <div class="account-drawer-actions">
-            <a href="/pages/account/sign-in/index.html" class="account-drawer-action account-drawer-action--primary">
+            <button type="button" class="account-drawer-action account-drawer-action--primary" data-account-route="sign-in" data-account-sign-in-open="true">
               <span class="account-drawer-action-label" data-i18n-key="account_drawer_sign_in">Sign in</span>
-            </a>
+            </button>
           </div>
+
 
           <!-- =============================================================================
                01K) LEGAL / SUPPORT META
@@ -125,13 +129,25 @@
           </div>
         </div>
 
+        <!-- =============================================================================
+             01L) INNER VIEW MOUNT ZONE
+        ============================================================================= -->
+        <div class="account-drawer-view-mount" data-account-view-mount="true" hidden>
+          <div data-include="account-sign-in-drawer"></div>
+          <div data-include="account-sign-up-drawer"></div>
+          <div data-include="account-email-auth-drawer"></div>
+          <div data-include="account-forgot-password-drawer"></div>
+          <div data-include="account-phone-auth-drawer"></div>
+          <div data-include="account-profile-setup-drawer"></div>
+        </div>
+
         <div class="account-drawer-support">
           <a href="/404.html" class="account-drawer-support-link" data-i18n-key="account_drawer_need_help">Need help?</a>
         </div>
       </section>
 
       <!-- =============================================================================
-           01L) PROFILE PLACEHOLDER
+           01M) PROFILE PLACEHOLDER
       ============================================================================= -->
       <section class="account-drawer-state account-drawer-profile" data-profile-state="empty" hidden>
         <div class="account-drawer-entry-card">

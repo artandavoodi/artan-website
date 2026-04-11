@@ -4,33 +4,40 @@
    02) STATE
    03) DRAWER QUERY HELPERS
    04) OPEN / CLOSE HELPERS
+   04A) INNER ROUTE REQUEST HELPERS
    05) STATE VISIBILITY
    06) PUBLIC OPEN REQUESTS
    07) PUBLIC CLOSE REQUESTS
    08) GLOBAL CLICK BINDING
    09) ROUTE REQUEST BINDING
+   09A) INNER ROUTE CONTROLS
    10) ESCAPE BINDING
-   11) INITIALIZATION
+   11) EVENT REBINDING
+   12) BOOTSTRAP
+   13) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
    01) MODULE IDENTITY
 ============================================================================= */
 (() => {
+  'use strict';
   const MODULE_ID = 'account-sign-in-drawer';
+  const MODULE_PATH = '/website/docs/assets/js/layers/website/overlays/account/account-sign-in-drawer.js';
 
   /* =============================================================================
      02) STATE
   ============================================================================= */
   const OPEN_CLASS = 'account-sign-in-drawer-open';
   const CLOSING_CLASS = 'account-sign-in-drawer-closing';
-  const CLOSE_DURATION_MS = 460;
+  const FALLBACK_CLOSE_DURATION_MS = 320;
   const ROUTE_ACTION_SIGN_IN = 'sign-in';
   const ROUTE_ACTION_ENTRY = 'entry';
-  const ROUTE_ACTION_APPLE = 'apple';
-  const ROUTE_ACTION_GOOGLE = 'google';
+  const ROUTE_ACTION_FORGOT_PASSWORD = 'forgot-password';
 
   let closeTimer = null;
+  let bootBound = false;
+  let mountEventsBound = false;
 
   /* =============================================================================
      03) DRAWER QUERY HELPERS
@@ -58,6 +65,25 @@
   /* =============================================================================
      04) OPEN / CLOSE HELPERS
   ============================================================================= */
+  function getCloseDurationMs() {
+    const root = document.documentElement;
+    const raw = window.getComputedStyle(root).getPropertyValue('--duration-slow').trim();
+
+    if (!raw) return FALLBACK_CLOSE_DURATION_MS;
+
+    if (raw.endsWith('ms')) {
+      const parsed = Number.parseFloat(raw);
+      return Number.isFinite(parsed) ? parsed : FALLBACK_CLOSE_DURATION_MS;
+    }
+
+    if (raw.endsWith('s')) {
+      const parsed = Number.parseFloat(raw);
+      return Number.isFinite(parsed) ? parsed * 1000 : FALLBACK_CLOSE_DURATION_MS;
+    }
+
+    return FALLBACK_CLOSE_DURATION_MS;
+  }
+
   function clearCloseTimer() {
     if (!closeTimer) return;
     window.clearTimeout(closeTimer);
@@ -102,12 +128,26 @@
     closeTimer = window.setTimeout(() => {
       document.body.classList.remove(CLOSING_CLASS);
       closeTimer = null;
-    }, CLOSE_DURATION_MS);
+    }, getCloseDurationMs());
 
     document.dispatchEvent(new CustomEvent('account-sign-in-drawer:closed', {
       detail: {
         reason,
         module: MODULE_ID
+      }
+    }));
+  }
+
+  /* =============================================================================
+     04A) INNER ROUTE REQUEST HELPERS
+  ============================================================================= */
+  function requestInnerView(action) {
+    if (!action) return;
+
+    document.dispatchEvent(new CustomEvent('account-layer:view-request', {
+      detail: {
+        source: MODULE_ID,
+        action
       }
     }));
   }
@@ -201,21 +241,12 @@
       if (appleControl) {
         event.preventDefault();
         event.stopPropagation();
-
-        document.dispatchEvent(new CustomEvent('account-layer:route-request', {
+        document.dispatchEvent(new CustomEvent('account:provider-submit', {
           detail: {
             source: MODULE_ID,
-            action: ROUTE_ACTION_APPLE
+            provider: 'apple'
           }
         }));
-
-        const drawer = getDrawer();
-        if (drawer) {
-          clearCloseTimer();
-          document.body.classList.remove(OPEN_CLASS);
-          document.body.classList.remove(CLOSING_CLASS);
-          drawer.setAttribute('aria-hidden', 'true');
-        }
         return;
       }
 
@@ -226,21 +257,12 @@
       if (googleControl) {
         event.preventDefault();
         event.stopPropagation();
-
-        document.dispatchEvent(new CustomEvent('account-layer:route-request', {
+        document.dispatchEvent(new CustomEvent('account:provider-submit', {
           detail: {
             source: MODULE_ID,
-            action: ROUTE_ACTION_GOOGLE
+            provider: 'google'
           }
         }));
-
-        const drawer = getDrawer();
-        if (drawer) {
-          clearCloseTimer();
-          document.body.classList.remove(OPEN_CLASS);
-          document.body.classList.remove(CLOSING_CLASS);
-          drawer.setAttribute('aria-hidden', 'true');
-        }
         return;
       }
 
@@ -250,11 +272,8 @@
 
       if (forgotPasswordControl) {
         event.preventDefault();
-        document.dispatchEvent(new CustomEvent('account-sign-in:forgot-password-request', {
-          detail: {
-            source: MODULE_ID
-          }
-        }));
+        event.stopPropagation();
+        requestInnerView(ROUTE_ACTION_FORGOT_PASSWORD);
         return;
       }
 
@@ -265,21 +284,7 @@
       if (backControl) {
         event.preventDefault();
         event.stopPropagation();
-
-        document.dispatchEvent(new CustomEvent('account-layer:route-request', {
-          detail: {
-            source: MODULE_ID,
-            action: ROUTE_ACTION_ENTRY
-          }
-        }));
-
-        const drawer = getDrawer();
-        if (drawer) {
-          clearCloseTimer();
-          document.body.classList.remove(OPEN_CLASS);
-          document.body.classList.remove(CLOSING_CLASS);
-          drawer.setAttribute('aria-hidden', 'true');
-        }
+        requestInnerView(ROUTE_ACTION_ENTRY);
         return;
       }
     });
@@ -292,13 +297,61 @@
     if (document.documentElement.dataset.accountSignInDrawerRouteBound === 'true') return;
     document.documentElement.dataset.accountSignInDrawerRouteBound = 'true';
 
-    document.addEventListener('account-layer:route-request', (event) => {
+    const handleSignInViewRequest = (event, sourceLabel) => {
       if (!(event instanceof CustomEvent)) return;
       const action = event.detail?.action;
       if (action !== ROUTE_ACTION_SIGN_IN) return;
 
       normalizeStateVisibility();
-      openDrawer('route-sign-in');
+      openDrawer(sourceLabel);
+    };
+
+    document.addEventListener('account-layer:route-request', (event) => {
+      handleSignInViewRequest(event, 'route-sign-in');
+    });
+
+    document.addEventListener('account-layer:view-request', (event) => {
+      handleSignInViewRequest(event, 'view-sign-in');
+    });
+  }
+
+  /* =============================================================================
+     09A) INNER ROUTE CONTROLS
+  ============================================================================= */
+  function bindInnerRouteControls() {
+    if (document.documentElement.dataset.accountSignInDrawerInnerRouteBound === 'true') return;
+    document.documentElement.dataset.accountSignInDrawerInnerRouteBound = 'true';
+
+    document.addEventListener('click', (event) => {
+      const drawer = getDrawer();
+      if (!drawer || !drawer.classList.contains('is-open')) return;
+
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const signUpControl = target.closest('[data-account-route="sign-up"]');
+      const emailControl = target.closest('[data-account-route="email-auth"]');
+      const phoneControl = target.closest('[data-account-route="phone-auth"]');
+
+      if (signUpControl) {
+        event.preventDefault();
+        event.stopPropagation();
+        requestInnerView('sign-up');
+        return;
+      }
+
+      if (emailControl) {
+        event.preventDefault();
+        event.stopPropagation();
+        requestInnerView('email-auth');
+        return;
+      }
+
+      if (phoneControl) {
+        event.preventDefault();
+        event.stopPropagation();
+        requestInnerView('phone-auth');
+      }
     });
   }
 
@@ -317,23 +370,62 @@
   }
 
   /* =============================================================================
-     11) INITIALIZATION
+     11) EVENT REBINDING
+  ============================================================================= */
+  function bindMountEvents() {
+    if (mountEventsBound) return;
+    mountEventsBound = true;
+
+    document.addEventListener('fragment:mounted', (event) => {
+      const name = event?.detail?.name || '';
+      if (name !== 'account-sign-in-drawer') return;
+
+      document.documentElement.dataset.accountSignInDrawerInitialized = 'false';
+      init();
+    });
+  }
+
+  /* =============================================================================
+     12) BOOTSTRAP
   ============================================================================= */
   function init() {
-    if (document.documentElement.dataset.accountSignInDrawerInitialized === 'true') return;
+    if (document.documentElement.dataset.accountSignInDrawerInitialized === 'true' && getDrawer()) return;
     document.documentElement.dataset.accountSignInDrawerInitialized = 'true';
 
     normalizeStateVisibility();
+
+    const drawer = getDrawer();
+    if (drawer) {
+      if (!drawer.hasAttribute('aria-hidden')) {
+        drawer.setAttribute('aria-hidden', 'true');
+      }
+      drawer.dataset.moduleId = MODULE_ID;
+      drawer.dataset.modulePath = MODULE_PATH;
+    }
+
     bindOpenRequests();
     bindCloseRequests();
     bindGlobalClicks();
     bindRouteRequests();
+    bindInnerRouteControls();
     bindEscape();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
+  function boot() {
+    if (bootBound) return;
+
+    bootBound = true;
+    bindMountEvents();
     init();
   }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+
+  /* =============================================================================
+     13) END OF FILE
+  ============================================================================= */
 })();

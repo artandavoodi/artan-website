@@ -1,59 +1,39 @@
 <!-- =============================================================================
 00) FILE INDEX
-01) OVERLAY ROOT
-02) BACKDROP
-03) PANEL
-04) HEADER
-05) TITLE
-06) BACK CONTROL
-07) BODY
-08) WHAT ARE COOKIES PANEL
-09) WHY WE USE THEM PANEL
-10) END OF OVERLAY
+01) COOKIE LEARNING SURFACE ROOT
+02) SURFACE INNER
+03) SURFACE HEADER
+04) TITLE
+05) RETURN CONTROL
+06) SURFACE BODY
+07) WHAT ARE COOKIES PANEL
+08) WHY WE USE THEM PANEL
+09) END OF SURFACE
 ============================================================================= -->
 
 <!-- =============================================================================
-01) OVERLAY ROOT
+01) COOKIE LEARNING SURFACE ROOT
 ============================================================================= -->
-<div class="cookie-learning-overlay" data-cookie-learning-overlay="root" aria-hidden="true" hidden>
+<div class="cookie-learning-overlay" data-cookie-learning-overlay="root">
 
   <!-- ==========================================================================
-  02) BACKDROP
+  02) SURFACE INNER
   ========================================================================== -->
-  <div class="cookie-learning-overlay-backdrop" data-cookie-learning-overlay="backdrop" aria-hidden="true"></div>
-
-  <!-- ==========================================================================
-  03) PANEL
-  ========================================================================== -->
-  <aside class="cookie-learning-overlay-panel" data-cookie-learning-overlay="panel" role="dialog" aria-modal="true" aria-labelledby="cookie-learning-overlay-title">
+  <div class="cookie-learning-overlay-panel" data-cookie-learning-overlay="panel" data-cookie-learning-overlay-inner="true">
 
     <!-- ========================================================================
-    04) HEADER
+    03) SHELL-OWNED HEADER NOTE
+    Header title and return control are owned by the cookie consent shell.
+    The mounted learning surface must begin directly with body content.
     ======================================================================== -->
-    <div class="cookie-learning-overlay-header">
-
-
-      <!-- ======================================================================
-      05) TITLE
-      ====================================================================== -->
-      <p class="cookie-learning-overlay-title" id="cookie-learning-overlay-title" data-cookie-learning-overlay-title="true">Cookie information</p>
-
-      <!-- ======================================================================
-      06) BACK CONTROL
-      ====================================================================== -->
-      <button type="button" class="cookie-learning-overlay-back" data-cookie-learning-overlay-back="true" aria-label="Return to cookie settings">
-        <img src="assets/icons/core/interface/navigation/back.svg" alt="" class="cookie-learning-overlay-back-icon">
-      </button>
-
-    </div>
 
     <!-- ========================================================================
-    07) BODY
+    06) SURFACE BODY
     ======================================================================== -->
     <div class="cookie-learning-overlay-body">
 
       <!-- ======================================================================
-      08) WHAT ARE COOKIES PANEL
+      07) WHAT ARE COOKIES PANEL
       ====================================================================== -->
       <article class="cookie-learning-overlay-article" id="cookie-learning-overlay-cookies" data-cookie-learning-overlay-article="cookies" hidden>
         <div class="cookie-learning-overlay-article-topline">
@@ -79,7 +59,7 @@
       </article>
 
       <!-- ======================================================================
-      09) WHY WE USE THEM PANEL
+      08) WHY WE USE THEM PANEL
       ====================================================================== -->
       <article class="cookie-learning-overlay-article" id="cookie-learning-overlay-why-we-use-them" data-cookie-learning-overlay-article="why-we-use-them" hidden>
         <div class="cookie-learning-overlay-article-topline">
@@ -104,9 +84,9 @@
         </div>
       </article>
     </div>
-  </aside>
+  </div>
 </div>
 
 <!-- =============================================================================
-10) END OF OVERLAY
+09) END OF SURFACE
 ============================================================================= -->

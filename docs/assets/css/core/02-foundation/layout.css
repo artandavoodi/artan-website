@@ -1,0 +1,150 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) GLOBAL RAIL SYSTEM
+   03) SECTION HEIGHT SYSTEM
+   04) HEADER CONTROLS RAIL
+   05) FOOTER RAIL SYSTEM
+   06) RESPONSIVE RAIL ADJUSTMENTS
+   07) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/02-foundation/layout.css */
+
+/* =============================================================================
+   02) GLOBAL RAIL SYSTEM
+============================================================================= */
+.site-rail,
+.container{
+  width:var(--site-rail-width);
+  max-width:none;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* =============================================================================
+   03) SECTION HEIGHT SYSTEM
+============================================================================= */
+.site-section,
+.section-shell{
+  min-height:var(--section-min-height);
+  min-height:var(--section-min-height-stable);
+}
+
+@supports (height:100dvh){
+  .site-section,
+  .section-shell{
+    min-height:100dvh;
+  }
+}
+
+/* =============================================================================
+   04) HEADER CONTROLS RAIL
+============================================================================= */
+#header-controls{
+  position:fixed;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:var(--site-rail-width);
+  max-width:1200px;
+  height:64px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  z-index:var(--z-header-controls);
+  pointer-events:all;
+  isolation:isolate;
+  overflow:hidden;
+  background:transparent;
+  border:0;
+}
+
+#header-controls #menu-button,
+#header-controls #menu-button-container,
+#header-controls .theme-toggle,
+#header-controls #theme-toggle{
+  position:relative;
+  z-index:2;
+  top:0;
+}
+
+#header-controls #menu-button-container{
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#header-controls #menu-button,
+#header-controls #menu-button-container{
+  order:1;
+}
+
+#header-controls #theme-toggle,
+#header-controls .theme-toggle{
+  order:2;
+}
+
+body.menu-open #header-controls #theme-toggle,
+body.menu-open #header-controls .theme-toggle{
+  display:inline-flex;
+}
+
+/* =============================================================================
+   05) FOOTER RAIL SYSTEM
+============================================================================= */
+.footer-separator{
+  width:var(--footer-rail-width);
+  max-width:none;
+  height:1px;
+  border:none;
+  margin:1.5rem auto;
+  background-color:var(--border-color);
+  display:block;
+}
+
+.footer-flex{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:var(--footer-rail-width);
+  max-width:none;
+  margin:0 auto 1rem auto;
+  color:var(--text-secondary-color);
+  font-size:0.75rem;
+}
+
+/* =============================================================================
+   06) RESPONSIVE RAIL ADJUSTMENTS
+============================================================================= */
+@media (max-width:768px){
+  #header-controls{
+    height:60px;
+  }
+
+  #header-controls #menu-button-container{
+    height:60px;
+  }
+}
+
+@media (max-width:520px){
+  :root{
+    --footer-gutter:var(--footer-gutter-min);
+  }
+}
+
+@media (min-width:2400px){
+  :root{
+    --footer-gutter:var(--footer-gutter-max);
+  }
+}
+
+/* =============================================================================
+   07) END OF FILE
+============================================================================= */

@@ -13,7 +13,7 @@
 (function () {
   'use strict';
 
-  const SHADER_FRAGMENT_PATH = '/assets/fragments/system/404-hero-shader.html';
+  const SHADER_FRAGMENT_PATH = '/assets/fragments/layers/website/system/404-hero-shader.html';
   const SHADER_MOUNT_SELECTOR = '[data-404-shader-mount]';
   const SHADER_FRAGMENT_SELECTOR = '[data-404-hero-shader-fragment]';
   const SHADER_SCRIPT_SELECTOR = 'script[data-404-hero-shader-script]';

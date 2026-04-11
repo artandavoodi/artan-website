@@ -1,0 +1,53 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SHARED SURFACE / CARD BASE
+   03) ELEVATED SURFACE VARIANT
+   04) GLASS SURFACE VARIANT
+   05) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/surfaces.css */
+
+/* =============================================================================
+   02) SHARED SURFACE / CARD BASE
+============================================================================= */
+.ui-card,
+.ui-surface{
+  background:var(--surface-primary);
+  border:var(--stroke-soft) solid var(--border-color);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter:blur(var(--glass-blur-md));
+  -webkit-backdrop-filter:blur(var(--glass-blur-md));
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
+}
+
+/* =============================================================================
+   03) ELEVATED SURFACE VARIANT
+============================================================================= */
+.ui-card--elevated,
+.ui-surface--elevated{
+  background:var(--surface-elevated);
+  box-shadow:var(--shadow-medium);
+}
+
+/* =============================================================================
+   04) GLASS SURFACE VARIANT
+============================================================================= */
+.ui-surface--glass{
+  background:var(--surface-glass);
+  backdrop-filter:blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter:blur(var(--glass-blur-lg));
+}
+
+/* =============================================================================
+   05) END OF FILE
+============================================================================= */

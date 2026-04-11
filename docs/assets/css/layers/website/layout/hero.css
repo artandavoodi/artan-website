@@ -121,7 +121,7 @@ body{margin:0;overflow-x:hidden;}
   font-weight:300;
   letter-spacing:0.14em;
   text-transform:uppercase;
-  border:1px solid rgba(255,255,255,0.35);
+  border:1px solid color-mix(in srgb, var(--text-color) 35%, transparent);
   border-radius:999px;
   cursor:pointer;
   overflow:hidden;
@@ -129,10 +129,6 @@ body{margin:0;overflow-x:hidden;}
   animation:enter-breathe 6s ease-in-out infinite;
   margin:0 auto;
 }
-body.light-mode .enter-button{border-color:rgba(0,0,0,0.35);}
-body.dark-mode .enter-button{border-color:rgba(255,255,255,0.35);}
-body.theme-light .enter-button{border-color:rgba(0,0,0,0.35);}
-body.theme-dark .enter-button{border-color:rgba(255,255,255,0.35);}
 
 /* =============================================================================
    03) ENTER BUTTON ICON
@@ -144,13 +140,9 @@ body.theme-dark .enter-button{border-color:rgba(255,255,255,0.35);}
   object-fit:contain;
   object-position:center;
   opacity:1;
-  filter:none;
+  filter:var(--icon-image-filter, none);
   pointer-events:none;
 }
-body.light-mode .enter-button-icon{filter:none;}
-body.dark-mode .enter-button-icon{filter:invert(1);}
-body.theme-light .enter-button-icon{filter:none;}
-body.theme-dark .enter-button-icon{filter:invert(1);}
 .enter-button span{
   position:relative;
   z-index:2;
@@ -165,15 +157,10 @@ body.theme-dark .enter-button-icon{filter:invert(1);}
   100%{transform:translateY(0);}
 }
 
-/* Dial color (contrast layer)
-   Light mode (black text) → white dial
-   Dark mode (white text)  → black dial
-*/
-:root{--dial-rgb:145,124,111;}
-body.light-mode{--dial-rgb:145,124,111;}
-body.dark-mode{--dial-rgb:145,124,111;}
-body.theme-light{--dial-rgb:145,124,111;}
-body.theme-dark{--dial-rgb:145,124,111;}
+/* Dial color authority */
+:root{
+  --dial-rgb:145,124,111;
+}
 
 /* =============================================================================
    04) STAGE CIRCLE (ATMOSPHERE) — LUXURY BREATHING DIAL (STRONG)
@@ -303,14 +290,6 @@ body.theme-dark{--dial-rgb:145,124,111;}
   background:transparent;
 }
 
-body.site-entered.hero-lock-released .stage-video,
-body.site-entered.hero-lock-released #hero-video,
-body.site-entered.hero-lock-released .stage-video video,
-body.site-entered.hero-lock-released #hero-video video,
-body.site-entered.hero-lock-released .stage-video-media,
-body.site-entered.hero-lock-released .hero-video-media{
-  display:none !important;
-}
 
 /* =============================================================================
    06) STAGE VIDEO OVERLAY (THEME-ADAPTABLE GLASS)
@@ -327,6 +306,8 @@ body.site-entered.hero-lock-released .hero-video-media{
   transition:opacity 2.4s cubic-bezier(0.22,1,0.36,1);
 }
 
+:root.light-mode .stage-video-overlay,
+html.light-mode .stage-video-overlay,
 body.light-mode .stage-video-overlay{
   background:radial-gradient(circle at center, rgba(145,124,111,0.28) 0%, rgba(145,124,111,0.20) 24%, rgba(18,14,10,0.26) 54%, rgba(18,14,10,0.38) 100%);
 }
@@ -593,13 +574,15 @@ body.site-entered #institutional-menu-mount{
   display:none;
 }
 
-body.light-mode #stage-glass-vessel-ring,
-body.theme-light #stage-glass-vessel-ring{
+:root.light-mode #stage-glass-vessel-ring,
+html.light-mode #stage-glass-vessel-ring,
+body.light-mode #stage-glass-vessel-ring{
   border-color:rgba(0,0,0,0.14);
 }
 
-body.light-mode #stage-glass-vessel-inner,
-body.theme-light #stage-glass-vessel-inner{
+:root.light-mode #stage-glass-vessel-inner,
+html.light-mode #stage-glass-vessel-inner,
+body.light-mode #stage-glass-vessel-inner{
   background:rgba(0,0,0,0.08);
 }
 
@@ -769,33 +752,6 @@ body.theme-light #stage-glass-vessel-inner{
 /* =============================================================================
    13) HERO — ON ENTER: HIDE STAGE INTRO GROUP
 ============================================================================= */
-body.site-entered.hero-lock-released #stage-intro{
-  opacity:0;
-  transform:translateY(-10px);
-  max-height:0;
-  pointer-events:none;
-}
-
-body.site-entered.hero-lock-released #stage{
-  opacity:0;
-  transform:translateY(-6px);
-  transition:
-    opacity 700ms cubic-bezier(0.22,1,0.36,1) 0ms,
-    transform 900ms cubic-bezier(0.22,1,0.36,1) 0ms;
-}
-
-body.site-entered.hero-lock-released #stage .logo-container .site-logo,
-body.site-entered.hero-lock-released .site-logo.intro-docked{
-  opacity:0;
-  transform:translateY(-8px) scale(0.985);
-  transition-delay:0ms;
-}
-
-body.site-entered.hero-lock-released .stage-circle{
-  opacity:0;
-  will-change:opacity;
-  transition:opacity 1400ms cubic-bezier(0.22,1,0.36,1) 500ms;
-}
 
 body.hero-stage-hidden #stage,
 body.hero-stage-hidden .stage-circle,

@@ -1,0 +1,125 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ROOT THEME FALLBACK TOKENS
+   03) DARK MODE THEME TOKENS
+   04) LIGHT MODE THEME TOKENS
+   05) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/02-foundation/themes.css */
+
+/* =============================================================================
+   02) ROOT THEME FALLBACK TOKENS
+============================================================================= */
+:root{
+  --bg-color:var(--color-black);
+  --text-color:var(--color-white);
+  --text-primary-color:var(--text-color);
+  --text-secondary-color:var(--color-primary3);
+  --link-color:var(--color-primary5);
+  --link-hover-color:var(--color-primary6);
+  --border-color:rgba(255,255,255,0.14);
+
+  --surface-primary:var(--surface-1);
+  --surface-secondary:var(--surface-2);
+  --surface-tertiary:var(--surface-3);
+  --surface-elevated:rgba(10,10,10,0.72);
+  --surface-glass:rgba(10,10,10,0.56);
+
+  --control-bg:rgba(255,255,255,0.04);
+  --control-bg-hover:rgba(255,255,255,0.08);
+  --control-border:rgba(255,255,255,0.14);
+  --control-border-strong:rgba(255,255,255,0.22);
+
+  --field-bg:rgba(255,255,255,0.03);
+  --field-bg-focus:rgba(255,255,255,0.05);
+  --field-border:rgba(255,255,255,0.14);
+  --field-border-focus:rgba(255,255,255,0.26);
+
+  --overlay-backdrop:var(--overlay-backdrop-dark);
+
+  --menu-surface:rgba(0,0,0,0.94);
+  --menu-surface-strong:rgba(0,0,0,0.92);
+  --menu-border:rgba(255,255,255,0.18);
+  --menu-sep:rgba(255,255,255,0.14);
+}
+
+/* =============================================================================
+   03) DARK MODE THEME TOKENS
+============================================================================= */
+body.dark-mode{
+  --bg-color:var(--color-black);
+  --text-color:var(--color-white);
+  --text-primary-color:var(--text-color);
+  --text-secondary-color:var(--color-primary3);
+  --link-color:var(--color-primary5);
+  --link-hover-color:var(--color-primary6);
+  --border-color:rgba(255,255,255,0.14);
+
+  --surface-primary:var(--surface-1);
+  --surface-secondary:var(--surface-2);
+  --surface-tertiary:var(--surface-3);
+  --surface-elevated:rgba(10,10,10,0.72);
+  --surface-glass:rgba(10,10,10,0.56);
+
+  --control-bg:rgba(255,255,255,0.04);
+  --control-bg-hover:rgba(255,255,255,0.08);
+  --control-border:rgba(255,255,255,0.14);
+  --control-border-strong:rgba(255,255,255,0.22);
+
+  --field-bg:rgba(255,255,255,0.03);
+  --field-bg-focus:rgba(255,255,255,0.05);
+  --field-border:rgba(255,255,255,0.14);
+  --field-border-focus:rgba(255,255,255,0.26);
+
+  --overlay-backdrop:var(--overlay-backdrop-dark);
+
+  --menu-surface:rgba(0,0,0,0.94);
+  --menu-surface-strong:rgba(0,0,0,0.92);
+  --menu-border:rgba(255,255,255,0.18);
+  --menu-sep:rgba(255,255,255,0.14);
+}
+
+/* =============================================================================
+   04) LIGHT MODE THEME TOKENS
+============================================================================= */
+body.light-mode{
+  --bg-color:var(--color-white);
+  --text-color:var(--color-black);
+  --text-primary-color:var(--text-color);
+  --text-secondary-color:var(--color-black);
+  --link-color:var(--color-primary5);
+  --link-hover-color:var(--color-primary6);
+  --border-color:rgba(0,0,0,0.14);
+
+  --surface-primary:var(--surface-inverse-1);
+  --surface-secondary:var(--surface-inverse-2);
+  --surface-tertiary:var(--surface-inverse-3);
+  --surface-elevated:rgba(255,255,255,0.78);
+  --surface-glass:rgba(255,255,255,0.6);
+
+  --control-bg:rgba(0,0,0,0.03);
+  --control-bg-hover:rgba(0,0,0,0.06);
+  --control-border:rgba(0,0,0,0.14);
+  --control-border-strong:rgba(0,0,0,0.2);
+
+  --field-bg:rgba(0,0,0,0.02);
+  --field-bg-focus:rgba(0,0,0,0.035);
+  --field-border:rgba(0,0,0,0.14);
+  --field-border-focus:rgba(0,0,0,0.24);
+
+  --overlay-backdrop:var(--overlay-backdrop-light);
+
+  --menu-surface:rgba(255,255,255,0.92);
+  --menu-surface-strong:rgba(255,255,255,0.88);
+  --menu-border:rgba(0,0,0,0.14);
+  --menu-sep:rgba(0,0,0,0.12);
+}
+
+/* =============================================================================
+   05) END OF FILE
+============================================================================= */

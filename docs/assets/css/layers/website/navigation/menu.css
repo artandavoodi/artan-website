@@ -35,14 +35,15 @@
   --menu-fg-muted: var(--text-secondary-color, rgba(255,255,255,0.7));
   --menu-accent: var(--color-primary1);
 
-  --menu-border: rgba(255,255,255,0.18);
-  --menu-sep: rgba(255,255,255,0.12);
+  --menu-border-color: var(--menu-border, rgba(255,255,255,0.18));
+  --menu-separator-color: var(--menu-sep, rgba(255,255,255,0.12));
 
-  --menu-glass: rgba(0,0,0,0.48);
-  --menu-glass-strong: rgba(0,0,0,0.58);
-  --menu-glass-wash: rgba(255,255,255,0.07);
+  --menu-glass: var(--menu-surface, rgba(0,0,0,0.48));
+  --menu-glass-strong: var(--menu-surface-strong, rgba(0,0,0,0.58));
+  --menu-glass-wash: color-mix(in srgb, var(--menu-fg) 7%, transparent);
 
-  --menu-accent-filter: brightness(0) saturate(100%) invert(57%) sepia(11%) saturate(621%) hue-rotate(343deg) brightness(92%) contrast(88%);
+  --menu-icon-filter: var(--icon-image-filter, none);
+  --menu-icon-filter-strong: var(--icon-image-filter-strong, none);
 
   /* Hover motion (luxury micro-interaction) */
   --menu-hover-ease: cubic-bezier(0.22,1,0.36,1);
@@ -69,11 +70,11 @@
 
 @supports (color: color-mix(in srgb, #fff 50%, transparent)){
   #menu-overlay.menu-overlay{
-    --menu-border: color-mix(in srgb, var(--menu-fg) 18%, transparent);
-    --menu-sep: color-mix(in srgb, var(--menu-fg) 12%, transparent);
+    --menu-border-color: var(--menu-border, rgba(255,255,255,0.18));
+    --menu-separator-color: var(--menu-sep, rgba(255,255,255,0.12));
 
-    --menu-glass: color-mix(in srgb, var(--menu-bg) 52%, transparent);
-    --menu-glass-strong: color-mix(in srgb, var(--menu-bg) 64%, transparent);
+    --menu-glass: var(--menu-surface);
+    --menu-glass-strong: var(--menu-surface-strong);
     --menu-glass-wash: color-mix(in srgb, var(--menu-fg) 7%, transparent);
   }
 }
@@ -334,11 +335,13 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   display: block;
   margin: 0;
   padding: 0;
+  filter: var(--menu-icon-filter);
 
   transform: translateX(var(--menu-pack-toggle-nudge)) scale(1);
   transform-origin: center;
   will-change: transform, filter;
   transition: transform var(--menu-hover-duration) var(--menu-hover-ease), filter 260ms ease;
+  filter: var(--menu-icon-filter);
 }
 
 @keyframes menu-pack-toggle-breathe{
@@ -383,7 +386,7 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   width: 1px;
   height: var(--menu-vline-height);
   align-self: center;
-  background: var(--menu-sep);
+  background: var(--menu-separator-color);
   opacity: 0.9;
 }
 
@@ -438,6 +441,8 @@ body.menu-active .stage-circle{ opacity: 0 !important; filter: none !important; 
   height: 22px;
   display: block;
   background: transparent !important;
+  filter: var(--menu-icon-filter);
+  filter: var(--menu-icon-filter);
 }
 
 #menu-overlay .menu-control-icon:hover,
@@ -797,10 +802,8 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
   opacity: 0.92;
   margin-bottom: 18px;
   transition: filter 260ms ease, opacity 260ms ease;
+  filter: var(--menu-icon-filter);
 }
-
-body.dark-mode #menu-overlay .menu-preview-title img{ filter: invert(1); }
-body.light-mode #menu-overlay .menu-preview-title img{ filter: none; }
 
 @supports selector(:has(*)){
   #menu-overlay .menu-col-b:has(.menu-col-b-section-b .menu-item:hover) .menu-col-b-section-a{ transform: translateX(-18px); }
@@ -859,7 +862,7 @@ body.light-mode #menu-overlay .menu-preview-title img{ filter: none; }
 #menu-overlay .menu-col-b-section-b .menu-list .menu-sep{
   flex: 0 0 1px;
   height: 100%;
-  background: var(--menu-sep);
+  background: var(--menu-separator-color);
   align-self: stretch;
   opacity: inherit;
   transition: background-color 260ms ease, opacity 260ms ease;
@@ -1018,22 +1021,22 @@ body.light-mode #menu-overlay .menu-preview-title img{ filter: none; }
 }
 
 #menu-overlay .menu-pack-icon img,
-#menu-overlay img.menu-pack-glyph{ width: 22px; height: 22px; display: block; background: transparent !important; }
-
-body.dark-mode #menu-overlay .menu-pack-icon img,
-body.dark-mode #menu-overlay img.menu-pack-glyph,
-body.dark-mode #menu-overlay .menu-pack-glyph{ filter: invert(1); }
-
-body.light-mode #menu-overlay .menu-pack-icon img,
-body.light-mode #menu-overlay img.menu-pack-glyph,
-body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
+#menu-overlay img.menu-pack-glyph{
+  width: 22px;
+  height: 22px;
+  display: block;
+  background: transparent !important;
+  filter: var(--menu-icon-filter);
+}
 
 #menu-overlay .menu-pack-icon:hover img,
 #menu-overlay .menu-pack-icon:focus-visible img,
 #menu-overlay .menu-pack-icon:hover img.menu-pack-glyph,
 #menu-overlay .menu-pack-icon:focus-visible img.menu-pack-glyph,
 #menu-overlay .menu-pack-icon:hover .menu-pack-glyph,
-#menu-overlay .menu-pack-icon:focus-visible .menu-pack-glyph{ filter: var(--menu-accent-filter); }
+#menu-overlay .menu-pack-icon:focus-visible .menu-pack-glyph{
+  filter: var(--menu-icon-filter-strong);
+}
 
 #menu-overlay .menu-pack-icon:hover svg,
 #menu-overlay .menu-pack-icon:focus-visible svg,
@@ -1056,7 +1059,7 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
   height: 44px;
   border-radius: 999px;
 
-  border: 1px solid var(--menu-border);
+  border: 1px solid var(--menu-border-color);
   background: transparent;
   color: var(--menu-fg);
 
@@ -1072,7 +1075,7 @@ body.light-mode #menu-overlay .menu-pack-glyph{ filter: none; }
 #menu-overlay .menu-close:hover{
   transform: translateX(-50%) scale(1.06);
   opacity: 1;
-  border-color: color-mix(in srgb, var(--menu-accent) 55%, var(--menu-border));
+  border-color: color-mix(in srgb, var(--menu-accent) 55%, var(--menu-border-color));
 }
 
 /* =============================================================================

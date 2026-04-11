@@ -1,0 +1,63 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) THEME TOGGLE BASE
+   03) MODE VARIANTS
+   04) HOVER STATES
+   05) REDUCED MOTION
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/04-systems/theme-toggle.css */
+
+/* =============================================================================
+   02) THEME TOGGLE BASE
+============================================================================= */
+.theme-toggle{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  border:none;
+  box-shadow:none;
+  cursor:pointer;
+  z-index:var(--z-header-controls);
+  transition:
+    transform var(--duration-base) var(--ease-standard),
+    opacity var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+}
+
+/* =============================================================================
+   03) MODE VARIANTS
+============================================================================= */
+body.dark-mode .theme-toggle{
+  background-color:var(--color-white);
+}
+
+body.light-mode .theme-toggle{
+  background-color:var(--color-black);
+}
+
+/* =============================================================================
+   04) HOVER STATES
+============================================================================= */
+.theme-toggle:hover{
+  transform:scale(1.15);
+  opacity:0.9;
+}
+
+/* =============================================================================
+   05) REDUCED MOTION
+============================================================================= */
+@media (prefers-reduced-motion:reduce){
+  .theme-toggle{
+    transition:none !important;
+  }
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */

@@ -1,13 +1,14 @@
 /* =============================================================================
    00) FILE INDEX
    01) MODULE IDENTITY
-   02) CONSTANTS
-   03) STATE
-   04) HELPERS
-   05) INDEX LOADERS
-   06) PAGE REGISTRATION
-   07) BOOTSTRAP
-   08) INITIALIZATION
+   02) PATH HELPERS
+   03) CONSTANTS
+   04) STATE
+   05) HELPERS
+   06) INDEX LOADERS
+   07) PAGE REGISTRATION
+   08) BOOTSTRAP
+   09) INITIALIZATION
 ============================================================================= */
 
 /* =============================================================================
@@ -17,15 +18,35 @@
   'use strict';
 
   /* =============================================================================
-     02) CONSTANTS
+     02) PATH HELPERS
   ============================================================================= */
-  const SECTION_ID = 'knowledge_research';
-  const SEARCH_ROUTE_INDEX_URL = '/assets/data/search/route-index.json';
-  const SEARCH_CONTENT_INDEX_URL = '/assets/data/search/content-index.json';
-  const SEARCH_ENTITY_INDEX_URL = '/assets/data/search/entity-index.json';
+  const WEBSITE_BASE_PATH = (() => {
+    const pathname = window.location.pathname || '';
+
+    if (pathname.includes('/website/docs/')) return '/website/docs';
+    if (pathname.endsWith('/website/docs')) return '/website/docs';
+    if (pathname.includes('/docs/')) return '/docs';
+    if (pathname.endsWith('/docs')) return '/docs';
+
+    return '';
+  })();
+
+  const assetPath = (path) => {
+    const normalized = String(path || '').trim();
+    if (!normalized) return '';
+    return `${WEBSITE_BASE_PATH}${normalized.startsWith('/') ? normalized : `/${normalized}`}`;
+  };
 
   /* =============================================================================
-     03) STATE
+     03) CONSTANTS
+  ============================================================================= */
+  const SECTION_ID = 'knowledge_research';
+  const SEARCH_ROUTE_INDEX_URL = assetPath('/assets/data/search/route-index.json');
+  const SEARCH_CONTENT_INDEX_URL = assetPath('/assets/data/search/content-index.json');
+  const SEARCH_ENTITY_INDEX_URL = assetPath('/assets/data/search/entity-index.json');
+
+  /* =============================================================================
+     04) STATE
   ============================================================================= */
   const state = {
     routeIndex: null,
@@ -35,7 +56,7 @@
   };
 
   /* =============================================================================
-     04) HELPERS
+     05) HELPERS
   ============================================================================= */
   function emit(name, detail = {}) {
     window.dispatchEvent(new CustomEvent(name, { detail }));
@@ -54,7 +75,7 @@
   }
 
   /* =============================================================================
-     05) INDEX LOADERS
+     06) INDEX LOADERS
   ============================================================================= */
   async function loadSearchIndexes() {
     const [routeIndex, contentIndex, entityIndex] = await Promise.all([
@@ -69,7 +90,7 @@
   }
 
   /* =============================================================================
-     06) PAGE REGISTRATION
+     07) PAGE REGISTRATION
   ============================================================================= */
   function registerPageState() {
     const root = getSectionRoot();
@@ -83,7 +104,7 @@
   }
 
   /* =============================================================================
-     07) BOOTSTRAP
+     08) BOOTSTRAP
   ============================================================================= */
   async function boot() {
     try {
@@ -107,7 +128,7 @@
   }
 
   /* =============================================================================
-     08) INITIALIZATION
+     09) INITIALIZATION
   ============================================================================= */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot, { once: true });

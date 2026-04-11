@@ -10,11 +10,29 @@
    01) MODULE IDENTITY
 ============================================================================= */
 (() => {
+  'use strict';
   /* =============================================================================
      02) CANONICAL IA SOURCE
      
   ============================================================================= */
-  const IA_URL = '/assets/data/system/ia.json';
+  const WEBSITE_BASE_PATH = (() => {
+    const pathname = window.location.pathname || '';
+
+    if (pathname.includes('/website/docs/')) return '/website/docs';
+    if (pathname.endsWith('/website/docs')) return '/website/docs';
+    if (pathname.includes('/docs/')) return '/docs';
+    if (pathname.endsWith('/docs')) return '/docs';
+
+    return '';
+  })();
+
+  function assetPath(path) {
+    const normalized = String(path || '').trim();
+    if (!normalized) return '';
+    return `${WEBSITE_BASE_PATH}${normalized.startsWith('/') ? normalized : `/${normalized}`}`;
+  }
+
+  const IA_URL = assetPath('/assets/data/system/ia.json');
 
   /* =============================================================================
      03) IA FETCH AND REGISTRATION
@@ -26,15 +44,21 @@
       const ia = await res.json();
 
       window.ARTAN_IA = ia;
-      window.dispatchEvent(new CustomEvent('artan:ia:ready', { detail: ia }));
+      window.NEUROARTAN_IA = ia;
+      window.dispatchEvent(new CustomEvent('neuroartan:ia:ready', { detail: ia }));
     } catch (e) {
       window.ARTAN_IA = null;
-      window.dispatchEvent(new CustomEvent('artan:ia:error', { detail: String(e) }));
+      window.NEUROARTAN_IA = null;
+      window.dispatchEvent(new CustomEvent('neuroartan:ia:error', { detail: String(e) }));
     }
   }
 
   /* =============================================================================
      04) INITIALIZATION
   ============================================================================= */
-  document.addEventListener('DOMContentLoaded', loadIA);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadIA, { once: true });
+  } else {
+    loadIA();
+  }
 })();

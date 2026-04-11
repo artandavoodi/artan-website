@@ -1,0 +1,314 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ROOT TOKENS
+   03) INNER VIEW ROOT
+   04) TYPOGRAPHY
+   05) FORM
+   06) ACTIONS
+   07) SECONDARY ACTIONS
+   08) BACK CONTROL
+   09) REDUCED MOTION
+   10) RESPONSIVE — 768PX
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+:root{
+  --account-email-auth-header-brand-margin-bottom: 1.2rem;
+  --account-email-auth-header-brand-margin-bottom-mobile: 1rem;
+
+  --account-email-auth-content-stage-max-width: var(--account-control-width-max);
+  --account-email-auth-content-stage-max-width-wide: var(--account-control-width-max-wide);
+  --account-email-auth-content-stage-padding-inline: 0;
+  --account-email-auth-content-stage-padding-inline-mobile: 0;
+
+  --account-email-auth-content-gap-xs: var(--account-content-gap-xs);
+  --account-email-auth-content-gap-sm: var(--account-content-gap-sm);
+  --account-email-auth-content-gap-md: var(--account-content-gap-md);
+  --account-email-auth-content-gap-lg: var(--account-content-gap-lg);
+  --account-email-auth-content-gap-xl: var(--account-content-gap-xl);
+
+  --account-email-auth-field-gap: var(--account-email-auth-content-gap-md);
+  --account-email-auth-actions-gap: var(--account-email-auth-content-gap-md);
+  --account-email-auth-secondary-gap: var(--account-email-auth-content-gap-sm);
+
+  --account-email-auth-input-height: var(--account-field-height);
+  --account-email-auth-input-radius: var(--account-field-radius);
+  --account-email-auth-input-padding-inline: var(--account-field-padding-x);
+  --account-email-auth-input-font-size: var(--account-field-font-size);
+  --account-email-auth-input-line-height: var(--account-field-line-height);
+  --account-email-auth-input-letter-spacing: var(--account-field-letter-spacing);
+  --account-email-auth-input-border: color-mix(in srgb, var(--text-primary-color) 12%, transparent);
+  --account-email-auth-input-background: color-mix(in srgb, var(--bg-color) 86%, transparent);
+  --account-email-auth-input-focus-border: var(--control-border-strong);
+  --account-email-auth-input-focus-ring: color-mix(in srgb, var(--color-primary1) 16%, transparent);
+
+  --account-email-auth-action-height: var(--account-button-height);
+  --account-email-auth-action-radius: var(--account-button-radius);
+  --account-email-auth-action-padding-x: var(--account-button-padding-x);
+  --account-email-auth-action-font-size: var(--account-button-font-size);
+  --account-email-auth-action-font-weight: var(--account-button-font-weight);
+  --account-email-auth-action-letter-spacing: var(--account-button-letter-spacing);
+  --account-email-auth-action-line-height: var(--account-button-line-height);
+  --account-email-auth-action-hover-lift-y: var(--account-button-hover-lift-y);
+  --account-email-auth-action-hover-scale: var(--account-button-hover-scale);
+  --account-email-auth-action-border: var(--control-border);
+  --account-email-auth-action-border-hover: var(--control-border-strong);
+  --account-email-auth-action-background: var(--control-bg);
+  --account-email-auth-action-background-hover: var(--control-bg-hover);
+  --account-email-auth-action-foreground: var(--text-color);
+
+  --account-email-auth-text-action-font-size: var(--account-text-action-font-size);
+  --account-email-auth-text-action-line-height: var(--account-text-action-line-height);
+  --account-email-auth-text-action-letter-spacing: var(--account-text-action-letter-spacing);
+
+  --account-email-auth-back-control-size: var(--account-back-control-size);
+  --account-email-auth-back-icon-size: var(--account-back-icon-size);
+
+  --account-email-auth-note-size-mobile: 0.92rem;
+  --account-email-auth-section-gap: var(--account-email-auth-content-gap-lg);
+}
+
+/* =============================================================================
+   02) ROOT TOKENS
+============================================================================= */
+body.light-mode{
+  --account-email-auth-input-background: color-mix(in srgb, var(--bg-color) 92%, white 8%);
+  --account-email-auth-input-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+}
+
+/* =============================================================================
+   03) INNER VIEW ROOT
+============================================================================= */
+.account-email-auth-drawer{
+  width: 100%;
+}
+
+.account-drawer-view-mount .account-email-auth-drawer,
+.account-drawer-view-mount .account-drawer-inner-view[data-account-view="email-auth"]{
+  display: block;
+}
+
+.account-email-auth-drawer-header-brand-mark{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 var(--account-email-auth-header-brand-margin-bottom) 0;
+}
+
+.account-email-auth-drawer-header-brand-icon{
+  width: 2.4rem;
+  height: 2.4rem;
+  display: block;
+  object-fit: contain;
+}
+
+.account-email-auth-drawer-content-stage{
+  width: 100%;
+  max-width: var(--account-email-auth-content-stage-max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--account-email-auth-section-gap);
+  padding-inline: var(--account-email-auth-content-stage-padding-inline);
+}
+
+.account-email-auth-drawer-center-stage{
+  width: 100%;
+  max-width: var(--account-email-auth-content-stage-max-width);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--account-email-auth-content-gap-md);
+}
+
+/* =============================================================================
+   04) TYPOGRAPHY
+============================================================================= */
+.account-email-auth-drawer-text-action,
+.account-email-auth-drawer-action-label{
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+/* =============================================================================
+   05) FORM
+============================================================================= */
+.account-email-auth-drawer-form{
+  width: 100%;
+  max-width: var(--account-email-auth-content-stage-max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--account-email-auth-content-gap-md);
+}
+
+.account-email-auth-drawer-field-group{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--account-email-auth-content-gap-xs);
+}
+
+.account-email-auth-drawer-input{
+  width: 100%;
+  height: var(--account-email-auth-input-height);
+  border-radius: var(--account-email-auth-input-radius);
+  border: 1px solid var(--account-email-auth-input-border);
+  background: var(--account-email-auth-input-background);
+  color: var(--text-primary-color);
+  padding-inline: var(--account-email-auth-input-padding-inline);
+  font-size: var(--account-email-auth-input-font-size);
+  font-weight: 400;
+  line-height: var(--account-email-auth-input-line-height);
+  letter-spacing: var(--account-email-auth-input-letter-spacing);
+  outline: none;
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
+}
+
+.account-email-auth-drawer-input::placeholder{
+  color: color-mix(in srgb, var(--text-primary-color) 52%, transparent);
+}
+
+.account-email-auth-drawer-input:focus{
+  border-color: var(--account-email-auth-input-focus-border);
+  box-shadow: 0 0 0 3px var(--account-email-auth-input-focus-ring);
+}
+
+/* =============================================================================
+   06) ACTIONS
+============================================================================= */
+.account-email-auth-drawer-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--account-email-auth-actions-gap);
+  width: 100%;
+  max-width: var(--account-email-auth-content-stage-max-width);
+  margin: 0 auto;
+}
+
+.account-email-auth-drawer-action{
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--account-email-auth-action-height);
+  padding-inline: var(--account-email-auth-action-padding-x);
+  box-sizing: border-box;
+  border: var(--stroke-soft) solid var(--account-email-auth-action-border);
+  border-radius: var(--account-email-auth-action-radius);
+  background: var(--account-email-auth-action-background);
+  color: var(--account-email-auth-action-foreground);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+}
+
+.account-email-auth-drawer-action-label{
+  font-size: var(--account-email-auth-action-font-size);
+  font-weight: var(--account-email-auth-action-font-weight);
+  letter-spacing: var(--account-email-auth-action-letter-spacing);
+  line-height: var(--account-email-auth-action-line-height);
+}
+
+.account-email-auth-drawer-action:hover,
+.account-email-auth-drawer-action:focus-visible{
+  opacity: var(--hover-opacity-strong);
+  border-color: var(--account-email-auth-action-border-hover);
+  background: var(--account-email-auth-action-background-hover);
+  transform: translateY(var(--account-email-auth-action-hover-lift-y)) scale(var(--account-email-auth-action-hover-scale));
+  outline: none;
+}
+
+/* =============================================================================
+   07) SECONDARY ACTIONS
+============================================================================= */
+.account-email-auth-drawer-secondary-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--account-email-auth-secondary-gap);
+  width: 100%;
+  max-width: var(--account-email-auth-content-stage-max-width);
+  margin: 0 auto;
+}
+
+
+/* =============================================================================
+   08) BACK CONTROL
+============================================================================= */
+.account-email-auth-drawer-back-control{
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: var(--account-email-auth-back-control-size);
+  min-width: var(--account-email-auth-back-control-size);
+  height: var(--account-email-auth-back-control-size);
+  min-height: var(--account-email-auth-back-control-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: none;
+}
+
+.account-email-auth-drawer-back-icon{
+  width: var(--account-email-auth-back-icon-size);
+  height: var(--account-email-auth-back-icon-size);
+  display: block;
+}
+
+.account-email-auth-drawer-back-control:hover,
+.account-email-auth-drawer-back-control:focus-visible,
+.account-email-auth-drawer-back-control:active{
+  outline: none;
+  transform: none;
+}
+
+/* =============================================================================
+   09) REDUCED MOTION
+============================================================================= */
+@media (prefers-reduced-motion: reduce){
+  .account-email-auth-drawer-action,
+  .account-email-auth-drawer-input,
+  .account-email-auth-drawer-text-action,
+  .account-email-auth-drawer-back-control{
+    transition: none !important;
+  }
+}
+
+/* =============================================================================
+   10) RESPONSIVE — 768PX
+============================================================================= */
+@media (max-width:768px){
+  .account-email-auth-drawer-content-stage{
+    padding-inline: var(--account-email-auth-content-stage-padding-inline-mobile);
+  }
+
+  .account-email-auth-drawer-header-brand-mark{
+    margin-bottom: var(--account-email-auth-header-brand-margin-bottom-mobile);
+  }
+}

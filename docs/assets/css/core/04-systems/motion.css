@@ -1,0 +1,66 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) GLOBAL REVEAL BASE
+   03) LIFT VARIANT
+   04) FADE VARIANT
+   05) REDUCED MOTION SUPPORT
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/04-systems/motion.css */
+
+/* =============================================================================
+   02) GLOBAL REVEAL BASE
+============================================================================= */
+.motion-init{
+  opacity:0;
+  transform:translateY(56px);
+  transition:
+    transform 1.55s cubic-bezier(0.22,1,0.36,1),
+    opacity 1.30s cubic-bezier(0.22,1,0.36,1);
+  will-change:transform, opacity;
+}
+
+.motion-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* =============================================================================
+   03) LIFT VARIANT
+============================================================================= */
+[data-motion="lift"].motion-init{
+  transform:translateY(68px);
+}
+
+/* =============================================================================
+   04) FADE VARIANT
+============================================================================= */
+[data-motion="fade"].motion-init{
+  transform:none;
+  opacity:0;
+}
+
+[data-motion="fade"].motion-visible{
+  opacity:1;
+}
+
+/* =============================================================================
+   05) REDUCED MOTION SUPPORT
+============================================================================= */
+@media (prefers-reduced-motion:reduce){
+  .motion-init,
+  .motion-visible{
+    transition:none !important;
+    transform:none !important;
+    opacity:1 !important;
+  }
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */

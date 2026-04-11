@@ -1,0 +1,93 @@
+<!-- =============================================================================
+00) FILE INDEX
+01) INNER VIEW ROOT
+02) PHONE AUTH STATE
+03) CONTENT STAGE
+04) SEGMENT TITLE
+05) PHONE AUTH FORM
+06) PRIMARY ACTIONS
+07) SECONDARY ACTIONS
+08) BACK CONTROL
+09) END OF VIEW
+============================================================================= -->
+
+<!-- =============================================================================
+01) INNER VIEW ROOT
+============================================================================= -->
+<section
+  id="account-phone-auth-drawer"
+  class="account-phone-auth-drawer account-drawer-inner-view"
+  aria-label="Phone authentication"
+  data-account-phone-auth-drawer="true"
+  data-account-view="phone-auth"
+  hidden
+>
+  <!-- ==========================================================================
+  02) PHONE AUTH STATE
+  ========================================================================== -->
+  <section class="account-phone-auth-drawer-state" data-account-phone-auth-state="entry">
+
+    <!-- ========================================================================
+    03) CONTENT STAGE
+    ======================================================================== -->
+    <div class="account-phone-auth-drawer-content-stage account-drawer-content-stage">
+
+      <!-- ======================================================================
+      04) SEGMENT TITLE
+      ====================================================================== -->
+      <div class="account-drawer-segment-header">
+        <h2 class="account-drawer-segment-title" data-i18n-key="account_segment_title_phone">Continue with Phone</h2>
+      </div>
+
+      <!-- ======================================================================
+      05) PHONE AUTH FORM
+      ====================================================================== -->
+      <form id="account-phone-auth-drawer-form" class="account-phone-auth-drawer-form" data-account-phone-auth-form="true" novalidate>
+        <div class="account-phone-auth-drawer-center-stage">
+          <div class="account-phone-auth-drawer-field-group">
+            <input
+              id="account-phone-auth-number"
+              name="phone"
+              type="tel"
+              class="account-phone-auth-drawer-input"
+              autocomplete="tel"
+              inputmode="tel"
+              data-i18n-placeholder-key="account_phone_auth_phone_placeholder"
+              placeholder="Phone number"
+            >
+          </div>
+        </div>
+      </form>
+
+      <!-- ======================================================================
+      06) PRIMARY ACTIONS
+      ====================================================================== -->
+      <div class="account-phone-auth-drawer-actions">
+        <button type="submit" form="account-phone-auth-drawer-form" class="account-phone-auth-drawer-action account-phone-auth-drawer-action--primary" data-account-phone-auth-submit="true">
+          <span class="account-phone-auth-drawer-action-label" data-i18n-key="account_phone_auth_submit">Continue with phone</span>
+        </button>
+      </div>
+
+      <!-- ======================================================================
+      07) SECONDARY ACTIONS
+      ====================================================================== -->
+      <div class="account-phone-auth-drawer-secondary-actions">
+
+        <button type="button" class="account-phone-auth-drawer-text-action" data-account-route="sign-in" data-account-phone-auth-sign-in="true">
+          <span data-i18n-key="account_phone_auth_already_have_account">Already have an account? Sign in</span>
+        </button>
+
+        <!-- ====================================================================
+        08) BACK CONTROL
+        ==================================================================== -->
+        <button type="button" class="account-phone-auth-drawer-back-control" data-account-route="entry" data-account-phone-auth-back="true" aria-label="Back">
+          <img src="assets/icons/core/interface/navigation/back.svg" alt="" class="account-phone-auth-drawer-back-icon ui-icon-theme-aware" aria-hidden="true">
+        </button>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- =============================================================================
+09) END OF VIEW
+============================================================================= -->

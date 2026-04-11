@@ -2,177 +2,130 @@
    00) FILE INDEX
    01) MODULE IDENTITY
    02) ROOT TOKENS
-   03) BASE DRAWER SHELL
-   04) OPEN / CLOSE STATES
-   04A) PAGE SCROLL LOCK
-   05) BACKDROP
-   06) DRAWER PANEL
-   07A) HEADER BRAND MARK
-   08) CLOSE CONTROL
-   10) TYPOGRAPHY
-   11) FORM
-   12) ACTIONS
-   12A) ACTION DIVIDER
-   13) SECONDARY ACTIONS
-   13A) BACK CONTROL
-   14) REDUCED MOTION
-   15) RESPONSIVE — 1024PX
-   16) RESPONSIVE — 768PX
+   03) INNER VIEW ROOT
+   04) TYPOGRAPHY
+   05) FORM
+   06) ACTIONS
+   07) ACTION DIVIDER
+   08) SECONDARY ACTIONS
+   09) BACK CONTROL
+   10) REDUCED MOTION
+   11) RESPONSIVE — 768PX
 ============================================================================= */
 
 /* =============================================================================
    01) MODULE IDENTITY
 ============================================================================= */
+/* /website/docs/assets/css/layers/website/overlays/account/account-sign-in-drawer.css */
 
 /* =============================================================================
    02) ROOT TOKENS
 ============================================================================= */
 :root{
-  --account-sign-in-panel-width: min(40rem, calc(100vw - (2 * var(--site-gutter, 24px))));
-  --account-sign-in-surface: #ffffff;
+  --account-sign-in-surface: rgba(0, 0, 0, 0.82);
   --account-sign-in-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
   --account-sign-in-muted: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
-  --account-sign-in-backdrop: rgba(0, 0, 0, 0.14);
   --account-sign-in-shell-inner-shadow: inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --account-sign-in-shell-highlight: linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
   --account-sign-in-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-sign-in-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.06);
-  --account-sign-in-section-gap: 1.22rem;
-  --account-sign-in-header-brand-margin-bottom: 4rem;
-  --account-sign-in-header-brand-margin-bottom-mobile: 3rem;
-  --account-sign-in-form-gap: 0.96rem;
-  --account-sign-in-field-group-gap: 0.46rem;
-  --account-sign-in-actions-gap: 0.72rem;
-  --account-sign-in-divider-gap: 0.82rem;
+  --account-sign-in-primary-shadow: var(--shadow-medium);
+  --account-sign-in-section-gap: var(--spacing-md);
+  --account-sign-in-content-max-width: var(--account-control-width-max);
+  --account-sign-in-content-max-width-wide: var(--account-control-width-max-wide);
+  --account-sign-in-content-gap-xs: var(--account-content-gap-xs);
+  --account-sign-in-content-gap-sm: var(--account-content-gap-sm);
+  --account-sign-in-content-gap-md: var(--account-content-gap-md);
+  --account-sign-in-content-gap-lg: var(--account-content-gap-lg);
+  --account-sign-in-content-gap-xl: var(--account-content-gap-xl);
+  --account-sign-in-form-gap: var(--account-sign-in-content-gap-md);
+  --account-sign-in-field-group-gap: var(--account-sign-in-content-gap-xs);
+  --account-sign-in-actions-gap: var(--account-sign-in-content-gap-md);
+  --account-sign-in-divider-gap: var(--account-sign-in-content-gap-md);
   --account-sign-in-divider-padding-inline: 12px;
-  --account-sign-in-secondary-actions-gap: 0.52rem;
-  --account-sign-in-note-size: 1rem;
+  --account-sign-in-secondary-actions-gap: var(--account-sign-in-content-gap-sm);
+  --account-sign-in-note-size: var(--body-1-size);
   --account-sign-in-note-size-mobile: 0.94rem;
-  --account-sign-in-label-size: 0.88rem;
-  --account-sign-in-action-label-size: 0.94rem;
-  --account-sign-in-divider-label-size: 0.82rem;
-  --account-sign-in-text-action-size: 0.82rem;
+  --account-sign-in-label-size: var(--body-3-size);
+  --account-sign-in-action-label-size: var(--button-font-size);
+  --account-sign-in-button-height: var(--account-button-height);
+  --account-sign-in-button-radius: var(--account-button-radius);
+  --account-sign-in-button-padding-x: var(--account-button-padding-x);
+  --account-sign-in-button-font-size: var(--account-button-font-size);
+  --account-sign-in-button-font-weight: var(--account-button-font-weight);
+  --account-sign-in-button-letter-spacing: var(--account-button-letter-spacing);
+  --account-sign-in-button-line-height: var(--account-button-line-height);
+  --account-sign-in-button-hover-lift-y: var(--account-button-hover-lift-y);
+  --account-sign-in-button-hover-scale: var(--account-button-hover-scale);
+
+  --account-sign-in-field-height: var(--account-field-height);
+  --account-sign-in-field-radius: var(--account-field-radius);
+  --account-sign-in-field-padding-x: var(--account-field-padding-x);
+  --account-sign-in-field-font-size: var(--account-field-font-size);
+  --account-sign-in-field-line-height: var(--account-field-line-height);
+  --account-sign-in-field-letter-spacing: var(--account-field-letter-spacing);
+
+  --account-sign-in-provider-button-height: var(--account-provider-button-height);
+  --account-sign-in-provider-button-radius: var(--account-provider-button-radius);
+  --account-sign-in-provider-button-padding-x: var(--account-provider-button-padding-x);
+
+  --account-sign-in-text-action-font-size: var(--account-text-action-font-size);
+  --account-sign-in-text-action-line-height: var(--account-text-action-line-height);
+  --account-sign-in-text-action-letter-spacing: var(--account-text-action-letter-spacing);
+
+  --account-sign-in-back-control-size: var(--account-back-control-size);
+  --account-sign-in-back-icon-size: var(--account-back-icon-size);
+  --account-sign-in-divider-label-size: var(--body-3-size);
+  --account-sign-in-text-action-size: var(--body-3-size);
   --account-sign-in-input-border: rgba(255, 255, 255, 0.16);
   --account-sign-in-input-surface: transparent;
   --account-sign-in-input-focus: rgba(255, 255, 255, 0.3);
-  --account-sign-in-control-height: 48px;
-  --account-sign-in-control-inline-padding: 22px;
+  --account-sign-in-control-height: var(--account-sign-in-field-height);
+  --account-sign-in-control-inline-padding: var(--account-sign-in-field-padding-x);
   --account-sign-in-divider-line: rgba(128, 128, 128, 0.28);
+  --account-sign-in-header-brand-margin-bottom: var(--account-sign-in-content-gap-xl);
+  --account-sign-in-header-brand-margin-bottom-mobile: var(--account-sign-in-content-gap-lg);
 }
 
+:root.light-mode,
+html.light-mode,
 body.light-mode{
-  --account-sign-in-surface: rgba(255, 255, 255, 0.82);
+  --account-sign-in-surface: rgba(255, 255, 255, 0.88);
   --account-sign-in-shell-inner-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.03);
   --account-sign-in-shell-highlight: linear-gradient(180deg, rgba(0, 0, 0, 0.022) 0%, transparent 22%);
   --account-sign-in-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-sign-in-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.05);
+  --account-sign-in-primary-shadow: var(--shadow-medium);
   --account-sign-in-input-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
   --account-sign-in-input-focus: color-mix(in srgb, var(--text-primary-color) 18%, transparent);
   --account-sign-in-divider-line: rgba(0, 0, 0, 0.16);
 }
 
+:root.dark-mode,
+html.dark-mode,
 body.dark-mode{
   --account-sign-in-surface: rgba(0, 0, 0, 0.82);
   --account-sign-in-shell-inner-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
   --account-sign-in-shell-highlight: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 22%);
   --account-sign-in-header-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
-  --account-sign-in-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
+  --account-sign-in-primary-shadow: var(--shadow-strong);
   --account-sign-in-divider-line: rgba(255, 255, 255, 0.16);
 }
 
-/* =============================================================================
-   03) BASE DRAWER SHELL
-============================================================================= */
+
+
+
+
+
 .account-sign-in-drawer{
-  position: fixed;
-  inset: 0;
-  z-index: 1410;
+  width: 100%;
+}
+
+.account-drawer-view-mount .account-sign-in-drawer,
+.account-drawer-view-mount .account-drawer-inner-view[data-account-view="sign-in"]{
   display: block;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
 }
 
 /* =============================================================================
-   04) OPEN / CLOSE STATES
-============================================================================= */
-body.account-sign-in-drawer-open .account-sign-in-drawer,
-body.account-sign-in-drawer-closing .account-sign-in-drawer{
-  pointer-events: auto;
-  opacity: 1;
-  visibility: visible;
-}
-
-/* =============================================================================
-   04A) PAGE SCROLL LOCK
-============================================================================= */
-body.account-sign-in-drawer-open,
-body.account-sign-in-drawer-closing{
-  overflow: hidden;
-  touch-action: none;
-}
-
-/* =============================================================================
-   05) BACKDROP
-============================================================================= */
-.account-sign-in-drawer-backdrop{
-  position: absolute;
-  inset: 0;
-  background: var(--account-sign-in-backdrop);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  opacity: 0;
-  transition: none;
-}
-
-body.account-sign-in-drawer-open .account-sign-in-drawer-backdrop{
-  opacity: 1;
-}
-
-body.account-sign-in-drawer-closing .account-sign-in-drawer-backdrop{
-  transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-body.account-sign-in-drawer-closing .account-sign-in-drawer-backdrop{
-  opacity: 0;
-}
-
-/* =============================================================================
-   06) DRAWER PANEL
-============================================================================= */
-.account-sign-in-drawer-shell{
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: min(40rem, 100vw);
-  max-width: 100%;
-  height: 100%;
-  background-color: var(--account-sign-in-surface);
-  background-image: var(--account-sign-in-shell-highlight);
-  border-right: 1px solid var(--account-sign-in-border);
-  box-shadow: var(--account-sign-in-primary-shadow), var(--account-sign-in-shell-inner-shadow);
-  transform: none;
-  transition:
-    transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 220ms ease,
-    border-color 220ms ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: visible;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-}
-
-body.account-sign-in-drawer-open .account-sign-in-drawer-shell{
-  transform: none;
-}
-
-body.account-sign-in-drawer-closing .account-sign-in-drawer-shell{
-  transform: translateX(-100%);
-}
-
-/* =============================================================================
-   07A) HEADER BRAND MARK
+   03) INNER VIEW ROOT
 ============================================================================= */
 .account-sign-in-drawer-header-brand-mark{
   position: static;
@@ -191,117 +144,63 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-shell{
   object-fit: contain;
 }
 
+
 /* =============================================================================
-   08) CLOSE CONTROL
+   03A) CONTENT STAGE
 ============================================================================= */
-.account-sign-in-drawer-close{
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  left: auto;
-  width: 1.2rem;
-  min-width: 1.2rem;
-  height: 1.2rem;
-  min-height: 1.2rem;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--text-primary-color);
-  cursor: pointer;
-  z-index: 2;
-  opacity: 1;
-  transition:
-    opacity 150ms ease,
-    color 220ms ease,
-    transform 220ms ease;
+.account-sign-in-drawer-content-stage{
+  display: flex;
+  flex-direction: column;
+  gap: var(--account-sign-in-section-gap);
+  padding-inline: 0;
 }
 
-.account-sign-in-drawer-close-line{
-  position: absolute;
-  top: 50%;
-  left: 50%;
+.account-sign-in-drawer-center-stage{
   width: 100%;
-  height: 1.2px;
-  background: currentColor;
-  transform-origin: center;
-  opacity: 1;
-  transition:
-    transform 220ms ease,
-    background-color 220ms ease,
-    opacity 220ms ease;
-}
-
-.account-sign-in-drawer-close-line--first{
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.account-sign-in-drawer-close-line--second{
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.account-sign-in-drawer-close:hover,
-.account-sign-in-drawer-close:focus-visible,
-.account-sign-in-drawer-close:active{
-  color: var(--color-primary7);
-  transform: scale(1.08);
-  outline: none;
-}
-
-body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
-  opacity: 0;
-  pointer-events: none;
-}
-
-.account-sign-in-drawer-close:hover .account-sign-in-drawer-close-line,
-.account-sign-in-drawer-close:focus-visible .account-sign-in-drawer-close-line,
-.account-sign-in-drawer-close:active .account-sign-in-drawer-close-line{
-  opacity: 1;
-}
-
-.account-sign-in-drawer-close:hover .account-sign-in-drawer-close-line--first,
-.account-sign-in-drawer-close:focus-visible .account-sign-in-drawer-close-line--first,
-.account-sign-in-drawer-close:active .account-sign-in-drawer-close-line--first{
-  transform: translate(-50%, -50%) rotate(0deg);
-}
-
-.account-sign-in-drawer-close:hover .account-sign-in-drawer-close-line--second,
-.account-sign-in-drawer-close:focus-visible .account-sign-in-drawer-close-line--second,
-.account-sign-in-drawer-close:active .account-sign-in-drawer-close-line--second{
-  transform: translate(-50%, -50%) rotate(0deg);
+  max-width: var(--account-sign-in-content-max-width);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--account-sign-in-content-gap-md);
 }
 
 /* =============================================================================
-   10) TYPOGRAPHY
+   04) TYPOGRAPHY
 ============================================================================= */
 .account-sign-in-drawer-note,
 .account-sign-in-drawer-label{
   margin: 0;
   color: var(--account-sign-in-muted);
-  letter-spacing: -0.015em;
+  letter-spacing: var(--tracking-copy);
 }
 
 .account-sign-in-drawer-note{
   font-size: var(--account-sign-in-note-size);
   font-weight: 300;
-  line-height: 1.62;
+  line-height: var(--body-1-line-height);
   text-align: center;
 }
 
 /* =============================================================================
-   11) FORM
+   05) FORM
 ============================================================================= */
 .account-sign-in-drawer-form{
   width: 100%;
-  max-width: 28rem;
+  max-width: var(--account-sign-in-content-max-width);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   gap: var(--account-sign-in-form-gap);
 }
 
 .account-sign-in-drawer-field-group{
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   gap: var(--account-sign-in-field-group-gap);
 }
 
@@ -313,18 +212,22 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
 
 .account-sign-in-drawer-input{
   width: 100%;
-  height: var(--account-sign-in-control-height);
-  padding: 0 var(--account-sign-in-control-inline-padding);
+  height: var(--account-sign-in-field-height);
+  padding: 0 var(--account-sign-in-field-padding-x);
   box-sizing: border-box;
-  border: 1px solid var(--account-sign-in-input-border);
-  border-radius: 999px;
+  border: var(--stroke-soft) solid var(--account-sign-in-input-border);
+  border-radius: var(--account-sign-in-field-radius);
   background: var(--account-sign-in-input-surface);
   color: var(--text-primary-color);
-  font: inherit;
-  line-height: 1;
-  letter-spacing: -0.01em;
+  font-size: var(--account-sign-in-field-font-size);
+  font-weight: 400;
+  line-height: var(--account-sign-in-field-line-height);
+  letter-spacing: var(--account-sign-in-field-letter-spacing);
   outline: none;
-  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
   appearance: none;
 }
 
@@ -337,13 +240,17 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
 }
 
 /* =============================================================================
-   12) ACTIONS
+   06) ACTIONS
 ============================================================================= */
 .account-sign-in-drawer-actions{
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  justify-content: flex-start;
   gap: var(--account-sign-in-actions-gap);
+  width: 100%;
+  max-width: var(--account-sign-in-content-max-width);
+  margin-inline: auto;
 }
 
 .account-sign-in-drawer-action{
@@ -352,16 +259,23 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   display: flex;
   align-items: center;
   justify-content: center;
-  height: var(--account-sign-in-control-height);
-  padding: 0 var(--account-sign-in-control-inline-padding);
+  height: var(--account-sign-in-button-height);
+  padding: 0 var(--account-sign-in-button-padding-x);
   box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 999px;
-  background: transparent;
-  color: #f5f5f7;
+  border: var(--stroke-soft) solid var(--control-border);
+  border-radius: var(--account-sign-in-button-radius);
+  background: var(--control-bg);
+  color: var(--text-color);
   text-decoration: none;
   cursor: pointer;
-  transition: opacity 180ms ease, border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
 }
 
 .account-sign-in-drawer-action-label{
@@ -370,25 +284,26 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: var(--account-sign-in-control-height);
-  color: #f5f5f7;
-  font-size: var(--account-sign-in-action-label-size);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1;
+  height: var(--account-sign-in-button-height);
+  color: var(--text-color);
+  font-size: var(--account-sign-in-button-font-size);
+  font-weight: var(--account-sign-in-button-font-weight);
+  letter-spacing: var(--account-sign-in-button-letter-spacing);
+  line-height: var(--account-sign-in-button-line-height);
   text-align: center;
 }
 
 .account-sign-in-drawer-action--primary:hover,
 .account-sign-in-drawer-action--primary:focus-visible{
-  opacity: 0.92;
-  border-color: rgba(255, 255, 255, 0.24);
-  background: rgba(255, 255, 255, 0.08);
+  opacity: var(--hover-opacity-strong);
+  border-color: var(--control-border-strong);
+  background: var(--control-bg-hover);
+  transform: translateY(var(--account-sign-in-button-hover-lift-y)) scale(var(--account-sign-in-button-hover-scale));
   outline: none;
 }
 
 /* =============================================================================
-   12A) ACTION DIVIDER
+   07) ACTION DIVIDER
 ============================================================================= */
 .account-sign-in-drawer-divider{
   display: flex;
@@ -396,7 +311,8 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   justify-content: center;
   gap: var(--account-sign-in-divider-gap);
   width: 100%;
-  max-width: 100%;
+  max-width: var(--account-sign-in-content-max-width);
+  margin-inline: auto;
   align-self: stretch;
   box-sizing: border-box;
   padding-inline: var(--account-sign-in-divider-padding-inline);
@@ -405,7 +321,7 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
 .account-sign-in-drawer-divider-line{
   flex: 1 1 0;
   min-width: 0;
-  height: 1px;
+  height: var(--stroke-soft);
   background: var(--account-sign-in-divider-line);
 }
 
@@ -413,56 +329,43 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
   color: var(--account-sign-in-muted);
   font-size: var(--account-sign-in-divider-label-size);
   font-weight: 400;
-  letter-spacing: -0.012em;
+  letter-spacing: var(--tracking-copy);
   line-height: 1;
   text-align: center;
   text-transform: lowercase;
 }
 
 /* =============================================================================
-   13) SECONDARY ACTIONS
+   08) SECONDARY ACTIONS
 ============================================================================= */
 .account-sign-in-drawer-secondary-actions{
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   gap: var(--account-sign-in-secondary-actions-gap);
+  width: 100%;
+  max-width: var(--account-sign-in-content-max-width);
+  margin-inline: auto;
 }
 
 .account-sign-in-drawer-text-action{
-  display: inline;
-  color: var(--text-primary-color);
-  cursor: pointer;
-  text-decoration: underline;
-  text-decoration-color: currentColor;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.14em;
-  text-decoration-skip-ink: auto;
-  font-size: var(--account-sign-in-text-action-size);
-  font-weight: 400;
-  letter-spacing: -0.012em;
-  line-height: 1.45;
-  transition: color 220ms ease, text-decoration-color 220ms ease, opacity 220ms ease;
-}
-
-.account-sign-in-drawer-text-action:hover,
-.account-sign-in-drawer-text-action:focus-visible,
-.account-sign-in-drawer-text-action:active{
-  color: var(--color-primary1);
-  text-decoration-color: var(--color-primary1);
-  outline: none;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
 }
 
 /* =============================================================================
-   13A) BACK CONTROL
+   09) BACK CONTROL
 ============================================================================= */
 .account-sign-in-drawer-back-control{
   appearance: none;
   -webkit-appearance: none;
-  width: 1.2rem;
-  min-width: 1.2rem;
-  height: 1.2rem;
-  min-height: 1.2rem;
+  width: var(--account-sign-in-back-control-size);
+  min-width: var(--account-sign-in-back-control-size);
+  height: var(--account-sign-in-back-control-size);
+  min-height: var(--account-sign-in-back-control-size);
   padding: 0;
   border: 0;
   background: transparent;
@@ -474,25 +377,18 @@ body.account-sign-in-drawer-closing .account-sign-in-drawer-close{
 }
 
 .account-sign-in-drawer-back-icon{
-  width: 1.12rem;
-  height: 1.12rem;
+  width: var(--account-sign-in-back-icon-size);
+  height: var(--account-sign-in-back-icon-size);
   display: block;
   object-fit: contain;
-  filter: none;
+  filter: var(--icon-image-filter, none);
 }
 
-body.dark-mode .account-sign-in-drawer-back-icon{
-  filter: brightness(0) invert(1);
-}
 
 /* =============================================================================
-   14) REDUCED MOTION
+   10) REDUCED MOTION
 ============================================================================= */
 @media (prefers-reduced-motion: reduce){
-  .account-sign-in-drawer,
-  .account-sign-in-drawer-backdrop,
-  .account-sign-in-drawer-shell,
-  .account-sign-in-drawer-close-line,
   .account-sign-in-drawer-action,
   .account-sign-in-drawer-input{
     transition: none !important;
@@ -500,26 +396,10 @@ body.dark-mode .account-sign-in-drawer-back-icon{
 }
 
 /* =============================================================================
-   15) RESPONSIVE — 1024PX
+   11) RESPONSIVE — 768PX
 ============================================================================= */
-@media (max-width:1024px){
-  .account-sign-in-drawer-close{
-    top: 0.82rem;
-    right: 0.82rem;
-    left: auto;
-  }
-}
 
-/* =============================================================================
-   16) RESPONSIVE — 768PX
-============================================================================= */
 @media (max-width:768px){
-  .account-sign-in-drawer-close{
-    top: 0.68rem;
-    right: 0.68rem;
-    left: auto;
-  }
-
   .account-sign-in-drawer-header-brand-mark{
     margin-bottom: var(--account-sign-in-header-brand-margin-bottom-mobile);
   }

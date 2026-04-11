@@ -1,0 +1,122 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SITE FOOTER BASELINE
+   03) FOOTER TYPOGRAPHY
+   04) FOOTER LOCALE SYSTEM
+   05) FOOTER DIVIDER HELPERS
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/04-systems/footer.css */
+
+/* =============================================================================
+   02) SITE FOOTER BASELINE
+============================================================================= */
+.site-footer{
+  width:100%;
+  font-size:0.9rem;
+  margin:2.4rem 0 0 0;
+  padding:1.8rem 0 1.6rem 0;
+  background-color:transparent;
+  color:var(--text-secondary-color);
+  text-align:center;
+}
+
+body.dark-mode .site-footer{
+  color:var(--text-color);
+}
+
+.footer-left,
+.footer-right{
+  font-size:0.9rem;
+  line-height:1.2;
+  letter-spacing:0.02em;
+  margin:0;
+}
+
+.footer-left{
+  text-align:left;
+}
+
+.footer-right{
+  text-align:right;
+}
+
+/* =============================================================================
+   03) FOOTER TYPOGRAPHY
+============================================================================= */
+.footer-separator-dot{
+  margin:0 0.55rem;
+  opacity:0.9;
+  user-select:none;
+  display:inline-block;
+  line-height:1;
+  transform:translateY(-0.5px);
+}
+
+/* =============================================================================
+   04) FOOTER LOCALE SYSTEM
+============================================================================= */
+.footer-locale{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  white-space:nowrap;
+}
+
+.footer-right.footer-locale{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  text-align:unset;
+}
+
+.locale-item{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+}
+
+.locale-button{
+  background:none;
+  border:none;
+  padding:0;
+  margin:0;
+  font:inherit;
+  color:inherit;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  line-height:1;
+}
+
+#country-selector{
+  font-size:0.85rem;
+  font-weight:400;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  opacity:0.85;
+  transition:opacity var(--duration-base) var(--ease-standard);
+}
+
+#country-selector:hover{
+  opacity:1;
+}
+
+/* =============================================================================
+   05) FOOTER DIVIDER HELPERS
+============================================================================= */
+.footer-flex .ui-divider-dot,
+.footer-separator-dot{
+  opacity:0.9;
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */

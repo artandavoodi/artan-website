@@ -1,18 +1,56 @@
-// SECTION: PLATFORM PAGE CONTROLLER
-// PURPOSE: Provide the canonical runtime scaffold for the Platform page.
-// SCOPE: PTW-aligned page initialization, search-index awareness, and future section expansion.
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) PATH HELPERS
+   03) CONSTANTS
+   04) STATE
+   05) HELPERS
+   06) RESOURCE LOADERS
+   07) PAGE REGISTRATION
+   08) BOOTSTRAP
+   09) INITIALIZATION
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/js/layers/website/sections/platform.js */
 
 (() => {
   'use strict';
 
-  // SECTION: CONSTANTS
-  const SECTION_ID = 'platform';
-  const SEARCH_ROUTE_INDEX_URL = '/assets/data/search/route-index.json';
-  const SEARCH_CONTENT_INDEX_URL = '/assets/data/search/content-index.json';
-  const SEARCH_ENTITY_INDEX_URL = '/assets/data/search/entity-index.json';
-  const SECTION_DATA_URL = '/assets/data/sections/platform.json';
+  /* =============================================================================
+     02) PATH HELPERS
+  ============================================================================= */
+  const WEBSITE_BASE_PATH = (() => {
+    const pathname = window.location.pathname || '';
 
-  // SECTION: STATE
+    if (pathname.includes('/website/docs/')) return '/website/docs';
+    if (pathname.endsWith('/website/docs')) return '/website/docs';
+    if (pathname.includes('/docs/')) return '/docs';
+    if (pathname.endsWith('/docs')) return '/docs';
+
+    return '';
+  })();
+
+  const assetPath = (path) => {
+    const normalized = String(path || '').trim();
+    if (!normalized) return '';
+    return `${WEBSITE_BASE_PATH}${normalized.startsWith('/') ? normalized : `/${normalized}`}`;
+  };
+
+  /* =============================================================================
+     03) CONSTANTS
+  ============================================================================= */
+  const SECTION_ID = 'platform';
+  const SEARCH_ROUTE_INDEX_URL = assetPath('/assets/data/search/route-index.json');
+  const SEARCH_CONTENT_INDEX_URL = assetPath('/assets/data/search/content-index.json');
+  const SEARCH_ENTITY_INDEX_URL = assetPath('/assets/data/search/entity-index.json');
+  const SECTION_DATA_URL = assetPath('/assets/data/sections/platform.json');
+
+  /* =============================================================================
+     04) STATE
+  ============================================================================= */
   const state = {
     routeIndex: null,
     contentIndex: null,
@@ -21,7 +59,9 @@
     isReady: false
   };
 
-  // SECTION: HELPERS
+  /* =============================================================================
+     05) HELPERS
+  ============================================================================= */
   function emit(name, detail = {}) {
     window.dispatchEvent(new CustomEvent(name, { detail }));
   }
@@ -38,7 +78,9 @@
     return response.json();
   }
 
-  // SECTION: INDEX LOADERS
+  /* =============================================================================
+     06) RESOURCE LOADERS
+  ============================================================================= */
   async function loadPlatformResources() {
     const [routeIndex, contentIndex, entityIndex, sectionData] = await Promise.all([
       fetchJson(SEARCH_ROUTE_INDEX_URL),
@@ -53,7 +95,9 @@
     state.sectionData = sectionData;
   }
 
-  // SECTION: PAGE REGISTRATION
+  /* =============================================================================
+     07) PAGE REGISTRATION
+  ============================================================================= */
   function registerPageState() {
     const root = getSectionRoot();
     if (!root) return;
@@ -66,7 +110,9 @@
     root.setAttribute('data-section-data-loaded', String(Boolean(state.sectionData)));
   }
 
-  // SECTION: BOOTSTRAP
+  /* =============================================================================
+     08) BOOTSTRAP
+  ============================================================================= */
   async function boot() {
     try {
       await loadPlatformResources();
@@ -89,7 +135,9 @@
     }
   }
 
-  // SECTION: INITIALIZATION
+  /* =============================================================================
+     09) INITIALIZATION
+  ============================================================================= */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot, { once: true });
   } else {

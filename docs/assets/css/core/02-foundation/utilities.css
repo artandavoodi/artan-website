@@ -1,0 +1,67 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SPACING UTILITIES
+   03) TEXT ALIGNMENT UTILITIES
+   04) VISIBILITY UTILITIES
+   05) LAYOUT UTILITIES
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/02-foundation/utilities.css */
+
+/* =============================================================================
+   02) SPACING UTILITIES
+============================================================================= */
+.mb-xs{margin-bottom:var(--spacing-xs);}
+.mb-sm{margin-bottom:var(--spacing-sm);}
+.mb-md{margin-bottom:var(--spacing-md);}
+.mb-lg{margin-bottom:var(--spacing-lg);}
+.mb-xl{margin-bottom:var(--spacing-xl);}
+
+/* =============================================================================
+   03) TEXT ALIGNMENT UTILITIES
+============================================================================= */
+.text-left{text-align:left;}
+.text-center{text-align:center;}
+.text-right{text-align:right;}
+
+/* =============================================================================
+   04) VISIBILITY UTILITIES
+============================================================================= */
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+.hidden{
+  display:none !important;
+}
+
+/* =============================================================================
+   05) LAYOUT UTILITIES
+============================================================================= */
+.w-full{width:100%;}
+.mx-auto{
+  margin-left:auto;
+  margin-right:auto;
+}
+.flex-center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */

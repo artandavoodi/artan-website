@@ -1,0 +1,382 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ROOT TOKENS
+   03) INNER VIEW ROOT
+   04) FORM
+   05) FIELD META
+   06) CONDITIONAL CREDENTIAL GROUP
+   07) SELECT CONTROL
+   08) ACTIONS
+   09) SECONDARY ACTIONS
+   10) BACK CONTROL
+   11) REDUCED MOTION
+   12) RESPONSIVE — 768PX
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/layers/website/overlays/account/account-profile-setup-drawer.css */
+
+/* =============================================================================
+   02) ROOT TOKENS
+============================================================================= */
+:root{
+  --account-profile-setup-content-max-width: var(--account-control-width-max);
+  --account-profile-setup-content-gap-xs: var(--account-content-gap-xs);
+  --account-profile-setup-content-gap-sm: var(--account-content-gap-sm);
+  --account-profile-setup-content-gap-md: var(--account-content-gap-md);
+  --account-profile-setup-content-gap-lg: var(--account-content-gap-lg);
+
+  --account-profile-setup-section-gap: var(--account-profile-setup-content-gap-lg);
+  --account-profile-setup-form-gap: var(--account-profile-setup-content-gap-md);
+  --account-profile-setup-field-group-gap: var(--account-profile-setup-content-gap-xs);
+  --account-profile-setup-actions-gap: var(--account-profile-setup-content-gap-md);
+  --account-profile-setup-secondary-gap: var(--account-profile-setup-content-gap-sm);
+  --account-profile-setup-credential-gap: var(--account-profile-setup-content-gap-md);
+  --account-profile-setup-meta-gap: var(--account-profile-setup-content-gap-xs);
+
+  --account-profile-setup-field-height: var(--account-field-height);
+  --account-profile-setup-field-radius: var(--account-field-radius);
+  --account-profile-setup-field-padding-x: var(--account-field-padding-x);
+  --account-profile-setup-field-font-size: var(--account-field-font-size);
+  --account-profile-setup-field-line-height: var(--account-field-line-height);
+  --account-profile-setup-field-letter-spacing: var(--account-field-letter-spacing);
+  --account-profile-setup-field-border: var(--control-border);
+  --account-profile-setup-field-background: var(--control-bg);
+  --account-profile-setup-field-foreground: var(--text-color);
+  --account-profile-setup-field-placeholder: var(--text-secondary-color);
+  --account-profile-setup-field-focus-border: var(--control-border-strong);
+  --account-profile-setup-field-focus-ring: color-mix(in srgb, var(--color-primary1) 16%, transparent);
+
+  --account-profile-setup-note-font-size: var(--body-2-size);
+  --account-profile-setup-note-line-height: var(--body-2-line-height);
+  --account-profile-setup-note-letter-spacing: var(--body-2-tracking);
+  --account-profile-setup-note-color: var(--text-secondary-color);
+
+  --account-profile-setup-status-font-size: var(--body-2-size);
+  --account-profile-setup-status-line-height: var(--body-2-line-height);
+  --account-profile-setup-status-letter-spacing: var(--body-2-tracking);
+  --account-profile-setup-status-color: var(--text-color);
+
+  --account-profile-setup-action-height: var(--account-button-height);
+  --account-profile-setup-action-radius: var(--account-button-radius);
+  --account-profile-setup-action-padding-x: var(--account-button-padding-x);
+  --account-profile-setup-action-font-size: var(--account-button-font-size);
+  --account-profile-setup-action-font-weight: var(--account-button-font-weight);
+  --account-profile-setup-action-letter-spacing: var(--account-button-letter-spacing);
+  --account-profile-setup-action-line-height: var(--account-button-line-height);
+  --account-profile-setup-action-hover-lift-y: var(--account-button-hover-lift-y);
+  --account-profile-setup-action-hover-scale: var(--account-button-hover-scale);
+  --account-profile-setup-action-border: var(--control-border);
+  --account-profile-setup-action-border-hover: var(--control-border-strong);
+  --account-profile-setup-action-background: var(--control-bg);
+  --account-profile-setup-action-background-hover: var(--control-bg-hover);
+  --account-profile-setup-action-foreground: var(--text-color);
+
+  --account-profile-setup-back-control-size: var(--account-back-control-size);
+  --account-profile-setup-back-icon-size: var(--account-back-icon-size);
+}
+
+/* =============================================================================
+   03) INNER VIEW ROOT
+============================================================================= */
+.account-profile-setup-drawer{
+  width: 100%;
+}
+
+.account-profile-setup-drawer[hidden]{
+  display: none !important;
+}
+
+.account-profile-setup-drawer-state{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.account-profile-setup-drawer-content-stage{
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--account-profile-setup-section-gap);
+  padding-inline: 0;
+}
+
+.account-profile-setup-drawer-center-stage{
+  width: 100%;
+  max-width: var(--account-profile-setup-content-max-width);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--account-profile-setup-content-gap-md);
+}
+
+/* =============================================================================
+   04) FORM
+============================================================================= */
+.account-profile-setup-drawer-form{
+  width: 100%;
+  max-width: var(--account-profile-setup-content-max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--account-profile-setup-form-gap);
+}
+
+.account-profile-setup-drawer-field-group{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--account-profile-setup-field-group-gap);
+}
+
+.account-profile-setup-drawer-input,
+.account-profile-setup-drawer-select{
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--account-profile-setup-field-height);
+  height: var(--account-profile-setup-field-height);
+  padding-inline: var(--account-profile-setup-field-padding-x);
+  box-sizing: border-box;
+  border: var(--stroke-soft) solid var(--account-profile-setup-field-border);
+  border-radius: var(--account-profile-setup-field-radius);
+  background: var(--account-profile-setup-field-background);
+  color: var(--account-profile-setup-field-foreground);
+  font-size: var(--account-profile-setup-field-font-size);
+  font-weight: 400;
+  letter-spacing: var(--account-profile-setup-field-letter-spacing);
+  line-height: var(--account-profile-setup-field-line-height);
+  margin: 0;
+  outline: none;
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.account-profile-setup-drawer-input::placeholder{
+  color: var(--account-profile-setup-field-placeholder);
+  opacity: 1;
+}
+
+.account-profile-setup-drawer-input:focus,
+.account-profile-setup-drawer-select:focus{
+  border-color: var(--account-profile-setup-field-focus-border);
+  box-shadow: 0 0 0 3px var(--account-profile-setup-field-focus-ring);
+}
+
+.account-profile-setup-drawer-input--date{
+  color-scheme: light dark;
+}
+
+/* =============================================================================
+   05) FIELD META
+============================================================================= */
+.account-profile-setup-drawer-field-meta{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--account-profile-setup-meta-gap);
+}
+
+.account-profile-setup-drawer-field-note,
+.account-profile-setup-drawer-field-status{
+  margin: 0;
+}
+
+.account-profile-setup-drawer-field-note{
+  color: var(--account-profile-setup-note-color);
+  font-size: var(--account-profile-setup-note-font-size);
+  font-weight: 300;
+  letter-spacing: var(--account-profile-setup-note-letter-spacing);
+  line-height: var(--account-profile-setup-note-line-height);
+}
+
+.account-profile-setup-drawer-field-status{
+  color: var(--account-profile-setup-status-color);
+  font-size: var(--account-profile-setup-status-font-size);
+  font-weight: 400;
+  letter-spacing: var(--account-profile-setup-status-letter-spacing);
+  line-height: var(--account-profile-setup-status-line-height);
+}
+
+/* =============================================================================
+   06) CONDITIONAL CREDENTIAL GROUP
+============================================================================= */
+.account-profile-setup-drawer-credential-group{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--account-profile-setup-credential-gap);
+}
+
+.account-profile-setup-drawer-credential-group[hidden]{
+  display: none !important;
+}
+
+/* =============================================================================
+   07) SELECT CONTROL
+============================================================================= */
+.account-profile-setup-drawer-select{
+  cursor: pointer;
+}
+
+/* =============================================================================
+   08) ACTIONS
+============================================================================= */
+.account-profile-setup-drawer-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--account-profile-setup-actions-gap);
+  width: 100%;
+  max-width: var(--account-profile-setup-content-max-width);
+  margin-inline: auto;
+}
+
+.account-profile-setup-drawer-action{
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--account-profile-setup-action-height);
+  height: var(--account-profile-setup-action-height);
+  padding-inline: var(--account-profile-setup-action-padding-x);
+  box-sizing: border-box;
+  border: var(--stroke-soft) solid var(--account-profile-setup-action-border);
+  border-radius: var(--account-profile-setup-action-radius);
+  background: var(--account-profile-setup-action-background);
+  color: var(--account-profile-setup-action-foreground);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+}
+
+.account-profile-setup-drawer-action-label{
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--account-profile-setup-action-height);
+  color: var(--account-profile-setup-action-foreground);
+  font-size: var(--account-profile-setup-action-font-size);
+  font-weight: var(--account-profile-setup-action-font-weight);
+  letter-spacing: var(--account-profile-setup-action-letter-spacing);
+  line-height: var(--account-profile-setup-action-line-height);
+  text-align: center;
+}
+
+.account-profile-setup-drawer-action:hover,
+.account-profile-setup-drawer-action:focus-visible{
+  opacity: var(--hover-opacity-strong);
+  border-color: var(--account-profile-setup-action-border-hover);
+  background: var(--account-profile-setup-action-background-hover);
+  transform: translateY(var(--account-profile-setup-action-hover-lift-y)) scale(var(--account-profile-setup-action-hover-scale));
+  outline: none;
+}
+
+/* =============================================================================
+   09) SECONDARY ACTIONS
+============================================================================= */
+.account-profile-setup-drawer-secondary-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--account-profile-setup-secondary-gap);
+  width: 100%;
+  max-width: var(--account-profile-setup-content-max-width);
+  margin-inline: auto;
+}
+
+.account-profile-setup-drawer-text-action{
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
+/* =============================================================================
+   10) BACK CONTROL
+============================================================================= */
+.account-profile-setup-drawer-back-control{
+  appearance: none;
+  -webkit-appearance: none;
+  width: var(--account-profile-setup-back-control-size);
+  min-width: var(--account-profile-setup-back-control-size);
+  height: var(--account-profile-setup-back-control-size);
+  min-height: var(--account-profile-setup-back-control-size);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 0;
+  transition: none;
+}
+
+.account-profile-setup-drawer-back-icon{
+  width: var(--account-profile-setup-back-icon-size);
+  height: var(--account-profile-setup-back-icon-size);
+  display: block;
+  object-fit: contain;
+}
+
+.account-profile-setup-drawer-back-control:hover,
+.account-profile-setup-drawer-back-control:focus-visible,
+.account-profile-setup-drawer-back-control:active{
+  outline: none;
+  transform: none;
+}
+
+/* =============================================================================
+   11) REDUCED MOTION
+============================================================================= */
+@media (prefers-reduced-motion: reduce){
+  .account-profile-setup-drawer-action,
+  .account-profile-setup-drawer-input,
+  .account-profile-setup-drawer-select{
+    transition: none !important;
+  }
+}
+
+/* =============================================================================
+   12) RESPONSIVE — 768PX
+============================================================================= */
+@media (max-width:768px){
+  .account-profile-setup-drawer-content-stage{
+    padding-inline: 0;
+  }
+}

@@ -1,0 +1,303 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ROOT TOKENS
+   03) INNER VIEW ROOT
+   04) TYPOGRAPHY
+   05) ACTIONS
+   06) SECONDARY ACTIONS
+   07) BACK CONTROL
+   08) REDUCED MOTION
+   09) RESPONSIVE — 768PX
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+:root{
+  --account-provider-apple-note-size-mobile: 0.94rem;
+
+  --account-provider-apple-surface: rgba(0, 0, 0, 0.82);
+  --account-provider-apple-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-provider-apple-muted: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
+  --account-provider-apple-shell-inner-shadow: inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
+  --account-provider-apple-shell-highlight: linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
+  --account-provider-apple-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-provider-apple-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.06);
+  --account-provider-apple-foreground: var(--text-color);
+
+  --account-provider-apple-section-gap: 1.22rem;
+
+  --account-provider-apple-content-max-width: var(--account-control-width-max);
+  --account-provider-apple-content-max-width-wide: var(--account-control-width-max-wide);
+  --account-provider-apple-content-gap-xs: var(--account-content-gap-xs);
+  --account-provider-apple-content-gap-sm: var(--account-content-gap-sm);
+  --account-provider-apple-content-gap-md: var(--account-content-gap-md);
+  --account-provider-apple-content-gap-lg: var(--account-content-gap-lg);
+  --account-provider-apple-content-gap-xl: var(--account-content-gap-xl);
+
+  --account-provider-apple-actions-gap: var(--account-provider-apple-content-gap-md);
+  --account-provider-apple-secondary-gap: var(--account-provider-apple-content-gap-sm);
+
+  --account-provider-apple-button-height: var(--account-button-height);
+  --account-provider-apple-button-radius: var(--account-button-radius);
+  --account-provider-apple-button-padding-x: var(--account-button-padding-x);
+  --account-provider-apple-button-font-size: var(--account-button-font-size);
+  --account-provider-apple-button-font-weight: var(--account-button-font-weight);
+  --account-provider-apple-button-letter-spacing: var(--account-button-letter-spacing);
+  --account-provider-apple-button-line-height: var(--account-button-line-height);
+  --account-provider-apple-button-hover-lift-y: var(--account-button-hover-lift-y);
+  --account-provider-apple-button-hover-scale: var(--account-button-hover-scale);
+  --account-provider-apple-button-border: var(--control-border);
+  --account-provider-apple-button-border-hover: var(--control-border-strong);
+  --account-provider-apple-button-background: var(--control-bg);
+  --account-provider-apple-button-background-hover: var(--control-bg-hover);
+
+  --account-provider-apple-text-action-font-size: var(--account-text-action-font-size);
+  --account-provider-apple-text-action-line-height: var(--account-text-action-line-height);
+  --account-provider-apple-text-action-letter-spacing: var(--account-text-action-letter-spacing);
+
+  --account-provider-apple-back-control-size: var(--account-back-control-size);
+  --account-provider-apple-back-icon-size: var(--account-back-icon-size);
+  --account-provider-apple-header-brand-margin-bottom: var(--account-provider-apple-content-gap-xl);
+  --account-provider-apple-header-brand-margin-bottom-mobile: var(--account-provider-apple-content-gap-lg);
+}
+
+/* =============================================================================
+   02) ROOT TOKENS
+============================================================================= */
+:root.light-mode,
+html.light-mode,
+body.light-mode{
+  --account-provider-apple-foreground: var(--text-primary-color);
+  --account-provider-apple-surface: rgba(255, 255, 255, 0.88);
+  --account-provider-apple-shell-inner-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.03);
+  --account-provider-apple-shell-highlight: linear-gradient(180deg, rgba(0, 0, 0, 0.022) 0%, transparent 22%);
+  --account-provider-apple-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-provider-apple-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.05);
+}
+
+:root.dark-mode,
+html.dark-mode,
+body.dark-mode{
+  --account-provider-apple-surface: rgba(0, 0, 0, 0.82);
+  --account-provider-apple-shell-inner-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
+  --account-provider-apple-shell-highlight: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 22%);
+  --account-provider-apple-header-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  --account-provider-apple-primary-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
+}
+
+/* =============================================================================
+   03) INNER VIEW ROOT
+============================================================================= */
+.account-provider-apple-sheet{
+  width: 100%;
+}
+
+.account-drawer-view-mount .account-provider-apple-sheet,
+.account-drawer-view-mount .account-drawer-inner-view[data-account-view="provider-apple"]{
+  display: block;
+}
+
+.account-provider-apple-sheet-header-brand-mark{
+  display: none;
+}
+
+.account-provider-apple-sheet-header-brand-icon{
+  width: 2.4rem;
+  height: 2.4rem;
+  display: block;
+  object-fit: contain;
+}
+
+.account-provider-apple-sheet-content-stage{
+  display: flex;
+  flex-direction: column;
+  gap: var(--account-provider-apple-section-gap);
+  padding-inline: 4.8rem;
+}
+
+.account-provider-apple-sheet-center-stage{
+  width: 100%;
+  max-width: var(--account-provider-apple-content-max-width);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--account-provider-apple-content-gap-md);
+}
+
+/* =============================================================================
+   04) TYPOGRAPHY
+============================================================================= */
+.account-provider-apple-sheet-note{
+  margin: 0;
+  color: var(--account-provider-apple-muted);
+  letter-spacing: -0.015em;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.62;
+  text-align: center;
+}
+
+/* =============================================================================
+   05) ACTIONS
+============================================================================= */
+.account-provider-apple-sheet-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--account-provider-apple-actions-gap);
+  width: 100%;
+  max-width: var(--account-provider-apple-content-max-width);
+  margin-inline: auto;
+}
+
+.account-provider-apple-sheet-action{
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--account-provider-apple-button-height);
+  padding: 0 var(--account-provider-apple-button-padding-x);
+  box-sizing: border-box;
+  border: var(--stroke-soft) solid var(--account-provider-apple-button-border);
+  border-radius: var(--account-provider-apple-button-radius);
+  background: var(--account-provider-apple-button-background);
+  color: var(--account-provider-apple-foreground);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+}
+
+.account-provider-apple-sheet-action-label{
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--account-provider-apple-button-height);
+  color: var(--account-provider-apple-foreground);
+  font-size: var(--account-provider-apple-button-font-size);
+  font-weight: var(--account-provider-apple-button-font-weight);
+  letter-spacing: var(--account-provider-apple-button-letter-spacing);
+  line-height: var(--account-provider-apple-button-line-height);
+  text-align: center;
+}
+
+.account-provider-apple-sheet-action:hover,
+.account-provider-apple-sheet-action:focus-visible{
+  opacity: var(--hover-opacity-strong);
+  border-color: var(--account-provider-apple-button-border-hover);
+  background: var(--account-provider-apple-button-background-hover);
+  transform: translateY(var(--account-provider-apple-button-hover-lift-y)) scale(var(--account-provider-apple-button-hover-scale));
+  outline: none;
+}
+
+/* =============================================================================
+   06) SECONDARY ACTIONS
+============================================================================= */
+.account-provider-apple-sheet-secondary-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--account-provider-apple-secondary-gap);
+  width: 100%;
+  max-width: var(--account-provider-apple-content-max-width);
+  margin-inline: auto;
+}
+
+.account-provider-apple-sheet-text-action{
+  display: inline;
+  color: var(--text-primary-color);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: var(--stroke-soft);
+  text-underline-offset: 0.14em;
+  text-decoration-skip-ink: auto;
+  font-size: var(--account-provider-apple-text-action-font-size);
+  font-weight: 400;
+  letter-spacing: var(--account-provider-apple-text-action-letter-spacing);
+  line-height: var(--account-provider-apple-text-action-line-height);
+  transition: color 220ms ease, text-decoration-color 220ms ease, opacity 220ms ease;
+}
+
+.account-provider-apple-sheet-text-action:hover,
+.account-provider-apple-sheet-text-action:focus-visible,
+.account-provider-apple-sheet-text-action:active{
+  color: var(--color-primary1);
+  text-decoration-color: var(--color-primary1);
+  outline: none;
+}
+
+/* =============================================================================
+   07) BACK CONTROL
+============================================================================= */
+.account-provider-apple-sheet-back-control{
+  appearance: none;
+  -webkit-appearance: none;
+  width: var(--account-provider-apple-back-control-size);
+  min-width: var(--account-provider-apple-back-control-size);
+  height: var(--account-provider-apple-back-control-size);
+  min-height: var(--account-provider-apple-back-control-size);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 0;
+  transition: none;
+}
+
+.account-provider-apple-sheet-back-icon{
+  width: var(--account-provider-apple-back-icon-size);
+  height: var(--account-provider-apple-back-icon-size);
+  display: block;
+  object-fit: contain;
+  filter: var(--icon-image-filter, none);
+}
+
+.account-provider-apple-sheet-back-control:hover,
+.account-provider-apple-sheet-back-control:focus-visible,
+.account-provider-apple-sheet-back-control:active{
+  outline: none;
+  transform: none;
+}
+
+/* =============================================================================
+   08) REDUCED MOTION
+============================================================================= */
+@media (prefers-reduced-motion: reduce){
+  .account-provider-apple-sheet-action,
+  .account-provider-apple-sheet-text-action{
+    transition: none !important;
+  }
+}
+
+/* =============================================================================
+   09) RESPONSIVE — 768PX
+============================================================================= */
+@media (max-width:768px){
+  .account-provider-apple-sheet-content-stage{
+    padding-inline: 1.8rem;
+  }
+
+  .account-provider-apple-sheet-header-brand-mark{
+    margin-bottom: var(--account-provider-apple-header-brand-margin-bottom-mobile);
+  }
+
+  .account-provider-apple-sheet-note{
+    font-size: var(--account-provider-apple-note-size-mobile);
+  }
+}

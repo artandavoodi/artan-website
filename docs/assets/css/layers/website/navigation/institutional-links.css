@@ -19,6 +19,8 @@
    01) LINKS SHELL
 ============================================================================= */
 .institutional-links{
+  position: relative;
+  z-index: 20;
   width: 100%;
   margin: 0;
   padding: 2.8rem 0 0 0;
@@ -29,6 +31,8 @@
 ============================================================================= */
 .institutional-links-inner{
   display: grid;
+  position: relative;
+  z-index: 21;
   width: var(--footer-rail-width, min(calc(100% - (var(--footer-gutter, var(--site-gutter, 24px)) * 2)), var(--site-max-width, 1320px)));
   margin: 0 auto;
   box-sizing: border-box;

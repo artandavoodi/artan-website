@@ -1,0 +1,54 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) CORE SPACING TOKENS
+   03) CONTENT WIDTH TOKENS
+   04) SECTION RHYTHM TOKENS
+   05) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/01-tokens/spacing.tokens.css */
+
+/* =============================================================================
+   02) CORE SPACING TOKENS
+============================================================================= */
+:root{
+  --spacing-xs:0.35rem;
+  --spacing-sm:0.75rem;
+  --spacing-md:1.1rem;
+  --spacing-lg:1.6rem;
+  --spacing-xl:2.4rem;
+  --spacing-2xl:3.6rem;
+  --spacing-3xl:4.5rem;
+  --spacing-4xl:6rem;
+}
+
+/* =============================================================================
+   03) CONTENT WIDTH TOKENS
+============================================================================= */
+:root{
+  --reading-width-sm:64ch;
+  --reading-width-md:74ch;
+  --reading-width-lg:78ch;
+
+  --content-max-width-sm:var(--reading-width-sm);
+  --content-max-width-md:var(--reading-width-md);
+  --content-max-width-lg:var(--reading-width-lg);
+}
+
+/* =============================================================================
+   04) SECTION RHYTHM TOKENS
+============================================================================= */
+:root{
+  --section-padding-y:10vh;
+  --section-padding-y-mobile:12vh;
+  --section-min-height:100vh;
+  --section-min-height-stable:100svh;
+}
+
+/* =============================================================================
+   05) END OF FILE
+============================================================================= */

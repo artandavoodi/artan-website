@@ -1,58 +1,39 @@
 <!-- =============================================================================
      00) FILE INDEX
-     01) COOKIE LANGUAGE / REGION OVERLAY
-     01A) OVERLAY INNER
-     01B) OVERLAY HEADER
-     01BB) HEADER TITLE GROUP
-     01BA) BACK CONTROL
-     01C) SEARCH BAR
+     01) COOKIE LANGUAGE / REGION SURFACE
+     01A) SURFACE INNER
      01CA) TRANSLATABLE UI LABELS
+     01C) SEARCH BAR
+     01CB) STATUS SURFACE
      01D) REGIONS MOUNT
+     01E) COUNTRY ITEM TEMPLATE
 ============================================================================= -->
 
 <!-- =============================================================================
-     01) COOKIE LANGUAGE / REGION OVERLAY
-     Purpose: sovereign language / region selector layer dedicated to cookie
-     settings only.
-     Scope boundary: this fragment must not replace, override, or conflict with
-     the global footer country / region overlay.
+     01) COOKIE LANGUAGE / REGION SURFACE
+     Purpose: inner cookie language / region surface mounted inside the cookie
+     consent owner.
+     Scope boundary: this fragment must not behave as a top-layer overlay and
+     must not conflict with the global footer country / region overlay.
 ============================================================================= -->
-<div id="cookie-language-overlay" class="cookie-language-overlay" aria-hidden="true">
+<div id="cookie-language-overlay" class="cookie-language-overlay" data-cookie-language-overlay="root">
 
   <!-- =============================================================================
-       01A) OVERLAY INNER
+       01A) SURFACE INNER
   ============================================================================= -->
-  <div class="cookie-language-overlay-inner">
+  <div class="cookie-language-overlay-inner" data-cookie-language-overlay-inner="true">
 
     <!-- =============================================================================
-         01B) OVERLAY HEADER
+         01CA) TRANSLATABLE UI LABELS
+         Owner note: header title and return control are handled by the cookie
+         consent shell. This fragment must contain only toolbar and regions
+         content.
     ============================================================================= -->
-    <div class="cookie-language-overlay-header">
-      <div class="cookie-language-overlay-header-copy">
-        <!-- =============================================================================
-             01CA) TRANSLATABLE UI LABELS
-        ============================================================================= -->
-        <!-- =============================================================================
-             01BB) HEADER TITLE GROUP
-        ============================================================================= -->
-        <div class="cookie-language-overlay-title-group">
-          <img src="assets/icons/layers/website/system/navigation/globe.svg" alt="" class="cookie-language-overlay-title-icon">
-          <h2 class="cookie-language-overlay-title" data-i18n-key="cookieLanguageOverlay.title">Choose language and region</h2>
-        </div>
-      </div>
-
-      <!-- =============================================================================
-           01BA) BACK CONTROL
-      ============================================================================= -->
-      <button type="button" class="cookie-language-overlay-close" aria-label="Back to cookie settings" data-cookie-language-overlay-close="true">
-        <img src="assets/icons/core/interface/navigation/back.svg" alt="" class="cookie-language-overlay-back-icon">
-      </button>
-    </div>
 
     <!-- =============================================================================
          01C) SEARCH BAR
     ============================================================================= -->
-    <div class="cookie-language-overlay-toolbar">
+    <div class="cookie-language-overlay-toolbar" data-cookie-language-overlay-toolbar="true">
       <div class="cookie-language-overlay-search-shell">
         <input
           type="search"
@@ -62,15 +43,51 @@
           data-i18n-aria-label-key="cookieLanguageOverlay.searchAriaLabel"
           placeholder="Search language or region"
           aria-label="Search language or region"
+          autocomplete="off"
+          spellcheck="false"
         >
       </div>
     </div>
 
     <!-- =============================================================================
+         01CB) STATUS SURFACE
+         Dedicated empty / feedback surface for the sovereign cookie-language
+         runtime.
+    ============================================================================= -->
+    <div
+      class="cookie-consent-language-status"
+      data-cookie-consent-language-status="true"
+      data-i18n-key="cookieLanguageOverlay.emptyState"
+      hidden
+    >No matching language or region.</div>
+
+    <!-- =============================================================================
          01D) REGIONS MOUNT
          Cookie language / region entries must be mounted here by the dedicated
-         sovereign cookie-language overlay runtime.
+         sovereign cookie-language runtime.
     ============================================================================= -->
-    <div class="cookie-language-overlay-regions" data-cookie-language-overlay-regions="true"></div>
+    <div class="cookie-language-overlay-regions" data-cookie-language-overlay-regions="true">
+      <div class="cookie-language-overlay-section" data-cookie-language-overlay-section="recommended" hidden>
+        <div class="cookie-language-overlay-group" data-cookie-language-overlay-group="recommended"></div>
+      </div>
+
+      <div class="cookie-language-overlay-section" data-cookie-language-overlay-section="all">
+        <div class="cookie-language-overlay-group" data-cookie-language-overlay-group="all"></div>
+      </div>
+    </div>
   </div>
+
+  <!-- =============================================================================
+       01E) COUNTRY ITEM TEMPLATE
+       Dedicated cookie-language runtime template.
+  ============================================================================= -->
+  <template data-cookie-language-overlay-template="country-item">
+    <button type="button" class="cookie-language-overlay-country" data-cookie-language-overlay-country="true">
+      <span class="cookie-language-overlay-country-copy">
+        <strong data-cookie-language-overlay-country-name="true"></strong>
+        <span data-cookie-language-overlay-country-language="true"></span>
+      </span>
+      <span class="cookie-language-overlay-country-code" data-cookie-language-overlay-country-code="true"></span>
+    </button>
+  </template>
 </div>

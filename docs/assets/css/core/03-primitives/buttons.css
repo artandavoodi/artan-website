@@ -1,0 +1,106 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SHARED BUTTON / CONTROL BASE
+   03) HOVER / FOCUS STATES
+   04) PRIMARY BUTTON VARIANT
+   05) SECONDARY BUTTON VARIANT
+   06) GHOST BUTTON VARIANT
+   07) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/buttons.css */
+
+/* =============================================================================
+   02) SHARED BUTTON / CONTROL BASE
+============================================================================= */
+.ui-button,
+.ui-control{
+  appearance:none;
+  -webkit-appearance:none;
+  min-height:var(--control-height-md);
+  padding:0 var(--control-padding-x-md);
+  border-radius:var(--radius-pill);
+  border:var(--stroke-soft) solid var(--control-border);
+  background:var(--control-bg);
+  color:var(--text-color);
+  font-family:var(--font-base);
+  font-size:var(--button-font-size);
+  font-weight:var(--button-font-weight);
+  letter-spacing:var(--button-letter-spacing);
+  line-height:var(--button-line-height);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.55rem;
+  cursor:pointer;
+  box-shadow:none;
+  backdrop-filter:blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter:blur(var(--glass-blur-sm));
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard),
+    opacity var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+
+/* =============================================================================
+   03) HOVER / FOCUS STATES
+============================================================================= */
+.ui-button:hover,
+.ui-control:hover{
+  background:var(--control-bg-hover);
+  border-color:var(--control-border-strong);
+  opacity:var(--hover-opacity-strong);
+  transform:translateY(var(--hover-lift-y));
+}
+
+.ui-button:focus-visible,
+.ui-control:focus-visible{
+  outline:none;
+  border-color:var(--control-border-strong);
+  box-shadow:0 0 0 3px rgba(145,124,111,0.16);
+}
+
+/* =============================================================================
+   04) PRIMARY BUTTON VARIANT
+============================================================================= */
+.ui-button--primary{
+  background:var(--text-color);
+  color:var(--bg-color);
+  border-color:transparent;
+}
+
+.ui-button--primary:hover{
+  opacity:0.94;
+  transform:translateY(var(--hover-lift-y-strong));
+}
+
+/* =============================================================================
+   05) SECONDARY BUTTON VARIANT
+============================================================================= */
+.ui-button--secondary{
+  background:var(--surface-secondary);
+}
+
+/* =============================================================================
+   06) GHOST BUTTON VARIANT
+============================================================================= */
+.ui-button--ghost{
+  background:transparent;
+  border-color:transparent;
+  padding-inline:0;
+  min-height:auto;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+
+/* =============================================================================
+   07) END OF FILE
+============================================================================= */

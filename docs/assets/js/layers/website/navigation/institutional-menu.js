@@ -4,30 +4,31 @@
    02) DOM AND SYSTEM REFERENCES
    03) STATE FLAGS
    04) DOM HELPERS
-   05) SCHEDULING HELPERS
-   06) MENU QUERIES
-   07) COUNTRY SELECTOR QUERIES
-   08) PAGE STATE HELPERS
-   09) COUNTRY OVERLAY STATE
-   10) GEOMETRY HELPERS
-   11) SECONDARY TOGGLE BINDING
-   12) RIBBON BINDING
-   13) TRANSLATION APPLICATION
-   14) COUNTRY SELECTOR BINDING
-   15) PANEL SYSTEM BINDING
-   16) SEARCH INDEX HELPERS
-   17) SEARCH RESULTS RENDERING
-   18) ACCOUNT DRAWER TRIGGER BINDING
-   19) ACCOUNT DRAWER STATE SYNCHRONIZATION
-   20) ACCOUNT DRAWER OPEN-REQUEST ROUTING
-   21) COOKIE CONSENT OVERLAY COORDINATION
-   22) MAIN INITIALIZATION
-   23) LIFECYCLE HOOKS
+   05) MENU QUERIES
+   06) COUNTRY SELECTOR QUERIES
+   07) PAGE STATE HELPERS
+   08) COUNTRY OVERLAY STATE
+   09) GEOMETRY HELPERS
+   10) SECONDARY TOGGLE BINDING
+   11) RIBBON BINDING
+   12) COUNTRY SELECTOR BINDING
+   13) PANEL SYSTEM BINDING
+   14) SEARCH INDEX HELPERS
+   15) SEARCH RESULTS RENDERING
+   16) ACCOUNT DRAWER TRIGGER BINDING
+   17) ACCOUNT DRAWER STATE SYNCHRONIZATION
+   18) ACCOUNT DRAWER OPEN-REQUEST ROUTING
+   19) COOKIE CONSENT OVERLAY COORDINATION
+   20) EVENT BINDING
+   21) MAIN INITIALIZATION
+   22) BOOTSTRAP
+   23) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
    01) MODULE IDENTITY
 ============================================================================= */
+/* /website/docs/assets/js/layers/website/navigation/institutional-menu.js */
 
 (function () {
   'use strict';
@@ -37,13 +38,11 @@
   ============================================================================= */
   const body = document.body;
   const desktopQuery = window.matchMedia('(min-width: 761px)');
-  const MAX_RETRIES = 24;
 
   /* =============================================================================
      03) STATE FLAGS
   ============================================================================= */
-  let initScheduled = false;
-  let retryCount = 0;
+  let menuBound = false;
   let globalBound = false;
   let searchEntriesPromise = null;
   let searchPanelSnapshot = null;
@@ -72,24 +71,7 @@
   }
 
   /* =============================================================================
-     05) SCHEDULING HELPERS
-  ============================================================================= */
-  function nextFrame(fn) {
-    window.requestAnimationFrame(() => window.requestAnimationFrame(fn));
-  }
-
-  function scheduleInit() {
-    if (initScheduled) return;
-    initScheduled = true;
-
-    window.requestAnimationFrame(() => {
-      initScheduled = false;
-      initInstitutionalMenu();
-    });
-  }
-
-  /* =============================================================================
-     06) MENU QUERIES
+     05) MENU QUERIES
   ============================================================================= */
   function getMenu() {
     return byId('institutional-menu');
@@ -178,8 +160,13 @@
     return byId('menu-overlay');
   }
 
+  function hasInstitutionalMenuDom() {
+    const menu = getMenu();
+    return !!(menu && getPanelContainer(menu) && getTriggers(menu).length && getPanels(menu).length);
+  }
+
   /* =============================================================================
-     07) COUNTRY SELECTOR QUERIES
+     06) COUNTRY SELECTOR QUERIES
   ============================================================================= */
   function getCountrySelector() {
     return (
@@ -207,14 +194,14 @@
   }
 
   /* =============================================================================
-     08) PAGE STATE HELPERS
+     07) PAGE STATE HELPERS
   ============================================================================= */
   function isHomePage() {
     return !!(byId('home-hero') || q('.stage-circle') || byId('home-essence'));
   }
 
   /* =============================================================================
-     09) COUNTRY OVERLAY STATE
+     08) COUNTRY OVERLAY STATE
   ============================================================================= */
   function setCountryOverlayState(open) {
     body.classList.toggle('country-overlay-open', !!open);
@@ -227,7 +214,7 @@
   }
 
   /* =============================================================================
-     10) GEOMETRY HELPERS
+     09) GEOMETRY HELPERS
   ============================================================================= */
   function getPageTop(el) {
     const rect = el.getBoundingClientRect();
@@ -241,8 +228,14 @@
   }
 
   /* =============================================================================
-     11) SECONDARY TOGGLE BINDING
+     10) SECONDARY TOGGLE BINDING
   ============================================================================= */
+  function syncSecondaryToggleState(open) {
+    const trigger = getSecondaryToggle();
+    if (!trigger) return;
+    trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
   function bindSecondaryToggle() {
     const trigger = getSecondaryToggle();
     const overlay = getOverlay();
@@ -257,23 +250,29 @@
       if (legacyButton && typeof legacyButton.click === 'function') {
         legacyButton.click();
       }
+      syncSecondaryToggleState(overlay?.getAttribute('aria-hidden') === 'false');
     });
 
-    if (overlay && !overlay.dataset.menuSecondaryObserved) {
-      const syncState = () => {
-        const open = overlay.getAttribute('aria-hidden') === 'false' || overlay.classList.contains('is-open');
-        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      };
-
-      const observer = new MutationObserver(syncState);
-      observer.observe(overlay, { attributes: true, attributeFilter: ['aria-hidden', 'class'] });
+    if (overlay && overlay.dataset.menuSecondaryObserved !== 'true') {
       overlay.dataset.menuSecondaryObserved = 'true';
-      syncState();
+      syncSecondaryToggleState(overlay.getAttribute('aria-hidden') === 'false');
+    }
+
+    if (!document.documentElement.dataset.menuSecondaryEventsBound) {
+      document.documentElement.dataset.menuSecondaryEventsBound = 'true';
+
+      document.addEventListener('menuOpen', () => {
+        syncSecondaryToggleState(true);
+      });
+
+      document.addEventListener('menuClose', () => {
+        syncSecondaryToggleState(false);
+      });
     }
   }
 
   /* =============================================================================
-     12) RIBBON BINDING
+     11) RIBBON BINDING
   ============================================================================= */
   function bindRibbon() {
     const menu = getMenu();
@@ -326,35 +325,14 @@
     window.addEventListener('orientationchange', requestApply, { passive: true });
     window.addEventListener('load', requestApply, { passive: true, once: true });
 
-    nextFrame(() => {
-      requestApply();
-      if (!isHomePage()) {
-        body.classList.add('menu-ribbon-active');
-      }
-    });
     requestApply();
+    if (!isHomePage()) {
+      body.classList.add('menu-ribbon-active');
+    }
   }
 
   /* =============================================================================
-     13) TRANSLATION APPLICATION
-  ============================================================================= */
-  function applyTranslations() {
-    const translationEngine = window.NEUROARTAN_TRANSLATION;
-    const menu = getMenu();
-    if (!translationEngine || typeof translationEngine.applyLanguage !== 'function' || !menu) return;
-
-    const storedLanguage =
-      localStorage.getItem('neuroartan_language') ||
-      localStorage.getItem('neuroartan-language') ||
-      document.documentElement.lang ||
-      'en';
-
-    const normalizedLanguage = String(storedLanguage).toLowerCase().split('-')[0] || 'en';
-    translationEngine.applyLanguage(normalizedLanguage, menu);
-  }
-
-  /* =============================================================================
-     14) COUNTRY SELECTOR BINDING
+     12) COUNTRY SELECTOR BINDING
   ============================================================================= */
   function bindCountrySelector() {
     const selector = getCountrySelector();
@@ -398,7 +376,7 @@
   }
 
   /* =============================================================================
-     15) PANEL SYSTEM BINDING
+     13) PANEL SYSTEM BINDING
   ============================================================================= */
   function bindPanels() {
     const menu = getMenu();
@@ -410,9 +388,7 @@
     const searchInput = getSearchInput(menu);
     const micButton = getMicButton(menu);
     const accountDrawerTrigger = getAccountDrawerTrigger(menu);
-    /* =============================================================================
-       18) ACCOUNT DRAWER TRIGGER BINDING
-    ============================================================================= */
+
     function openAccountDrawerFromMenu(event) {
       if (event) {
         event.preventDefault();
@@ -455,9 +431,6 @@
       });
     }
 
-    /* =============================================================================
-       19) ACCOUNT DRAWER STATE SYNCHRONIZATION
-    ============================================================================= */
     if (!document.documentElement.dataset.accountDrawerMenuSyncBound) {
       document.documentElement.dataset.accountDrawerMenuSyncBound = 'true';
 
@@ -474,13 +447,6 @@
       });
     }
 
-    /* =============================================================================
-       20) ACCOUNT DRAWER OPEN-REQUEST ROUTING
-    ============================================================================= */
-
-    /* =============================================================================
-       21) COOKIE CONSENT OVERLAY COORDINATION
-    ============================================================================= */
     if (!document.documentElement.dataset.cookieConsentMenuSyncBound) {
       document.documentElement.dataset.cookieConsentMenuSyncBound = 'true';
 
@@ -495,8 +461,8 @@
       });
     }
 
-    if (!body || !menu || !container || !triggers.length || !panels.length || !backdrop) return false;
-    if (menu.dataset.panelsBound === 'true') return true;
+    if (!body || !menu || !container || !triggers.length || !panels.length || !backdrop) return;
+    if (menu.dataset.panelsBound === 'true') return;
     menu.dataset.panelsBound = 'true';
 
     let activePanelKey = null;
@@ -507,9 +473,6 @@
 
     const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition || null;
 
-    /* =============================================================================
-       16) SEARCH INDEX HELPERS
-    ============================================================================= */
     function normalizeSearchValue(value) {
       return String(value || '')
         .toLowerCase()
@@ -652,9 +615,6 @@
       return searchEntriesPromise;
     }
 
-    /* =============================================================================
-       17) SEARCH RESULTS RENDERING
-    ============================================================================= */
     function renderSearchResults(query = '') {
       if (!searchLinksHost) return;
 
@@ -774,7 +734,7 @@
         panel.classList.toggle('is-active', panel.dataset.menuPanelContent === panelKey);
       });
 
-      nextFrame(() => {
+      window.requestAnimationFrame(() => {
         syncPanelHeight();
         if (panelKey === 'search' && searchInput) {
           searchInput.focus();
@@ -838,7 +798,7 @@
         isListening = false;
         syncMicState();
         if (activePanelKey === 'search' && searchInput) {
-          nextFrame(() => searchInput.focus());
+          window.requestAnimationFrame(() => searchInput.focus());
         }
       });
 
@@ -1005,7 +965,8 @@
 
       document.addEventListener('keydown', (event) => {
         const liveMenu = getMenu();
-        if (!liveMenu || liveMenu.dataset.panelsBound !== 'true') return;
+        const liveContainer = getPanelContainer(liveMenu);
+        if (!liveMenu || !liveContainer || liveMenu.dataset.panelsBound !== 'true') return;
         if (event.key !== 'Escape') return;
         clearCloseTimer();
         closePanels();
@@ -1035,43 +996,61 @@
     }
 
     closePanels();
-    return true;
   }
 
   /* =============================================================================
-     22) MAIN INITIALIZATION
+     20) EVENT BINDING
+  ============================================================================= */
+  function bindInstitutionalMenuEvents() {
+    if (document.documentElement.dataset.institutionalMenuEventsBound === 'true') return;
+    document.documentElement.dataset.institutionalMenuEventsBound = 'true';
+
+    document.addEventListener('fragment:mounted', (event) => {
+      const name = event?.detail?.name || '';
+      const detailRoot = event?.detail?.root;
+      const root = detailRoot instanceof Element ? detailRoot : document;
+
+      if (name === 'institutional-menu' || root.id === 'institutional-menu' || root.querySelector?.('#institutional-menu')) {
+        menuBound = false;
+        initInstitutionalMenu();
+      }
+    });
+
+    document.addEventListener('neuroartan:menu-mounted', () => {
+      menuBound = false;
+      initInstitutionalMenu();
+    });
+  }
+
+  /* =============================================================================
+     21) MAIN INITIALIZATION
   ============================================================================= */
   function initInstitutionalMenu() {
+    if (!hasInstitutionalMenuDom()) return;
+    if (menuBound) return;
+
+    menuBound = true;
     bindSecondaryToggle();
     bindRibbon();
-    applyTranslations();
     bindCountrySelector();
-
-    const panelsBound = bindPanels();
-
-    if (panelsBound) {
-      retryCount = 0;
-      return;
-    }
-
-    if (retryCount >= MAX_RETRIES) return;
-    retryCount += 1;
-    window.setTimeout(scheduleInit, 120);
+    bindPanels();
   }
 
   /* =============================================================================
-     23) LIFECYCLE HOOKS
+     22) BOOTSTRAP
   ============================================================================= */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', scheduleInit, { once: true });
-  } else {
-    scheduleInit();
+  function boot() {
+    bindInstitutionalMenuEvents();
+    initInstitutionalMenu();
   }
 
-  window.addEventListener('load', scheduleInit, { once: true });
-  document.addEventListener('fragment:mounted', (event) => {
-    const name = event?.detail?.name;
-    if (name !== 'institutional-menu') return;
-    scheduleInit();
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
 })();
+
+/* =============================================================================
+   23) END OF FILE
+============================================================================= */

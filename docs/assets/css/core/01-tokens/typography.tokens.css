@@ -1,0 +1,145 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) FONT FAMILY TOKENS
+   03) LINE-HEIGHT TOKENS
+   04) FONT-SIZE TOKENS
+   05) SEMANTIC HEADLINE TOKENS
+   06) SEMANTIC BODY TOKENS
+   07) FONT-WEIGHT TOKENS
+   08) TRACKING TOKENS
+   09) RESPONSIVE TYPOGRAPHY TOKENS
+   10) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/01-tokens/typography.tokens.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
+
+/* =============================================================================
+   02) FONT FAMILY TOKENS
+============================================================================= */
+:root{
+  --font-base:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+
+/* =============================================================================
+   03) LINE-HEIGHT TOKENS
+============================================================================= */
+:root{
+  --line-height-base:1.55;
+  --line-height-body:1.6;
+  --line-height-heading-tight:1.12;
+  --line-height-heading:1.2;
+  --line-height-heading-relaxed:1.35;
+}
+
+/* =============================================================================
+   04) FONT-SIZE TOKENS
+============================================================================= */
+:root{
+  --font-size-body-1:1rem;
+  --font-size-body-2:0.95rem;
+  --font-size-body-3:0.9rem;
+
+  --font-size-h1:2.6rem;
+  --font-size-h2:1.9rem;
+  --font-size-h3:1.4rem;
+  --font-size-h4:1.15rem;
+  --font-size-h5:1rem;
+  --font-size-h6:0.9rem;
+}
+
+/* =============================================================================
+   05) SEMANTIC HEADLINE TOKENS
+============================================================================= */
+:root{
+  --headline-1-size:var(--font-size-h1);
+  --headline-2-size:var(--font-size-h2);
+  --headline-3-size:var(--font-size-h3);
+  --headline-4-size:var(--font-size-h4);
+  --headline-5-size:var(--font-size-h5);
+  --headline-6-size:var(--font-size-h6);
+
+  --headline-1-line-height:var(--line-height-heading-tight);
+  --headline-2-line-height:var(--line-height-heading);
+  --headline-3-line-height:var(--line-height-heading);
+  --headline-4-line-height:var(--line-height-heading-relaxed);
+  --headline-5-line-height:var(--line-height-heading-relaxed);
+  --headline-6-line-height:var(--line-height-heading-relaxed);
+}
+
+/* =============================================================================
+   06) SEMANTIC BODY TOKENS
+============================================================================= */
+:root{
+  --body-1-size:var(--font-size-body-1);
+  --body-2-size:var(--font-size-body-2);
+  --body-3-size:var(--font-size-body-3);
+
+  --body-1-line-height:var(--line-height-body);
+  --body-2-line-height:var(--line-height-body);
+  --body-3-line-height:var(--line-height-body);
+}
+
+/* =============================================================================
+   07) FONT-WEIGHT TOKENS
+============================================================================= */
+:root{
+  --font-weight-body:400;
+  --font-weight-heading-strong:700;
+  --font-weight-heading:600;
+  --font-weight-heading-soft:500;
+
+  --headline-1-weight:var(--font-weight-heading-strong);
+  --headline-2-weight:var(--font-weight-heading);
+  --headline-3-weight:var(--font-weight-heading-soft);
+  --headline-4-weight:var(--font-weight-heading-soft);
+  --headline-5-weight:var(--font-weight-heading-soft);
+  --headline-6-weight:var(--font-weight-heading-soft);
+
+  --body-1-weight:var(--font-weight-body);
+  --body-2-weight:var(--font-weight-body);
+  --body-3-weight:var(--font-weight-body);
+}
+
+/* =============================================================================
+   08) TRACKING TOKENS
+============================================================================= */
+:root{
+  --tracking-display:0.1em;
+  --tracking-ui:0.08em;
+  --tracking-copy:0.01em;
+
+  --headline-1-tracking:var(--tracking-display);
+  --headline-2-tracking:var(--tracking-copy);
+  --headline-3-tracking:var(--tracking-copy);
+  --headline-4-tracking:var(--tracking-copy);
+  --headline-5-tracking:var(--tracking-copy);
+  --headline-6-tracking:var(--tracking-copy);
+
+  --body-1-tracking:var(--tracking-copy);
+  --body-2-tracking:var(--tracking-copy);
+  --body-3-tracking:var(--tracking-copy);
+}
+
+/* =============================================================================
+   09) RESPONSIVE TYPOGRAPHY TOKENS
+============================================================================= */
+@media (max-width:820px){
+  :root{
+    --font-size-h1:2.15rem;
+    --font-size-h2:1.62rem;
+    --font-size-h3:1.26rem;
+    --font-size-h4:1.08rem;
+    --font-size-body-1:0.98rem;
+    --font-size-body-2:0.94rem;
+  }
+}
+
+/* =============================================================================
+   10) END OF FILE
+============================================================================= */

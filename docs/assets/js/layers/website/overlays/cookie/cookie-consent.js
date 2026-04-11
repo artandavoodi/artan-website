@@ -5,28 +5,44 @@
    03) STATE
    04) QUERY HELPERS
    05) MOUNT HELPERS
-   06) INIT RETRY HELPERS
-   07) SURFACE HELPERS
-   08) ROW / TOGGLE HELPERS
-   09) GRANULAR SUBTOGGLE HELPERS
-   10) LANGUAGE / REGION HELPERS
-   11) COOKIE LANGUAGE OVERLAY TRIGGER HELPERS
-   12) COOKIE LANGUAGE RETURN HELPERS
-   13) LEARNING PANEL HELPERS
-   14) STORAGE HELPERS
-   15) DISPLAY DECISION HELPERS
-   16) OPEN / CLOSE STATE
-   17) CONSENT ACTIONS
-   18) EVENT BINDING
-   19) OVERLAY COORDINATION
-   20) INITIALIZATION
+   06) SURFACE HELPERS
+   07) ROW / TOGGLE HELPERS
+   08) GRANULAR SUBTOGGLE HELPERS
+   09) LANGUAGE / REGION HELPERS
+   10) LANGUAGE ACTION HELPERS
+   11) INNER SURFACE ROUTING HELPERS
+   12) STORAGE HELPERS
+   13) DISPLAY DECISION HELPERS
+   14) OPEN / CLOSE STATE
+   15) CONSENT ACTIONS
+   16) EVENT BINDING
+   17) SINGLE-OWNER COORDINATION
+   18) EVENT REBINDING
+   19) INITIALIZATION
+   20) BOOTSTRAP
+   21) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
    01) MODULE IDENTITY
 ============================================================================= */
 (() => {
+  'use strict';
   const MODULE_ID = 'cookie-consent';
+
+  window.__artanRunWhenReady = window.__artanRunWhenReady || ((bootFn) => {
+    if (typeof bootFn !== 'function') return;
+
+    const run = () => {
+      try { bootFn(); } catch (_) {}
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run, { once: true });
+    } else {
+      run();
+    }
+  });
 
   /* =============================================================================
      02) ROOT CONSTANTS
@@ -43,11 +59,49 @@
   let escapeBound = false;
   let requestBound = false;
   let coordinationBound = false;
-  let initScheduled = false;
   let initCompleted = false;
-  let initAttempts = 0;
+  let mountEventsBound = false;
   let lastBodyScrollTop = 0;
-  const MAX_INIT_ATTEMPTS = 24;
+
+  const INNER_SURFACE_CACHE = new Map();
+
+  const INNER_SURFACE_PATHS = {
+    language: [
+      'assets/fragments/layers/website/cookie/cookie-language-overlay.html',
+      './assets/fragments/layers/website/cookie/cookie-language-overlay.html',
+      '/assets/fragments/layers/website/cookie/cookie-language-overlay.html',
+      '/website/docs/assets/fragments/layers/website/cookie/cookie-language-overlay.html',
+      '/docs/assets/fragments/layers/website/cookie/cookie-language-overlay.html'
+    ],
+    learning: [
+      'assets/fragments/layers/website/cookie/cookie-learning-overlay.html',
+      './assets/fragments/layers/website/cookie/cookie-learning-overlay.html',
+      '/assets/fragments/layers/website/cookie/cookie-learning-overlay.html',
+      '/website/docs/assets/fragments/layers/website/cookie/cookie-learning-overlay.html',
+      '/docs/assets/fragments/layers/website/cookie/cookie-learning-overlay.html'
+    ]
+  };
+
+  /* =============================================================================
+     18) EVENT REBINDING
+  ============================================================================= */
+  function bindMountEvents() {
+    if (mountEventsBound) return;
+    mountEventsBound = true;
+
+    document.addEventListener('cookie-consent:mounted', () => {
+      initCompleted = false;
+      initCookieConsent();
+    });
+
+    document.addEventListener('fragment:mounted', (event) => {
+      const name = event?.detail?.name || '';
+      if (name !== 'cookie-consent') return;
+
+      initCompleted = false;
+      initCookieConsent();
+    });
+  }
 
   /* =============================================================================
      04) QUERY HELPERS
@@ -143,6 +197,108 @@
     return overlay ? q('[data-cookie-consent-language-value="true"]', overlay) : null;
   }
 
+  function getTitleNode() {
+    const overlay = getOverlay();
+    return overlay ? q('[data-cookie-consent-title="true"]', overlay) : null;
+  }
+
+  function getTitleIconAsset(asset = '') {
+    const overlay = getOverlay();
+    const normalized = String(asset || '').trim();
+    if (!overlay || !normalized) return null;
+    return q(`[data-cookie-consent-title-icon-asset="${normalized}"]`, overlay);
+  }
+
+  function syncTitleIconState(surface = '') {
+    const normalized = String(surface || '').trim();
+    const defaultIcon = getTitleIconAsset('default');
+    const languageIcon = getTitleIconAsset('language');
+    const showLanguage = normalized === 'language';
+
+    if (defaultIcon instanceof HTMLElement) {
+      defaultIcon.hidden = showLanguage;
+      defaultIcon.setAttribute('aria-hidden', showLanguage ? 'true' : 'false');
+    }
+
+    if (languageIcon instanceof HTMLElement) {
+      languageIcon.hidden = !showLanguage;
+      languageIcon.setAttribute('aria-hidden', showLanguage ? 'false' : 'true');
+    }
+  }
+
+  function getDefaultTitle() {
+    const node = getTitleNode();
+    return String(node?.dataset?.cookieConsentTitleDefault || 'Privacy & Cookie Preferences').trim() || 'Privacy & Cookie Preferences';
+  }
+
+  function getSurfaceTitle(surface = '') {
+    const node = getTitleNode();
+    const normalized = String(surface || '').trim();
+    if (!node || !normalized) return '';
+
+    const datasetKey = `cookieConsentTitle${normalized
+      .split('-')
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join('')}`;
+
+    return String(node.dataset?.[datasetKey] || '').trim();
+  }
+
+  function getPrimaryShellNode() {
+    const overlay = getOverlay();
+    return overlay ? q('[data-cookie-consent-primary-shell="true"]', overlay) : null;
+  }
+
+  function getHideWhenSubviewNodes() {
+    const overlay = getOverlay();
+    return overlay ? qa('[data-cookie-consent-hide-when-subview="true"]', overlay) : [];
+  }
+
+  function getPrimaryActionsNode() {
+    const overlay = getOverlay();
+    return overlay ? q('[data-cookie-consent-primary-actions="true"]', overlay) : null;
+  }
+
+  function getBackCloseControl() {
+    const overlay = getOverlay();
+    return overlay ? q('.cookie-consent-close--back', overlay) : null;
+  }
+
+  function getLanguageSurface() {
+    const overlay = getOverlay();
+    return overlay ? q('[data-cookie-consent-surface="language"]', overlay) : null;
+  }
+
+  function getLearningSurface() {
+    const overlay = getOverlay();
+    return overlay ? q('[data-cookie-consent-surface="learning"]', overlay) : null;
+  }
+
+  function getInnerSurfaceMount(surfaceName = '') {
+    const normalized = String(surfaceName || '').trim();
+    if (!normalized) return null;
+    return document.getElementById(`cookie-consent-${normalized}-mount`);
+  }
+
+  function getLearningArticles() {
+    const surface = getLearningSurface();
+    return surface ? qa('[data-cookie-learning-overlay-article]', surface) : [];
+  }
+
+  function getLanguageReturnControls() {
+    const surface = getLanguageSurface();
+    return surface
+      ? qa('[data-cookie-consent-return="settings"], [data-cookie-language-overlay-return="true"]', surface)
+      : [];
+  }
+
+  function getLearningReturnControls() {
+    const surface = getLearningSurface();
+    return surface
+      ? qa('[data-cookie-consent-return="settings"], [data-cookie-learning-overlay-return="true"]', surface)
+      : [];
+  }
+
   function getCheckboxByKey(key) {
     const overlay = getOverlay();
     return overlay ? q(`[data-cookie-consent-category="${key}"]`, overlay) : null;
@@ -215,27 +371,19 @@
     return true;
   }
 
-  /* =============================================================================
-     06) INIT RETRY HELPERS
-  ============================================================================= */
-  function resetInitScheduling() {
-    initScheduled = false;
-  }
+  function resetInnerSurfaceMount(surfaceName = '') {
+    const normalized = String(surfaceName || '').trim();
+    if (!normalized) return;
 
-  function scheduleInitRetry() {
-    if (initCompleted || initScheduled || initAttempts >= MAX_INIT_ATTEMPTS) return;
+    const mount = getInnerSurfaceMount(normalized);
+    if (!(mount instanceof HTMLElement)) return;
 
-    initScheduled = true;
-    initAttempts += 1;
-
-    window.requestAnimationFrame(() => {
-      resetInitScheduling();
-      initCookieConsent();
-    });
+    mount.innerHTML = '';
+    delete mount.dataset.cookieConsentInnerMounted;
   }
 
   /* =============================================================================
-     07) SURFACE HELPERS
+     06) SURFACE HELPERS
   ============================================================================= */
   function applyState(state = 'pending') {
     const mount = getMount();
@@ -248,12 +396,16 @@
     const overlay = getOverlay();
     if (!mount || !overlay) return;
 
-    const normalized = surface === 'settings' ? 'settings' : 'banner';
+    const allowed = new Set(['banner', 'settings', 'language', 'learning']);
+    const normalized = allowed.has(surface) ? surface : 'banner';
     mount.dataset.consentSurface = normalized;
+
+    deactivateInnerSurfaces(normalized);
 
     getSurfaceNodes().forEach((node) => {
       node.hidden = node.dataset.cookieConsentSurface !== normalized;
     });
+    syncShellViewState();
   }
 
   function rememberBodyScrollPosition() {
@@ -271,8 +423,89 @@
     });
   }
 
+  function getCurrentSurface() {
+    const mount = getMount();
+    return String(mount?.dataset?.consentSurface || 'banner').trim() || 'banner';
+  }
+
+  function isConsentOpen() {
+    return document.body.classList.contains(OPEN_CLASS);
+  }
+
+  function isLanguageSurfaceOpen() {
+    return getCurrentSurface() === 'language';
+  }
+
+  function isLearningSurfaceOpen() {
+    return getCurrentSurface() === 'learning';
+  }
+
+  function isInnerSurfaceOpen() {
+    return isLanguageSurfaceOpen() || isLearningSurfaceOpen();
+  }
+
+  function resolveLearningTitle(articleKey = '') {
+    const normalized = String(articleKey || '').trim();
+    const trigger = q(`[data-cookie-consent-learning-expand="${normalized}"]`, getOverlay() || document);
+    const explicitTitle = String(trigger?.dataset?.cookieConsentLearningTitle || '').trim();
+    if (explicitTitle) return explicitTitle;
+    if (normalized === 'why-we-use-them') return 'Why we use them';
+    return 'What are cookies?';
+  }
+
+  function syncShellViewState() {
+    const currentSurface = getCurrentSurface();
+    const titleNode = getTitleNode();
+    const backControl = getBackCloseControl();
+    const closeControls = getCloseControls().filter((control) => !control.classList.contains('cookie-consent-close--back'));
+    const primaryShell = getPrimaryShellNode();
+    const hideWhenSubviewNodes = getHideWhenSubviewNodes();
+    const learningSurface = getLearningSurface();
+
+    let titleText = getDefaultTitle();
+
+    if (currentSurface === 'language') {
+      titleText = getSurfaceTitle('language') || 'Language & Region';
+    }
+
+    if (currentSurface === 'learning' && learningSurface) {
+      const activeArticle = getLearningArticles().find((article) => !article.hidden);
+      const articleKey = String(activeArticle?.dataset?.cookieLearningOverlayArticle || '').trim();
+      titleText = resolveLearningTitle(articleKey);
+    }
+
+    if (titleNode) {
+      titleNode.textContent = titleText;
+    }
+    syncTitleIconState(currentSurface);
+
+    const showInnerState = currentSurface === 'language' || currentSurface === 'learning';
+
+    closeControls.forEach((control) => {
+      if (!(control instanceof HTMLElement)) return;
+      control.hidden = showInnerState;
+      control.setAttribute('aria-hidden', showInnerState ? 'true' : 'false');
+    });
+
+    if (backControl instanceof HTMLElement) {
+      backControl.hidden = !showInnerState;
+      backControl.setAttribute('aria-hidden', showInnerState ? 'false' : 'true');
+    }
+
+    if (primaryShell instanceof HTMLElement) {
+      primaryShell.hidden = showInnerState;
+      primaryShell.setAttribute('aria-hidden', showInnerState ? 'true' : 'false');
+    }
+
+    hideWhenSubviewNodes.forEach((node) => {
+      if (!(node instanceof HTMLElement)) return;
+      node.hidden = showInnerState;
+      node.setAttribute('aria-hidden', showInnerState ? 'true' : 'false');
+    });
+  }
+
   /* =============================================================================
-     08) ROW / TOGGLE HELPERS
+     07) ROW / TOGGLE HELPERS
   ============================================================================= */
   function setToggleVisualState(key, enabled) {
     const toggle = getToggleByKey(key);
@@ -293,7 +526,7 @@
   }
 
   /* =============================================================================
-     09) GRANULAR SUBTOGGLE HELPERS
+     08) GRANULAR SUBTOGGLE HELPERS
   ============================================================================= */
   function setSubtoggleVisualState(key, enabled) {
     const toggle = getSubtoggleByKey(key);
@@ -338,7 +571,7 @@
   }
 
   /* =============================================================================
-     10) LANGUAGE / REGION HELPERS
+     09) LANGUAGE / REGION HELPERS
   ============================================================================= */
   function getPreferredLanguageLabel(preferredLanguageCode = '') {
     const explicitCode = String(preferredLanguageCode || '').trim().toLowerCase();
@@ -401,56 +634,158 @@
   }
 
   /* =============================================================================
-     11) COOKIE LANGUAGE OVERLAY TRIGGER HELPERS
+     10) LANGUAGE ACTION HELPERS
   ============================================================================= */
-  function requestCookieLanguageOverlay() {
-    document.dispatchEvent(new CustomEvent('cookie-language-overlay:open-request', {
-      detail: {
-        source: MODULE_ID,
-        reason: 'cookie-consent-language'
-      }
-    }));
+  async function requestLanguageOverlay() {
+    openConsent('settings');
+    rememberBodyScrollPosition();
+    deactivateInnerSurfaces('language');
+
+    const mounted = await mountInnerSurface('language');
+    if (!mounted) return;
+
+    applySurface('language');
   }
 
-  /* =============================================================================
-     12) COOKIE LANGUAGE RETURN HELPERS
-  ============================================================================= */
-  function requestReturnFromCookieLanguageOverlay() {
-    openConsent('settings');
-    syncLanguageValue();
+  function deactivateInnerSurfaces(nextSurface = '') {
+    const normalizedNextSurface = String(nextSurface || '').trim();
+    const languageSurface = getLanguageSurface();
+    const learningSurface = getLearningSurface();
 
+    if (languageSurface instanceof HTMLElement) {
+      const isLanguageTarget = normalizedNextSurface === 'language';
+      languageSurface.hidden = !isLanguageTarget;
+      languageSurface.setAttribute('aria-hidden', isLanguageTarget ? 'false' : 'true');
+
+      if (!isLanguageTarget) {
+        resetInnerSurfaceMount('language');
+      }
+    }
+
+    if (learningSurface instanceof HTMLElement) {
+      const isLearningTarget = normalizedNextSurface === 'learning';
+      learningSurface.hidden = !isLearningTarget;
+      learningSurface.setAttribute('aria-hidden', isLearningTarget ? 'false' : 'true');
+
+      if (!isLearningTarget) {
+        delete learningSurface.dataset.cookieConsentActiveArticle;
+      }
+    }
+
+    if (normalizedNextSurface !== 'learning') {
+      getLearningArticles().forEach((article) => {
+        if (!(article instanceof HTMLElement)) return;
+        article.hidden = true;
+      });
+    }
+  }
+
+  function closeLanguageSettingsInline() {
     getLanguageControls().forEach((control) => {
       control.setAttribute('aria-expanded', 'false');
     });
   }
 
   /* =============================================================================
-     13) LEARNING PANEL HELPERS
+     11) INNER SURFACE ROUTING HELPERS
   ============================================================================= */
-  function requestCookieLearningOverlay(key) {
-    if (!key) return;
+  async function fetchInnerSurfaceMarkup(surfaceName = '') {
+    const normalized = String(surfaceName || '').trim();
+    if (!normalized) return '';
 
-    rememberBodyScrollPosition();
-    document.dispatchEvent(new CustomEvent('cookie-learning-overlay:open-request', {
-      detail: {
-        source: MODULE_ID,
-        key
-      }
-    }));
+    if (INNER_SURFACE_CACHE.has(normalized)) {
+      return INNER_SURFACE_CACHE.get(normalized) || '';
+    }
+
+    const candidates = INNER_SURFACE_PATHS[normalized] || [];
+
+    for (const candidate of candidates) {
+      try {
+        const response = await fetch(candidate, { cache: 'no-store' });
+        if (!response.ok) continue;
+        const html = await response.text();
+        if (!html) continue;
+        INNER_SURFACE_CACHE.set(normalized, html);
+        return html;
+      } catch {}
+    }
+
+    return '';
   }
 
-  function requestReturnFromCookieLearningOverlay() {
-    openConsent('settings');
-    restoreBodyScrollPosition();
+  async function mountInnerSurface(surfaceName = '') {
+    const normalized = String(surfaceName || '').trim();
+    if (!normalized) return false;
 
-    qa('[data-cookie-consent-learning-expand]', getOverlay() || document).forEach((control) => {
-      if (!(control instanceof HTMLElement)) return;
-      control.setAttribute('aria-expanded', 'false');
+    const mount = getInnerSurfaceMount(normalized);
+    if (!(mount instanceof HTMLElement)) return false;
+
+    if (mount.dataset.cookieConsentInnerMounted === 'true') return true;
+
+    const markup = await fetchInnerSurfaceMarkup(normalized);
+    if (!markup) return false;
+
+    const parser = new DOMParser();
+    const parsed = parser.parseFromString(markup, 'text/html');
+    const root = parsed.body.firstElementChild;
+    if (!(root instanceof HTMLElement)) return false;
+
+    root.removeAttribute('hidden');
+    root.setAttribute('aria-hidden', 'false');
+
+    mount.innerHTML = '';
+    mount.appendChild(root);
+    mount.dataset.cookieConsentInnerMounted = 'true';
+
+    if (normalized === 'language' && window.NeuroMotion && typeof window.NeuroMotion.scan === 'function') {
+      window.NeuroMotion.scan(mount);
+    }
+
+    document.dispatchEvent(new CustomEvent('fragment:mounted', {
+      detail: { name: normalized === 'language' ? 'cookie-language-overlay' : 'cookie-learning-overlay', root: mount, mount }
+    }));
+
+    bindInnerReturnControls();
+    syncShellViewState();
+    return true;
+  }
+
+  function activateLearningArticle(articleKey = '') {
+    const normalized = String(articleKey || '').trim() || 'cookies';
+    const learningSurface = getLearningSurface();
+
+    getLearningArticles().forEach((article) => {
+      if (!(article instanceof HTMLElement)) return;
+      const isMatch = String(article.dataset.cookieLearningOverlayArticle || '').trim() === normalized;
+      article.hidden = !isMatch;
     });
+
+    if (learningSurface instanceof HTMLElement) {
+      learningSurface.dataset.cookieConsentActiveArticle = normalized;
+    }
+
+    syncShellViewState();
+  }
+
+  async function requestLearningOverlay(articleKey = '') {
+    openConsent('settings');
+    rememberBodyScrollPosition();
+    deactivateInnerSurfaces('learning');
+
+    const mounted = await mountInnerSurface('learning');
+    if (!mounted) return;
+
+    activateLearningArticle(articleKey || 'cookies');
+    applySurface('learning');
+  }
+
+  function closeLearningPanelsInline() {
+    restoreBodyScrollPosition();
+    resetExpandedRows();
   }
 
   function hasOpenLearningPanel() {
-    return document.body.classList.contains('cookie-learning-overlay-open');
+    return false;
   }
 
   function setExpandedState(key, expanded) {
@@ -487,7 +822,7 @@
   }
 
   /* =============================================================================
-     14) STORAGE HELPERS
+     12) STORAGE HELPERS
   ============================================================================= */
   function readStoredConsent() {
     try {
@@ -565,7 +900,7 @@
   }
 
   /* =============================================================================
-     15) DISPLAY DECISION HELPERS
+     13) DISPLAY DECISION HELPERS
   ============================================================================= */
   function shouldAutoOpenBanner(stored) {
     if (!stored) return true;
@@ -578,7 +913,7 @@
   }
 
   /* =============================================================================
-     16) OPEN / CLOSE STATE
+     14) OPEN / CLOSE STATE
   ============================================================================= */
   function clearCloseTimer() {
     if (!closeTimer) return;
@@ -590,10 +925,15 @@
     const overlay = getOverlay();
     if (!overlay) return;
 
+    const wasOpen = isConsentOpen();
+
     clearCloseTimer();
     applySurface(surface);
+    syncShellViewState();
 
-    applyStoredConsentToInputs();
+    if (!wasOpen) {
+      applyStoredConsentToInputs();
+    }
 
     resetExpandedRows();
 
@@ -604,6 +944,12 @@
     const body = getBody();
     if (body) {
       body.scrollTop = surface === 'settings' ? lastBodyScrollTop : 0;
+    }
+
+    if (surface === 'language' || surface === 'learning') {
+      window.requestAnimationFrame(() => {
+        body?.scrollTo?.({ top: 0, behavior: 'auto' });
+      });
     }
 
     document.dispatchEvent(new CustomEvent('cookie-consent:opened', {
@@ -622,6 +968,10 @@
     getLanguageControls().forEach((control) => {
       control.setAttribute('aria-expanded', 'false');
     });
+    deactivateInnerSurfaces('banner');
+    closeLearningPanelsInline();
+    applySurface('banner');
+    syncShellViewState();
 
     closeTimer = window.setTimeout(() => {
       document.body.classList.remove(CLOSING_CLASS);
@@ -632,7 +982,7 @@
   }
 
   /* =============================================================================
-     17) CONSENT ACTIONS
+     15) CONSENT ACTIONS
   ============================================================================= */
   function acceptAll() {
     writeStoredConsent({
@@ -687,7 +1037,7 @@
   }
 
   /* =============================================================================
-     18) EVENT BINDING
+     16) EVENT BINDING
   ============================================================================= */
   function bindCloseControls() {
     const backdrop = getBackdrop();
@@ -745,22 +1095,42 @@
       if (control.dataset.cookieConsentLanguageBound === 'true') return;
       control.dataset.cookieConsentLanguageBound = 'true';
 
+      control.addEventListener('click', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        await requestLanguageOverlay();
+      });
+
+      control.addEventListener('keydown', async (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        event.stopPropagation();
+        await requestLanguageOverlay();
+      });
+    });
+  }
+
+  function bindInnerReturnControls() {
+    const bindReturn = (control) => {
+      if (!(control instanceof HTMLElement)) return;
+      if (control.dataset.cookieConsentReturnBound === 'true') return;
+      control.dataset.cookieConsentReturnBound = 'true';
+
       control.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-
-        control.setAttribute('aria-expanded', 'true');
-        requestCookieLanguageOverlay();
+        deactivateInnerSurfaces('settings');
+        applySurface('settings');
+        restoreBodyScrollPosition();
+        syncShellViewState();
       });
+    };
 
-      control.addEventListener('keydown', (event) => {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
+    getLanguageReturnControls().forEach(bindReturn);
+    getLearningReturnControls().forEach(bindReturn);
 
-        event.preventDefault();
-        event.stopPropagation();
-        control.click();
-      });
-    });
+    const backControl = getBackCloseControl();
+    bindReturn(backControl);
   }
 
   function bindLearningControls() {
@@ -772,27 +1142,19 @@
       if (control.dataset.cookieConsentLearningBound === 'true') return;
       control.dataset.cookieConsentLearningBound = 'true';
 
-      control.addEventListener('click', (event) => {
+      control.addEventListener('click', async (event) => {
         event.preventDefault();
         event.stopPropagation();
-
-        const key = control.dataset.cookieConsentLearningExpand || '';
-        if (!key) return;
-
-        qa('[data-cookie-consent-learning-expand]', overlay).forEach((node) => {
-          if (!(node instanceof HTMLElement)) return;
-          node.setAttribute('aria-expanded', node === control ? 'true' : 'false');
-        });
-
-        requestCookieLearningOverlay(key);
+        const articleKey = String(control.dataset.cookieConsentLearningExpand || '').trim() || 'cookies';
+        await requestLearningOverlay(articleKey);
       });
 
-      control.addEventListener('keydown', (event) => {
+      control.addEventListener('keydown', async (event) => {
         if (event.key !== 'Enter' && event.key !== ' ') return;
-
         event.preventDefault();
         event.stopPropagation();
-        control.click();
+        const articleKey = String(control.dataset.cookieConsentLearningExpand || '').trim() || 'cookies';
+        await requestLearningOverlay(articleKey);
       });
     });
   }
@@ -890,12 +1252,35 @@
 
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
-      if (!document.body.classList.contains(OPEN_CLASS)) return;
+      if (!isConsentOpen()) return;
 
-      if (hasOpenLearningPanel()) {
+      if (isLearningSurfaceOpen()) {
+        event.preventDefault();
+        event.stopPropagation();
+        deactivateInnerSurfaces('settings');
+        applySurface('settings');
+        restoreBodyScrollPosition();
         return;
       }
 
+      if (isLanguageSurfaceOpen()) {
+        event.preventDefault();
+        event.stopPropagation();
+        deactivateInnerSurfaces('settings');
+        applySurface('settings');
+        restoreBodyScrollPosition();
+        return;
+      }
+
+      if (hasOpenLearningPanel()) {
+        event.preventDefault();
+        event.stopPropagation();
+        closeLearningPanelsInline();
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
       closeConsent();
     });
   }
@@ -930,6 +1315,7 @@
     bindSettingsControls();
     bindSaveControls();
     bindLanguageControls();
+    bindInnerReturnControls();
     bindLearningControls();
     bindExpandControls();
     bindToggleControls();
@@ -939,7 +1325,7 @@
   }
 
   /* =============================================================================
-     19) OVERLAY COORDINATION
+     17) SINGLE-OWNER COORDINATION
   ============================================================================= */
   function bindOpenRequests() {
     if (requestBound) return;
@@ -947,7 +1333,14 @@
 
     document.addEventListener('cookie-consent:open-request', (event) => {
       const detail = getEventDetail(event);
-      openConsent(detail.surface === 'settings' ? 'settings' : 'banner');
+      const requestedSurface = String(detail.surface || '').trim();
+
+      if (requestedSurface === 'settings' || requestedSurface === 'language' || requestedSurface === 'learning') {
+        openConsent(requestedSurface);
+        return;
+      }
+
+      openConsent('banner');
     });
   }
 
@@ -967,65 +1360,34 @@
       }));
     });
 
-    document.addEventListener('cookie-language-overlay:opened', () => {
-      closeConsent();
-    });
-
-    document.addEventListener('cookie-learning-overlay:opened', () => {
-      closeConsent();
-    });
-
-    document.addEventListener('cookie-language-overlay:return-to-cookie-consent', () => {
-      requestReturnFromCookieLanguageOverlay();
-    });
-    document.addEventListener('cookie-learning-overlay:return', () => {
-      requestReturnFromCookieLearningOverlay();
-    });
     document.addEventListener('country-selected', (event) => {
       const detail = getEventDetail(event);
       syncLanguageValue(detail.language || '');
+      closeLanguageSettingsInline();
     });
+
     document.addEventListener('translation:complete', (event) => {
       const detail = getEventDetail(event);
       const completedLanguage = detail.language || detail.lang || '';
 
       window.requestAnimationFrame(() => {
         syncLanguageValue(completedLanguage);
+        closeLanguageSettingsInline();
       });
     });
   }
 
-  function bindMountLifecycle() {
-    if (document.documentElement.dataset.cookieConsentLifecycleBound === 'true') return;
-    document.documentElement.dataset.cookieConsentLifecycleBound = 'true';
-
-    document.addEventListener('cookie-consent:mounted', () => {
-      scheduleInitRetry();
-    });
-
-    document.addEventListener('fragment:mounted', (event) => {
-      const detail = getEventDetail(event);
-      if (detail.name !== 'cookie-consent') return;
-      scheduleInitRetry();
-    });
-  }
-
   /* =============================================================================
-     20) INITIALIZATION
+     19) INITIALIZATION
   ============================================================================= */
   async function initCookieConsent() {
     const mount = getMount();
-    if (!mount) {
-      scheduleInitRetry();
-      return;
-    }
+    if (!mount) return;
+    if (initCompleted && ensureOverlayReady()) return;
 
     ensureMountMetadata();
 
-    if (!ensureOverlayReady()) {
-      scheduleInitRetry();
-      return;
-    }
+    if (!ensureOverlayReady()) return;
 
     applyStoredConsentToInputs();
     syncLanguageValue();
@@ -1033,8 +1395,8 @@
     bindControls();
     bindOpenRequests();
     bindOverlayCoordination();
-    bindMountLifecycle();
 
+    syncShellViewState();
     const stored = readStoredConsent();
     if (shouldAutoOpenBanner(stored)) {
       window.requestAnimationFrame(() => {
@@ -1048,13 +1410,18 @@
     initCompleted = true;
   }
 
-  bindMountLifecycle();
+  /* =============================================================================
+     20) BOOTSTRAP
+  ============================================================================= */
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      initCookieConsent();
-    }, { once: true });
-  } else {
+  function boot() {
+    bindMountEvents();
     initCookieConsent();
   }
+
+  window.__artanRunWhenReady(boot);
+
+ /* =============================================================================
+   21) END OF FILE
+============================================================================= */
 })();

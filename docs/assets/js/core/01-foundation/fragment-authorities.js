@@ -1,0 +1,91 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) MODULE REGISTRATION
+   03) BASE PATH AUTHORITY
+   04) FRAGMENT AUTHORITIES
+   05) PATH HELPERS
+   06) PUBLIC API EXPORTS
+   07) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/js/core/01-foundation/fragment-authorities.js */
+
+/* =============================================================================
+   02) MODULE REGISTRATION
+============================================================================= */
+const MODULE_ID = 'core-fragment-authorities';
+const MODULE_PATH = '/website/docs/assets/js/core/01-foundation/fragment-authorities.js';
+
+/* =============================================================================
+   03) BASE PATH AUTHORITY
+============================================================================= */
+function getWebsiteBasePath() {
+  const pathname = window.location.pathname || '';
+
+  if (pathname.includes('/website/docs/')) return '/website/docs';
+  if (pathname.endsWith('/website/docs')) return '/website/docs';
+  if (pathname.includes('/docs/')) return '/docs';
+  if (pathname.endsWith('/docs')) return '/docs';
+
+  return '';
+}
+
+function assetPath(path) {
+  const normalized = String(path || '').trim();
+  if (!normalized) return '';
+
+  const base = getWebsiteBasePath();
+  return `${base}${normalized.startsWith('/') ? normalized : `/${normalized}`}`;
+}
+
+/* =============================================================================
+   04) FRAGMENT AUTHORITIES
+============================================================================= */
+function getFragmentPaths() {
+  return {
+    'account-drawer': assetPath('/assets/fragments/layers/website/account/account-drawer.html'),
+    'account-sign-in-drawer': assetPath('/assets/fragments/layers/website/account/account-sign-in-drawer.html'),
+    'account-sign-up-drawer': assetPath('/assets/fragments/layers/website/account/account-sign-up-drawer.html'),
+    'account-provider-apple-sheet': assetPath('/assets/fragments/layers/website/account/account-provider-apple-sheet.html'),
+    'account-provider-google-sheet': assetPath('/assets/fragments/layers/website/account/account-provider-google-sheet.html'),
+    'account-email-auth-drawer': assetPath('/assets/fragments/layers/website/account/account-email-auth-drawer.html'),
+    'account-forgot-password-drawer': assetPath('/assets/fragments/layers/website/account/account-forgot-password-drawer.html'),
+    'account-phone-auth-drawer': assetPath('/assets/fragments/layers/website/account/account-phone-auth-drawer.html'),
+    'cookie-consent': assetPath('/assets/fragments/layers/website/cookie/cookie-consent.html'),
+    'country-overlay': assetPath('/assets/fragments/layers/website/country/country-overlay.html'),
+    'institutional-links': assetPath('/assets/fragments/layers/website/navigation/institutional-links.html'),
+    'institutional-menu': assetPath('/assets/fragments/layers/website/navigation/institutional-menu.html'),
+    'menu': assetPath('/assets/fragments/layers/website/navigation/menu.html'),
+    'footer': assetPath('/assets/fragments/layers/website/footer/footer.html'),
+    'brain-activity': assetPath('/assets/fragments/layers/website/system/brain-activity.html'),
+    'system-node': assetPath('/assets/fragments/layers/website/system/system-node.html')
+  };
+}
+
+/* =============================================================================
+   05) PATH HELPERS
+============================================================================= */
+function resolveFragmentPath(name) {
+  const registry = getFragmentPaths();
+  return registry[name] || assetPath(`/assets/fragments/layers/website/${name}.html`);
+}
+
+/* =============================================================================
+   06) PUBLIC API EXPORTS
+============================================================================= */
+window.NeuroartanFragmentAuthorities = Object.freeze({
+  MODULE_ID,
+  MODULE_PATH,
+  getWebsiteBasePath,
+  assetPath,
+  getFragmentPaths,
+  resolveFragmentPath
+});
+
+/* =============================================================================
+   07) END OF FILE
+============================================================================= */

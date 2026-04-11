@@ -1,0 +1,124 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) LANGUAGE TOGGLE SYSTEM
+   03) LANGUAGE DROPDOWN SHELL
+   04) LANGUAGE OPTION SYSTEM
+   05) LIGHT MODE ADJUSTMENTS
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/04-systems/locale.css */
+
+/* =============================================================================
+   02) LANGUAGE TOGGLE SYSTEM
+============================================================================= */
+#language-toggle{
+  background:none;
+  border:none;
+  padding:0;
+  margin:0;
+  font:inherit;
+  font-size:0.85rem;
+  font-weight:400;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  cursor:pointer;
+  opacity:0.85;
+  transition:opacity var(--duration-base) var(--ease-standard);
+}
+
+#language-toggle:hover{
+  opacity:1;
+}
+
+/* =============================================================================
+   03) LANGUAGE DROPDOWN SHELL
+============================================================================= */
+.language-dropdown{
+  position:absolute;
+  bottom:calc(100% + 10px);
+  right:0;
+  min-width:176px;
+  padding:0.55rem;
+  background-color:var(--bg-color);
+  border:var(--stroke-soft) solid rgba(255,255,255,0.16);
+  border-radius:14px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.38), 0 2px 10px rgba(0,0,0,0.22);
+  display:none;
+  z-index:var(--z-language-dropdown);
+}
+
+.language-dropdown.visible,
+.language-dropdown[aria-hidden="false"]{
+  display:block;
+}
+
+.language-dropdown > *{
+  width:100%;
+}
+
+/* =============================================================================
+   04) LANGUAGE OPTION SYSTEM
+============================================================================= */
+.language-dropdown button,
+.language-dropdown a,
+.language-dropdown [role="menuitem"],
+.language-dropdown .language-option,
+.language-dropdown .lang-option{
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  padding:0.65rem 0.85rem;
+  border-radius:10px;
+  background:transparent;
+  border:none;
+  font:inherit;
+  font-size:0.85rem;
+  font-weight:400;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  text-decoration:none;
+  cursor:pointer;
+  transition:
+    opacity var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
+}
+
+.language-dropdown button:hover,
+.language-dropdown a:hover,
+.language-dropdown [role="menuitem"]:hover,
+.language-dropdown .language-option:hover,
+.language-dropdown .lang-option:hover{
+  background-color:rgba(255,255,255,0.06);
+  opacity:0.98;
+}
+
+/* =============================================================================
+   05) LIGHT MODE ADJUSTMENTS
+============================================================================= */
+body.light-mode .language-dropdown{
+  border:var(--stroke-soft) solid rgba(0,0,0,0.14);
+  box-shadow:0 18px 40px rgba(0,0,0,0.16), 0 2px 10px rgba(0,0,0,0.10);
+}
+
+body.light-mode .language-dropdown button:hover,
+body.light-mode .language-dropdown a:hover,
+body.light-mode .language-dropdown [role="menuitem"]:hover,
+body.light-mode .language-dropdown .language-option:hover,
+body.light-mode .language-dropdown .lang-option:hover{
+  background-color:rgba(0,0,0,0.05);
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */

@@ -21,7 +21,7 @@
   position:relative;
   width:100%;
   padding:0;
-  color: var(--color-primary1);
+  color:var(--text-primary-color, var(--color-primary1));
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -57,7 +57,7 @@
   min-width:280px;
   height:auto;
   margin-inline:auto;
-  color: var(--color-primary1);
+  color:var(--color-primary1);
   transition: transform 2.2s cubic-bezier(0.22,1,0.36,1);
 }
 
@@ -100,15 +100,21 @@
 }
 
 .system-node-title{
-  font-size:1.6rem;
-  font-weight:600;
-  margin-bottom:1rem;
+  font-size:var(--type-heading-sm-size, 1.6rem);
+  font-weight:var(--type-heading-semibold-weight, 600);
+  line-height:var(--type-heading-sm-line-height, 1.2);
+  letter-spacing:var(--type-heading-tracking, normal);
+  color:inherit;
+  margin-bottom:var(--space-4, 1rem);
 }
 
 .system-node-text{
-  font-size:1rem;
+  font-size:var(--type-body-md-size, 1rem);
+  font-weight:var(--type-body-regular-weight, 400);
+  line-height:var(--type-body-md-line-height, 1.6);
+  letter-spacing:var(--type-body-tracking, normal);
+  color:var(--text-secondary-color, currentColor);
   opacity:0.75;
-  line-height:1.6;
 }
 
 /* =============================================================================
@@ -131,10 +137,10 @@
 
 @media (max-width:600px){
   .system-node-title{
-    font-size:1.4rem;
+    font-size:var(--type-heading-xs-size, 1.4rem);
   }
 
   .system-node-text{
-    font-size:0.95rem;
+    font-size:var(--type-body-sm-size, 0.95rem);
   }
 }

@@ -1,24 +1,81 @@
 /* =============================================================================
    00) FILE INDEX
-   01) LEGACY POSTS & COMMENTS
-   02) HOME HERO (POST-ENTER) — FULL-BLEED VIDEO + LUX GLASS OVERLAY
-   03) HOME HERO LOGO — STICKY + SHRINK ON SCROLL
-   04) HOME HERO LOGO DURING OVERLAYS (MENU / COUNTRY)
-   05) HOME HERO LOGO — ESSENCE STEP FADE (ARCH → INTEL → SYSTEMS) — LUX
-   06) HOME SCROLL GRADIENT BACKDROP (EXPERIMENTAL / ADDITIVE)
-   07) HOME HERO HEADLINES (SCROLL FOCUS)
-   08) HOME RAIL ALIGNMENT (GLOBAL HOME SECTIONS)
-   09) RTL HOME ALIGNMENT (TEXT-ONLY, KEEP LTR RAIL)
-   10) HOME ESSENCE — SCROLL-SCRUBBED INK REVEAL
-   10A) HOME ESSENCE — LEGACY CHROMA BACKDROP (DISABLED)
-   11) POST-ESSENCE SECTION REVEAL (SIMPLIFIED / STABLE)
-   12) HOME ICOS CHAPTER — CAPTURED INTRODUCTION
-   12A) HOME CHAPTER PROGRESSION — UPDATES / FEATURED / INSIGHTS / CLOSING
-   13) HOME CLOSING — CENTERED INTELLECTUAL STATEMENT (SEO SAFE)
+   01) HOME TOKENS
+   02) LEGACY POSTS & COMMENTS
+   03) HOME HERO (POST-ENTER) — FULL-BLEED VIDEO
+   04) HOME HERO LOGO LAYER — DISABLED
+   05) HOME RAIL ALIGNMENT (GLOBAL HOME SECTIONS)
+   06) RTL HOME ALIGNMENT (TEXT-ONLY, KEEP LTR RAIL)
+   07) HOME ESSENCE — LAYOUT RESET
+   07A) HOME ESSENCE — LEGACY CHROMA BACKDROP (DISABLED)
+   08) POST-ESSENCE SECTION REVEAL (SIMPLIFIED / STABLE)
+   09) HOME ICOS CHAPTER — CAPTURED INTRODUCTION
+   09A) HOME CHAPTER PROGRESSION — UPDATES / FEATURED / INSIGHTS / CLOSING
+   10) HOME CLOSING — CENTERED INTELLECTUAL STATEMENT (SEO SAFE)
 ============================================================================= */
 
 /* =============================================================================
-   01) LEGACY POSTS & COMMENTS
+   01) HOME TOKENS
+============================================================================= */
+
+:root{
+  --home-rail-width: var(--site-rail-width);
+  --home-reading-width: var(--reading-width-sm);
+  --home-reading-width-wide: var(--reading-width-md);
+  --home-reading-width-max: var(--reading-width-lg);
+
+  --home-section-min-height: var(--section-min-height);
+  --home-section-min-height-stable: var(--section-min-height-stable);
+  --home-section-padding-y: var(--section-padding-y);
+  --home-section-padding-y-mobile: var(--section-padding-y-mobile);
+
+  --home-icos-stage-padding-top: 6vh;
+  --home-icos-stage-padding-bottom: 4vh;
+  --home-icos-stage-padding-top-mobile: 8vh;
+  --home-icos-stage-padding-bottom-mobile: 5vh;
+
+  --home-gap-compact: var(--spacing-sm);
+  --home-gap-body: var(--font-size-body-1);
+  --home-gap-split-mobile: var(--spacing-lg);
+  --home-gap-split-tablet: var(--spacing-xl);
+  --home-gap-split-desktop: var(--spacing-2xl);
+
+  --home-copy-spacing-top: var(--spacing-md);
+
+  --home-icos-node-width: min(40rem, 46vw);
+  --home-icos-node-width-desktop: 44rem;
+  --home-icos-node-width-tablet: min(32rem, 56vw);
+  --home-icos-node-width-mobile: min(24rem, 82vw);
+
+  --home-anchor-max-width: 24ch;
+  --home-anchor-max-width-wide: 22ch;
+  --home-sidebar-width: 29rem;
+  --home-sidebar-width-wide: 31rem;
+  --home-sidebar-width-tablet: 24rem;
+
+  --home-anchor-size: 2.08rem;
+  --home-anchor-size-wide: 2.3rem;
+  --home-anchor-size-tablet: 1.82rem;
+  --home-anchor-size-mobile: 1.56rem;
+  --home-anchor-line-height: 1.12;
+  --home-anchor-line-height-mobile: 1.14;
+
+  --home-body-size: var(--font-size-body-1);
+  --home-body-size-mobile: var(--font-size-body-1);
+
+  --home-closing-padding-top: var(--spacing-3xl);
+  --home-closing-padding-bottom: var(--spacing-4xl);
+  --home-closing-padding-top-mobile: var(--spacing-2xl);
+  --home-closing-padding-bottom-mobile: 5rem;
+  --home-closing-title-size: var(--font-size-h4);
+  --home-closing-title-size-mobile: var(--font-size-h5);
+  --home-closing-body-size: var(--font-size-body-1);
+  --home-closing-body-size-mobile: var(--font-size-body-1);
+  --home-closing-body-line-height: var(--line-height-body);
+}
+
+/* =============================================================================
+   02) LEGACY POSTS & COMMENTS
 ============================================================================= */
 
 /* Legacy featured posts/comments (kept) */
@@ -40,28 +97,41 @@
 .section-posts .post,
 .section-comments h2,
 .section-comments .comment{
-  width: min(var(--site-rail-width), calc(100% - (var(--site-gutter) * 2)));
+  width: var(--home-rail-width);
   margin-left: auto;
   margin-right: auto;
 }
 
 /* =============================================================================
-   02) HOME HERO (POST-ENTER) — FULL-BLEED VIDEO + LUX GLASS OVERLAY
+   03) HOME HERO (POST-ENTER) — FULL-BLEED VIDEO
    Goal: video spans edge-to-edge, sits under the header ribbon, and stays centered.
 ============================================================================= */
+
+.home-hero-stage{
+  position: relative;
+  width: 100%;
+  min-height: 320vh;
+  isolation: isolate;
+  overflow: visible;
+}
 
 /* Full-bleed hero section container (tolerant selectors) */
 #home-hero,
 .home-hero,
 .hero-home,
 [data-hero="home"]{
-  position: relative;
+  position: fixed;
+  inset: 0;
   width: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
+  isolation: isolate;
+  z-index: -100;
 
   /* Full viewport hero */
+  height: 100vh;
+  height: 100svh;
   min-height: 100vh;
   min-height: 100svh;
 }
@@ -71,6 +141,7 @@
   .home-hero,
   .hero-home,
   [data-hero="home"]{
+    height: 100dvh;
     min-height: 100dvh;
   }
 }
@@ -92,7 +163,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: -102;
 }
 
 /* Ensure the media itself is truly centered and fills (no side black gaps) */
@@ -111,164 +182,6 @@
   z-index: 0;
 }
 
-/* Optional glass overlay element if present in HTML */
-#home-hero .hero-glass,
-#home-hero .home-hero-glass,
-.home-hero .hero-glass,
-.home-hero .home-hero-glass,
-.hero-home .hero-glass,
-.hero-home .home-hero-glass,
-[data-hero="home"] .hero-glass,
-[data-hero="home"] .home-hero-glass{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-
-  /* Lux wash + subtle blur, theme-adaptable */
-  background:
-    radial-gradient(
-      circle at 50% 38%,
-      rgba(145,124,111,0.3) 0%,
-      rgba(145,124,111,0.22) 24%,
-      rgba(12,10,8,0.38) 54%,
-      rgba(12,10,8,0.58) 100%
-    );
-
-  backdrop-filter: blur(20px) saturate(1.08);
-  -webkit-backdrop-filter: blur(20px) saturate(1.08);
-}
-
-body.light-mode #home-hero .hero-glass,
-body.light-mode #home-hero .home-hero-glass,
-body.light-mode .home-hero .hero-glass,
-body.light-mode .home-hero .home-hero-glass,
-body.light-mode .hero-home .hero-glass,
-body.light-mode .hero-home .home-hero-glass,
-body.light-mode [data-hero="home"] .hero-glass,
-body.light-mode [data-hero="home"] .home-hero-glass{
-  background:
-    radial-gradient(
-      circle at 50% 38%,
-      rgba(145,124,111,0.26) 0%,
-      rgba(145,124,111,0.18) 24%,
-      rgba(18,14,10,0.24) 54%,
-      rgba(18,14,10,0.38) 100%
-    );
-}
-
-/* If no overlay element exists, paint the glass with a pseudo-element on the hero */
-#home-hero::after,
-.home-hero::after,
-.hero-home::after,
-[data-hero="home"]::after{
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-
-  background:
-    radial-gradient(
-      circle at 50% 38%,
-      rgba(0,0,0,0.22) 0%,
-      rgba(0,0,0,0.48) 52%,
-      rgba(0,0,0,0.68) 100%
-    );
-
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-body.light-mode #home-hero::after,
-body.light-mode .home-hero::after,
-body.light-mode .hero-home::after,
-body.light-mode [data-hero="home"]::after{
-  background:
-    radial-gradient(
-      circle at 50% 38%,
-      rgba(255,255,255,0.10) 0%,
-      rgba(0,0,0,0.12) 52%,
-      rgba(0,0,0,0.22) 100%
-    );
-}
-
-/* Replace pseudo-matte with real DOM matte (prevents scroll-away during pinned hero sequence) */
-#home-hero::after{
-  opacity: 0;
-  background: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-body.light-mode #home-hero::after{
-  opacity: 0;
-  background: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-/* Real matte layer (DOM node) — can be pinned by JS without affecting logo/headlines */
-#home-hero .home-hero-matte{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-
-  background:
-    radial-gradient(
-      circle at 50% 38%,
-      rgba(145,124,111,0.34) 0%,
-      rgba(145,124,111,0.24) 24%,
-      rgba(12,10,8,0.40) 54%,
-      rgba(12,10,8,0.6) 100%
-    );
-
-  backdrop-filter: blur(20px) saturate(1.1);
-  -webkit-backdrop-filter: blur(20px) saturate(1.1);
-}
-
-body.light-mode #home-hero .home-hero-matte{
-  background:
-    radial-gradient(
-      circle at 50% 38%,
-      rgba(145,124,111,0.28) 0%,
-      rgba(145,124,111,0.2) 24%,
-      rgba(18,14,10,0.26) 54%,
-      rgba(18,14,10,0.38) 100%
-    );
-}
-
-/* Global matte styles (needed when JS portals .home-hero-matte to <body> during pin) */
-.home-hero-matte{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-
-  background:
-    radial-gradient(
-      circle at 50% 38%,
-      rgba(145,124,111,0.34) 0%,
-      rgba(145,124,111,0.24) 24%,
-      rgba(12,10,8,0.40) 54%,
-      rgba(12,10,8,0.6) 100%
-    );
-
-  backdrop-filter: blur(20px) saturate(1.1);
-  -webkit-backdrop-filter: blur(20px) saturate(1.1);
-}
-
-body.light-mode .home-hero-matte{
-  background:
-    radial-gradient(
-      circle at 50% 38%,
-      rgba(145,124,111,0.28) 0%,
-      rgba(145,124,111,0.2) 24%,
-      rgba(18,14,10,0.26) 54%,
-      rgba(18,14,10,0.38) 100%
-    );
-}
 
 /* Hero content sits above glass */
 #home-hero .hero-content,
@@ -344,241 +257,27 @@ body.light-mode .home-hero-matte{
 }
 
 /* =============================================================================
-   03) HOME HERO LOGO — STICKY + SHRINK ON SCROLL
+   04) HOME HERO LOGO LAYER — DISABLED
 ============================================================================= */
 
-/* The hero logo layer is disabled so it does not visually conflict with the
-   institutional menu brand. The institutional menu is now the only top logo. */
-.home-hero-logo-layer,
-.home-hero-logo,
-.hero-logo,
-.home-hero-logo-layer img,
-.home-hero-logo-layer svg {
-  display: none !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* =============================================================================
-   04) HOME HERO LOGO DURING OVERLAYS (MENU / COUNTRY)
-   Rule: never vanish completely. Only soften and disable interaction.
-============================================================================= */
-
-
-body.menu-open .home-hero-logo-layer,
-body.menu-open .home-hero-logo,
-body.menu-open .hero-logo,
-body.menu-open .home-hero-logo-layer img,
-body.menu-open .home-hero-logo-layer svg,
-body.country-overlay-active .home-hero-logo-layer,
-body.country-overlay-active .home-hero-logo-layer img,
-body.country-overlay-active .home-hero-logo-layer svg{
-  opacity: 0.14 !important;
-  pointer-events: none !important;
-}
-
-/* =============================================================================
-   05) HOME HERO LOGO — ESSENCE STEP FADE (ARCH → INTEL → SYSTEMS) — LUX
-   Uses existing body classes set by JS: hl-1 / hl-2 / hl-3.
-============================================================================= */
-
-/* Ensure opacity animates (width/transform already handled above) */
 .home-hero-logo-layer,
 .home-hero-logo,
 .hero-logo,
 .home-hero-logo-layer img,
 .home-hero-logo-layer svg{
-  transition:
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    width 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 1.35s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, width, opacity;
-}
-
-/* ARCHITECTURE */
-body.hl-1 .home-hero-logo-layer,
-body.hl-1 .home-hero-logo,
-body.hl-1 .hero-logo,
-body.hl-1 .home-hero-logo-layer img,
-body.hl-1 .home-hero-logo-layer svg{
-  opacity:1;
-  pointer-events:auto;
-}
-
-/* INTELLIGENCE: begin fade (lux runway) */
-body.hl-2 .home-hero-logo-layer,
-body.hl-2 .home-hero-logo,
-body.hl-2 .hero-logo,
-body.hl-2 .home-hero-logo-layer img,
-body.hl-2 .home-hero-logo-layer svg{
-  opacity:0.42;
-}
-
-/* SYSTEMS: almost gone, still barely present */
-body.hl-3 .home-hero-logo-layer,
-body.hl-3 .home-hero-logo,
-body.hl-3 .hero-logo,
-body.hl-3 .home-hero-logo-layer img,
-body.hl-3 .home-hero-logo-layer svg{
-  opacity:0.06;
-  pointer-events:none;
-}
-
-/* After hero exits: fully gone (clean handoff) */
-body.hero-lock-released .home-hero-logo-layer,
-body.hero-lock-released .home-hero-logo,
-body.hero-lock-released .hero-logo,
-body.hero-lock-released .home-hero-logo-layer img,
-body.hero-lock-released .home-hero-logo-layer svg{
-  opacity:0;
-  pointer-events:none;
-}
-
-/* =============================================================================
-   06) HOME SCROLL GRADIENT BACKDROP (EXPERIMENTAL / ADDITIVE)
-   Reference: JescoJets — vertical chromatic fade driven by scroll (CSS-only).
-============================================================================= */
-
-.home-scroll-gradient{
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-
-  /* Top = subtle color, Bottom = neutral */
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-primary1) 14%, var(--bg-color)) 0%,
-      color-mix(in srgb, var(--bg-color) 92%, transparent) 55%,
-      var(--bg-color) 100%
-    );
-
-  transition: background 0.9s cubic-bezier(0.22,1,0.36,1);
-}
-
-/* Mid-scroll: slightly richer top tone */
-body.scroll-mid .home-scroll-gradient{
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-primary1) 22%, var(--bg-color)) 0%,
-      color-mix(in srgb, var(--bg-color) 90%, transparent) 50%,
-      var(--bg-color) 100%
-    );
-}
-
-/* Deep-scroll: strongest presence, still neutralized at bottom */
-body.scroll-deep .home-scroll-gradient{
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-primary2) 26%, var(--bg-color)) 0%,
-      color-mix(in srgb, var(--bg-color) 88%, transparent) 45%,
-      var(--bg-color) 100%
-    );
-}
-
-
-/* =============================================================================
-   07) HOME HERO HEADLINES (SCROLL FOCUS)
-============================================================================= */
-
-.home-hero-headlines{
-  position: absolute;
-  left: 0;
-  top: 56%;
-  z-index: 3;
-
-  display: grid;
-  gap: 0.38rem;
-
-  width: 100%;
-  max-width: none;
-  padding: 0 var(--site-gutter);
-
-  transform: translateY(-50%);
-  text-align: left;
-
-  opacity: 1;
-  pointer-events: none;
-
-  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@media (max-width: 820px){
-  .home-hero-headlines{
-    padding: 0 var(--site-gutter);
-    max-width: 92vw;
-  }
-}
-
-.home-hero-headline{
-  margin: 0;
-  font-weight: 400;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--color-primary1);
-  opacity: 0.18;
-  transform: translateY(0px) scale(0.96);
-  transition:
-    opacity 0.38s ease,
-    transform 0.46s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.38s ease;
-  will-change: transform, opacity;
-  filter: blur(0.25px);
-
-  /* Size: huge, restrained. No clamp(). */
-  font-size: 5.4vw;
-  line-height: 0.92;
-}
-
-@media (min-width: 1200px){
-  .home-hero-headline{font-size: 72px;}
-}
-
-@media (max-width: 820px){
-  .home-hero-headline{font-size: 9.8vw;}
-}
-
-
-/* Active headline states (JS toggles these on <body>) */
-body.hl-1 .home-hero-headline:nth-child(1),
-body.hl-2 .home-hero-headline:nth-child(2),
-body.hl-3 .home-hero-headline:nth-child(3){
-  opacity: 0.96;
-  transform: translateY(-1px) scale(1.01);
-  filter: blur(0px);
-}
-
-body.hl-1 .home-hero-headline:not(:nth-child(1)),
-body.hl-2 .home-hero-headline:not(:nth-child(2)),
-body.hl-3 .home-hero-headline:not(:nth-child(3)){
-  opacity: 0.16;
-  transform: translateY(1px) scale(0.95);
-  filter: blur(0.4px);
-}
-
-/* Exit motion after the 4th headline completes (JS toggles on <body>) */
-body.hero-lock-released .home-hero-headlines{
-  transform: translateY(calc(-50% - 84px));
-}
-
-
-/* Defensive: hide during overlays */
-body.menu-open .home-hero-headlines,
-body.country-overlay-active .home-hero-headlines{
+  display: none !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
+
 /* =============================================================================
-   08) HOME RAIL ALIGNMENT (GLOBAL HOME SECTIONS)
+   05) HOME RAIL ALIGNMENT (GLOBAL HOME SECTIONS)
 ============================================================================= */
 
 /* Unified rail for homepage content blocks (matches footer/header gutter) */
 .home-rail{
-  width: min(var(--site-rail-width), calc(100% - (var(--site-gutter) * 2)));
+  width: var(--home-rail-width);
   margin-left: auto;
   margin-right: auto;
 }
@@ -601,11 +300,10 @@ body.country-overlay-active .home-hero-headlines{
 
 
 /* =============================================================================
-   09) RTL HOME ALIGNMENT (TEXT-ONLY, KEEP LTR RAIL)
+   06) RTL HOME ALIGNMENT (TEXT-ONLY, KEEP LTR RAIL)
 ============================================================================= */
 
 /* RTL: respect direction while keeping the same rail geometry */
-html.lang-rtl .home-hero-headlines,
 html.lang-rtl .home-inner,
 html.lang-rtl .home-rail,
 html.lang-rtl .featured-header,
@@ -616,7 +314,6 @@ html.lang-rtl .featured-grid{
 }
 
 html.lang-rtl .home-inner [data-i18n-key],
-html.lang-rtl .home-hero-headlines [data-i18n-key],
 html.lang-rtl .featured-header [data-i18n-key],
 html.lang-rtl .featured-grid [data-i18n-key]{
   direction: rtl;
@@ -625,7 +322,7 @@ html.lang-rtl .featured-grid [data-i18n-key]{
 }
 
 /* =============================================================================
-   10) HOME ESSENCE — SCROLL-SCRUBBED INK REVEAL
+   07) HOME ESSENCE — LAYOUT RESET
 ============================================================================= */
 
 .home-essence,
@@ -646,160 +343,8 @@ html.lang-rtl .featured-grid [data-i18n-key]{
   padding-left: 0;
   padding-right: 0;
 }
-
-.home-ink-reveal{
-  width: 100%;
-  max-width: 74ch;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  overflow: visible;
-  box-sizing: border-box;
-}
-
-.home-ink-stack{
-  position: relative;
-  width: 100%;
-  min-height: 3.8em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.home-ink-layer{
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  max-width: none;
-  margin: 0 auto;
-  text-align: center;
-  box-sizing: border-box;
-  opacity: 0;
-}
-
-@media (min-width: 1024px){
-  .home-ink-stack{min-height: 4.6em;}
-}
-
-@media (max-width: 820px){
-  .home-ink-stack{min-height: 4.2em;}
-}
-
-.ink-line{
-  margin: 0;
-  position: relative;
-  font-size: 1.6rem;
-  line-height: 1.28;
-  font-weight: 300;
-  letter-spacing: 0.006em;
-  padding: 0.08em 0;
-  color: var(--text-color);
-  opacity: 0.5;
-  -webkit-text-fill-color: currentColor;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    transparent 40%,
-    var(--text-color) 50%,
-    transparent 62%,
-    transparent 100%
-  );
-  background-size: 320% 100%;
-  background-position: calc(var(--sheen, 0) * 100%) 50%;
-  will-change: background-position, opacity;
-  overflow: visible;
-}
-
-@supports (-webkit-background-clip: text) or (background-clip: text){
-  .ink-line{
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: currentColor;
-    color: var(--text-color);
-  }
-}
-
-.ink-line--sub{
-  opacity: 1;
-  font-size: 1.6rem;
-  line-height: 1.28;
-  font-weight: 300;
-}
-
-@media (max-width: 820px){
-  .home-ink-reveal{max-width: calc(100vw - (var(--site-gutter) * 2));}
-  .ink-line{font-size: 1.45rem;}
-  .home-essence .home-ink-stack{min-height: 4.2em;}
-}
-
-@media (min-width: 1024px){
-  .ink-line{font-size: 2.05rem;}
-  .ink-line--sub{font-size: 2.05rem;}
-}
-
-html.lang-rtl .home-ink-reveal [data-i18n-key]{
-  direction: rtl;
-  unicode-bidi: isolate;
-  text-align: center !important;
-}
-
-.home-essence .home-ink-reveal{
-  position: sticky;
-  top: 50vh;
-  width: min(74ch, calc(100% - (var(--site-gutter) * 2)));
-  max-width: none;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  z-index: 2;
-  transform: translateY(-50%);
-}
-
-@supports (height: 100svh){
-  .home-essence .home-ink-reveal{
-    top: 50svh;
-  }
-}
-
-.home-essence .home-ink-stack{
-  width: 100%;
-  min-height: 4.6em;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.home-essence .home-ink-layer{
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  max-width: none;
-  margin: 0 auto;
-  text-align: center;
-  box-sizing: border-box;
-}
-
-.home-essence .ink-line{
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-
 /* =============================================================================
-   10A) HOME ESSENCE — LEGACY CHROMA BACKDROP (DISABLED)
+   07A) HOME ESSENCE — LEGACY CHROMA BACKDROP (DISABLED)
    Disabled to prevent theme-flip / clamp artifacts during the homepage essence sequence.
 ============================================================================= */
 
@@ -822,32 +367,24 @@ body.essence-pinned #essence-pin-backdrop{
 }
 
 /* =============================================================================
-   11) POST-ESSENCE SECTION REVEAL (SIMPLIFIED / STABLE)
-   Keep downstream sections stable and avoid premature fade/translate artifacts.
+   08) POST-ESSENCE SECTION REVEAL — STATIC RESET
 ============================================================================= */
 
 #essence-scroll-spacer + section{
-  will-change: auto;
-  transition: none;
   opacity: 1;
-  transform: none;
-  pointer-events: auto;
-}
-
-body.essence-pinned #essence-scroll-spacer + section{
-  opacity: 1;
+  visibility: visible;
   transform: none;
   pointer-events: auto;
 }
 
 /* =============================================================================
-   12) HOME ICOS CHAPTER — CAPTURED INTRODUCTION
+   09) HOME ICOS CHAPTER — CAPTURED INTRODUCTION
 ============================================================================= */
 
 .home-icos-chapter{
   width: 100%;
-  min-height: 100vh;
-  min-height: 100svh;
+  min-height: var(--home-section-min-height);
+  min-height: var(--home-section-min-height-stable);
   display: flex;
   align-items: center;
 }
@@ -860,14 +397,14 @@ body.essence-pinned #essence-scroll-spacer + section{
 
 .home-icos-chapter-stage{
   width: 100%;
-  min-height: 100vh;
-  min-height: 100svh;
+  min-height: var(--home-section-min-height);
+  min-height: var(--home-section-min-height-stable);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0;
-  padding: 6vh 0 4vh;
+  padding: var(--home-icos-stage-padding-top) 0 var(--home-icos-stage-padding-bottom);
   box-sizing: border-box;
 }
 
@@ -892,7 +429,7 @@ body.essence-pinned #essence-scroll-spacer + section{
 }
 
 .home-icos-chapter-figure #system-node-mount{
-  width: min(40rem, 46vw);
+  width: var(--home-icos-node-width);
   max-width: 40rem;
   margin: 0 auto !important;
   padding: 0 !important;
@@ -918,15 +455,15 @@ body.essence-pinned #essence-scroll-spacer + section{
 }
 
 .home-icos-chapter-copy{
-  width: min(68rem, calc(100% - (var(--site-gutter) * 2)));
+  width: var(--home-rail-width);
   margin: 0 auto !important;
-  padding-top: 1.25rem;
+  padding-top: var(--home-copy-spacing-top);
 }
 
 .home-icos-chapter-split{
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
-  gap: 3.6rem;
+  gap: var(--home-gap-split-desktop);
   align-items: start;
 }
 
@@ -942,9 +479,9 @@ body.essence-pinned #essence-scroll-spacer + section{
 
 .home-icos-chapter-right{
   display: grid;
-  gap: 1rem;
+  gap: var(--home-gap-body);
   align-content: start;
-  max-width: 29rem;
+  max-width: var(--home-sidebar-width);
 }
 
 .home-icos-chapter-anchor,
@@ -954,19 +491,19 @@ body.essence-pinned #essence-scroll-spacer + section{
 }
 
 .home-icos-chapter-anchor{
-  font-size: 2.08rem;
-  line-height: 1.12;
+  font-size: var(--home-anchor-size);
+  line-height: var(--line-height-heading-tight);
   font-weight: 300;
-  letter-spacing: 0.004em;
+  letter-spacing: var(--tracking-copy);
   text-align: left;
-  max-width: 24ch;
+  max-width: var(--home-anchor-max-width);
   text-wrap: balance;
 }
 
 .home-icos-chapter-body,
 .home-icos-chapter-highlight{
-  font-size: 1rem;
-  line-height: 1.52;
+  font-size: var(--home-body-size);
+  line-height: var(--line-height-body);
   text-align: left;
 }
 
@@ -976,54 +513,54 @@ body.essence-pinned #essence-scroll-spacer + section{
 
 @media (min-width: 1200px){
   .home-icos-chapter-figure #system-node-mount{
-    width: 44rem;
-    max-width: 44rem;
+    width: var(--home-icos-node-width-desktop);
+    max-width: var(--home-icos-node-width-desktop);
   }
 
   .home-icos-chapter-anchor{
-    font-size: 2.3rem;
-    max-width: 22ch;
+    font-size: var(--home-anchor-size-wide);
+    max-width: var(--home-anchor-max-width-wide);
   }
 
   .home-icos-chapter-right{
-    max-width: 31rem;
+    max-width: var(--home-sidebar-width-wide);
   }
 }
 
 @media (max-width: 980px){
   .home-icos-chapter-figure #system-node-mount{
-    width: min(32rem, 56vw);
+    width: var(--home-icos-node-width-tablet);
     max-width: 32rem;
   }
 
   .home-icos-chapter-split{
-    gap: 2.6rem;
+    gap: var(--home-gap-split-tablet);
   }
 
   .home-icos-chapter-anchor{
-    font-size: 1.82rem;
-    max-width: 22ch;
+    font-size: var(--home-anchor-size-tablet);
+    max-width: var(--home-anchor-max-width-wide);
   }
 
   .home-icos-chapter-right{
-    max-width: 24rem;
+    max-width: var(--home-sidebar-width-tablet);
   }
 }
 
 @media (max-width: 820px){
   .home-icos-chapter-stage{
     gap: 0;
-    padding: 8vh 0 5vh;
+    padding: var(--home-icos-stage-padding-top-mobile) 0 var(--home-icos-stage-padding-bottom-mobile);
   }
 
   .home-icos-chapter-figure #system-node-mount{
-    width: min(24rem, 82vw);
+    width: var(--home-icos-node-width-mobile);
     max-width: 24rem;
   }
 
   .home-icos-chapter-split{
     grid-template-columns: 1fr;
-    gap: 1.4rem;
+    gap: var(--home-gap-split-mobile);
   }
 
   .home-icos-chapter-left,
@@ -1039,19 +576,19 @@ body.essence-pinned #essence-scroll-spacer + section{
   }
 
   .home-icos-chapter-anchor{
-    font-size: 1.56rem;
-    line-height: 1.14;
+    font-size: var(--home-anchor-size-mobile);
+    line-height: var(--line-height-heading-tight);
   }
 
   .home-icos-chapter-body,
   .home-icos-chapter-highlight{
-    font-size: 0.98rem;
-    line-height: 1.58;
+    font-size: var(--home-body-size-mobile);
+    line-height: var(--line-height-body);
   }
 }
 
 /* =============================================================================
-   12A) HOME CHAPTER PROGRESSION — UPDATES / FEATURED / INSIGHTS / CLOSING
+   09A) HOME CHAPTER PROGRESSION — UPDATES / FEATURED / INSIGHTS / CLOSING
 ============================================================================= */
 
 .home-updates-chapter,
@@ -1060,8 +597,8 @@ body.essence-pinned #essence-scroll-spacer + section{
 .home-closing-chapter{
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  min-height: 100svh;
+  min-height: var(--home-section-min-height);
+  min-height: var(--home-section-min-height-stable);
   display: flex;
   align-items: center;
 }
@@ -1079,7 +616,7 @@ body.essence-pinned #essence-scroll-spacer + section{
 .home-featured-chapter .home-inner,
 .home-insights-chapter .home-inner,
 .home-closing-chapter{
-  width: min(var(--site-rail-width), calc(100% - (var(--site-gutter) * 2)));
+  width: var(--home-rail-width);
   margin-left: auto;
   margin-right: auto;
 }
@@ -1089,9 +626,9 @@ body.essence-pinned #essence-scroll-spacer + section{
 .home-insights-chapter .home-inner{
   display: grid;
   align-content: center;
-  gap: 0.9rem;
-  padding-top: 10vh;
-  padding-bottom: 10vh;
+  gap: var(--home-gap-compact);
+  padding-top: var(--home-section-padding-y);
+  padding-bottom: var(--home-section-padding-y);
   box-sizing: border-box;
 }
 
@@ -1104,15 +641,15 @@ body.essence-pinned #essence-scroll-spacer + section{
 .home-updates-chapter .home-text,
 .home-featured-chapter .home-text,
 .home-insights-chapter .home-text{
-  max-width: 64ch;
+  max-width: var(--home-reading-width);
 }
 
 .home-closing-chapter{
   display: grid;
   align-content: center;
-  gap: 0.9rem;
-  padding-top: 10vh;
-  padding-bottom: 10vh;
+  gap: var(--home-gap-compact);
+  padding-top: var(--home-section-padding-y);
+  padding-bottom: var(--home-section-padding-y);
   box-sizing: border-box;
 }
 
@@ -1121,32 +658,32 @@ body.essence-pinned #essence-scroll-spacer + section{
   .home-featured-chapter .home-inner,
   .home-insights-chapter .home-inner,
   .home-closing-chapter{
-    padding-top: 12vh;
-    padding-bottom: 12vh;
+    padding-top: var(--home-section-padding-y-mobile);
+    padding-bottom: var(--home-section-padding-y-mobile);
   }
 }
 
 /* =============================================================================
-   13) HOME CLOSING — CENTERED INTELLECTUAL STATEMENT (SEO SAFE)
+   10) HOME CLOSING — CENTERED INTELLECTUAL STATEMENT (SEO SAFE)
 ============================================================================= */
 
 .home-closing{
-  width: min(var(--site-rail-width), calc(100% - (var(--site-gutter) * 2)));
+  width: var(--home-rail-width);
   margin: 0 auto;
-  padding: 4.5rem 0 6rem;
+  padding: var(--home-closing-padding-top) 0 var(--home-closing-padding-bottom);
   text-align: center;
   display: grid;
-  gap: 0.9rem;
+  gap: var(--home-gap-compact);
 }
 
 .home-closing-line{
   margin: 0;
   font-weight: 300;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-ui);
   text-transform: uppercase;
   color: var(--text-color);
-  font-size: 1.35rem;
-  line-height: 1.35;
+  font-size: var(--home-closing-title-size);
+  line-height: var(--line-height-heading-relaxed);
   text-align: center;
 }
 
@@ -1154,9 +691,9 @@ body.essence-pinned #essence-scroll-spacer + section{
   text-transform: none;
   letter-spacing: 0.01em;
   opacity: 0.78;
-  font-size: 1.05rem;
-  line-height: 1.75;
-  max-width: 78ch;
+  font-size: var(--home-closing-body-size);
+  line-height: var(--home-closing-body-line-height);
+  max-width: var(--home-reading-width-max);
   margin-left: auto;
   margin-right: auto;
 }
@@ -1172,7 +709,7 @@ html.lang-rtl .home-closing-line--sub{
 /* Reveal behavior is handled globally by the Motion System (assets/js/motion.js + style.css) */
 
 @media (max-width: 820px){
-  .home-closing{padding: 3.6rem 0 5rem;}
-  .home-closing-line{font-size: 1.15rem;}
-  .home-closing-line--sub{font-size: 1.0rem;}
+  .home-closing{padding: var(--home-closing-padding-top-mobile) 0 var(--home-closing-padding-bottom-mobile);}
+  .home-closing-line{font-size: var(--home-closing-title-size-mobile);}
+  .home-closing-line--sub{font-size: var(--home-closing-body-size-mobile);}
 }

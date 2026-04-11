@@ -8,8 +8,10 @@
    03) DOM HELPERS
    04) SHADER CONTROLLER
    05) MOUNT HELPERS
-   06) INITIALIZATION
-   07) GLOBAL EXPORT
+   06) SHARED READINESS HELPERS
+   07) BOOT RECOVERY
+   08) INITIALIZATION
+   09) GLOBAL EXPORT
 ============================================================================= */
 
 /* =============================================================================
@@ -288,29 +290,79 @@
   }
 
   /* =============================================================================
-     06) INITIALIZATION
+     06) SHARED READINESS HELPERS
   ============================================================================= */
-  let controller = null;
+  window.__artanRunWhenReady = window.__artanRunWhenReady || ((bootFn) => {
+    if (typeof bootFn !== 'function') return;
 
-  function initHomeHeroShader() {
-    mountHomeHeroShaderFragment();
-    controller = new HomeHeroShaderController();
-    controller.init();
-  }
+    const run = () => {
+      try { bootFn(); } catch (_) {}
+    };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHomeHeroShader, { once: true });
-  } else {
-    initHomeHeroShader();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run, { once: true });
+    } else {
+      run();
+    }
+  });
+
+  /* =============================================================================
+     07) BOOT RECOVERY
+  ============================================================================= */
+  let recoveryBound = false;
+
+  function bindBootRecovery() {
+    if (recoveryBound) return;
+    recoveryBound = true;
+
+    document.addEventListener('fragment:mounted', initHomeHeroShader);
+    document.addEventListener('neuroartan:runtime-ready', initHomeHeroShader);
+    document.addEventListener('neuroartan:language-applied', initHomeHeroShader);
+    window.addEventListener('load', initHomeHeroShader, { once: true });
   }
 
   /* =============================================================================
-     07) GLOBAL EXPORT
+     08) INITIALIZATION
+  ============================================================================= */
+  let controller = null;
+  let initialized = false;
+
+  function initHomeHeroShader() {
+    if (initialized) return;
+
+    const fragment = mountHomeHeroShaderFragment();
+    const stage = qs('#stage');
+    const hero = qs('#home-hero');
+
+    if (!stage && !hero && !fragment) {
+      bindBootRecovery();
+      return;
+    }
+
+    const nextController = new HomeHeroShaderController();
+    const didInit = nextController.init();
+
+    if (!didInit) {
+      bindBootRecovery();
+      return;
+    }
+
+    controller = nextController;
+    initialized = true;
+  }
+
+  bindBootRecovery();
+  window.__artanRunWhenReady(initHomeHeroShader);
+
+  /* =============================================================================
+     09) GLOBAL EXPORT
   ============================================================================= */
   window.NeuroartanHomeHeroShader = {
     init: initHomeHeroShader,
     destroy() {
       if (controller) controller.destroy();
+      controller = null;
+      initialized = false;
     }
   };
 })();

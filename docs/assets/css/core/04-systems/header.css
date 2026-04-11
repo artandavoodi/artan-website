@@ -1,0 +1,68 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SITE HEADER BASELINE
+   03) HEADER TITLE BASELINE
+   04) MAIN NAV BASELINE
+   05) HEADER CONTROLS SUPPORT
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/04-systems/header.css */
+
+/* =============================================================================
+   02) SITE HEADER BASELINE
+============================================================================= */
+.site-header{
+  position:relative;
+  width:100%;
+  padding-top:3.2rem;
+  padding-bottom:1.6rem;
+  background:transparent;
+  z-index:var(--z-raised);
+}
+
+/* =============================================================================
+   03) HEADER TITLE BASELINE
+============================================================================= */
+.site-header h1{
+  font-size:2rem;
+  font-weight:700;
+  margin-bottom:0.5rem;
+}
+
+/* =============================================================================
+   04) MAIN NAV BASELINE
+============================================================================= */
+.main-nav ul{
+  display:flex;
+  gap:2rem;
+  margin:0;
+  padding:0;
+}
+
+.main-nav a{
+  text-decoration:none;
+  color:var(--text-color);
+  font-weight:500;
+  transition:color var(--duration-fast) var(--ease-standard);
+}
+
+.main-nav a:hover{
+  color:var(--link-hover-color);
+}
+
+/* =============================================================================
+   05) HEADER CONTROLS SUPPORT
+============================================================================= */
+#header-controls #theme-toggle,
+#header-controls .theme-toggle{
+  display:none;
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */

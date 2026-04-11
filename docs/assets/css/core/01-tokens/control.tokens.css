@@ -1,0 +1,154 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) CONTROL SIZE TOKENS
+   03) BUTTON TOKENS
+   04) FIELD TOKENS
+   05) ACCOUNT / AUTH CONTROL TOKENS
+   06) ICON TOKENS
+   07) GLASS TOKENS
+   08) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/01-tokens/control.tokens.css */
+
+/* =============================================================================
+   02) CONTROL SIZE TOKENS
+============================================================================= */
+:root{
+  --control-height-sm:2.5rem;
+  --control-height-md:3rem;
+  --control-height-lg:3.5rem;
+
+  --control-width-auth-max:26rem;
+  --control-width-auth-max-wide:30rem;
+
+  --control-padding-x-sm:0.85rem;
+  --control-padding-x-md:1rem;
+  --control-padding-x-lg:1.25rem;
+
+  --control-gap-xs:0.46rem;
+  --control-gap-sm:0.52rem;
+  --control-gap-md:0.72rem;
+  --control-gap-lg:0.82rem;
+  --control-gap-xl:1rem;
+}
+
+/* =============================================================================
+   03) BUTTON TOKENS
+============================================================================= */
+:root{
+  --button-font-size:var(--body-2-size);
+  --button-font-weight:500;
+  --button-letter-spacing:var(--tracking-copy);
+  --button-line-height:1;
+}
+
+:root{
+  --button-height-sm:var(--control-height-sm);
+  --button-height-md:var(--control-height-md);
+  --button-height-lg:var(--control-height-lg);
+
+  --button-radius-sm:var(--radius-pill);
+  --button-radius-md:var(--radius-pill);
+  --button-radius-lg:var(--radius-pill);
+
+  --button-padding-x-sm:var(--control-padding-x-sm);
+  --button-padding-x-md:var(--control-padding-x-md);
+  --button-padding-x-lg:var(--control-padding-x-lg);
+
+  --button-hover-lift-y-subtle:0;
+  --button-hover-scale-subtle:1;
+}
+
+/* =============================================================================
+   04) FIELD TOKENS
+============================================================================= */
+:root{
+  --input-font-size:var(--body-2-size);
+  --input-line-height:var(--body-2-line-height);
+  --input-letter-spacing:var(--body-2-tracking);
+}
+
+:root{
+  --input-height-sm:var(--control-height-sm);
+  --input-height-md:var(--control-height-md);
+  --input-height-lg:var(--control-height-lg);
+
+  --input-radius-sm:var(--radius-pill);
+  --input-radius-md:var(--radius-pill);
+  --input-radius-lg:var(--radius-pill);
+
+  --input-padding-x-sm:var(--control-padding-x-sm);
+  --input-padding-x-md:var(--control-padding-x-md);
+  --input-padding-x-lg:var(--control-padding-x-lg);
+}
+
+/* =============================================================================
+   05) ACCOUNT / AUTH CONTROL TOKENS
+============================================================================= */
+:root{
+  --account-control-width-max:var(--control-width-auth-max);
+  --account-control-width-max-wide:var(--control-width-auth-max-wide);
+
+  --account-content-gap-xs:var(--control-gap-xs);
+  --account-content-gap-sm:var(--control-gap-sm);
+  --account-content-gap-md:var(--control-gap-md);
+  --account-content-gap-lg:var(--control-gap-lg);
+  --account-content-gap-xl:var(--control-gap-xl);
+
+  --account-button-height:var(--button-height-md);
+  --account-button-radius:var(--button-radius-md);
+  --account-button-padding-x:var(--button-padding-x-lg);
+  --account-button-font-size:var(--button-font-size);
+  --account-button-font-weight:var(--button-font-weight);
+  --account-button-letter-spacing:var(--button-letter-spacing);
+  --account-button-line-height:var(--button-line-height);
+  --account-button-hover-lift-y:var(--button-hover-lift-y-subtle);
+  --account-button-hover-scale:var(--button-hover-scale-subtle);
+
+  --account-field-height:var(--input-height-md);
+  --account-field-radius:var(--input-radius-md);
+  --account-field-padding-x:var(--input-padding-x-md);
+  --account-field-font-size:var(--input-font-size);
+  --account-field-line-height:var(--input-line-height);
+  --account-field-letter-spacing:var(--input-letter-spacing);
+
+  --account-provider-button-height:var(--account-button-height);
+  --account-provider-button-radius:var(--account-button-radius);
+  --account-provider-button-padding-x:var(--account-button-padding-x);
+
+  --account-text-action-font-size:var(--body-3-size);
+  --account-text-action-line-height:var(--body-3-line-height);
+  --account-text-action-letter-spacing:var(--body-3-tracking);
+
+  --account-back-control-size:var(--icon-size-md);
+  --account-back-icon-size:1.12rem;
+}
+
+/* =============================================================================
+   06) ICON TOKENS
+============================================================================= */
+:root{
+  --icon-size-xs:0.9rem;
+  --icon-size-sm:1rem;
+  --icon-size-md:1.2rem;
+  --icon-size-lg:1.4rem;
+  --icon-size-xl:1.8rem;
+}
+
+/* =============================================================================
+   07) GLASS TOKENS
+============================================================================= */
+:root{
+  --glass-blur-sm:10px;
+  --glass-blur-md:16px;
+  --glass-blur-lg:24px;
+}
+
+/* =============================================================================
+   08) END OF FILE
+============================================================================= */

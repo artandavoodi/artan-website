@@ -1,0 +1,184 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ROOT ICON TOKENS
+   03) SHARED ICON BUTTON BASE
+   04) ICON BUTTON HOVER / FOCUS STATES
+   05) ICON SIZE UTILITIES
+   06) GENERIC ICON THEME UTILITIES
+   07) GENERIC HOVER HELPERS
+   08) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/icons.css */
+
+/* =============================================================================
+   02) ROOT ICON TOKENS
+============================================================================= */
+:root{
+  --icon-image-filter:none;
+  --icon-image-filter-strong:none;
+  --icon-color:var(--text-color);
+  --icon-color-muted:var(--text-secondary-color);
+  --icon-color-accent:var(--color-primary1);
+}
+
+:root.light-mode,
+html.light-mode,
+body.light-mode{
+  --icon-image-filter:none;
+  --icon-image-filter-strong:none;
+  --icon-color:var(--text-color);
+  --icon-color-muted:var(--text-secondary-color);
+  --icon-color-accent:var(--color-primary1);
+}
+
+:root.dark-mode,
+html.dark-mode,
+body.dark-mode{
+  --icon-image-filter:brightness(0) invert(1);
+  --icon-image-filter-strong:brightness(0) invert(1);
+  --icon-color:var(--text-color);
+  --icon-color-muted:var(--text-secondary-color);
+  --icon-color-accent:var(--color-primary1);
+}
+
+/* =============================================================================
+   03) SHARED ICON BUTTON BASE
+============================================================================= */
+.ui-icon-button{
+  appearance:none;
+  -webkit-appearance:none;
+  width:var(--control-height-md);
+  height:var(--control-height-md);
+  min-width:var(--control-height-md);
+  min-height:var(--control-height-md);
+  padding:0;
+  border-radius:50%;
+  border:var(--stroke-soft) solid transparent;
+  background:transparent;
+  color:var(--text-color);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard),
+    opacity var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
+}
+
+/* =============================================================================
+   04) ICON BUTTON HOVER / FOCUS STATES
+============================================================================= */
+.ui-icon-button:hover{
+  background:var(--control-bg-hover);
+  border-color:var(--control-border);
+  transform:translateY(var(--hover-lift-y));
+}
+
+.ui-icon-button:focus-visible{
+  outline:none;
+  border-color:var(--control-border-strong);
+  box-shadow:0 0 0 3px rgba(145,124,111,0.16);
+}
+
+/* =============================================================================
+   05) ICON SIZE UTILITIES
+============================================================================= */
+.ui-icon-xs{width:var(--icon-size-xs);height:var(--icon-size-xs);}
+.ui-icon-sm{width:var(--icon-size-sm);height:var(--icon-size-sm);}
+.ui-icon-md{width:var(--icon-size-md);height:var(--icon-size-md);}
+.ui-icon-lg{width:var(--icon-size-lg);height:var(--icon-size-lg);}
+.ui-icon-xl{width:var(--icon-size-xl);height:var(--icon-size-xl);}
+
+/* =============================================================================
+   06) GENERIC ICON THEME UTILITIES
+============================================================================= */
+.ui-icon-theme-aware,
+img.ui-icon-theme-aware,
+svg.ui-icon-theme-aware,
+.ui-icon-theme-aware img,
+.ui-icon-theme-aware svg,
+.ui-icon-button img,
+.ui-icon-button svg,
+.ui-icon-button [data-ui-icon],
+[data-ui-icon].ui-icon-theme-aware{
+  filter:var(--icon-image-filter) !important;
+  color:var(--icon-color);
+}
+
+svg.ui-icon-theme-aware,
+.ui-icon-theme-aware svg,
+svg.ui-icon-theme-aware *,
+.ui-icon-theme-aware svg *{
+  fill:currentColor;
+  stroke:currentColor;
+}
+
+.ui-icon-theme-aware-muted,
+img.ui-icon-theme-aware-muted,
+svg.ui-icon-theme-aware-muted,
+.ui-icon-theme-aware-muted img,
+.ui-icon-theme-aware-muted svg,
+[data-ui-icon-muted]{
+  filter:var(--icon-image-filter) !important;
+  color:var(--icon-color-muted);
+}
+
+svg.ui-icon-theme-aware-muted,
+.ui-icon-theme-aware-muted svg,
+svg.ui-icon-theme-aware-muted *,
+.ui-icon-theme-aware-muted svg *{
+  fill:currentColor;
+  stroke:currentColor;
+}
+
+.ui-icon-theme-aware-accent,
+img.ui-icon-theme-aware-accent,
+svg.ui-icon-theme-aware-accent,
+.ui-icon-theme-aware-accent img,
+.ui-icon-theme-aware-accent svg,
+[data-ui-icon-accent]{
+  filter:var(--icon-image-filter-strong) !important;
+  color:var(--icon-color-accent);
+}
+
+svg.ui-icon-theme-aware-accent,
+.ui-icon-theme-aware-accent svg,
+svg.ui-icon-theme-aware-accent *,
+.ui-icon-theme-aware-accent svg *{
+  fill:currentColor;
+  stroke:currentColor;
+}
+
+.ui-icon-mask,
+.ui-icon-mask::before,
+.ui-icon-mask::after,
+[data-ui-icon-mask]{
+  background-color:currentColor;
+}
+
+/* =============================================================================
+   07) GENERIC HOVER HELPERS
+============================================================================= */
+.ui-hover-lift:hover{
+  transform:translateY(var(--hover-lift-y));
+}
+
+.ui-hover-lift-strong:hover{
+  transform:translateY(var(--hover-lift-y-strong)) scale(var(--hover-scale-soft));
+}
+
+.ui-hover-opacity:hover{
+  opacity:var(--hover-opacity-soft);
+}
+
+/* =============================================================================
+   08) END OF FILE
+============================================================================= */

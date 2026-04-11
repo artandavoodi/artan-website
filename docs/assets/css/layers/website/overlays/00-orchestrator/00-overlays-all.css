@@ -1,0 +1,32 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) OVERLAY AUTHORITY IMPORTS
+   03) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/layers/website/overlays/00-orchestrator/00-overlays-all.css */
+
+/* =============================================================================
+   02) OVERLAY AUTHORITY IMPORTS
+============================================================================= */
+@import url('../account/account-drawer.css');
+@import url('../account/account-email-auth-drawer.css');
+@import url('../account/account-forgot-password-drawer.css');
+@import url('../account/account-phone-auth-drawer.css');
+@import url('../account/account-profile-setup-drawer.css');
+@import url('../account/account-provider-apple-sheet.css');
+@import url('../account/account-provider-google-sheet.css');
+@import url('../account/account-sign-in-drawer.css');
+@import url('../account/account-sign-up-drawer.css');
+@import url('../cookie/cookie-consent.css');
+@import url('../cookie/cookie-language-overlay.css');
+@import url('../cookie/cookie-learning-overlay.css');
+@import url('../country/country-overlay.css');
+
+/* =============================================================================
+   03) END OF FILE
+============================================================================= */

@@ -101,6 +101,15 @@ let answers = [];
 const questionTextEl = document.getElementById("questionText");
 const sliderEl = document.getElementById("questionSlider");
 const nextBtnEl = document.getElementById("nextBtn");
+const questionPaneEl = document.getElementById("questionPane");
+const resultPaneEl = document.getElementById("resultPane");
+const landingPaneEl = document.getElementById("landingPane");
+const dominantMessageEl = document.getElementById("dominantMessage");
+const detailsEl = document.getElementById("stageDetails");
+const overallResultEl = document.getElementById("overallResult");
+const scoreIEl = document.getElementById("scoreI");
+const scoreIIEl = document.getElementById("scoreII");
+const scoreIIIEl = document.getElementById("scoreIII");
 
 // ----------------- QUESTION INDICATOR BASELINE FUNCTIONALITY -----------------
 function updateProgressBar() {
@@ -152,26 +161,28 @@ function randomizeQuestions() {
 // ----------------------------------------------------------------------------------
 
 function showQuestion() {
-  // use randomizedQuestions if available, else fallback to original QUESTIONS
+  if (!questionTextEl || !sliderEl) return;
   const source = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions : QUESTIONS;
   const q = source[currentQ];
+  if (!q) return;
   questionTextEl.textContent = q.en;
   sliderEl.value = 5;
 }
-nextBtnEl.addEventListener("click", () => {
-  // Prevent double-answering or going out of bounds
-  const source = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions : QUESTIONS;
-  if (currentQ < source.length) {
-    answers.push(parseFloat(sliderEl.value));
-    currentQ++;
-    updateProgressBar();
-    if (currentQ >= source.length) {
-      showResults();
-    } else {
-      showQuestion();
+if (nextBtnEl && sliderEl) {
+  nextBtnEl.addEventListener("click", () => {
+    const source = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions : QUESTIONS;
+    if (currentQ < source.length) {
+      answers.push(parseFloat(sliderEl.value));
+      currentQ++;
+      updateProgressBar();
+      if (currentQ >= source.length) {
+        showResults();
+      } else {
+        showQuestion();
+      }
     }
-  }
-});
+  });
+}
 
 // Remove legacy/duplicate showResults (if present above)
 function calculateOverallAwareness(stageAvg){
@@ -234,22 +245,23 @@ function calculateOverallAwareness(stageAvg){
 
 // ----------------- Show Overall Result -----------------
 function showOverallResult(stageAvg){
-  const overallEl = document.getElementById("overallResult");
+  if (!overallResultEl) return;
   const {finalColor, finalText} = calculateOverallAwareness(stageAvg);
 
-  overallEl.innerHTML = `
+  overallResultEl.innerHTML = `
     <div style="display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:12px;">
       <span style="display:inline-block;width:60px;height:12px;border-radius:6px;background:${finalColor};box-shadow:0 2px 6px rgba(0,0,0,0.1);"></span>
     </div>
     <div style="font-size:15px;line-height:1.5; color:#222;">${finalText}</div>
   `;
-  overallEl.classList.remove("hidden");
+  overallResultEl.classList.remove("hidden");
 }
 
 function showResults() {
-  // Hide question, show result
-  document.getElementById("questionPane").classList.add("hidden");
-  document.getElementById("resultPane").classList.remove("hidden");
+  if (!questionPaneEl || !resultPaneEl || !scoreIEl || !scoreIIEl || !scoreIIIEl || !dominantMessageEl || !detailsEl) return;
+
+  questionPaneEl.classList.add("hidden");
+  resultPaneEl.classList.remove("hidden");
 
   const stageScores = { 1: [], 2: [], 3: [] };
   const source = (randomizedQuestions && randomizedQuestions.length > 0) ? randomizedQuestions : QUESTIONS;
@@ -263,19 +275,17 @@ function showResults() {
     3: average(stageScores[3])
   };
 
-  document.getElementById("scoreI").textContent = stageAvg[1].toFixed(1);
-  document.getElementById("scoreII").textContent = stageAvg[2].toFixed(1);
-  document.getElementById("scoreIII").textContent = stageAvg[3].toFixed(1);
+  scoreIEl.textContent = stageAvg[1].toFixed(1);
+  scoreIIEl.textContent = stageAvg[2].toFixed(1);
+  scoreIIIEl.textContent = stageAvg[3].toFixed(1);
 
   let maxStage = 1;
   if (stageAvg[2] >= stageAvg[maxStage]) maxStage = 2;
   if (stageAvg[3] >= stageAvg[maxStage]) maxStage = 3;
 
-  const dominantMessageEl = document.getElementById("dominantMessage");
   dominantMessageEl.classList.remove("hidden");
   dominantMessageEl.innerHTML = STAGE_SUMMARY[maxStage].en;
 
-  const detailsEl = document.getElementById("stageDetails");
   detailsEl.innerHTML = "";
   STAGE_INFO.forEach((stage, i) => {
     const score = stageAvg[i + 1];
@@ -283,9 +293,9 @@ function showResults() {
     stageDiv.classList.add("stage-desc");
 
     const descHTML = stage.description.en.map((line, j) => {
-      if (j === 0) return line + "\n\n"; // Stage description line
+      if (j === 0) return line + "\n\n";
 
-      let circleColor = "#FFCC33"; // default neutral
+      let circleColor = "#FFCC33";
       let opacity = 0.3;
       let bold = false;
 
@@ -325,13 +335,13 @@ function showResults() {
     detailsEl.appendChild(stageDiv);
   });
 
-  // Show the overall result bar and message
   showOverallResult(stageAvg);
 }
 // ----------------- STAGE CLICK TOGGLE -----------------
 document.querySelectorAll('.result-stage').forEach((el, idx)=>{
   el.addEventListener('click', ()=>{
     const descs = document.querySelectorAll('.stage-desc');
+    if (!descs[idx]) return;
     descs[idx].style.display = descs[idx].style.display==='none'?'block':'none';
   });
 });
@@ -346,19 +356,20 @@ const restartBtn = document.getElementById("restartBtn");
 
 if (startBtn) {
   startBtn.addEventListener("click", () => {
-    document.getElementById("landingPane").classList.add("hidden");
+    if (!landingPaneEl || !questionPaneEl) return;
+    landingPaneEl.classList.add("hidden");
     randomizeQuestions();
-    document.getElementById("questionPane").classList.remove("hidden");
+    questionPaneEl.classList.remove("hidden");
     updateProgressBar();
     showQuestion();
   });
 }
 if (restartBtn) {
   restartBtn.addEventListener("click", () => {
+    if (!resultPaneEl || !questionPaneEl) return;
     randomizeQuestions();
-    // currentQ and answers are reset in randomizeQuestions
-    document.getElementById("resultPane").classList.add("hidden");
-    document.getElementById("questionPane").classList.remove("hidden");
+    resultPaneEl.classList.add("hidden");
+    questionPaneEl.classList.remove("hidden");
     updateProgressBar();
     showQuestion();
   });

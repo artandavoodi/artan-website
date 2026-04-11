@@ -1,0 +1,67 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SHARED DRAWER SHELL
+   03) SHARED DRAWER WIDTH VARIANTS
+   04) SHARED DRAWER PANEL STATES
+   05) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/drawers.css */
+
+/* =============================================================================
+   02) SHARED DRAWER SHELL
+============================================================================= */
+.ui-drawer-shell{
+  width:min(100%, var(--drawer-width-md));
+  padding:var(--drawer-padding);
+  border-radius:var(--radius-xl);
+  border:var(--stroke-soft) solid var(--control-border);
+  background:var(--surface-elevated);
+  box-shadow:var(--shadow-strong);
+  backdrop-filter:blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter:blur(var(--glass-blur-lg));
+  transition:
+    opacity var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+
+/* =============================================================================
+   03) SHARED DRAWER WIDTH VARIANTS
+============================================================================= */
+.ui-drawer-shell--sm{
+  width:min(100%, var(--drawer-width-sm));
+}
+
+.ui-drawer-shell--md{
+  width:min(100%, var(--drawer-width-md));
+}
+
+.ui-drawer-shell--lg{
+  width:min(100%, var(--drawer-width-lg));
+}
+
+/* =============================================================================
+   04) SHARED DRAWER PANEL STATES
+============================================================================= */
+.ui-drawer-hidden{
+  opacity:0;
+  pointer-events:none;
+  transform:translateX(-1rem);
+}
+
+.ui-drawer-visible{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateX(0);
+}
+
+/* =============================================================================
+   05) END OF FILE
+============================================================================= */

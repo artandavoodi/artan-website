@@ -1,0 +1,98 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) FORM STACK
+   03) FORM ROWS
+   04) LABEL SYSTEM
+   05) HELP / ERROR TEXT
+   06) CHECK / CHOICE ROWS
+   07) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/forms.css */
+
+/* =============================================================================
+   02) FORM STACK
+============================================================================= */
+.ui-form{
+  display:grid;
+  gap:var(--spacing-md);
+}
+
+.ui-form--compact{
+  gap:var(--spacing-sm);
+}
+
+.ui-form--relaxed{
+  gap:var(--spacing-lg);
+}
+
+/* =============================================================================
+   03) FORM ROWS
+============================================================================= */
+.ui-form-row{
+  display:grid;
+  gap:var(--spacing-xs);
+}
+
+.ui-form-row--inline{
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:var(--spacing-sm);
+}
+
+/* =============================================================================
+   04) LABEL SYSTEM
+============================================================================= */
+.ui-label{
+  display:inline-flex;
+  align-items:center;
+  gap:0.4rem;
+  color:var(--text-color);
+  font-size:var(--body-3-size);
+  font-weight:var(--body-3-weight);
+  letter-spacing:var(--tracking-ui);
+  line-height:1.2;
+}
+
+/* =============================================================================
+   05) HELP / ERROR TEXT
+============================================================================= */
+.ui-help-text,
+.ui-error-text{
+  margin:0;
+  font-size:var(--body-3-size);
+  line-height:var(--body-3-line-height);
+  letter-spacing:var(--body-3-tracking);
+}
+
+.ui-help-text{
+  color:var(--text-secondary-color);
+}
+
+.ui-error-text{
+  color:var(--color-primary7);
+}
+
+/* =============================================================================
+   06) CHECK / CHOICE ROWS
+============================================================================= */
+.ui-choice-row{
+  display:flex;
+  align-items:flex-start;
+  gap:var(--spacing-sm);
+}
+
+.ui-check,
+.ui-radio{
+  width:1rem;
+  height:1rem;
+  margin-top:0.15rem;
+  accent-color:var(--color-primary1);
+}
+
+/* =============================================================================
+   07) END OF FILE
+============================================================================= */

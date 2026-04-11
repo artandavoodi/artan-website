@@ -14,7 +14,10 @@
 
 .site-footer{
   width:100%;
-  font-size:0.9rem;
+  font-size:var(--type-body-sm-size, 0.9rem);
+  font-weight:var(--type-body-regular-weight, 400);
+  line-height:var(--type-body-sm-line-height, 1.4);
+  letter-spacing:var(--type-body-tracking, normal);
   margin:0.6rem 0 0 0;
   padding:0.8rem 0 0.9rem 0;
   background-color:transparent;
@@ -61,6 +64,10 @@
   display:inline-flex;
   align-items:center;
   color:var(--text-secondary-color);
+  font-size:inherit;
+  font-weight:inherit;
+  line-height:inherit;
+  letter-spacing:inherit;
   white-space:nowrap;
 }
 
@@ -89,7 +96,11 @@
   border:0;
   background:transparent;
   color:var(--text-secondary-color);
-  font:inherit;
+  font-family:inherit;
+  font-size:inherit;
+  font-weight:inherit;
+  line-height:inherit;
+  letter-spacing:inherit;
   line-height:1;
   cursor:pointer;
   transform:none;

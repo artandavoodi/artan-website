@@ -1,37 +1,5 @@
 {
   "site": {
-    "name": "Artan",
-    "type": "academic-publication-system",
-    "source": "Obsidian → content_sync"
-  },
-  "sections": [
-    { "id": "home", "path": "/index.html" },
-    { "id": "about", "path": "/pages/about.html" },
-    { "id": "contact", "path": "/pages/contact.html" },
-    {
-      "id": "publications",
-      "path": "/pages/publications/index.html",
-      "source_root": "/content_sync",
-      "streams": [
-        { "id": "essays", "source": "Essays/" },
-        { "id": "research", "source": "Research/" },
-        { "id": "notes", "source": "Notes/" },
-        { "id": "visual", "source": "Visual/" }
-      ]
-    },
-    { "id": "projects", "path": "/pages/projects/index.html" },
-    { "id": "books", "path": "/pages/books/index.html" },
-    { "id": "music", "path": "/pages/music/index.html" },
-    { "id": "news", "path": "/pages/news/index.html" },
-    { "id": "events", "path": "/pages/events/index.html" },
-    { "id": "gallery", "path": "/pages/gallery/index.html" },
-    { "id": "podcast", "path": "/pages/podcast/index.html" },
-    { "id": "tour", "path": "/pages/tour/index.html" }
-  ]
-}
-
-{
-  "site": {
     "name": "Neuroartan",
     "type": "institutional-public-website",
     "source": "PTW-approved website output"

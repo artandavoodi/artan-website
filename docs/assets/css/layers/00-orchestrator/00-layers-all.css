@@ -1,0 +1,26 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SOVEREIGN LAYER AUTHORITY IMPORTS
+   03) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/layers/00-orchestrator/00-layers-all.css */
+
+/* =============================================================================
+   02) SOVEREIGN LAYER AUTHORITY IMPORTS
+============================================================================= */
+@import url('../brand/00-orchestrator/00-brand-all.css');
+@import url('../developer/00-orchestrator/00-developer-all.css');
+@import url('../icos/00-orchestrator/00-icos-all.css');
+@import url('../investor/00-orchestrator/00-investor-all.css');
+@import url('../jobs/00-orchestrator/00-jobs-all.css');
+@import url('../office/00-orchestrator/00-office-all.css');
+@import url('../website/00-orchestrator/00-website-all.css');
+
+/* =============================================================================
+   03) END OF FILE
+============================================================================= */

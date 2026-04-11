@@ -1,0 +1,61 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SHARED OVERLAY BACKDROP
+   03) SHARED OVERLAY SURFACE
+   04) SHARED OVERLAY OPEN STATE HELPERS
+   05) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/overlays.css */
+
+/* =============================================================================
+   02) SHARED OVERLAY BACKDROP
+============================================================================= */
+.ui-overlay-backdrop{
+  background:var(--overlay-backdrop);
+  backdrop-filter:blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter:blur(var(--glass-blur-sm));
+  transition:
+    opacity var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard),
+    backdrop-filter var(--duration-base) var(--ease-standard);
+}
+
+/* =============================================================================
+   03) SHARED OVERLAY SURFACE
+============================================================================= */
+.ui-overlay-surface{
+  background:var(--surface-elevated);
+  border:var(--stroke-soft) solid var(--control-border);
+  border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-strong);
+  backdrop-filter:blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter:blur(var(--glass-blur-lg));
+  transition:
+    opacity var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+
+/* =============================================================================
+   04) SHARED OVERLAY OPEN STATE HELPERS
+============================================================================= */
+.ui-overlay-hidden{
+  opacity:0;
+  pointer-events:none;
+}
+
+.ui-overlay-visible{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* =============================================================================
+   05) END OF FILE
+============================================================================= */

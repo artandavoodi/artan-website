@@ -18,14 +18,15 @@
    16) ROW ICON IMAGES
    17) ROW EXPAND CONTROL
    18) TOGGLE SYSTEM
-   19) LEARNING CARDS
-   20) GRANULAR SUBITEMS
-   21) SUBITEM TOGGLE ALIGNMENT
-   22) STICKY ACTION BAR
-   23) EXTERNAL COOKIE FOOTER BAR
-   24) REDUCED MOTION
-   25) RESPONSIVE — 1024PX
-   26) RESPONSIVE — 768PX
+   19) INNER SURFACES / MOUNTED CONTENT
+   20) LEARNING CARDS
+   21) GRANULAR SUBITEMS
+   22) SUBITEM TOGGLE ALIGNMENT
+   23) STICKY ACTION BAR
+   24) EXTERNAL COOKIE FOOTER BAR
+   25) REDUCED MOTION
+   26) RESPONSIVE — 1024PX
+   27) RESPONSIVE — 768PX
 ============================================================================= */
 
 /* =============================================================================
@@ -37,7 +38,7 @@
 ============================================================================= */
 :root{
   --cookie-consent-backdrop: rgba(0, 0, 0, 0.16);
-  --cookie-consent-surface: rgb(255, 255, 255);
+  --cookie-consent-surface: rgb(10, 10, 10);
   --cookie-consent-border: rgba(255, 255, 255, 0.08);
   --cookie-consent-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
   --cookie-consent-width: min(36rem, calc(100vw - (2 * var(--cookie-consent-min-viewport-gap))));
@@ -58,8 +59,8 @@
   --cookie-consent-row-shadow: 0 14px 34px rgba(0, 0, 0, 0.04);
   --cookie-consent-education-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
   --cookie-consent-sticky-actions-border: color-mix(in srgb, var(--text-secondary-color) 35%, transparent);
-  --cookie-consent-brand-image-filter: none;
-  --cookie-consent-brand-symbol-filter: none;
+  --cookie-consent-brand-image-filter: var(--icon-image-filter, none);
+  --cookie-consent-brand-symbol-filter: var(--icon-image-filter, none);
   --cookie-consent-soft: color-mix(in srgb, var(--text-primary-color) 4%, transparent);
   --cookie-consent-soft-strong: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
   --cookie-consent-row-surface: color-mix(in srgb, var(--bg-primary-color) 72%, transparent);
@@ -67,11 +68,11 @@
   --cookie-consent-row-hover: color-mix(in srgb, var(--text-primary-color) 12%, transparent);
   --cookie-consent-row-icon-surface: color-mix(in srgb, var(--text-primary-color) 4%, transparent);
   --cookie-consent-row-icon-color: color-mix(in srgb, var(--text-primary-color) 76%, transparent);
-  --cookie-consent-row-icon-image-filter: none;
+  --cookie-consent-row-icon-image-filter: var(--icon-image-filter, none);
   --cookie-consent-row-icon-size: 1.68rem;
   --cookie-consent-row-expand-size: 1.18rem;
   --cookie-consent-row-expand-icon-size: 0.92rem;
-  --cookie-consent-row-expand-icon-filter: none;
+  --cookie-consent-row-expand-icon-filter: var(--icon-image-filter, none);
   --cookie-consent-toggle-off: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
   --cookie-consent-toggle-on: var(--color-primary1);
   --cookie-consent-toggle-on-accent: var(--color-primary1);
@@ -80,9 +81,14 @@
   --cookie-consent-toggle-thumb-size: 1.1rem;
   --cookie-consent-toggle-thumb-offset: 0.1rem;
   --cookie-consent-toggle-thumb: #ffffff;
-  --cookie-consent-brand-symbol-size: 2.4rem;
+  --cookie-consent-brand-symbol-wrap-size: 2.4rem;
+  --cookie-consent-brand-symbol-size: 2.3rem;
   --cookie-consent-brand-wordmark-width: 11.8rem;
   --cookie-consent-action-gap: 0.72rem;
+  --cookie-consent-action-border: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  --cookie-consent-action-surface: var(--cookie-consent-soft);
+  --cookie-consent-action-surface-hover: var(--cookie-consent-soft-strong);
+  --cookie-consent-action-text: var(--text-primary-color);
   --cookie-consent-content-gutter: 1.42rem;
   --cookie-consent-body-edge-inset: 0.52rem;
   --cookie-consent-toggle-ring: color-mix(in srgb, var(--text-primary-color) 16%, transparent);
@@ -107,21 +113,29 @@
   --cookie-consent-footer-language-value: var(--text-primary-color);
   --cookie-consent-learning-shell-min-height: 10.5rem;
   --cookie-consent-learning-shell-radius: 1rem;
-  --cookie-consent-learning-shell-padding: 1rem;
+  --cookie-consent-learning-shell-padding: 0.88rem;
   --cookie-consent-learning-section-spacing: 0;
   --cookie-consent-learning-panel-inset: 0;
   --cookie-consent-learning-icon-size: 1.68rem;
   --cookie-consent-learning-card-gap: 0.82rem;
   --cookie-consent-learning-copy-gap: 0.28rem;
+  --cookie-consent-copy-stack-gap: 0.56rem;
 }
 
+:root.light-mode,
+html.light-mode,
 body.light-mode{
+  --cookie-consent-backdrop: rgba(0, 0, 0, 0.16);
   --cookie-consent-surface: rgb(255, 255, 255);
-  --cookie-consent-brand-image-filter: none;
-  --cookie-consent-brand-symbol-filter: none;
+  --cookie-consent-brand-image-filter: var(--icon-image-filter, none);
+  --cookie-consent-brand-symbol-filter: var(--icon-image-filter, none);
   --cookie-consent-row-shadow: 0 14px 34px rgba(0, 0, 0, 0.035);
+  --cookie-consent-row-icon-image-filter: var(--icon-image-filter, none);
+  --cookie-consent-row-expand-icon-filter: var(--icon-image-filter, none);
 }
 
+:root.dark-mode,
+html.dark-mode,
 body.dark-mode{
   --cookie-consent-backdrop: rgba(0, 0, 0, 0.28);
   --cookie-consent-surface: rgb(10, 10, 10);
@@ -133,8 +147,8 @@ body.dark-mode{
   --cookie-consent-support-text: color-mix(in srgb, var(--text-primary-color) 58%, transparent);
   --cookie-consent-education-border: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
   --cookie-consent-sticky-actions-border: color-mix(in srgb, var(--text-secondary-color) 35%, transparent);
-  --cookie-consent-brand-image-filter: none;
-  --cookie-consent-brand-symbol-filter: invert(1);
+  --cookie-consent-brand-image-filter: var(--icon-image-filter, brightness(0) invert(1));
+  --cookie-consent-brand-symbol-filter: var(--icon-image-filter, brightness(0) invert(1));
   --cookie-consent-soft: rgba(255, 255, 255, 0.02);
   --cookie-consent-soft-strong: rgba(255, 255, 255, 0.05);
   --cookie-consent-row-surface: rgba(255, 255, 255, 0.03);
@@ -142,8 +156,8 @@ body.dark-mode{
   --cookie-consent-row-hover: color-mix(in srgb, var(--text-primary-color) 14%, transparent);
   --cookie-consent-row-icon-surface: rgba(255, 255, 255, 0.04);
   --cookie-consent-row-icon-color: var(--text-primary-color);
-  --cookie-consent-row-icon-image-filter: invert(1);
-  --cookie-consent-row-expand-icon-filter: invert(1);
+  --cookie-consent-row-icon-image-filter: var(--icon-image-filter, brightness(0) invert(1));
+  --cookie-consent-row-expand-icon-filter: var(--icon-image-filter, brightness(0) invert(1));
   --cookie-consent-row-title-secondary: color-mix(in srgb, var(--text-primary-color) 84%, transparent);
   --cookie-consent-row-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
   --cookie-consent-toggle-off: rgba(255, 255, 255, 0.12);
@@ -240,7 +254,7 @@ body.cookie-consent-closing .cookie-consent-backdrop{
   gap: 0;
   flex-direction: column;
   overflow: hidden;
-  padding: 1.25rem;
+  padding: 1.25rem 1.25rem 0 1.25rem;
   border: 1px solid var(--cookie-consent-border);
   border-radius: var(--cookie-consent-radius);
   background: var(--cookie-consent-surface);
@@ -287,7 +301,6 @@ body.cookie-consent-closing .cookie-consent-panel{
 /* =============================================================================
    09) CLOSE CONTROL
 ============================================================================= */
-
 .cookie-consent-bottom-stack::before{
   content: "";
   position: absolute;
@@ -330,6 +343,10 @@ body.cookie-consent-closing .cookie-consent-panel{
   color: var(--text-primary-color);
   cursor: pointer;
   transition: color 200ms ease, opacity 160ms ease;
+}
+
+.cookie-consent-close[hidden]{
+  display: none !important;
 }
 
 .cookie-consent-close-line{
@@ -402,16 +419,24 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 .cookie-consent-banner,
-.cookie-consent-settings{
+.cookie-consent-settings,
+.cookie-consent-language-surface,
+.cookie-consent-learning-surface{
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
-.cookie-consent-banner-copy,
-.cookie-consent-settings-intro,
 .cookie-consent-row,
 .cookie-consent-education{
+  margin-bottom: 1rem;
+}
+
+.cookie-consent-banner-copy{
+  margin-bottom: 0;
+}
+
+.cookie-consent-settings-intro{
   margin-bottom: 1rem;
 }
 
@@ -435,14 +460,16 @@ body.cookie-consent-closing .cookie-consent-close{
   margin-top: 0;
 }
 
-/* =============================================================================
-   EXTERNAL COOKIE FOOTER BAR
-============================================================================= */
 .cookie-consent-external-footer{
   width: min(100%, var(--cookie-consent-width));
   max-width: calc(100vw - (2 * var(--cookie-consent-min-viewport-gap)));
   margin: 0 auto;
   pointer-events: auto;
+}
+
+.cookie-consent-bottom-stack[hidden],
+.cookie-consent-primary-shell[hidden]{
+  display: none !important;
 }
 
 /* =============================================================================
@@ -496,24 +523,37 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 .cookie-consent-brand-symbol-wrap{
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--cookie-consent-brand-symbol-size);
-  height: var(--cookie-consent-brand-symbol-size);
+  width: var(--cookie-consent-brand-symbol-wrap-size);
+  height: var(--cookie-consent-brand-symbol-wrap-size);
+  min-width: var(--cookie-consent-brand-symbol-wrap-size);
+  min-height: var(--cookie-consent-brand-symbol-wrap-size);
   background: transparent;
   overflow: visible;
-  flex-shrink: 0;
+  flex: 0 0 var(--cookie-consent-brand-symbol-wrap-size);
 }
 
 .cookie-consent-brand-symbol{
-  width: 2.3rem;
-  height: 2.3rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--cookie-consent-brand-symbol-size);
+  height: var(--cookie-consent-brand-symbol-size);
   display: block;
   object-fit: contain;
+  object-position: center;
   filter: var(--cookie-consent-brand-symbol-filter);
-  transform-origin: center;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
   animation: cookieConsentIconFloat 5.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.cookie-consent-brand-symbol[hidden]{
+  display: none !important;
 }
 
 .cookie-consent-brand-wordmark{
@@ -529,19 +569,19 @@ body.cookie-consent-closing .cookie-consent-close{
 @keyframes cookieConsentIconFloat{
   0%,
   100%{
-    transform: rotate(0deg) scale(1);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
   }
   18%{
-    transform: rotate(-30deg) scale(1);
+    transform: translate(-50%, -50%) rotate(-30deg) scale(1);
   }
   34%{
-    transform: rotate(0deg) scale(1);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
   }
   62%{
-    transform: rotate(0deg) scale(0.94);
+    transform: translate(-50%, -50%) rotate(0deg) scale(0.94);
   }
   78%{
-    transform: rotate(0deg) scale(1);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
   }
 }
 
@@ -562,49 +602,43 @@ body.cookie-consent-closing .cookie-consent-close{
   justify-content: center;
   min-height: 3rem;
   padding: 0.82rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  border: 1px solid var(--cookie-consent-action-border);
   border-radius: var(--cookie-consent-pill-radius);
-  background: transparent;
-  color: var(--text-primary-color);
+  background: var(--cookie-consent-action-surface);
+  color: var(--cookie-consent-action-text);
   text-decoration: none;
   font-size: 0.94rem;
   font-weight: 300;
   letter-spacing: -0.015em;
   line-height: 1.2;
   white-space: nowrap;
-  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, transform 200ms ease;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
 }
 
 .cookie-consent-action--primary{
-  background: var(--text-primary-color);
-  color: var(--bg-primary-color);
-  border-color: var(--text-primary-color);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  background: var(--cookie-consent-action-surface);
+  color: var(--cookie-consent-action-text);
+  border-color: var(--cookie-consent-action-border);
+  box-shadow: none;
 }
 
 .cookie-consent-action--secondary{
-  background: var(--cookie-consent-soft);
+  background: var(--cookie-consent-action-surface);
+  color: var(--cookie-consent-action-text);
+  border-color: var(--cookie-consent-action-border);
+}
+
+.cookie-consent-action--tertiary{
+  background: var(--cookie-consent-action-surface);
+  color: var(--cookie-consent-action-text);
+  border-color: var(--cookie-consent-action-border);
 }
 
 .cookie-consent-action:hover,
 .cookie-consent-action:focus-visible,
 .cookie-consent-action:active{
+  background: var(--cookie-consent-action-surface-hover);
   outline: none;
-}
-
-.cookie-consent-action--primary:hover,
-.cookie-consent-action--primary:focus-visible,
-.cookie-consent-action--primary:active{
-  transform: translateY(-1px);
-}
-
-.cookie-consent-action--secondary:hover,
-.cookie-consent-action--secondary:focus-visible,
-.cookie-consent-action--secondary:active,
-.cookie-consent-action--tertiary:hover,
-.cookie-consent-action--tertiary:focus-visible,
-.cookie-consent-action--tertiary:active{
-  background: var(--cookie-consent-soft-strong);
 }
 
 /* =============================================================================
@@ -711,6 +745,47 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 /* =============================================================================
+   15) SURFACE BLOCKS
+============================================================================= */
+.cookie-consent-banner{
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.cookie-consent-banner-copy,
+.cookie-consent-settings-intro{
+  display: flex;
+  flex-direction: column;
+  gap: var(--cookie-consent-copy-stack-gap);
+  padding-left: var(--cookie-consent-content-gutter);
+  padding-right: var(--cookie-consent-content-gutter);
+}
+
+.cookie-consent-settings-intro{
+  width: 100%;
+  margin-top: 0;
+}
+
+.cookie-consent-banner-copy .cookie-consent-note,
+.cookie-consent-settings-intro .cookie-consent-note{
+  margin: 0;
+  padding: 0;
+}
+
+.cookie-consent-banner .cookie-consent-note{
+  color: var(--cookie-consent-support-text);
+}
+
+.cookie-consent-banner .cookie-consent-note strong,
+.cookie-consent-settings .cookie-consent-note strong,
+.cookie-consent-education .cookie-consent-note strong{
+  color: var(--text-primary-color);
+  font-weight: 400;
+}
+
+/* =============================================================================
    16) ROW ICON IMAGES
 ============================================================================= */
 .cookie-consent-row-icon-image,
@@ -741,7 +816,7 @@ body.cookie-consent-closing .cookie-consent-close{
   border: 0;
   background: transparent;
   cursor: pointer;
-  flex-shrink: 0;
+  flex: 0 0 auto;
 }
 
 .cookie-consent-row-expand-icon{
@@ -809,40 +884,6 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 /* =============================================================================
-   15) SURFACE BLOCKS
-============================================================================= */
-.cookie-consent-banner{
-  padding: 1rem var(--cookie-consent-content-gutter);
-  border: 1px solid var(--cookie-consent-divider);
-  border-radius: var(--cookie-consent-card-radius);
-  background: transparent;
-}
-
-.cookie-consent-banner-copy,
-.cookie-consent-settings-intro{
-  display: flex;
-  flex-direction: column;
-  gap: 0.28rem;
-}
-
-.cookie-consent-settings-intro{
-  padding-left: var(--cookie-consent-content-gutter);
-  padding-right: var(--cookie-consent-content-gutter);
-  width: 100%;
-}
-
-.cookie-consent-banner .cookie-consent-note{
-  color: var(--cookie-consent-support-text);
-}
-
-.cookie-consent-banner .cookie-consent-note strong,
-.cookie-consent-settings .cookie-consent-note strong,
-.cookie-consent-education .cookie-consent-note strong{
-  color: var(--text-primary-color);
-  font-weight: 400;
-}
-
-/* =============================================================================
    18) TOGGLE SYSTEM
 ============================================================================= */
 .cookie-consent-toggle{
@@ -883,7 +924,8 @@ body.cookie-consent-closing .cookie-consent-close{
   border-radius: 999px;
   background: var(--cookie-consent-toggle-thumb);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.14), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
-  transform: translate(0, -50%);
+  transform: translate(0, -50%
+  );
   transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -897,7 +939,7 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 /* =============================================================================
-   19) LEARNING CARDS
+   20) LEARNING CARDS
 ============================================================================= */
 .cookie-consent-panel > .cookie-consent-learning-layer{
   position: relative;
@@ -1031,7 +1073,7 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 /* =============================================================================
-   20) GRANULAR SUBITEMS
+   21) GRANULAR SUBITEMS
 ============================================================================= */
 .cookie-consent-subitems{
   display: flex;
@@ -1089,21 +1131,21 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 /* =============================================================================
-   21) SUBITEM TOGGLE ALIGNMENT
+   22) SUBITEM TOGGLE ALIGNMENT
 ============================================================================= */
 .cookie-consent-toggle--subitem{
   align-self: center;
 }
 
 /* =============================================================================
-   22) STICKY ACTION BAR
+   23) STICKY ACTION BAR
 ============================================================================= */
 .cookie-consent-actions{
   position: relative;
   z-index: 3;
   margin-top: 0;
   padding-top: 0.72rem;
-  padding-bottom: 0.72rem;
+  padding-bottom: 1.12rem;
   padding-left: var(--cookie-consent-body-edge-inset);
   padding-right: var(--cookie-consent-body-edge-inset);
   background: transparent;
@@ -1131,7 +1173,7 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 /* =============================================================================
-   23) EXTERNAL COOKIE FOOTER BAR
+   24) EXTERNAL COOKIE FOOTER BAR
 ============================================================================= */
 .cookie-consent-footer-bar{
   position: relative;
@@ -1237,7 +1279,7 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 /* =============================================================================
-   24) REDUCED MOTION
+   25) REDUCED MOTION
 ============================================================================= */
 @media (prefers-reduced-motion: reduce){
   .cookie-consent-brand-symbol,
@@ -1254,7 +1296,7 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 /* =============================================================================
-   25) RESPONSIVE — 1024PX
+   26) RESPONSIVE — 1024PX
 ============================================================================= */
 @media (max-width:1024px){
   .cookie-consent-panel{
@@ -1263,7 +1305,7 @@ body.cookie-consent-closing .cookie-consent-close{
 }
 
 /* =============================================================================
-   26) RESPONSIVE — 768PX
+   27) RESPONSIVE — 768PX
 ============================================================================= */
 @media (max-width:768px){
   :root{
@@ -1278,11 +1320,13 @@ body.cookie-consent-closing .cookie-consent-close{
     --cookie-consent-row-expand-icon-size: 0.84rem;
     --cookie-consent-content-gutter: 1.08rem;
     --cookie-consent-body-edge-inset: 0.36rem;
+    --cookie-consent-brand-symbol-wrap-size: 2rem;
+    --cookie-consent-brand-symbol-size: 1.9rem;
   }
 
   .cookie-consent-panel{
     max-height: min(42rem, calc(100vh - 1.6rem));
-    padding: 0.95rem;
+    padding: 0.95rem 0.95rem 0 0.95rem;
     border-radius: 1.5rem;
   }
 
@@ -1307,12 +1351,7 @@ body.cookie-consent-closing .cookie-consent-close{
     padding-top: 0.51rem;
     padding-left: 0.36rem;
     padding-right: 0.36rem;
-    padding-bottom: 0.62rem;
-  }
-
-  .cookie-consent-banner{
-    padding-top: 0.92rem;
-    padding-bottom: 0.92rem;
+    padding-bottom: 0;
   }
 
   .cookie-consent-row-topline{
@@ -1327,7 +1366,7 @@ body.cookie-consent-closing .cookie-consent-close{
   .cookie-consent-actions{
     flex-direction: column;
     padding-top: 0.62rem;
-    padding-bottom: 0.62rem;
+    padding-bottom: 1rem;
   }
 
   .cookie-consent-footer-bar{
@@ -1403,16 +1442,13 @@ body.cookie-consent-closing .cookie-consent-close{
     height: 0.84rem;
   }
 
-  .cookie-consent-brand-symbol{
-    width: 1.9rem;
-    height: 1.9rem;
-  }
 
   .cookie-consent-learning-rail{
     grid-template-columns: 1fr;
   }
+
   .cookie-consent-learning-card{
-    padding: 0.9rem;
+    padding: 0.84rem;
   }
 
   .cookie-consent-learning-copy strong{

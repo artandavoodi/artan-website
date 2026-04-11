@@ -1,165 +1,110 @@
 /* =============================================================================
    00) FILE INDEX
-   01) OVERLAY ROOT
-   02) BACKDROP
-   03) PANEL
-   04) HEADER
-   05) TITLE
-   06) BACK CONTROL
-   07) CLOSE CONTROL SUPPRESSION
-   08) BODY
-   09) ARTICLE SURFACE
-   10) TYPOGRAPHY
-   11) RESPONSIVE
+   01) SURFACE ROOT
+   02) PANEL
+   03) BODY
+   04) ARTICLE SURFACE
+   05) TYPOGRAPHY
+   06) RESPONSIVE
 ============================================================================= */
 
 /* =============================================================================
-   01) OVERLAY ROOT
+   01) SURFACE ROOT
 ============================================================================= */
 :root{
-  --cookie-learning-overlay-z-index: 1400;
   --cookie-learning-overlay-panel-width: var(--cookie-language-overlay-width);
   --cookie-learning-overlay-panel-max-height: var(--cookie-language-overlay-max-height);
   --cookie-learning-overlay-radius: var(--cookie-language-overlay-radius);
   --cookie-learning-overlay-back-icon-size: 1rem;
-  --cookie-learning-overlay-back-icon-filter: none;
+  --cookie-learning-overlay-back-icon-filter: var(--icon-image-filter, none);
   --cookie-learning-overlay-divider: rgba(255, 255, 255, 0.08);
   --cookie-learning-overlay-surface: rgba(10, 10, 10, 0.96);
-  --cookie-learning-overlay-backdrop: rgba(0, 0, 0, 0.52);
+  --cookie-consent-learning-shell-min-height: 10.5rem;
+  --cookie-consent-learning-shell-radius: 1rem;
+  --cookie-consent-learning-shell-padding: 1rem;
+  --cookie-consent-learning-section-spacing: 0;
+  --cookie-consent-learning-panel-inset: 0;
+  --cookie-consent-learning-icon-size: 1.68rem;
+  --cookie-consent-learning-card-gap: 0.82rem;
+  --cookie-consent-learning-copy-gap: 0.28rem;
+}
+
+:root.light-mode,
+html.light-mode,
+body.light-mode{
+  --cookie-learning-overlay-back-icon-filter: var(--icon-image-filter, none);
+}
+
+:root.dark-mode,
+html.dark-mode,
+body.dark-mode{
+  --cookie-learning-overlay-back-icon-filter: var(--icon-image-filter, none);
 }
 
 .cookie-learning-overlay{
-  position: fixed;
-  inset: 0;
-  z-index: var(--cookie-learning-overlay-z-index);
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.2rem;
-}
-
-.cookie-learning-overlay[hidden]{
-  display: none;
-}
-
-/* =============================================================================
-   02) BACKDROP
-============================================================================= */
-.cookie-learning-overlay-backdrop{
-  position: absolute;
-  inset: 0;
-  background: var(--cookie-learning-overlay-backdrop);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
 }
 
 /* =============================================================================
-   03) PANEL
+   02) PANEL
 ============================================================================= */
 .cookie-learning-overlay-panel{
   position: relative;
   display: flex;
   flex-direction: column;
-  width: var(--cookie-learning-overlay-panel-width);
-  max-width: 100%;
-  height: var(--cookie-learning-overlay-panel-max-height);
-  max-height: var(--cookie-learning-overlay-panel-max-height);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--cookie-learning-overlay-radius);
-  background: var(--cookie-learning-overlay-surface);
-  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.42);
-  overflow: hidden;
-  padding: 1.25rem;
-}
-
-/* =============================================================================
-   04) HEADER
-============================================================================= */
-.cookie-learning-overlay-header{
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 1.42rem;
-  border-bottom: 1px solid var(--cookie-learning-overlay-divider);
-}
-
-/* =============================================================================
-   06) BACK CONTROL
-============================================================================= */
-.cookie-learning-overlay-back{
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.12rem;
-  height: 1.12rem;
-  min-width: 1.12rem;
-  min-height: 1.12rem;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
   padding: 0;
   border: 0;
+  border-radius: 0;
   background: transparent;
-  appearance: none;
-  cursor: pointer;
-  flex: 0 0 auto;
-}
-
-.cookie-learning-overlay-back-icon{
-  display: block;
-  width: var(--cookie-learning-overlay-back-icon-size);
-  height: var(--cookie-learning-overlay-back-icon-size);
-  min-width: var(--cookie-learning-overlay-back-icon-size);
-  min-height: var(--cookie-learning-overlay-back-icon-size);
-  object-fit: contain;
-  object-position: center;
-  filter: var(--cookie-learning-overlay-back-icon-filter);
-  opacity: 1;
-  visibility: visible;
-  pointer-events: none;
+  box-shadow: none;
+  overflow: hidden;
 }
 
 /* =============================================================================
-   05) TITLE
-============================================================================= */
-.cookie-learning-overlay-title{
-  margin: 0;
-  color: var(--text-primary-color);
-  font-size: 1.56rem;
-  font-weight: 300;
-  letter-spacing: -0.04em;
-  line-height: 1.08;
-  min-width: 0;
-  flex: 1 1 auto;
-}
-
-/* =============================================================================
-   07) CLOSE CONTROL SUPPRESSION
-============================================================================= */
-.cookie-learning-overlay-header .cookie-consent-close{
-  display: none;
-}
-
-/* =============================================================================
-   08) BODY
+   03) BODY
 ============================================================================= */
 .cookie-learning-overlay-body{
   flex: 1 1 auto;
+  min-width: 0;
   min-height: 0;
-  overflow-y: auto;
+  margin: 0;
   padding: 1.02rem 0 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
 
 /* =============================================================================
-   09) ARTICLE SURFACE
+   04) ARTICLE SURFACE
 ============================================================================= */
 .cookie-learning-overlay-article{
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
 }
 
 .cookie-learning-overlay-article[hidden]{
@@ -190,7 +135,7 @@
 }
 
 /* =============================================================================
-   10) TYPOGRAPHY
+   05) TYPOGRAPHY
 ============================================================================= */
 .cookie-learning-overlay-article-topline strong,
 .cookie-learning-overlay-point strong{
@@ -212,34 +157,17 @@
 }
 
 /* =============================================================================
-   11) RESPONSIVE
+   06) RESPONSIVE
 ============================================================================= */
 @media (max-width: 768px){
-  .cookie-learning-overlay{
-    padding: 0.6rem;
-  }
-
   .cookie-learning-overlay-panel{
-    padding: 0.95rem;
-    height: var(--cookie-learning-overlay-panel-max-height);
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    padding: 0;
   }
 
-  .cookie-learning-overlay-header{
-    gap: 0.82rem;
-    padding-bottom: 1.12rem;
-  }
-
-  .cookie-learning-overlay-article-body{
-    padding-top: 0;
-  }
-
-  .cookie-learning-overlay-title{
-    font-size: 1.4rem;
-  }
-}
-
-@media (prefers-color-scheme: dark){
-  :root{
-    --cookie-learning-overlay-back-icon-filter: invert(1);
+  .cookie-learning-overlay-body{
+    padding-top: 0.82rem;
   }
 }

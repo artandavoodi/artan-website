@@ -11,13 +11,13 @@
 09) ESSENTIAL ROW
 10) ANALYTICS ROW
 11) EXPERIENCE ROW
-12) BASELINE EDUCATION SURFACE
-13) SETTINGS ACTIONS
-14) EXTERNAL COOKIE FOOTER BAR
-15) LEGAL LINKS
-16) COOKIE LANGUAGE / REGION TRIGGER
-17) COOKIE LANGUAGE STATUS
-18) COOKIE LEARNING OVERLAY MOUNT
+12) LANGUAGE SURFACE
+13) LEARNING SURFACE
+14) SETTINGS ACTIONS
+15) EXTERNAL COOKIE FOOTER BAR
+16) LEGAL LINKS
+17) COOKIE LANGUAGE / REGION TRIGGER
+18) COOKIE LANGUAGE STATUS
 19) END OF CONSENT
 ============================================================================= -->
 
@@ -41,11 +41,12 @@
     ======================================================================== -->
     <div class="cookie-consent-header">
       <div class="cookie-consent-brand" aria-label="Privacy controls">
-        <span class="cookie-consent-brand-symbol-wrap" aria-hidden="true">
-          <img src="assets/icons/layers/website/system/actions/cookies.svg" alt="" class="cookie-consent-brand-symbol">
+        <span class="cookie-consent-brand-symbol-wrap" data-cookie-consent-title-icon="true" aria-hidden="true">
+          <img src="assets/icons/layers/website/system/actions/cookies.svg" alt="" class="cookie-consent-brand-symbol cookie-consent-brand-symbol--cookies ui-icon-theme-aware" data-cookie-consent-title-icon-asset="default">
+          <img src="assets/icons/layers/website/system/navigation/globe.svg" alt="" class="cookie-consent-brand-symbol cookie-consent-brand-symbol--language ui-icon-theme-aware" data-cookie-consent-title-icon-asset="language" hidden>
         </span>
       </div>
-      <p class="cookie-consent-eyebrow" data-i18n-key="cookieConsent.settingsTitle">Privacy &amp; Cookie Preferences</p>
+      <p class="cookie-consent-eyebrow" data-cookie-consent-title="true" data-cookie-consent-title-default="Privacy &amp; Cookie Preferences" data-cookie-consent-title-language="Language &amp; Region" data-cookie-consent-title-cookies="What are cookies?" data-cookie-consent-title-why-we-use-them="Why we use them" data-i18n-key="cookieConsent.settingsTitle">Privacy &amp; Cookie Preferences</p>
 
       <!-- ======================================================================
       05) CLOSE CONTROL
@@ -54,20 +55,24 @@
         <span class="cookie-consent-close-line cookie-consent-close-line--first"></span>
         <span class="cookie-consent-close-line cookie-consent-close-line--second"></span>
       </button>
+      <button class="cookie-consent-close cookie-consent-close--back" type="button" data-cookie-consent-return="settings" aria-label="Return to cookie settings" hidden>
+        <img src="assets/icons/core/interface/navigation/back.svg" alt="" class="cookie-consent-close-back-icon ui-icon-theme-aware">
+      </button>
     </div>
 
     <!-- ========================================================================
     06) BODY
     ======================================================================== -->
     <div class="cookie-consent-body">
+      <div class="cookie-consent-primary-shell" data-cookie-consent-primary-shell="true">
 
       <!-- ======================================================================
       07) BANNER SURFACE
       ====================================================================== -->
       <div class="cookie-consent-banner" data-cookie-consent-surface="banner">
         <div class="cookie-consent-banner-copy">
-          <p class="cookie-consent-copy" data-i18n-key="cookieConsent.copy">We use cookies and similar technologies to keep Neuroartan secure, support core functionality, and, where you allow it, understand performance and improve experience. You can allow all cookies, decline non-essential cookies, or review categories in detail before choosing.</p>
-          <p class="cookie-consent-note" data-i18n-key="cookieConsent.essentialNote">Strictly necessary cookies are always active. Optional categories can be accepted, declined, or reviewed in more detail before you decide.</p>
+          <p class="cookie-consent-copy" data-i18n-key="cookieConsent.copy">We use cookies to keep Neuroartan secure, support essential functionality, and, if you allow it, help us improve performance and experience.</p>
+          <p class="cookie-consent-note" data-i18n-key="cookieConsent.essentialNote">Strictly necessary cookies are always active. You can accept or decline optional categories at any time.</p>
         </div>
       </div>
 
@@ -76,7 +81,7 @@
       ====================================================================== -->
       <div class="cookie-consent-settings" data-cookie-consent-surface="settings" hidden>
         <div class="cookie-consent-settings-intro">
-          <p class="cookie-consent-note" data-i18n-key="cookieConsent.settingsIntro">Review each category, expand rows to understand why it is used, and choose the level of consent you want to grant. Analytics and experience are enabled by default for a fuller website experience, and you can turn them off at any time before saving your choice.</p>
+          <p class="cookie-consent-note" data-i18n-key="cookieConsent.settingsIntro">Review each category to see why it is used and choose the level of consent that fits you.</p>
         </div>
 
         <!-- ====================================================================
@@ -86,7 +91,7 @@
           <div class="cookie-consent-row-topline">
             <div class="cookie-consent-row-summary" aria-hidden="true">
               <span class="cookie-consent-row-icon" aria-hidden="true">
-                <img src="assets/icons/core/interface/status/essential.svg" alt="" class="cookie-consent-row-icon-image cookie-consent-row-icon-image--essential">
+                <img src="assets/icons/core/interface/status/essential.svg" alt="" class="cookie-consent-row-icon-image cookie-consent-row-icon-image--essential ui-icon-theme-aware">
               </span>
               <span class="cookie-consent-row-copy">
                 <strong data-i18n-key="cookieConsent.essential.title">Essential</strong>
@@ -95,7 +100,7 @@
               <span class="cookie-consent-row-status" data-i18n-key="cookieConsent.alwaysActive">Always active</span>
             </div>
             <button type="button" class="cookie-consent-row-expand" data-cookie-consent-expand="essential" aria-expanded="false" aria-controls="cookie-consent-detail-essential" aria-label="Expand essential cookie details">
-              <img src="assets/icons/core/interface/navigation/drop-down.svg" alt="" class="cookie-consent-row-expand-icon">
+              <img src="assets/icons/core/interface/navigation/drop-down.svg" alt="" class="cookie-consent-row-expand-icon ui-icon-theme-aware">
             </button>
           </div>
           <div id="cookie-consent-detail-essential" class="cookie-consent-row-detail" hidden>
@@ -133,7 +138,7 @@
           <div class="cookie-consent-row-topline">
             <div class="cookie-consent-row-summary" aria-hidden="true">
               <span class="cookie-consent-row-icon" aria-hidden="true">
-                <img src="assets/icons/core/interface/status/analytics.svg" alt="" class="cookie-consent-row-icon-image cookie-consent-row-icon-image--analytics">
+                <img src="assets/icons/core/interface/status/analytics.svg" alt="" class="cookie-consent-row-icon-image cookie-consent-row-icon-image--analytics ui-icon-theme-aware">
               </span>
               <span class="cookie-consent-row-copy">
                 <strong data-i18n-key="cookieConsent.analytics.title">Analytics</strong>
@@ -144,7 +149,7 @@
               <span class="cookie-consent-toggle-track"><span class="cookie-consent-toggle-thumb"></span></span>
             </button>
             <button type="button" class="cookie-consent-row-expand" data-cookie-consent-expand="analytics" aria-expanded="false" aria-controls="cookie-consent-detail-analytics" aria-label="Expand analytics cookie details">
-              <img src="assets/icons/core/interface/navigation/drop-down.svg" alt="" class="cookie-consent-row-expand-icon">
+              <img src="assets/icons/core/interface/navigation/drop-down.svg" alt="" class="cookie-consent-row-expand-icon ui-icon-theme-aware">
             </button>
             <input type="checkbox" data-cookie-consent-category="analytics" checked hidden>
           </div>
@@ -182,7 +187,7 @@
           <div class="cookie-consent-row-topline">
             <div class="cookie-consent-row-summary" aria-hidden="true">
               <span class="cookie-consent-row-icon" aria-hidden="true">
-                <img src="assets/icons/core/interface/status/experience.svg" alt="" class="cookie-consent-row-icon-image cookie-consent-row-icon-image--experience">
+                <img src="assets/icons/core/interface/status/experience.svg" alt="" class="cookie-consent-row-icon-image cookie-consent-row-icon-image--experience ui-icon-theme-aware">
               </span>
               <span class="cookie-consent-row-copy">
                 <strong data-i18n-key="cookieConsent.experience.title">Experience</strong>
@@ -193,7 +198,7 @@
               <span class="cookie-consent-toggle-track"><span class="cookie-consent-toggle-thumb"></span></span>
             </button>
             <button type="button" class="cookie-consent-row-expand" data-cookie-consent-expand="experience" aria-expanded="false" aria-controls="cookie-consent-detail-experience" aria-label="Expand experience cookie details">
-              <img src="assets/icons/core/interface/navigation/drop-down.svg" alt="" class="cookie-consent-row-expand-icon">
+              <img src="assets/icons/core/interface/navigation/drop-down.svg" alt="" class="cookie-consent-row-expand-icon ui-icon-theme-aware">
             </button>
             <input type="checkbox" data-cookie-consent-category="experience" checked hidden>
           </div>
@@ -225,7 +230,7 @@
         </section>
 
         <!-- ====================================================================
-        12) BASELINE EDUCATION SURFACE
+        11A) BASELINE EDUCATION SURFACE
         ==================================================================== -->
         <div class="cookie-consent-learning-layer">
           <div class="cookie-consent-education" data-cookie-consent-learning="root">
@@ -233,7 +238,7 @@
               <article class="cookie-consent-learning-card" data-cookie-consent-learning-card="cookies">
                 <div class="cookie-consent-learning-card-topline">
                   <span class="cookie-consent-learning-icon" aria-hidden="true"></span>
-                  <button type="button" class="cookie-consent-learning-expand" data-cookie-consent-learning-expand="cookies" aria-expanded="false" aria-haspopup="dialog" aria-label="Open what are cookies panel">
+                  <button type="button" class="cookie-consent-learning-expand" data-cookie-consent-learning-expand="cookies" data-cookie-consent-learning-title="What are cookies?" aria-expanded="false" aria-haspopup="dialog" aria-label="Open what are cookies panel">
                     <span class="cookie-consent-learning-expand-line cookie-consent-learning-expand-line--horizontal"></span>
                     <span class="cookie-consent-learning-expand-line cookie-consent-learning-expand-line--vertical"></span>
                   </button>
@@ -247,7 +252,7 @@
               <article class="cookie-consent-learning-card" data-cookie-consent-learning-card="why-we-use-them">
                 <div class="cookie-consent-learning-card-topline">
                   <span class="cookie-consent-learning-icon" aria-hidden="true"></span>
-                  <button type="button" class="cookie-consent-learning-expand" data-cookie-consent-learning-expand="why-we-use-them" aria-expanded="false" aria-haspopup="dialog" aria-label="Open why we use them panel">
+                  <button type="button" class="cookie-consent-learning-expand" data-cookie-consent-learning-expand="why-we-use-them" data-cookie-consent-learning-title="Why we use them" aria-expanded="false" aria-haspopup="dialog" aria-label="Open why we use them panel">
                     <span class="cookie-consent-learning-expand-line cookie-consent-learning-expand-line--horizontal"></span>
                     <span class="cookie-consent-learning-expand-line cookie-consent-learning-expand-line--vertical"></span>
                   </button>
@@ -258,16 +263,33 @@
                 </div>
               </article>
             </div>
-
           </div>
         </div>
       </div>
 
+      <!-- ======================================================================
+      12) LANGUAGE SURFACE
+      ====================================================================== -->
+      </div>
+      <!-- ======================================================================
+      12) LANGUAGE SURFACE
+      ====================================================================== -->
+      <div class="cookie-consent-language-surface" data-cookie-consent-surface="language" data-cookie-consent-surface-title="language" hidden>
+        <div class="cookie-consent-inner-surface-mount" id="cookie-consent-language-mount" data-cookie-consent-inner-mount="language"></div>
+      </div>
+
+      <!-- ======================================================================
+      13) LEARNING SURFACE
+      ====================================================================== -->
+      <div class="cookie-consent-learning-surface" data-cookie-consent-surface="learning" data-cookie-consent-surface-title-dynamic="true" data-cookie-consent-active-learning-panel="true" hidden>
+        <div class="cookie-consent-inner-surface-mount" id="cookie-consent-learning-mount" data-cookie-consent-inner-mount="learning"></div>
+      </div>
+
     </div>
 
-    <div class="cookie-consent-bottom-stack">
+    <div class="cookie-consent-bottom-stack" data-cookie-consent-primary-actions="true" data-cookie-consent-hide-when-subview="true">
       <!-- ======================================================================
-      13) SETTINGS ACTIONS
+      14) SETTINGS ACTIONS
       ====================================================================== -->
       <div class="cookie-consent-actions">
         <button type="button" class="cookie-consent-action cookie-consent-action--primary" data-cookie-consent-save="true" data-i18n-key="cookieConsent.actions.saveChoices">Save choices</button>
@@ -277,14 +299,13 @@
     </div>
   </aside>
 
-
   <!-- ==========================================================================
-  14) EXTERNAL COOKIE FOOTER BAR
+  15) EXTERNAL COOKIE FOOTER BAR
   ========================================================================== -->
   <div class="cookie-consent-external-footer">
     <div class="cookie-consent-footer-bar">
       <!-- ======================================================================
-      15) LEGAL LINKS
+      16) LEGAL LINKS
       ====================================================================== -->
       <div class="cookie-consent-footer-links" aria-label="Cookie consent legal links">
         <a href="/404.html" class="cookie-consent-footer-link" data-i18n-key="cookieConsent.links.termsOfUse">Terms of Use</a>
@@ -292,28 +313,24 @@
         <a href="/404.html" class="cookie-consent-footer-link" data-i18n-key="cookieConsent.links.privacyPolicy">Privacy Policy</a>
         <span class="cookie-consent-footer-separator" aria-hidden="true">•</span>
         <a href="/404.html" class="cookie-consent-footer-link" data-i18n-key="cookieConsent.links.cookiePolicy">Cookie Policy</a>
-        <span class="cookie-consent-footer-separator" aria-hidden="true">•</span>
-        <a href="/404.html" class="cookie-consent-footer-link" data-i18n-key="cookieConsent.links.disclaimer">Disclaimer</a>
       </div>
 
       <!-- ======================================================================
-      16) COOKIE LANGUAGE / REGION TRIGGER
-      Dedicated trigger only. This control must open the sovereign cookie
-      language / region layer, not the global footer country overlay.
+      17) COOKIE LANGUAGE / REGION TRIGGER
+      Dedicated trigger for the inline cookie settings interaction.
       ====================================================================== -->
-      <button type="button" class="cookie-consent-footer-language" data-cookie-consent-language="true" aria-haspopup="dialog" aria-expanded="false" aria-label="Change language and region for cookie settings">
+      <button type="button" class="cookie-consent-footer-language" data-cookie-consent-language="true" aria-haspopup="dialog" aria-expanded="false" aria-label="Open cookie settings">
         <span class="cookie-consent-footer-language-value" data-cookie-consent-language-value="true" data-i18n-key="cookieConsent.language.auto">Auto</span>
       </button>
 
       <!-- ======================================================================
-      17) COOKIE LANGUAGE STATUS
-      Hidden translation carrier for cookie-language overlay status messaging.
-      The overlay JS reads translated templates from these data attributes.
+      18) COOKIE LANGUAGE STATUS
+      Hidden translation carrier for cookie language status messaging.
       ====================================================================== -->
       <p
         class="cookie-consent-language-status"
         data-cookie-language-overlay-status="true"
-        data-cookie-language-overlay-status-selected="Current selection: {{country}} · {{language}}. Choosing a different option will update the website language and return you to cookie settings."
+        data-cookie-language-overlay-status-selected="Current selection: {{country}} · {{language}}. Choosing a different option will update the website language and return to cookie settings."
         data-cookie-language-overlay-status-auto="Current selection: {{language}} detected automatically. Choose a language or region to update the website and return to cookie settings."
         data-i18n-data-attrs="data-cookie-language-overlay-status-selected,data-cookie-language-overlay-status-auto"
         data-i18n-key="cookieConsent.language.statusAuto"
@@ -328,8 +345,3 @@
 19) END OF CONSENT
 ============================================================================= -->
 </div>
-
-<!-- =============================================================================
-18) COOKIE LEARNING OVERLAY MOUNT
-============================================================================= -->
-<div id="cookie-learning-overlay-mount" data-include="cookie-learning-overlay"></div>

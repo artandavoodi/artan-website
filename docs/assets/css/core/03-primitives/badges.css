@@ -1,0 +1,74 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) BADGE BASE
+   03) BADGE SOFT VARIANT
+   04) BADGE OUTLINE VARIANT
+   05) BADGE STATUS VARIANTS
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/badges.css */
+
+/* =============================================================================
+   02) BADGE BASE
+============================================================================= */
+.ui-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:1.65rem;
+  padding:0.22rem 0.65rem;
+  border-radius:var(--radius-pill);
+  border:var(--stroke-soft) solid transparent;
+  background:var(--surface-secondary);
+  color:var(--text-color);
+  font-family:var(--font-base);
+  font-size:var(--body-3-size);
+  font-weight:var(--body-3-weight);
+  letter-spacing:var(--tracking-ui);
+  line-height:1;
+  white-space:nowrap;
+}
+
+/* =============================================================================
+   03) BADGE SOFT VARIANT
+============================================================================= */
+.ui-badge--soft{
+  background:var(--surface-secondary);
+  border-color:transparent;
+}
+
+/* =============================================================================
+   04) BADGE OUTLINE VARIANT
+============================================================================= */
+.ui-badge--outline{
+  background:transparent;
+  border-color:var(--control-border);
+}
+
+/* =============================================================================
+   05) BADGE STATUS VARIANTS
+============================================================================= */
+.ui-badge--success{
+  color:var(--color-primary8);
+}
+
+.ui-badge--warning{
+  color:var(--color-primary10);
+}
+
+.ui-badge--danger{
+  color:var(--color-primary7);
+}
+
+.ui-badge--info{
+  color:var(--color-primary9);
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */

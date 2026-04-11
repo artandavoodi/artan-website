@@ -1,0 +1,64 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SHARED FIELD BASE
+   03) HOVER / FOCUS STATES
+   04) PLACEHOLDER STATES
+   05) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/fields.css */
+
+/* =============================================================================
+   02) SHARED FIELD BASE
+============================================================================= */
+.ui-field{
+  width:100%;
+  min-height:var(--control-height-lg);
+  padding:0.9rem 1rem;
+  border-radius:var(--radius-md);
+  border:var(--stroke-soft) solid var(--field-border);
+  background:var(--field-bg);
+  color:var(--text-color);
+  font-family:var(--font-base);
+  font-size:var(--input-font-size);
+  font-weight:var(--body-2-weight);
+  line-height:var(--input-line-height);
+  letter-spacing:var(--input-letter-spacing);
+  box-shadow:none;
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+
+/* =============================================================================
+   03) HOVER / FOCUS STATES
+============================================================================= */
+.ui-field:hover{
+  border-color:var(--control-border-strong);
+}
+
+.ui-field:focus,
+.ui-field:focus-visible{
+  background:var(--field-bg-focus);
+  border-color:var(--field-border-focus);
+  outline:none;
+  box-shadow:0 0 0 3px rgba(145,124,111,0.16);
+}
+
+/* =============================================================================
+   04) PLACEHOLDER STATES
+============================================================================= */
+.ui-field::placeholder{
+  color:var(--text-secondary-color);
+  opacity:0.9;
+}
+
+/* =============================================================================
+   05) END OF FILE
+============================================================================= */

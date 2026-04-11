@@ -1,63 +1,187 @@
 /* =============================================================================
-   COLLECTIONS MODULE — SOVEREIGN / MOTION SYSTEM INTEGRATED
-   - Independent from home.js
-   - Uses global motion-init / motion-visible classes
-   - Bidirectional reveal
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SELECTOR MAP
+   03) SECTION RESOLUTION
+   04) CORE MOTION RESOLUTION
+   05) COLLECTION RECOVERY
+   06) LIFECYCLE EVENT BINDING
+   07) READINESS HELPERS
+   08) BOOTSTRAP
+   09) END OF FILE
 ============================================================================= */
 
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
 (() => {
-  const initCollections = () => {
-    const headers = document.querySelectorAll('.featured-header');
-    const cards = document.querySelectorAll('.featured-card');
+  'use strict';
 
-    if (!headers.length && !cards.length) return;
+  const MODULE_PATH = '/website/docs/assets/js/layers/website/renderers/collections.js';
+  let recoveryBound = false;
 
-    /* -------------------------------------------------------------------------
-       01) ATTACH MOTION BASE + STAGGER
-    ------------------------------------------------------------------------- */
+  window.__artanRunWhenReady = window.__artanRunWhenReady || ((bootFn) => {
+    if (typeof bootFn !== 'function') return;
 
-    headers.forEach((h) => {
-      h.classList.add('motion-init');
-      h.dataset.motion = 'lift';
-    });
+    const run = () => {
+      try { bootFn(); } catch (_) {}
+    };
 
-    cards.forEach((card, i) => {
-      card.classList.add('motion-init');
-      card.dataset.motion = 'lift';
-      card.style.transitionDelay = `${Math.min(i * 120, 720)}ms`;
-    });
-
-    const nodes = document.querySelectorAll('.featured-header.motion-init, .featured-card.motion-init');
-    if (!nodes.length) return;
-
-    /* -------------------------------------------------------------------------
-       02) INTERSECTION OBSERVER (BIDIRECTIONAL)
-    ------------------------------------------------------------------------- */
-
-    if (!('IntersectionObserver' in window)) {
-      nodes.forEach((n) => n.classList.add('motion-visible'));
-      return;
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run, { once: true });
+    } else {
+      run();
     }
+  });
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.18) {
-            entry.target.classList.add('motion-visible');
-          } else {
-            entry.target.classList.remove('motion-visible');
-          }
-        });
-      },
-      { threshold: [0, 0.18, 0.35] }
-    );
+  /* =============================================================================
+     02) SELECTOR MAP
+  ============================================================================= */
+  const SECTION_SELECTORS = [
+    '#featured-products',
+    '#featured-notes',
+    '#featured-collections',
+    '[data-featured-products]',
+    '[data-featured-notes]',
+    '.featured-products',
+    '.featured-notes',
+    '.featured-collections'
+  ];
 
-    nodes.forEach((n) => observer.observe(n));
+  const HEADER_SELECTORS = [
+    '.featured-header',
+    '.section-header',
+    'header'
+  ];
+
+  const CARD_SELECTORS = [
+    '.featured-card',
+    '[data-featured-card]',
+    '.collection-card',
+    '.note-card',
+    '.product-card'
+  ];
+
+  /* =============================================================================
+     03) SECTION RESOLUTION
+  ============================================================================= */
+  const collectSections = (root = document) => {
+    const out = [];
+    for (const selector of SECTION_SELECTORS) {
+      root.querySelectorAll(selector).forEach((node) => out.push(node));
+    }
+    return Array.from(new Set(out)).filter((node) => node instanceof Element);
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCollections);
-  } else {
-    initCollections();
-  }
+  const collectHeaders = (section) => {
+    if (!(section instanceof Element)) return [];
+    const out = [];
+    for (const selector of HEADER_SELECTORS) {
+      section.querySelectorAll(selector).forEach((node) => out.push(node));
+    }
+    return Array.from(new Set(out));
+  };
+
+  const collectCards = (section) => {
+    if (!(section instanceof Element)) return [];
+    const out = [];
+    for (const selector of CARD_SELECTORS) {
+      section.querySelectorAll(selector).forEach((node) => out.push(node));
+    }
+    return Array.from(new Set(out));
+  };
+
+  /* =============================================================================
+     04) CORE MOTION RESOLUTION
+  ============================================================================= */
+  const getMotionApi = () => {
+    return window.NeuroartanMotion || window.ARTAN_MOTION || null;
+  };
+
+  /* =============================================================================
+     05) COLLECTION RECOVERY
+  ============================================================================= */
+  const recoverCollections = (root = document) => {
+    const sections = collectSections(root);
+    if (!sections.length) return;
+
+    const motion = getMotionApi();
+
+    sections.forEach((section) => {
+      section.removeAttribute('hidden');
+      section.setAttribute('data-collections-bound', 'true');
+      section.style.removeProperty('display');
+      section.style.removeProperty('opacity');
+      section.style.removeProperty('visibility');
+
+      const headers = collectHeaders(section);
+      const cards = collectCards(section);
+
+      headers.forEach((node) => {
+        node.classList.add('motion-init');
+        node.classList.add('motion-visible');
+        node.dataset.motion = node.dataset.motion || 'lift';
+        node.style.removeProperty('display');
+        node.style.removeProperty('opacity');
+        node.style.removeProperty('visibility');
+      });
+
+      cards.forEach((node, index) => {
+        node.classList.add('motion-init');
+        node.classList.add('motion-visible');
+        node.dataset.motion = node.dataset.motion || 'lift';
+        node.style.transitionDelay = `${Math.min(index * 120, 720)}ms`;
+        node.style.removeProperty('display');
+        node.style.removeProperty('opacity');
+        node.style.removeProperty('visibility');
+      });
+
+      if (motion && typeof motion.initMotionPrimitive === 'function') {
+        motion.initMotionPrimitive(section);
+      }
+    });
+
+    document.dispatchEvent(new CustomEvent('neuroartan:collections-ready', {
+      detail: {
+        modulePath: MODULE_PATH,
+        sectionCount: sections.length
+      }
+    }));
+  };
+
+  /* =============================================================================
+     06) LIFECYCLE EVENT BINDING
+  ============================================================================= */
+  const bindRecoveryEvents = () => {
+    if (recoveryBound) return;
+    recoveryBound = true;
+
+    const recover = (event) => {
+      const detailRoot = event?.detail?.root;
+      const root = detailRoot instanceof Element ? detailRoot : document;
+      recoverCollections(root);
+    };
+
+    document.addEventListener('fragment:mounted', recover);
+    window.addEventListener('neuroartan:language-applied', recover);
+    window.addEventListener('resize', recover, { passive: true });
+  };
+
+  /* =============================================================================
+     07) READINESS HELPERS
+  ============================================================================= */
+
+  /* =============================================================================
+     08) BOOTSTRAP
+  ============================================================================= */
+  const boot = () => {
+    bindRecoveryEvents();
+    recoverCollections(document);
+  };
+
+  window.__artanRunWhenReady(boot);
 })();
+
+/* =============================================================================
+   09) END OF FILE
+============================================================================= */

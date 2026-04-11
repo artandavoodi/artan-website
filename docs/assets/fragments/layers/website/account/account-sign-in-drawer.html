@@ -1,147 +1,129 @@
 <!-- =============================================================================
 00) FILE INDEX
-01) DRAWER ROOT
-02) BACKDROP
-03) DRAWER SHELL
-04) CLOSE CONTROL
-05) DRAWER BODY
-06) SIGN-IN STATE
-07) CONTENT STAGE
-08) SIGN-IN FORM
-09) PRIMARY ACTIONS
-10) ACTION DIVIDER
-11) PROVIDER ACTIONS
-12) SECONDARY ACTIONS
-13) BACK CONTROL
-14) END OF DRAWER
+01) INNER VIEW ROOT
+02) SIGN-IN STATE
+03) CONTENT STAGE
+04) SEGMENT TITLE
+05) SIGN-IN FORM
+06) PRIMARY ACTIONS
+07) ACTION DIVIDER
+08) PROVIDER ACTIONS
+09) SECONDARY ACTIONS
+10) BACK CONTROL
+11) END OF VIEW
 ============================================================================= -->
 <!-- =============================================================================
-01) DRAWER ROOT
+01) INNER VIEW ROOT
 ============================================================================= -->
-<aside id="account-sign-in-drawer" class="account-sign-in-drawer" aria-hidden="true" aria-label="Sign in drawer" data-account-sign-in-drawer="true">
-
+<section
+  id="account-sign-in-drawer"
+  class="account-sign-in-drawer account-drawer-inner-view"
+  aria-label="Sign in"
+  data-account-sign-in-drawer="true"
+  data-account-view="sign-in"
+  hidden
+>
   <!-- ==========================================================================
-  02) BACKDROP
+  02) SIGN-IN STATE
   ========================================================================== -->
-  <div class="account-sign-in-drawer-backdrop" data-account-sign-in-drawer-close="true"></div>
-
-  <!-- ==========================================================================
-  03) DRAWER SHELL
-  ========================================================================== -->
-  <div class="account-sign-in-drawer-shell account-drawer-shell" role="dialog" aria-modal="true" aria-label="Sign in drawer">
+  <section class="account-sign-in-drawer-state" data-account-sign-in-state="entry">
 
     <!-- ========================================================================
-    04) CLOSE CONTROL
+    03) CONTENT STAGE
     ======================================================================== -->
-    <button type="button" class="account-sign-in-drawer-close" aria-label="Close sign in drawer" data-account-sign-in-drawer-close="true">
-      <span class="account-sign-in-drawer-close-line account-sign-in-drawer-close-line--first" aria-hidden="true"></span>
-      <span class="account-sign-in-drawer-close-line account-sign-in-drawer-close-line--second" aria-hidden="true"></span>
-    </button>
-
-    <!-- ========================================================================
-    05) DRAWER BODY
-    ======================================================================== -->
-    <div class="account-sign-in-drawer-body account-drawer-body">
+    <div class="account-sign-in-drawer-content-stage account-drawer-content-stage">
 
       <!-- ======================================================================
-      06) SIGN-IN STATE
+      04) SEGMENT TITLE
       ====================================================================== -->
-      <section class="account-sign-in-drawer-state" data-account-sign-in-state="entry">
+      <div class="account-drawer-segment-header">
+        <h2 class="account-drawer-segment-title" data-i18n-key="account_segment_title_sign_in">Sign in</h2>
+      </div>
 
-        <!-- ====================================================================
-        07) CONTENT STAGE
-        ==================================================================== -->
-        <div class="account-sign-in-drawer-content-stage account-drawer-content-stage">
-
-
-          <!-- ==================================================================
-          08) SIGN-IN FORM
-          ================================================================== -->
-          <form id="account-sign-in-drawer-form" class="account-sign-in-drawer-form" data-account-sign-in-form="true" novalidate>
-            <div class="account-sign-in-drawer-center-stage">
-            <div class="account-sign-in-drawer-header-brand-mark" aria-hidden="true">
-              <img src="assets/icons/core/identity/brand/neuroartan/logo-plain.svg" alt="" class="account-sign-in-drawer-header-brand-icon">
-            </div>
-            <div class="account-sign-in-drawer-field-group">
-              <input
-                id="account-sign-in-identity"
-                name="identity"
-                type="text"
-                class="account-sign-in-drawer-input"
-                autocomplete="username"
-                inputmode="email"
-                data-i18n-placeholder-key="account_sign_in_identity_placeholder"
-                placeholder="Email, username, or phone number"
-              >
-            </div>
-
-            <div class="account-sign-in-drawer-field-group">
-              <input
-                id="account-sign-in-password"
-                name="password"
-                type="password"
-                class="account-sign-in-drawer-input"
-                autocomplete="current-password"
-                data-i18n-placeholder-key="account_sign_in_password_placeholder"
-                placeholder="Password"
-              >
-            </div>
-            </div>
-          </form>
-
-          <!-- ==================================================================
-          09) PRIMARY ACTIONS
-          ================================================================== -->
-          <div class="account-sign-in-drawer-actions">
-            <button type="submit" form="account-sign-in-drawer-form" class="account-sign-in-drawer-action account-sign-in-drawer-action--primary" data-account-sign-in-submit="true">
-              <span class="account-sign-in-drawer-action-label" data-i18n-key="account_sign_in_submit">Continue</span>
-            </button>
-          </div>
-          <!-- ==================================================================
-          10) ACTION DIVIDER
-          ================================================================== -->
-          <div class="account-sign-in-drawer-divider" aria-hidden="true">
-            <span class="account-sign-in-drawer-divider-line"></span>
-            <span class="account-sign-in-drawer-divider-label" data-i18n-key="account_sign_in_divider_or">or</span>
-            <span class="account-sign-in-drawer-divider-line"></span>
+      <!-- ======================================================================
+      05) SIGN-IN FORM
+      ====================================================================== -->
+      <form id="account-sign-in-drawer-form" class="account-sign-in-drawer-form" data-account-sign-in-form="true" novalidate>
+        <div class="account-sign-in-drawer-center-stage">
+          <div class="account-sign-in-drawer-field-group">
+            <input
+              id="account-sign-in-identity"
+              name="identity"
+              type="text"
+              class="account-sign-in-drawer-input"
+              autocomplete="username"
+              inputmode="email"
+              data-i18n-placeholder-key="account_sign_in_identity_placeholder"
+              placeholder="Email, username, or phone number"
+            >
           </div>
 
-          <!-- ==================================================================
-          11) PROVIDER ACTIONS
-          ================================================================== -->
-          <div class="account-sign-in-drawer-actions">
-            <a href="#" class="account-drawer-identity-option account-drawer-identity-option--apple" data-account-sign-in-apple="true">
-              <span class="account-drawer-identity-content">
-                <img src="assets/icons/layers/website/brand/signin/apple.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware" aria-hidden="true">
-                <span class="account-drawer-identity-label" data-i18n-key="account_sign_in_continue_with_apple">Continue with Apple</span>
-              </span>
-            </a>
-            <a href="#" class="account-drawer-identity-option account-drawer-identity-option--google" data-account-sign-in-google="true">
-              <span class="account-drawer-identity-content">
-                <img src="assets/icons/layers/website/brand/signin/google-signin.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--brand" aria-hidden="true">
-                <span class="account-drawer-identity-label" data-i18n-key="account_sign_in_continue_with_google">Continue with Google</span>
-              </span>
-            </a>
-          </div>
-
-          <!-- ==================================================================
-          12) SECONDARY ACTIONS
-          ================================================================== -->
-          <div class="account-sign-in-drawer-secondary-actions">
-            <a href="#" class="account-sign-in-drawer-text-action" data-account-sign-in-forgot-password="true" data-i18n-key="account_sign_in_forgot_password">Forgot password?</a>
-            <!-- ================================================================
-            13) BACK CONTROL
-            ================================================================ -->
-            <button type="button" class="account-sign-in-drawer-back-control" data-account-sign-in-back="true" aria-label="Back">
-              <img src="assets/icons/core/interface/navigation/back.svg" alt="" class="account-sign-in-drawer-back-icon" aria-hidden="true">
-            </button>
+          <div class="account-sign-in-drawer-field-group">
+            <input
+              id="account-sign-in-password"
+              name="password"
+              type="password"
+              class="account-sign-in-drawer-input"
+              autocomplete="current-password"
+              data-i18n-placeholder-key="account_sign_in_password_placeholder"
+              placeholder="Password"
+            >
           </div>
         </div>
-      </section>
+      </form>
+
+      <!-- ======================================================================
+      06) PRIMARY ACTIONS
+      ====================================================================== -->
+      <div class="account-sign-in-drawer-actions">
+        <button type="submit" form="account-sign-in-drawer-form" class="account-sign-in-drawer-action account-sign-in-drawer-action--primary" data-account-sign-in-submit="true">
+          <span class="account-sign-in-drawer-action-label" data-i18n-key="account_sign_in_submit">Continue</span>
+        </button>
+      </div>
+
+      <!-- ======================================================================
+      07) ACTION DIVIDER
+      ====================================================================== -->
+      <div class="account-sign-in-drawer-divider" aria-hidden="true">
+        <span class="account-sign-in-drawer-divider-line"></span>
+        <span class="account-sign-in-drawer-divider-label" data-i18n-key="account_sign_in_divider_or">or</span>
+        <span class="account-sign-in-drawer-divider-line"></span>
+      </div>
+
+      <!-- ======================================================================
+      08) PROVIDER ACTIONS
+      ====================================================================== -->
+      <div class="account-sign-in-drawer-actions">
+        <button type="button" class="account-drawer-identity-option account-drawer-identity-option--apple" data-account-provider-apple-submit="true" data-account-sign-in-apple="true">
+          <span class="account-drawer-identity-content">
+            <img src="assets/icons/layers/website/brand/signin/apple.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware ui-icon-theme-aware" aria-hidden="true">
+            <span class="account-drawer-identity-label" data-i18n-key="account_sign_in_continue_with_apple">Continue with Apple</span>
+          </span>
+        </button>
+        <button type="button" class="account-drawer-identity-option account-drawer-identity-option--google" data-account-provider-google-submit="true" data-account-sign-in-google="true">
+          <span class="account-drawer-identity-content">
+            <img src="assets/icons/layers/website/brand/signin/google-signin.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--brand" aria-hidden="true">
+            <span class="account-drawer-identity-label" data-i18n-key="account_sign_in_continue_with_google">Continue with Google</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- ======================================================================
+      09) SECONDARY ACTIONS
+      ====================================================================== -->
+      <div class="account-sign-in-drawer-secondary-actions">
+        <button type="button" class="account-sign-in-drawer-text-action" data-account-route="forgot-password" data-account-sign-in-forgot-password="true" data-i18n-key="account_sign_in_forgot_password">Forgot password?</button>
+        <!-- ====================================================================
+        10) BACK CONTROL
+        ==================================================================== -->
+        <button type="button" class="account-sign-in-drawer-back-control" data-account-route="entry" data-account-sign-in-back="true" aria-label="Back">
+          <img src="assets/icons/core/interface/navigation/back.svg" alt="" class="account-sign-in-drawer-back-icon ui-icon-theme-aware" aria-hidden="true">
+        </button>
+      </div>
     </div>
-  </div>
-</aside>
+  </section>
+</section>
 
 <!-- =============================================================================
-14) END OF DRAWER
+11) END OF VIEW
 ============================================================================= -->

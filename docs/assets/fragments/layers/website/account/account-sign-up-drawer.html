@@ -1,0 +1,156 @@
+<!-- =============================================================================
+00) FILE INDEX
+01) INNER VIEW ROOT
+02) SIGN-UP STATE
+03) CONTENT STAGE
+04) SEGMENT TITLE
+05) SIGN-UP FORM
+06) PRIMARY ACTIONS
+07) ACTION DIVIDER
+08) PROVIDER ACTIONS
+09) SECONDARY ACTIONS
+10) BACK CONTROL
+11) END OF VIEW
+============================================================================= -->
+
+<!-- =============================================================================
+01) INNER VIEW ROOT
+============================================================================= -->
+<section
+  id="account-sign-up-drawer"
+  class="account-sign-up-drawer account-drawer-inner-view"
+  aria-label="Sign up"
+  data-account-sign-up-drawer="true"
+  data-account-view="sign-up"
+  hidden
+>
+  <!-- ==========================================================================
+  02) SIGN-UP STATE
+  ========================================================================== -->
+  <section class="account-sign-up-drawer-state" data-account-sign-up-state="entry">
+
+    <!-- ========================================================================
+    03) CONTENT STAGE
+    ======================================================================== -->
+    <div class="account-sign-up-drawer-content-stage account-drawer-content-stage">
+
+      <!-- ======================================================================
+      04) SEGMENT TITLE
+      ====================================================================== -->
+      <div class="account-drawer-segment-header">
+        <h2 class="account-drawer-segment-title" data-i18n-key="account_segment_title_sign_up">Sign Up</h2>
+      </div>
+      <!-- ======================================================================
+      05) SIGN-UP FORM
+      ====================================================================== -->
+      <form id="account-sign-up-drawer-form" class="account-sign-up-drawer-form" data-account-sign-up-form="true" novalidate>
+        <div class="account-sign-up-drawer-center-stage">
+
+          <div class="account-sign-up-drawer-field-group">
+            <input
+              id="account-sign-up-name"
+              name="name"
+              type="text"
+              class="account-sign-up-drawer-input"
+              autocomplete="name"
+              data-i18n-placeholder-key="account_sign_up_name_placeholder"
+              placeholder="Full name"
+            >
+          </div>
+
+          <div class="account-sign-up-drawer-field-group">
+            <input
+              id="account-sign-up-email"
+              name="email"
+              type="email"
+              class="account-sign-up-drawer-input"
+              autocomplete="email"
+              inputmode="email"
+              data-i18n-placeholder-key="account_sign_up_email_placeholder"
+              placeholder="Email address"
+            >
+          </div>
+
+          <div class="account-sign-up-drawer-field-group">
+            <input
+              id="account-sign-up-password"
+              name="password"
+              type="password"
+              class="account-sign-up-drawer-input"
+              autocomplete="new-password"
+              data-i18n-placeholder-key="account_sign_up_password_placeholder"
+              placeholder="Create password"
+            >
+          </div>
+        </div>
+      </form>
+
+      <!-- ======================================================================
+      06) PRIMARY ACTIONS
+      ====================================================================== -->
+      <div class="account-sign-up-drawer-actions">
+        <button type="submit" form="account-sign-up-drawer-form" class="account-sign-up-drawer-action account-sign-up-drawer-action--primary" data-account-sign-up-submit="true">
+          <span class="account-sign-up-drawer-action-label" data-i18n-key="account_sign_up_submit">Create account</span>
+        </button>
+      </div>
+
+      <!-- ======================================================================
+      07) ACTION DIVIDER
+      ====================================================================== -->
+      <div class="account-sign-up-drawer-divider" aria-hidden="true">
+        <span class="account-sign-up-drawer-divider-line"></span>
+        <span class="account-sign-up-drawer-divider-label" data-i18n-key="account_sign_up_divider_or">or</span>
+        <span class="account-sign-up-drawer-divider-line"></span>
+      </div>
+
+      <!-- ======================================================================
+      08) PROVIDER ACTIONS
+      ====================================================================== -->
+      <div class="account-sign-up-drawer-actions">
+        <button type="button" class="account-drawer-identity-option account-drawer-identity-option--apple" data-account-provider-apple-submit="true" data-account-sign-up-apple="true">
+          <span class="account-drawer-identity-content">
+            <img src="assets/icons/layers/website/brand/signin/apple.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware ui-icon-theme-aware" aria-hidden="true">
+            <span class="account-drawer-identity-label" data-i18n-key="account_sign_up_continue_with_apple">Continue with Apple</span>
+          </span>
+        </button>
+        <button type="button" class="account-drawer-identity-option account-drawer-identity-option--google" data-account-provider-google-submit="true" data-account-sign-up-google="true">
+          <span class="account-drawer-identity-content">
+            <img src="assets/icons/layers/website/brand/signin/google-signin.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--brand" aria-hidden="true">
+            <span class="account-drawer-identity-label" data-i18n-key="account_sign_up_continue_with_google">Continue with Google</span>
+          </span>
+        </button>
+        <button type="button" class="account-drawer-identity-option account-drawer-identity-option--email" data-account-route="email-auth" data-account-sign-up-email="true">
+          <span class="account-drawer-identity-content">
+            <img src="assets/icons/layers/website/system/auth/signin-email.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware ui-icon-theme-aware" aria-hidden="true">
+            <span class="account-drawer-identity-label" data-i18n-key="account_sign_up_continue_with_email">Continue with email</span>
+          </span>
+        </button>
+        <button type="button" class="account-drawer-identity-option account-drawer-identity-option--phone" data-account-route="phone-auth" data-account-sign-up-phone="true">
+          <span class="account-drawer-identity-content">
+            <img src="assets/icons/layers/website/system/auth/signin-phone.svg" alt="" class="account-drawer-identity-icon account-drawer-identity-icon--theme-aware ui-icon-theme-aware" aria-hidden="true">
+            <span class="account-drawer-identity-label" data-i18n-key="account_sign_up_continue_with_phone">Continue with phone number</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- ======================================================================
+      09) SECONDARY ACTIONS
+      ====================================================================== -->
+      <div class="account-sign-up-drawer-secondary-actions">
+        <button type="button" class="account-sign-up-drawer-text-action" data-account-route="sign-in" data-account-sign-up-sign-in="true">
+          <span data-i18n-key="account_sign_up_have_account">Already have an account?</span>
+        </button>
+        <!-- ====================================================================
+        10) BACK CONTROL
+        ==================================================================== -->
+        <button type="button" class="account-sign-up-drawer-back-control" data-account-route="entry" data-account-sign-up-back="true" aria-label="Back">
+          <img src="assets/icons/core/interface/navigation/back.svg" alt="" class="account-sign-up-drawer-back-icon ui-icon-theme-aware" aria-hidden="true">
+        </button>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- =============================================================================
+11) END OF VIEW
+============================================================================= -->
