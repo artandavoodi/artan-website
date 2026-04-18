@@ -47,12 +47,6 @@
   --home-featured-functions-card-description-tracking: var(--body-1-tracking);
   --home-featured-functions-description-opacity: 0.74;
 
-  --home-featured-functions-section-title-size: var(--home-anchor-current-size);
-  --home-featured-functions-section-title-line-height: var(--home-anchor-current-line-height);
-  --home-featured-functions-section-title-weight: var(--home-anchor-current-weight);
-  --home-featured-functions-section-title-tracking: var(--home-anchor-current-tracking);
-  --home-featured-functions-section-title-opacity: var(--home-anchor-current-opacity);
-
   --home-featured-functions-controls-gap: var(--spacing-sm);
   --home-featured-functions-track-gap: var(--spacing-lg);
 
@@ -73,7 +67,7 @@
   --home-featured-functions-card-summary-gap: 52px;
   --home-featured-functions-card-summary-width: clamp(12rem, 18vw, 14rem);
 
-  --home-featured-functions-card-description-gap: var(--spacing-3xl);
+  --home-featured-functions-card-description-gap: var(--spacing-4xl);
   --home-featured-functions-card-title-gap: var(--home-featured-functions-card-description-gap);
   --home-featured-functions-card-label-size: clamp(3.6rem, 5.8vw, 5.8rem);
   --home-featured-functions-card-label-line-height: 0.9;
@@ -177,11 +171,12 @@ body.dark-mode .home-featured-functions{
 .home-featured-functions .home-featured-functions-title{
   margin: 0;
   color: var(--text-color);
-  font-size: var(--home-featured-functions-section-title-size);
-  font-weight: var(--home-featured-functions-section-title-weight);
-  line-height: var(--home-featured-functions-section-title-line-height);
-  letter-spacing: var(--home-featured-functions-section-title-tracking);
-  opacity: var(--home-featured-functions-section-title-opacity);
+  font-size: var(--home-section-title-size);
+  font-weight: var(--home-section-title-weight);
+  line-height: var(--home-section-title-line-height);
+  letter-spacing: var(--home-section-title-tracking);
+  opacity: var(--home-section-title-opacity);
+  text-transform: var(--home-section-title-text-transform);
   text-wrap: balance;
 }
 
