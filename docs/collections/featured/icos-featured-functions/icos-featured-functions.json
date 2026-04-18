@@ -1,0 +1,105 @@
+{
+  "section": {
+    "id": "icos-featured-functions",
+    "eyebrow": "ICOS",
+    "title": "Core Capabilities",
+    "description": "A new layer for capture, reflection, pattern recognition, and long-term cognitive continuity.",
+    "layout": {
+      "desktop_cards_per_view": 3,
+      "tablet_cards_per_view": 2,
+      "mobile_cards_per_view": 1
+    },
+    "controls": {
+      "show_arrows": true,
+      "show_dots": true,
+      "enable_drag": true,
+      "enable_swipe": true
+    }
+  },
+  "items": [
+    {
+      "id": "voice-reflection",
+      "order": 1,
+      "status": "planned",
+      "label": "Reflection",
+      "title": "Voice Reflection",
+      "description": "A voice-first space for clearer thinking, sharper articulation, and stronger internal continuity.",
+      "href": "/404.html",
+      "image": "",
+      "scene": "/collections/featured/icos-featured-functions/scenes/voice-reflection.scene.json",
+      "icon": "/assets/icons/layers/website/sections/home/featured-functions/reflection.svg",
+      "theme": "dark",
+      "visibility": "public"
+    },
+    {
+      "id": "thought-capture",
+      "order": 2,
+      "status": "planned",
+      "label": "Capture",
+      "title": "Thought Capture",
+      "description": "A structured system for preserving spoken and written thought for retrieval and future development.",
+      "href": "/404.html",
+      "image": "",
+      "scene": "/collections/featured/icos-featured-functions/scenes/thought-capture.scene.json",
+      "icon": "/assets/icons/layers/website/sections/home/featured-functions/capture.svg",
+      "theme": "dark",
+      "visibility": "public"
+    },
+    {
+      "id": "pattern-mapping",
+      "order": 3,
+      "status": "planned",
+      "label": "Patterning",
+      "title": "Pattern Mapping",
+      "description": "A system for revealing recurring structures across language, emotion, and cognition.",
+      "href": "/404.html",
+      "image": "",
+      "scene": "/collections/featured/icos-featured-functions/scenes/pattern-mapping.scene.json",
+      "icon": "/assets/icons/layers/website/sections/home/featured-functions/patterning.svg",
+      "theme": "dark",
+      "visibility": "public"
+    },
+    {
+      "id": "cognitive-graph",
+      "order": 4,
+      "status": "planned",
+      "label": "Structure",
+      "title": "Cognitive Graph",
+      "description": "A graph layer that connects thoughts, memories, and patterns into a navigable structure.",
+      "href": "/404.html",
+      "image": "",
+      "scene": "/collections/featured/icos-featured-functions/scenes/cognitive-graph.scene.json",
+      "icon": "/assets/icons/layers/website/sections/home/featured-functions/structure.svg",
+      "theme": "dark",
+      "visibility": "public"
+    },
+    {
+      "id": "emotional-tracking",
+      "order": 5,
+      "status": "planned",
+      "label": "Signals",
+      "title": "Emotional Tracking",
+      "description": "A longitudinal layer for observing emotional movement with more nuance and context.",
+      "href": "/404.html",
+      "image": "",
+      "scene": "/collections/featured/icos-featured-functions/scenes/emotional-tracking.scene.json",
+      "icon": "/assets/icons/layers/website/sections/home/featured-functions/signals.svg",
+      "theme": "dark",
+      "visibility": "public"
+    },
+    {
+      "id": "longitudinal-continuity",
+      "order": 6,
+      "status": "planned",
+      "label": "Continuity",
+      "title": "Longitudinal Continuity",
+      "description": "A continuity layer for tracking progress, drift, and lasting change over time.",
+      "href": "/404.html",
+      "image": "",
+      "scene": "/collections/featured/icos-featured-functions/scenes/longitudinal-continuity.scene.json",
+      "icon": "/assets/icons/layers/website/sections/home/featured-functions/continuity.svg",
+      "theme": "dark",
+      "visibility": "public"
+    }
+  ]
+}

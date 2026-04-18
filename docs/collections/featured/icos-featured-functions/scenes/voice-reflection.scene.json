@@ -1,0 +1,65 @@
+{
+  "id": "voice-reflection",
+  "title": "Voice Reflection",
+  "version": "1.0.0",
+  "engine": "featured-functions-shader",
+  "scene_type": "voice_resonance_field",
+  "description": "A voice-first reflective field for clarity, articulation, and internal continuity.",
+  "intent": {
+    "primary": "spoken reflection",
+    "secondary": "thinking clarity",
+    "tertiary": "internal continuity"
+  },
+  "palette": {
+    "background": "#000000",
+    "surface": "#ffffff",
+    "primary": "#6ac8ff",
+    "secondary": "#ffe28a",
+    "accent": "#12e0ff",
+    "accent_soft": "#ff7a59",
+    "glow": "#fff27a"
+  },
+  "motion": {
+    "profile": "calm_resonance",
+    "speed": 0.4,
+    "flow": 0.34,
+    "turbulence": 0.14,
+    "pulse": 0.82,
+    "breath": 0.72,
+    "stability": 0.78
+  },
+  "field": {
+    "density": 0.34,
+    "contrast": 0.52,
+    "softness": 0.74,
+    "grain": 0.08,
+    "vignette": 0.16,
+    "depth": 0.44
+  },
+  "geometry": {
+    "wave_layers": 3,
+    "ring_count": 2,
+    "line_density": 0.28,
+    "orbital_drift": 0.22,
+    "center_bias_x": -0.04,
+    "center_bias_y": -0.01
+  },
+  "matte": {
+    "enabled": true,
+    "opacity": 0.18,
+    "blur": 0.22,
+    "gradient_bias": 0.5
+  },
+  "interaction": {
+    "pointer_influence": 0.12,
+    "pointer_radius": 0.18,
+    "pointer_smoothing": 0.84
+  },
+  "render": {
+    "loop": true,
+    "autoplay": true,
+    "pixel_ratio_cap": 1.75,
+    "transparent": false,
+    "aspect_ratio": "2.5:1"
+  }
+}

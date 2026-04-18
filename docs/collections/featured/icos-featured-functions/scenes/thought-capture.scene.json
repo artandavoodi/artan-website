@@ -1,0 +1,65 @@
+{
+  "id": "thought-capture",
+  "title": "Thought Capture",
+  "version": "1.0.0",
+  "engine": "featured-functions-shader",
+  "scene_type": "memory_capture_field",
+  "description": "A structured capture field for preserving spoken and written thought for retrieval and future development.",
+  "intent": {
+    "primary": "thought preservation",
+    "secondary": "retrieval readiness",
+    "tertiary": "future development"
+  },
+  "palette": {
+    "background": "#000000",
+    "surface": "#ffffff",
+    "primary": "#ffb066",
+    "secondary": "#ffffff",
+    "accent": "#ff8a1a",
+    "accent_soft": "#ff4d6d",
+    "glow": "#fff3c4"
+  },
+  "motion": {
+    "profile": "capture_and_settle",
+    "speed": 0.76,
+    "flow": 0.58,
+    "turbulence": 0.36,
+    "pulse": 0.72,
+    "breath": 0.34,
+    "stability": 0.86
+  },
+  "field": {
+    "density": 0.42,
+    "contrast": 0.58,
+    "softness": 0.62,
+    "grain": 0.06,
+    "vignette": 0.14,
+    "depth": 0.51
+  },
+  "geometry": {
+    "fragment_count": 12,
+    "capture_zones": 3,
+    "line_density": 0.24,
+    "orbital_drift": 0.16,
+    "center_bias_x": 0.03,
+    "center_bias_y": 0.0
+  },
+  "matte": {
+    "enabled": true,
+    "opacity": 0.2,
+    "blur": 0.24,
+    "gradient_bias": 0.5
+  },
+  "interaction": {
+    "pointer_influence": 0.1,
+    "pointer_radius": 0.16,
+    "pointer_smoothing": 0.88
+  },
+  "render": {
+    "loop": true,
+    "autoplay": true,
+    "pixel_ratio_cap": 1.75,
+    "transparent": false,
+    "aspect_ratio": "2.5:1"
+  }
+}

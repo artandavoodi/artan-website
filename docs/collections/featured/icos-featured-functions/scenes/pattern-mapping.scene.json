@@ -1,0 +1,65 @@
+{
+  "id": "pattern-mapping",
+  "title": "Pattern Mapping",
+  "version": "1.0.0",
+  "engine": "featured-functions-shader",
+  "scene_type": "pattern_reveal_field",
+  "description": "A field for revealing recurring structures across language, emotion, and cognition.",
+  "intent": {
+    "primary": "pattern recognition",
+    "secondary": "cross-domain structure",
+    "tertiary": "cognitive clarity"
+  },
+  "palette": {
+    "background": "#000000",
+    "surface": "#ffffff",
+    "primary": "#75ffb0",
+    "secondary": "#ffffff",
+    "accent": "#38ff8a",
+    "accent_soft": "#ffd84a",
+    "glow": "#ff7a1a"
+  },
+  "motion": {
+    "profile": "reveal_and_align",
+    "speed": 0.92,
+    "flow": 0.78,
+    "turbulence": 0.48,
+    "pulse": 0.66,
+    "breath": 0.4,
+    "stability": 0.8
+  },
+  "field": {
+    "density": 0.46,
+    "contrast": 0.6,
+    "softness": 0.58,
+    "grain": 0.05,
+    "vignette": 0.12,
+    "depth": 0.56
+  },
+  "geometry": {
+    "cluster_count": 5,
+    "connection_density": 0.34,
+    "line_density": 0.32,
+    "orbital_drift": 0.18,
+    "center_bias_x": -0.02,
+    "center_bias_y": 0.02
+  },
+  "matte": {
+    "enabled": true,
+    "opacity": 0.18,
+    "blur": 0.22,
+    "gradient_bias": 0.5
+  },
+  "interaction": {
+    "pointer_influence": 0.11,
+    "pointer_radius": 0.18,
+    "pointer_smoothing": 0.86
+  },
+  "render": {
+    "loop": true,
+    "autoplay": true,
+    "pixel_ratio_cap": 1.75,
+    "transparent": false,
+    "aspect_ratio": "2.5:1"
+  }
+}

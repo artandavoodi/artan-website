@@ -1,0 +1,65 @@
+{
+  "id": "longitudinal-continuity",
+  "title": "Longitudinal Continuity",
+  "version": "1.0.0",
+  "engine": "featured-functions-shader",
+  "scene_type": "continuity_flow_field",
+  "description": "A continuity field for tracking progress, drift, and lasting change over time.",
+  "intent": {
+    "primary": "continuity across time",
+    "secondary": "progress and drift",
+    "tertiary": "lasting change"
+  },
+  "palette": {
+    "background": "#000000",
+    "surface": "#ffffff",
+    "primary": "#ffe27a",
+    "secondary": "#ffffff",
+    "accent": "#ffd84a",
+    "accent_soft": "#ff835c",
+    "glow": "#ffffff"
+  },
+  "motion": {
+    "profile": "persistent_forward_flow",
+    "speed": 0.38,
+    "flow": 0.84,
+    "turbulence": 0.12,
+    "pulse": 0.48,
+    "breath": 0.26,
+    "stability": 0.9
+  },
+  "field": {
+    "density": 0.36,
+    "contrast": 0.54,
+    "softness": 0.66,
+    "grain": 0.04,
+    "vignette": 0.14,
+    "depth": 0.58
+  },
+  "geometry": {
+    "path_count": 3,
+    "stream_density": 0.28,
+    "line_density": 0.24,
+    "orbital_drift": 0.1,
+    "center_bias_x": 0.06,
+    "center_bias_y": 0.0
+  },
+  "matte": {
+    "enabled": true,
+    "opacity": 0.18,
+    "blur": 0.22,
+    "gradient_bias": 0.5
+  },
+  "interaction": {
+    "pointer_influence": 0.08,
+    "pointer_radius": 0.16,
+    "pointer_smoothing": 0.9
+  },
+  "render": {
+    "loop": true,
+    "autoplay": true,
+    "pixel_ratio_cap": 1.75,
+    "transparent": false,
+    "aspect_ratio": "2.5:1"
+  }
+}

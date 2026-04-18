@@ -1,0 +1,66 @@
+{
+  "id": "cognitive-graph",
+  "title": "Cognitive Graph",
+  "version": "1.0.0",
+  "engine": "featured-functions-shader",
+  "scene_type": "graph_navigation_field",
+  "description": "A graph layer that connects thoughts, memories, and patterns into a navigable structure.",
+  "intent": {
+    "primary": "structural navigation",
+    "secondary": "relationship discovery",
+    "tertiary": "connected memory"
+  },
+  "palette": {
+    "background": "#000000",
+    "surface": "#ffffff",
+    "primary": "#7ba2ff",
+    "secondary": "#ffffff",
+    "accent": "#61c8ff",
+    "accent_soft": "#ff6a3d",
+    "glow": "#ffffff"
+  },
+  "motion": {
+    "profile": "graph_drift",
+    "speed": 0.42,
+    "flow": 0.32,
+    "turbulence": 0.14,
+    "pulse": 0.32,
+    "breath": 0.22,
+    "stability": 0.88
+  },
+  "field": {
+    "density": 0.4,
+    "contrast": 0.57,
+    "softness": 0.61,
+    "grain": 0.04,
+    "vignette": 0.1,
+    "depth": 0.62
+  },
+  "geometry": {
+    "node_count": 18,
+    "cluster_count": 4,
+    "connection_density": 0.3,
+    "line_density": 0.26,
+    "orbital_drift": 0.14,
+    "center_bias_x": 0.02,
+    "center_bias_y": -0.02
+  },
+  "matte": {
+    "enabled": true,
+    "opacity": 0.18,
+    "blur": 0.22,
+    "gradient_bias": 0.5
+  },
+  "interaction": {
+    "pointer_influence": 0.1,
+    "pointer_radius": 0.17,
+    "pointer_smoothing": 0.88
+  },
+  "render": {
+    "loop": true,
+    "autoplay": true,
+    "pixel_ratio_cap": 1.75,
+    "transparent": false,
+    "aspect_ratio": "2.5:1"
+  }
+}

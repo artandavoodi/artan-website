@@ -4,9 +4,8 @@
    02) BASE MODULE
    03) RAIL ALIGNMENT
    04) VISUAL LAYER
-   05) CAPTION LAYER
-   06) RESPONSIVE — 900PX
-   07) RESPONSIVE — 600PX
+   05) RESPONSIVE — 900PX
+   06) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -18,8 +17,11 @@
 ============================================================================= */
 
 .system-node{
+  --system-node-max-width: 760px;
   position:relative;
-  width:100%;
+  width:min(100%, var(--system-node-max-width));
+  max-width:var(--system-node-max-width);
+  min-width:0;
   padding:0;
   color:var(--text-primary-color, var(--color-primary1));
   display:flex;
@@ -32,8 +34,6 @@
 ============================================================================= */
 
 .system-node{
-  width:100%;
-  max-width:none;
   margin-inline:auto;
 }
 
@@ -47,14 +47,15 @@
   align-items:center;
   justify-content:center;
   width:100%;
+  max-width:var(--system-node-max-width);
   margin-bottom:0;
 }
 
 .system-node-svg{
   display:block;
-  width:min(46vw, 40rem);
-  max-width:40rem;
-  min-width:280px;
+  width:100%;
+  max-width:100%;
+  min-width:0;
   height:auto;
   margin-inline:auto;
   color:var(--color-primary1);
@@ -88,37 +89,7 @@
 }
 
 /* =============================================================================
-   05) CAPTION LAYER
-============================================================================= */
-
-.system-node-caption{
-  width:100%;
-  max-width:620px;
-  margin-inline:auto;
-  margin-top:1.25rem;
-  text-align:center;
-}
-
-.system-node-title{
-  font-size:var(--type-heading-sm-size, 1.6rem);
-  font-weight:var(--type-heading-semibold-weight, 600);
-  line-height:var(--type-heading-sm-line-height, 1.2);
-  letter-spacing:var(--type-heading-tracking, normal);
-  color:inherit;
-  margin-bottom:var(--space-4, 1rem);
-}
-
-.system-node-text{
-  font-size:var(--type-body-md-size, 1rem);
-  font-weight:var(--type-body-regular-weight, 400);
-  line-height:var(--type-body-md-line-height, 1.6);
-  letter-spacing:var(--type-body-tracking, normal);
-  color:var(--text-secondary-color, currentColor);
-  opacity:0.75;
-}
-
-/* =============================================================================
-   06) RESPONSIVE — 900PX
+   05) RESPONSIVE — 900PX
 ============================================================================= */
 
 @media (max-width:900px){
@@ -126,21 +97,13 @@
     padding:0;
   }
 
-  .system-node-svg{
-    width:min(85vw, 26.25rem);
+  .system-node{
+    width:min(100%, var(--system-node-max-width));
+    max-width:var(--system-node-max-width);
+    min-width:0;
   }
 }
 
 /* =============================================================================
-   07) RESPONSIVE — 600PX
+   06) END OF FILE
 ============================================================================= */
-
-@media (max-width:600px){
-  .system-node-title{
-    font-size:var(--type-heading-xs-size, 1.4rem);
-  }
-
-  .system-node-text{
-    font-size:var(--type-body-sm-size, 0.95rem);
-  }
-}

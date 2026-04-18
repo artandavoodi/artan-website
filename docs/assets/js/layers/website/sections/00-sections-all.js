@@ -49,6 +49,8 @@ import './executive-team.js';
 import './faq.js';
 import './financials.js';
 import './founder.js';
+import './home-featured-functions.js';
+import './home-featured-functions-shader.js';
 import './governance.js';
 import './guides.js';
 import './infrastructure.js';

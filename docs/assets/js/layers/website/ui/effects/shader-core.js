@@ -26,6 +26,8 @@
   class NeuroShaderCore {
     constructor(options = {}) {
       this.options = this.normalizeConfig(options);
+      this.mountNode = this.options.mount;
+      this.createdCanvas = false;
       this.canvas = this.options.canvas;
       this.gl = null;
       this.program = null;
@@ -43,18 +45,43 @@
         active: false
       };
       this.uniforms = {};
+      this.uniformLocations = {};
+      this.customUniformValues = {};
       this.boundResize = () => this.resize();
       this.boundPointerMove = (event) => this.handlePointerMove(event);
       this.boundPointerLeave = () => this.handlePointerLeave();
+      this.boundObservedResize = () => this.scheduleResize();
+      this.resizeObserver = null;
+      this.resizeFrame = null;
     }
 
     /* =============================================================================
        03) CONFIG NORMALIZATION
     ============================================================================= */
     normalizeConfig(options) {
+      const mount = options.mount instanceof Element ? options.mount : null;
+      const canvas = options.canvas instanceof HTMLCanvasElement
+        ? options.canvas
+        : mount instanceof HTMLCanvasElement
+          ? mount
+          : null;
+
+      const fragmentSource = typeof options.fragmentSource === 'string' && options.fragmentSource
+        ? options.fragmentSource
+        : typeof options.fragmentShader === 'string'
+          ? options.fragmentShader
+          : '';
+
+      const dprCap = typeof options.dprCap === 'number'
+        ? options.dprCap
+        : typeof options.pixelRatioCap === 'number'
+          ? options.pixelRatioCap
+          : 1.75;
+
       return {
-        canvas: options.canvas instanceof HTMLCanvasElement ? options.canvas : null,
-        fragmentSource: typeof options.fragmentSource === 'string' ? options.fragmentSource : '',
+        canvas,
+        mount,
+        fragmentSource,
         vertexSource: typeof options.vertexSource === 'string' ? options.vertexSource : `
           attribute vec2 a_position;
           varying vec2 v_uv;
@@ -63,10 +90,13 @@
             gl_Position = vec4(a_position, 0.0, 1.0);
           }
         `,
-        dprCap: typeof options.dprCap === 'number' ? options.dprCap : 1.75,
+        dprCap,
         smoothing: typeof options.smoothing === 'number' ? options.smoothing : 0.08,
         onBeforeRender: typeof options.onBeforeRender === 'function' ? options.onBeforeRender : null,
-        onAfterRender: typeof options.onAfterRender === 'function' ? options.onAfterRender : null
+        onAfterRender: typeof options.onAfterRender === 'function' ? options.onAfterRender : null,
+        transparent: Boolean(options.transparent),
+        contextAlpha: typeof options.contextAlpha === 'boolean' ? options.contextAlpha : true,
+        premultipliedAlpha: typeof options.premultipliedAlpha === 'boolean' ? options.premultipliedAlpha : true
       };
     }
 
@@ -74,14 +104,25 @@
        04) CONTEXT + PROGRAM HELPERS
     ============================================================================= */
     init() {
-      if (!this.canvas) return false;
+      if (!this.canvas) {
+        if (this.mountNode && !(this.mountNode instanceof HTMLCanvasElement)) {
+          const canvas = document.createElement('canvas');
+          canvas.className = 'neuro-shader-core-canvas';
+          canvas.setAttribute('aria-hidden', 'true');
+          this.mountNode.appendChild(canvas);
+          this.canvas = canvas;
+          this.createdCanvas = true;
+        } else {
+          return false;
+        }
+      }
 
       this.gl = this.canvas.getContext('webgl', {
-        alpha: true,
+        alpha: this.options.contextAlpha,
         antialias: true,
         depth: false,
         stencil: false,
-        premultipliedAlpha: true,
+        premultipliedAlpha: this.options.premultipliedAlpha,
         preserveDrawingBuffer: false
       });
 
@@ -95,10 +136,14 @@
       this.uniforms.time = this.gl.getUniformLocation(this.program, 'u_time');
       this.uniforms.resolution = this.gl.getUniformLocation(this.program, 'u_resolution');
       this.uniforms.pointer = this.gl.getUniformLocation(this.program, 'u_pointer');
+      this.uniformLocations.u_time = this.uniforms.time;
+      this.uniformLocations.u_resolution = this.uniforms.resolution;
+      this.uniformLocations.u_pointer = this.uniforms.pointer;
 
       this.createFullscreenQuad();
       this.resize();
       this.attachEvents();
+      this.scheduleResize();
       return true;
     }
 
@@ -160,16 +205,65 @@
       this.gl.vertexAttribPointer(positionLocation, 2, this.gl.FLOAT, false, 0, 0);
     }
 
+    getUniformLocation(name) {
+      if (!this.gl || !this.program || !name) return null;
+      if (this.uniformLocations[name]) return this.uniformLocations[name];
+      const location = this.gl.getUniformLocation(this.program, name);
+      this.uniformLocations[name] = location;
+      return location;
+    }
+
+    applyUniform(location, value) {
+      if (!this.gl || !location || value === undefined || value === null) return;
+
+      if (typeof value === 'number') {
+        this.gl.uniform1f(location, value);
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        if (value.length === 1) this.gl.uniform1f(location, value[0]);
+        if (value.length === 2) this.gl.uniform2f(location, value[0], value[1]);
+        if (value.length === 3) this.gl.uniform3f(location, value[0], value[1], value[2]);
+        if (value.length === 4) this.gl.uniform4f(location, value[0], value[1], value[2], value[3]);
+      }
+    }
+
     /* =============================================================================
        05) RESIZE / VIEWPORT HELPERS
     ============================================================================= */
+    getResizeTarget() {
+      if (this.mountNode && this.mountNode !== this.canvas) {
+        return this.mountNode;
+      }
+
+      return this.canvas;
+    }
+
+    scheduleResize() {
+      if (this.resizeFrame) {
+        window.cancelAnimationFrame(this.resizeFrame);
+      }
+
+      this.resizeFrame = window.requestAnimationFrame(() => {
+        this.resizeFrame = null;
+        this.resize();
+      });
+    }
+
     resize() {
       if (!this.canvas || !this.gl) return;
 
-      const rect = this.canvas.getBoundingClientRect();
+      const resizeTarget = this.getResizeTarget();
+      const rect = resizeTarget ? resizeTarget.getBoundingClientRect() : this.canvas.getBoundingClientRect();
+
+      if (!rect.width || !rect.height) {
+        return;
+      }
+
       const dpr = Math.min(window.devicePixelRatio || 1, this.options.dprCap);
-      const width = Math.max(1, Math.round(rect.width * dpr));
-      const height = Math.max(1, Math.round(rect.height * dpr));
+      const width = Math.max(2, Math.round(rect.width * dpr));
+      const height = Math.max(2, Math.round(rect.height * dpr));
 
       if (this.canvas.width !== width || this.canvas.height !== height) {
         this.canvas.width = width;
@@ -183,12 +277,31 @@
       window.addEventListener('resize', this.boundResize, { passive: true });
       this.canvas.addEventListener('pointermove', this.boundPointerMove, { passive: true });
       this.canvas.addEventListener('pointerleave', this.boundPointerLeave, { passive: true });
+
+      if (typeof ResizeObserver === 'function') {
+        const resizeTarget = this.getResizeTarget();
+
+        if (resizeTarget) {
+          this.resizeObserver = new ResizeObserver(this.boundObservedResize);
+          this.resizeObserver.observe(resizeTarget);
+        }
+      }
     }
 
     detachEvents() {
       window.removeEventListener('resize', this.boundResize, { passive: true });
       this.canvas.removeEventListener('pointermove', this.boundPointerMove, { passive: true });
       this.canvas.removeEventListener('pointerleave', this.boundPointerLeave, { passive: true });
+
+      if (this.resizeObserver) {
+        this.resizeObserver.disconnect();
+        this.resizeObserver = null;
+      }
+
+      if (this.resizeFrame) {
+        window.cancelAnimationFrame(this.resizeFrame);
+        this.resizeFrame = null;
+      }
     }
 
     /* =============================================================================
@@ -216,14 +329,15 @@
       this.pointer.y += (this.pointer.targetY - this.pointer.y) * smoothing;
     }
 
-    /* =============================================================================
-       07) RENDER LOOP
-    ============================================================================= */
-    render = (timestamp) => {
-      if (!this.isRunning || !this.gl || !this.program) return;
+    drawFrame(timestamp) {
+      if (!this.gl || !this.program) return;
 
-      if (!this.startTime) this.startTime = timestamp;
-      const elapsed = (timestamp - this.startTime) / 1000;
+      if (!this.startTime && typeof timestamp === 'number') {
+        this.startTime = timestamp;
+      }
+
+      const resolvedTimestamp = typeof timestamp === 'number' ? timestamp : performance.now();
+      const elapsed = this.startTime ? (resolvedTimestamp - this.startTime) / 1000 : 0;
 
       this.updatePointer();
       if (this.options.onBeforeRender) {
@@ -236,20 +350,28 @@
       }
 
       this.gl.useProgram(this.program);
-      this.gl.clearColor(0, 0, 0, 0);
+      this.gl.clearColor(0, 0, 0, this.options.transparent ? 0 : 1);
       this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-      if (this.uniforms.time) {
-        this.gl.uniform1f(this.uniforms.time, elapsed);
-      }
+      const timeValue = Object.prototype.hasOwnProperty.call(this.customUniformValues, 'u_time')
+        ? this.customUniformValues.u_time
+        : elapsed;
+      const resolutionValue = Object.prototype.hasOwnProperty.call(this.customUniformValues, 'u_resolution')
+        ? this.customUniformValues.u_resolution
+        : [this.canvas.width, this.canvas.height];
+      const pointerValue = Object.prototype.hasOwnProperty.call(this.customUniformValues, 'u_pointer')
+        ? this.customUniformValues.u_pointer
+        : [this.pointer.x, this.pointer.y];
 
-      if (this.uniforms.resolution) {
-        this.gl.uniform2f(this.uniforms.resolution, this.canvas.width, this.canvas.height);
-      }
+      this.applyUniform(this.uniforms.time, timeValue);
+      this.applyUniform(this.uniforms.resolution, resolutionValue);
+      this.applyUniform(this.uniforms.pointer, pointerValue);
 
-      if (this.uniforms.pointer) {
-        this.gl.uniform2f(this.uniforms.pointer, this.pointer.x, this.pointer.y);
-      }
+      Object.entries(this.customUniformValues).forEach(([name, value]) => {
+        if (name === 'u_time' || name === 'u_resolution' || name === 'u_pointer') return;
+        const location = this.getUniformLocation(name);
+        this.applyUniform(location, value);
+      });
 
       this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
 
@@ -261,13 +383,36 @@
           pointer: this.pointer
         });
       }
+    }
 
+    render = (timestamp) => {
+      if (!this.gl || !this.program) return;
+
+      if (typeof timestamp !== 'number') {
+        this.drawFrame(performance.now());
+        return;
+      }
+
+      if (!this.isRunning) return;
+
+      this.drawFrame(timestamp);
       this.animationFrame = window.requestAnimationFrame(this.render);
     };
 
     /* =============================================================================
        08) PUBLIC API
     ============================================================================= */
+    mount() {
+      if (!this.gl) {
+        this.init();
+      }
+    }
+
+    setUniform(name, value) {
+      if (!name) return;
+      this.customUniformValues[name] = value;
+    }
+
     start() {
       if (this.isRunning) return;
       if (!this.gl && !this.init()) return;
@@ -288,6 +433,10 @@
       this.stop();
       this.detachEvents();
 
+      if (this.createdCanvas && this.canvas && this.canvas.parentNode) {
+        this.canvas.parentNode.removeChild(this.canvas);
+      }
+
       if (this.gl && this.vertexBuffer) this.gl.deleteBuffer(this.vertexBuffer);
       if (this.gl && this.program) this.gl.deleteProgram(this.program);
       if (this.gl && this.vertexShader) this.gl.deleteShader(this.vertexShader);
@@ -298,6 +447,8 @@
       this.vertexShader = null;
       this.fragmentShader = null;
       this.gl = null;
+      this.canvas = null;
+      this.createdCanvas = false;
     }
   }
 

@@ -1,0 +1,65 @@
+{
+  "id": "emotional-tracking",
+  "title": "Emotional Tracking",
+  "version": "1.0.0",
+  "engine": "featured-functions-shader",
+  "scene_type": "emotional_drift_field",
+  "description": "A longitudinal field for observing emotional movement with more nuance and context.",
+  "intent": {
+    "primary": "emotional observation",
+    "secondary": "temporal nuance",
+    "tertiary": "contextual interpretation"
+  },
+  "palette": {
+    "background": "#000000",
+    "surface": "#ffffff",
+    "primary": "#ff6b7a",
+    "secondary": "#ffffff",
+    "accent": "#ff4545",
+    "accent_soft": "#ffb347",
+    "glow": "#fff0c9"
+  },
+  "motion": {
+    "profile": "slow_emotional_drift",
+    "speed": 0.56,
+    "flow": 0.48,
+    "turbulence": 0.26,
+    "pulse": 0.94,
+    "breath": 0.86,
+    "stability": 0.84
+  },
+  "field": {
+    "density": 0.38,
+    "contrast": 0.46,
+    "softness": 0.78,
+    "grain": 0.04,
+    "vignette": 0.18,
+    "depth": 0.48
+  },
+  "geometry": {
+    "layer_count": 4,
+    "gradient_bands": 3,
+    "line_density": 0.18,
+    "orbital_drift": 0.12,
+    "center_bias_x": 0.0,
+    "center_bias_y": 0.03
+  },
+  "matte": {
+    "enabled": true,
+    "opacity": 0.22,
+    "blur": 0.26,
+    "gradient_bias": 0.52
+  },
+  "interaction": {
+    "pointer_influence": 0.08,
+    "pointer_radius": 0.16,
+    "pointer_smoothing": 0.9
+  },
+  "render": {
+    "loop": true,
+    "autoplay": true,
+    "pixel_ratio_cap": 1.75,
+    "transparent": false,
+    "aspect_ratio": "2.5:1"
+  }
+}

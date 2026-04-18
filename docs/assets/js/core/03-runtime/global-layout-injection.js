@@ -47,6 +47,7 @@ const FRAGMENT_PATHS = {
   'institutional-links': assetPath('/assets/fragments/layers/website/navigation/institutional-links.html'),
   'institutional-menu': assetPath('/assets/fragments/layers/website/navigation/institutional-menu.html'),
   'menu': assetPath('/assets/fragments/layers/website/navigation/menu.html'),
+  'home-featured-functions': assetPath('/assets/fragments/layers/website/sections/home-featured-functions.html'),
   'footer': assetPath('/assets/fragments/layers/website/footer/footer.html'),
   'brain-activity': assetPath('/assets/fragments/layers/website/system/brain-activity.html'),
   'system-node': assetPath('/assets/fragments/layers/website/system/system-node.html')
