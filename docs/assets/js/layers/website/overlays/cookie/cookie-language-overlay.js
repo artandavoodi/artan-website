@@ -182,10 +182,14 @@
     const countryName = getCountryLabel(country);
     const languageCode = normalizeLang(country.language || state.selectedLanguage || 'en');
     const languageLabel = getCountryLanguageLabel(country);
+    const languageSet = Array.isArray(country.languages) && country.languages.length
+      ? country.languages.map((value) => normalizeLang(value)).filter(Boolean)
+      : [languageCode];
     const isSelected = countryCode === state.selectedCountryCode;
 
     button.dataset.countryCode = countryCode;
     button.dataset.language = languageCode;
+    button.dataset.languages = Array.from(new Set([...languageSet, 'en'])).join(',');
     button.dataset.countryName = countryName;
     button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
     button.classList.toggle('is-selected', isSelected);
@@ -286,6 +290,10 @@
 
     const countryCode = String(button.dataset.countryCode || '').trim().toUpperCase();
     const language = normalizeLang(button.dataset.language || state.selectedLanguage || 'en');
+    const languages = String(button.dataset.languages || language || 'en')
+      .split(',')
+      .map((value) => normalizeLang(value))
+      .filter(Boolean);
     const countryName = String(button.dataset.countryName || '').trim();
 
     if (!countryCode || !countryName) return;
@@ -302,6 +310,8 @@
       window.localStorage.setItem('artan_country_label', countryName);
       window.localStorage.setItem('neuroartan_language', language);
       window.localStorage.setItem('artan_language', language);
+      window.localStorage.setItem('neuroartan_languages', JSON.stringify(Array.from(new Set(languages))));
+      window.localStorage.setItem('artan_languages', JSON.stringify(Array.from(new Set(languages))));
     } catch {}
 
     const localeApi = window.NEUROARTAN_COUNTRY_LANGUAGE || window.ARTAN_COUNTRY_LANGUAGE || null;

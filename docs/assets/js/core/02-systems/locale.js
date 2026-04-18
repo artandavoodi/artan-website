@@ -37,6 +37,7 @@ window.NEUROARTAN_TRANSLATION = (() => {
   let pendingApplyPromise = null;
   let pendingApplyLang = null;
   let fragmentRefreshScheduled = false;
+  let pendingFragmentFlushPromise = null;
   const pendingFragmentRoots = new Set();
   const cache = new Map();
 
@@ -48,24 +49,33 @@ window.NEUROARTAN_TRANSLATION = (() => {
   };
 
   const flushPendingFragmentRoots = () => {
-    if (fragmentRefreshScheduled) return;
+    if (fragmentRefreshScheduled && pendingFragmentFlushPromise) return pendingFragmentFlushPromise;
+    if (currentLang === 'en' || !pendingFragmentRoots.size) return Promise.resolve();
+
     fragmentRefreshScheduled = true;
 
-    window.requestAnimationFrame(async () => {
-      fragmentRefreshScheduled = false;
+    pendingFragmentFlushPromise = new Promise((resolve) => {
+      window.requestAnimationFrame(async () => {
+        fragmentRefreshScheduled = false;
 
-      if (currentLang === 'en' || !pendingFragmentRoots.size) return;
+        while (pendingFragmentRoots.size) {
+          const roots = Array.from(pendingFragmentRoots).filter((root) => {
+            return root instanceof Element && document.contains(root);
+          });
 
-      const roots = Array.from(pendingFragmentRoots).filter((root) => {
-        return root instanceof Element && document.contains(root);
+          pendingFragmentRoots.clear();
+
+          for (const rootEl of roots) {
+            await refreshCurrentLanguage(rootEl);
+          }
+        }
+
+        pendingFragmentFlushPromise = null;
+        resolve();
       });
-
-      pendingFragmentRoots.clear();
-
-      for (const rootEl of roots) {
-        await refreshCurrentLanguage(rootEl);
-      }
     });
+
+    return pendingFragmentFlushPromise;
   };
 
   /* =============================================================================
@@ -461,6 +471,24 @@ window.NEUROARTAN_TRANSLATION = (() => {
     }
   };
 
+  function shouldApplyTextRTL(el) {
+    if (!(el instanceof Element)) return false;
+    if (el.getAttribute('data-locale-direction-locked') === 'true') return false;
+
+    if (el.hasAttribute('data-i18n-key')) {
+      return true;
+    }
+
+    if (
+      (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)
+      && (el.hasAttribute('data-i18n-placeholder-key') || el.hasAttribute('placeholder'))
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   /* =============================================================================
      09A) TRANSLATION PAYLOAD PREPARATION
   ============================================================================= */
@@ -562,7 +590,7 @@ window.NEUROARTAN_TRANSLATION = (() => {
             el.setAttribute('placeholder', payload.placeholder);
           }
 
-          applyTextRTL(el, isRtl);
+          applyTextRTL(el, isRtl && shouldApplyTextRTL(el));
         }
 
         const previewNodes = Array.from(scope.querySelectorAll('[data-preview-title-i18n], [data-preview-sub-i18n]'));
@@ -583,6 +611,10 @@ window.NEUROARTAN_TRANSLATION = (() => {
           }
         }
 
+        if (isGlobalScope && pendingFragmentRoots.size) {
+          await flushPendingFragmentRoots();
+        }
+
         if (isGlobalScope) {
           writeStoredLanguage(lang);
           emitTranslationLifecycle("complete", { lang });
@@ -598,7 +630,7 @@ window.NEUROARTAN_TRANSLATION = (() => {
           pendingApplyLang = null;
 
           if (currentLang !== 'en' && pendingFragmentRoots.size) {
-            flushPendingFragmentRoots();
+            void flushPendingFragmentRoots();
           }
         }
       }

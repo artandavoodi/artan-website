@@ -103,6 +103,21 @@
   opacity:0.98;
 }
 
+.language-dropdown button[aria-pressed="true"],
+.language-dropdown a[aria-pressed="true"],
+.language-dropdown [role="menuitem"][aria-pressed="true"],
+.language-dropdown .language-option[aria-pressed="true"],
+.language-dropdown .lang-option[aria-pressed="true"],
+.language-dropdown button.is-selected,
+.language-dropdown a.is-selected,
+.language-dropdown [role="menuitem"].is-selected,
+.language-dropdown .language-option.is-selected,
+.language-dropdown .lang-option.is-selected{
+  background-color:rgba(255,255,255,0.08);
+  color:var(--text-primary-color);
+  opacity:1;
+}
+
 /* =============================================================================
    05) LIGHT MODE ADJUSTMENTS
 ============================================================================= */
@@ -117,6 +132,19 @@ body.light-mode .language-dropdown [role="menuitem"]:hover,
 body.light-mode .language-dropdown .language-option:hover,
 body.light-mode .language-dropdown .lang-option:hover{
   background-color:rgba(0,0,0,0.05);
+}
+
+body.light-mode .language-dropdown button[aria-pressed="true"],
+body.light-mode .language-dropdown a[aria-pressed="true"],
+body.light-mode .language-dropdown [role="menuitem"][aria-pressed="true"],
+body.light-mode .language-dropdown .language-option[aria-pressed="true"],
+body.light-mode .language-dropdown .lang-option[aria-pressed="true"],
+body.light-mode .language-dropdown button.is-selected,
+body.light-mode .language-dropdown a.is-selected,
+body.light-mode .language-dropdown [role="menuitem"].is-selected,
+body.light-mode .language-dropdown .language-option.is-selected,
+body.light-mode .language-dropdown .lang-option.is-selected{
+  background-color:rgba(0,0,0,0.08);
 }
 
 /* =============================================================================

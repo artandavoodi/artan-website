@@ -39,11 +39,10 @@
   const DOT_SELECTOR = '[data-home-featured-functions-dot]';
   const PREVIOUS_SELECTOR = '[data-home-featured-functions-previous]';
   const NEXT_SELECTOR = '[data-home-featured-functions-next]';
-  const CONTROLS_SELECTOR = '.home-featured-functions-controls';
-  const DOTS_WRAPPER_SELECTOR = '.home-featured-functions-dots';
   const CARD_SELECTOR = '[data-home-featured-functions-card]';
   const READY_CLASS = 'home-featured-functions-ready';
   const INITIALIZED_ATTRIBUTE = 'data-home-featured-functions-initialized';
+  const LANGUAGE_DIRECTION_ATTRIBUTE = 'data-home-featured-functions-language-direction';
   const DRAG_THRESHOLD = 48;
   const AUTOPLAY_BASE_DELAY = 11800;
 
@@ -169,6 +168,45 @@
     return Math.max(0, totalItems - cardsPerView);
   }
 
+  function resolveLanguageDirection(detail = null) {
+    if (detail && typeof detail.rtl === 'boolean') {
+      return detail.rtl ? 'rtl' : 'ltr';
+    }
+
+    const siteMain = document.getElementById('site-main');
+    const candidates = [
+      siteMain?.getAttribute('data-dir'),
+      siteMain?.getAttribute('dir'),
+      document.body?.getAttribute('data-dir'),
+      document.body?.getAttribute('dir'),
+      document.documentElement.classList.contains('lang-rtl') ? 'rtl' : ''
+    ];
+
+    const normalized = String(candidates.find(Boolean) || 'ltr').trim().toLowerCase();
+    return normalized === 'rtl' ? 'rtl' : 'ltr';
+  }
+
+  function applyLanguageDirection(section, detail = null) {
+    if (!section) {
+      return;
+    }
+
+    section.setAttribute(LANGUAGE_DIRECTION_ATTRIBUTE, resolveLanguageDirection(detail));
+  }
+
+  function bindLanguageDirection(section) {
+    if (!section || section.__featuredFunctionsLanguageDirectionHandler) {
+      return;
+    }
+
+    const handleLanguageApplied = (event) => {
+      applyLanguageDirection(section, event?.detail || null);
+    };
+
+    window.addEventListener('neuroartan:language-applied', handleLanguageApplied);
+    section.__featuredFunctionsLanguageDirectionHandler = handleLanguageApplied;
+  }
+
   /* ==========================================================================
      05) CARD TEMPLATE
      ========================================================================== */
@@ -270,50 +308,6 @@
     };
   }
 
-  function resolveInterfaceDirection() {
-    const rootDir = document.documentElement.getAttribute('dir');
-    const bodyDir = document.body?.getAttribute('dir');
-    const computedDir = window.getComputedStyle(document.documentElement).direction;
-    const normalized = String(rootDir || bodyDir || computedDir || 'ltr').toLowerCase();
-    return normalized === 'rtl' ? 'rtl' : 'ltr';
-  }
-
-  function enforcePhysicalLTR(section) {
-    if (!section) {
-      return;
-    }
-
-    const viewport = section.querySelector(VIEWPORT_SELECTOR);
-    const track = section.querySelector(TRACK_SELECTOR);
-    const controls = section.querySelector(CONTROLS_SELECTOR);
-    const dots = section.querySelector(DOTS_WRAPPER_SELECTOR);
-    const previousButton = section.querySelector(PREVIOUS_SELECTOR);
-    const nextButton = section.querySelector(NEXT_SELECTOR);
-    const uiDirection = resolveInterfaceDirection();
-
-    section.setAttribute('dir', 'ltr');
-    section.style.direction = 'ltr';
-    section.setAttribute('data-home-featured-functions-ui-direction', uiDirection);
-
-    [viewport, track].forEach((node) => {
-      if (!node) {
-        return;
-      }
-
-      node.setAttribute('dir', 'ltr');
-      node.style.direction = 'ltr';
-    });
-
-    [controls, dots, previousButton, nextButton].forEach((node) => {
-      if (!node) {
-        return;
-      }
-
-      node.setAttribute('dir', uiDirection);
-      node.style.direction = uiDirection;
-    });
-  }
-
   /* ==========================================================================
      07) SLIDE STATE HELPERS
      ========================================================================== */
@@ -359,6 +353,16 @@
     }
   }
 
+  function emitSlideState(state) {
+    state.section.dispatchEvent(new CustomEvent('home-featured-functions:slide-change', {
+      bubbles: false,
+      detail: {
+        currentIndex: state.currentIndex,
+        totalItems: state.totalItems
+      }
+    }));
+  }
+
   function updateRail(state) {
     const track = state.section.querySelector(TRACK_SELECTOR);
 
@@ -375,6 +379,7 @@
     state.section.style.setProperty('--home-featured-functions-rail-offset', `${offset}px`);
     updateDots(state);
     updateControls(state);
+    emitSlideState(state);
   }
 
   function stopAutoplay(state) {
@@ -514,23 +519,6 @@
     scheduleAutoplay(state);
   }
 
-  function watchDirectionChanges(section) {
-    if (!section || section.__featuredFunctionsDirectionObserver) {
-      return;
-    }
-
-    const observer = new MutationObserver(() => {
-      enforcePhysicalLTR(section);
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['dir', 'lang']
-    });
-
-    section.__featuredFunctionsDirectionObserver = observer;
-  }
-
   /* ==========================================================================
      09) INITIALIZATION BOOTSTRAP
      ========================================================================== */
@@ -588,6 +576,7 @@
       };
       const renderedData = renderSection(section, hydratedData);
       section.__featuredFunctionsData = hydratedData;
+      applyLanguageDirection(section);
       section.dispatchEvent(new CustomEvent('home-featured-functions:rendered', {
         bubbles: false,
         detail: {
@@ -595,8 +584,7 @@
         }
       }));
       const interactionState = createInteractionState(section, renderedData);
-      enforcePhysicalLTR(section);
-      watchDirectionChanges(section);
+      bindLanguageDirection(section);
       bindControls(interactionState);
       markInitialized(section);
     } catch (error) {
@@ -631,9 +619,10 @@
 
       if (section) {
         section.style.removeProperty('--home-featured-functions-rail-offset');
-        if (section.__featuredFunctionsDirectionObserver) {
-          section.__featuredFunctionsDirectionObserver.disconnect();
-          section.__featuredFunctionsDirectionObserver = null;
+
+        if (section.__featuredFunctionsLanguageDirectionHandler) {
+          window.removeEventListener('neuroartan:language-applied', section.__featuredFunctionsLanguageDirectionHandler);
+          section.__featuredFunctionsLanguageDirectionHandler = null;
         }
       }
     }, { once: true });

@@ -326,10 +326,24 @@ import {
       case 'auth/too-many-requests':
         return 'Too many attempts were made. Please wait and try again.';
       case 'permission-denied':
-        return 'Profile storage is not available with the current Firebase rules.';
+      case 'unavailable':
+        return 'Profile storage is not available right now.';
       default:
         return fallbackMessage;
     }
+  }
+
+  function isProfileStoreUnavailableError(error) {
+    const code = normalizeString(error?.code || '');
+    const message = normalizeString(error?.message || '');
+
+    return (
+      code === 'permission-denied'
+      || code === 'unavailable'
+      || message.includes('cloud firestore api has not been used')
+      || message.includes('failed to get document because the client is offline')
+      || message.includes('could not reach cloud firestore backend')
+    );
   }
 
   /* =============================================================================
@@ -551,7 +565,12 @@ import {
       return;
     }
 
-    emitProfileState(user, await getProfileByUid(user.uid));
+    try {
+      emitProfileState(user, await getProfileByUid(user.uid));
+    } catch (error) {
+      emitProfileState(user, null);
+      console.error('Profile redirect state refresh failed:', error);
+    }
   }
 
   function maybeHandleIncompleteProfile(user, profile) {
@@ -1059,6 +1078,13 @@ import {
         });
 
         setFieldError(usernameField, messageForUsernameError(usernameCode, policy));
+      } else if (isProfileStoreUnavailableError(error)) {
+        emitUsernameStatus({
+          state: 'unavailable',
+          normalized: values.username,
+          message: buildUsernameStatus('unavailable', values.username, policy)
+        });
+        setFieldError(usernameField, 'Profile storage is not available right now. Please try again shortly.');
       } else {
         const message = mapFirebaseError(error, 'Unable to complete profile setup right now.');
         setFieldError(usernameField, message);
@@ -1091,6 +1117,11 @@ import {
       maybeHandleIncompleteProfile(user, profile);
     } catch (error) {
       if (requestId !== RUNTIME.profileRequestId) return;
+      if (readFlowState().resolveProfile && isProfileStoreUnavailableError(error)) {
+        maybeHandleIncompleteProfile(user, null);
+        return;
+      }
+
       emitProfileState(user, null);
       console.error('Profile lookup error:', error);
     }

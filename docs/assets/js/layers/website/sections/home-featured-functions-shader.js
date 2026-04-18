@@ -1097,6 +1097,16 @@
     });
 
     section.__featuredFunctionScenes = [];
+    section.__featuredFunctionActiveIndex = null;
+  }
+
+  function getActiveSceneMount(section, preferredIndex = 0) {
+    const cards = Array.from(section?.querySelectorAll('[data-home-featured-functions-card]') || []);
+    if (!cards.length) return null;
+
+    const normalizedIndex = Math.min(Math.max(Number(preferredIndex) || 0, 0), cards.length - 1);
+    const activeCard = cards[normalizedIndex] || cards[0];
+    return activeCard ? activeCard.querySelector(SCENE_SELECTOR) : null;
   }
 
   function getSection() {
@@ -1111,29 +1121,33 @@
     section.setAttribute(LIFECYCLE_BOUND_ATTRIBUTE, 'true');
   }
 
-  function initFeaturedFunctionShaders(section = document.querySelector(SECTION_SELECTOR)) {
+  function initFeaturedFunctionShaders(section = document.querySelector(SECTION_SELECTOR), preferredIndex = 0) {
     if (!section) {
+      return;
+    }
+
+    const normalizedIndex = Math.max(0, Number(preferredIndex) || 0);
+    if (section.__featuredFunctionActiveIndex === normalizedIndex && Array.isArray(section.__featuredFunctionScenes) && section.__featuredFunctionScenes.length) {
       return;
     }
 
     destroyFeaturedFunctionShaders(section);
 
-    const mounts = Array.from(section.querySelectorAll(SCENE_SELECTOR));
+    const mount = getActiveSceneMount(section, normalizedIndex);
     const scenes = [];
 
-    mounts.forEach((mount) => {
+    if (mount) {
       const config = getInlineSceneConfig(mount);
 
-      if (!config) {
-        return;
+      if (config) {
+        const scene = new FeaturedFunctionShaderScene(mount, config);
+        scene.mount();
+        scenes.push(scene);
       }
-
-      const scene = new FeaturedFunctionShaderScene(mount, config);
-      scene.mount();
-      scenes.push(scene);
-    });
+    }
 
     section.__featuredFunctionScenes = scenes;
+    section.__featuredFunctionActiveIndex = normalizedIndex;
   }
 
   function bindFeaturedFunctionShaderLifecycle() {
@@ -1144,11 +1158,16 @@
     }
 
     section.addEventListener('home-featured-functions:rendered', () => {
-      initFeaturedFunctionShaders(section);
+      initFeaturedFunctionShaders(section, 0);
+    });
+
+    section.addEventListener('home-featured-functions:slide-change', (event) => {
+      const nextIndex = Number(event?.detail?.currentIndex || 0);
+      initFeaturedFunctionShaders(section, nextIndex);
     });
 
     if (section.__featuredFunctionsData) {
-      initFeaturedFunctionShaders(section);
+      initFeaturedFunctionShaders(section, 0);
     }
 
     markLifecycleBound(section);

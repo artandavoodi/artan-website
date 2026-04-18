@@ -86,7 +86,6 @@
   /* =============================================================================
      04) DEFAULTS AND LANGUAGE NORMALIZATION
   ============================================================================= */
-  const DEFAULT_COUNTRY_CODE = 'DE';
   const DEFAULT_LANGUAGE = 'en';
 
   const ISO639_3_TO_1 = {
@@ -114,6 +113,29 @@
     if (!/^[a-z]{2}$/.test(c)) return DEFAULT_LANGUAGE;
     return c;
   };
+
+  const resolveBrowserCountryCode = () => {
+    const candidates = [
+      navigator.language,
+      ...(Array.isArray(navigator.languages) ? navigator.languages : [])
+    ];
+
+    for (const candidate of candidates) {
+      const raw = String(candidate || '').trim();
+      if (!raw) continue;
+
+      const parts = raw.split(/[-_]/).map((value) => String(value || '').trim());
+      const region = parts.find((value, index) => index > 0 && /^[A-Za-z]{2}$/.test(value));
+
+      if (region) {
+        return region.toUpperCase();
+      }
+    }
+
+    return 'US';
+  };
+
+  const DEFAULT_COUNTRY_CODE = resolveBrowserCountryCode();
 
   /* =============================================================================
      05) STORAGE AND CACHE HELPERS
@@ -230,22 +252,34 @@
   };
 
   const inferLanguageForCountry = (countryCode, fallback = DEFAULT_LANGUAGE) => {
-    const normalizedFallback = normalizeLang(fallback || DEFAULT_LANGUAGE);
+    const rawFallback = String(fallback || '').trim();
+    const normalizedFallback = rawFallback ? normalizeLang(rawFallback) : '';
     const canonical = getCanonicalCountryByCode(countryCode);
 
     if (canonical) {
       if (Array.isArray(canonical.languages) && canonical.languages.length) {
+        if (normalizedFallback && canonical.languages.includes(normalizedFallback)) {
+          return normalizedFallback;
+        }
+
         return canonical.languages[0];
       }
+
       if (canonical.language) {
+        if (normalizedFallback && canonical.language === normalizedFallback) {
+          return normalizedFallback;
+        }
+
         return canonical.language;
       }
     }
 
+    if (normalizedFallback) return normalizedFallback;
+
     const browserLanguage = normalizeLang(navigator.language || '');
     if (browserLanguage) return browserLanguage;
 
-    return normalizedFallback;
+    return DEFAULT_LANGUAGE;
   };
 
   /* =============================================================================
@@ -286,17 +320,13 @@
     state.countryCode = (getLS(STORAGE.COUNTRY_CODE, LEGACY_STORAGE.COUNTRY_CODE) || DEFAULT_COUNTRY_CODE).toUpperCase();
 
     const localeAPI = getLocaleAPI();
-    const storedLanguage = normalizeLang(
+    const rawStoredLanguage =
       (localeAPI && typeof localeAPI.getCurrentLanguage === 'function'
         ? localeAPI.getCurrentLanguage()
-        : getLS(STORAGE.LANGUAGE, LEGACY_STORAGE.LANGUAGE)) || ''
-    );
-    state.language = inferLanguageForCountry(state.countryCode, storedLanguage || DEFAULT_LANGUAGE);
+        : getLS(STORAGE.LANGUAGE, LEGACY_STORAGE.LANGUAGE)) || '';
+    const storedLanguage = rawStoredLanguage ? normalizeLang(rawStoredLanguage) : '';
 
     const storedLabel = getLS(STORAGE.COUNTRY_LABEL, LEGACY_STORAGE.COUNTRY_LABEL) || '';
-    state.countryLabel = storedLabel && storedLabel !== '—'
-      ? storedLabel
-      : nativeCountryName(state.countryCode, state.language);
 
     state.languages = getStoredLanguages();
     if (!state.languages || !state.languages.length) {
@@ -304,9 +334,22 @@
       if (canonical && Array.isArray(canonical.languages) && canonical.languages.length) {
         state.languages = canonical.languages;
       } else {
-        state.languages = [state.language];
+        state.languages = [inferLanguageForCountry(state.countryCode, storedLanguage || DEFAULT_LANGUAGE)];
       }
     }
+
+    const availableLanguages = Array.isArray(state.languages) ? state.languages : [];
+    state.language = availableLanguages.includes(storedLanguage)
+      ? storedLanguage
+      : inferLanguageForCountry(state.countryCode, storedLanguage || DEFAULT_LANGUAGE);
+
+    if (!availableLanguages.includes(state.language)) {
+      state.languages = Array.from(new Set([...availableLanguages, state.language].filter(Boolean)));
+    }
+
+    state.countryLabel = storedLabel && storedLabel !== '—'
+      ? storedLabel
+      : nativeCountryName(state.countryCode, state.language);
   };
 
   /* =============================================================================
@@ -464,6 +507,7 @@
   };
 
   let languageDocCloserBound = false;
+  let localeStateEventsBound = false;
 
   const buildLanguageDropdown = (primaryLang, availableLangs) => {
     const dd = getFooterLanguageDropdown();
@@ -484,23 +528,24 @@
     ].filter(Boolean)));
 
     langs.forEach((code) => {
+      const isSelected = code === normalizeLang(state.language || primaryLang || DEFAULT_LANGUAGE);
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'language-option';
       btn.setAttribute('data-lang', code);
+      btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+      btn.classList.toggle('is-selected', isSelected);
       btn.textContent = code.toUpperCase();
       btn.addEventListener('click', async () => {
         state.language = code;
         closeLanguageDropdown();
-        setLabels();
+        setLS(STORAGE.LANGUAGE, state.language, LEGACY_STORAGE.LANGUAGE);
 
         if (state.countryCode) {
           state.countryLabel = nativeCountryName(state.countryCode, state.language);
-          setLS(STORAGE.COUNTRY_LABEL, state.countryLabel);
-          setLabels();
+          setLS(STORAGE.COUNTRY_LABEL, state.countryLabel, LEGACY_STORAGE.COUNTRY_LABEL);
         }
 
-        buildLanguageDropdown(state.language, state.languages);
         await applyTranslation(code);
         hydrateStateFromStorage();
         setLabels();
@@ -540,23 +585,63 @@
   ============================================================================= */
 
   async function detectIP() {
-    try {
-      const r = await fetch('https://ipapi.co/json/');
-      const d = await r.json();
+    const providers = [
+      async () => {
+        const response = await fetch('https://ipapi.co/json/', {
+          cache: 'no-store',
+          headers: {
+            Accept: 'application/json'
+          }
+        });
 
-      const code = d && d.country_code ? String(d.country_code).toUpperCase() : null;
+        if (!response.ok) return null;
+        const data = await response.json();
+        return {
+          code: String(data?.country_code || '').trim().toUpperCase(),
+          lang: data?.languages || data?.language || ''
+        };
+      },
+      async () => {
+        const response = await fetch('https://ipwho.is/', {
+          cache: 'no-store',
+          headers: {
+            Accept: 'application/json'
+          }
+        });
 
-      let lang = DEFAULT_LANGUAGE;
-      if (d && typeof d.languages === 'string' && d.languages.trim()) {
-        lang = normalizeLang(d.languages.split(',')[0].trim());
-      } else if (d && typeof d.language === 'string' && d.language.trim()) {
-        lang = normalizeLang(d.language);
+        if (!response.ok) return null;
+        const data = await response.json();
+        if (data?.success === false) return null;
+
+        return {
+          code: String(data?.country_code || '').trim().toUpperCase(),
+          lang: ''
+        };
       }
+    ];
 
-      return { code, lang };
-    } catch {
-      return { code: null, lang: DEFAULT_LANGUAGE };
+    for (const provider of providers) {
+      try {
+        const result = await provider();
+        const code = String(result?.code || '').trim().toUpperCase();
+        const rawLang = String(result?.lang || '').trim();
+        const lang = rawLang
+          ? normalizeLang(rawLang.split(',')[0].trim())
+          : '';
+
+        if (/^[A-Z]{2}$/.test(code)) {
+          return {
+            code,
+            lang: lang || DEFAULT_LANGUAGE
+          };
+        }
+      } catch (_) {}
     }
+
+    return {
+      code: resolveBrowserCountryCode(),
+      lang: DEFAULT_LANGUAGE
+    };
   }
 
   /* =============================================================================
@@ -666,6 +751,7 @@
 
       setLS(STORAGE.COUNTRY_CODE, state.countryCode, LEGACY_STORAGE.COUNTRY_CODE);
       setLS(STORAGE.COUNTRY_LABEL, state.countryLabel, LEGACY_STORAGE.COUNTRY_LABEL);
+      setLS(STORAGE.LANGUAGE, state.language, LEGACY_STORAGE.LANGUAGE);
 
       closeCountryOverlay();
       closeLanguageDropdown();
@@ -690,6 +776,19 @@
     window.requestAnimationFrame(() => {
       rebindScheduled = false;
       refreshFooterLocaleUI();
+    });
+  };
+
+  const bindLocaleStateEvents = () => {
+    if (localeStateEventsBound) return;
+    localeStateEventsBound = true;
+
+    document.addEventListener('country-selected', () => {
+      scheduleLocaleUiRefresh();
+    });
+
+    document.addEventListener('translation:complete', () => {
+      scheduleLocaleUiRefresh();
     });
   };
 
@@ -730,6 +829,7 @@
 
   async function init() {
     hydrateStateFromStorage();
+    bindLocaleStateEvents();
 
     const isNewSession = !sessionStorage.getItem(STORAGE.SESSION);
 
