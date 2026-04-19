@@ -122,6 +122,10 @@
   gap:var(--spacing-sm);
 }
 
+.profile-panel__link-chip{
+  min-height:var(--control-height-sm);
+}
+
 .profile-panel__badge-list{
   display:flex;
   align-items:center;

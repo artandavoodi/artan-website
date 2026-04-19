@@ -3,12 +3,13 @@
    02) MODULE STATE
    03) CONSTANTS
    04) ASSET HELPERS
-   05) FORMAT HELPERS
-   06) PROFILE STATE DERIVATION
-   07) RUNTIME STORE
-   08) PROFILE ACTION DISPATCH
-   09) EVENT BINDING
-   10) INITIALIZATION
+   05) SHARED FORMAT HELPERS
+   06) PRIVATE PROFILE STATE DERIVATION
+   07) PUBLIC PROFILE STATE DERIVATION
+   08) RUNTIME STORE
+   09) PROFILE ACTION DISPATCH
+   10) EVENT BINDING
+   11) INITIALIZATION
    ============================================================================= */
 
 /* =============================================================================
@@ -18,6 +19,7 @@
 import {
   buildPublicProfileDisplay,
   buildPublicProfilePath,
+  buildPublicProfileUrl,
   loadProfileIdentityPolicy,
   normalizeString,
   normalizeUsername
@@ -56,8 +58,16 @@ function assetPath(path) {
 }
 
 /* =============================================================================
-   05) FORMAT HELPERS
+   05) SHARED FORMAT HELPERS
    ============================================================================= */
+
+function capitalizeWords(value) {
+  return normalizeString(value)
+    .split(/[\s_-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
 
 function formatProviderLabel(providerId) {
   switch (normalizeString(providerId)) {
@@ -78,15 +88,6 @@ function formatProviderLabel(providerId) {
   }
 }
 
-function getPrimaryProvider(user, profile = null) {
-  const explicit = normalizeString(profile?.auth_provider_primary || profile?.auth_provider || '');
-  if (explicit) return explicit;
-
-  const providerData = Array.isArray(user?.providerData) ? user.providerData : [];
-  const firstProvider = normalizeString(providerData[0]?.providerId || '');
-  return firstProvider || 'account';
-}
-
 function formatDate(value) {
   const normalized = normalizeString(value);
   if (!normalized) return 'Not provided';
@@ -103,14 +104,6 @@ function formatDate(value) {
   } catch (_) {
     return normalized;
   }
-}
-
-function capitalizeWords(value) {
-  return normalizeString(value)
-    .split(/[\s_-]+/)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
 }
 
 function formatFieldLabel(value) {
@@ -140,6 +133,19 @@ function buildInitials(displayName, email = '') {
   }
 
   return base.slice(0, 2).toUpperCase();
+}
+
+/* =============================================================================
+   06) PRIVATE PROFILE STATE DERIVATION
+   ============================================================================= */
+
+function getPrimaryProvider(user, profile = null) {
+  const explicit = normalizeString(profile?.auth_provider_primary || profile?.auth_provider || '');
+  if (explicit) return explicit;
+
+  const providerData = Array.isArray(user?.providerData) ? user.providerData : [];
+  const firstProvider = normalizeString(providerData[0]?.providerId || '');
+  return firstProvider || 'account';
 }
 
 function buildCompletionState(profile = null) {
@@ -224,6 +230,7 @@ function buildPrivateProfileState(user = null, profile = null) {
   const email = normalizeString(profile?.auth_email || profile?.email || user?.email || '');
   const providerId = getPrimaryProvider(user, profile);
   const publicRoutePath = normalizeString(profile?.public_profile_path || profile?.public_route_path || buildPublicProfilePath(username.normalized));
+  const publicRouteUrl = normalizeString(profile?.public_profile_url || profile?.public_route_url || buildPublicProfileUrl(username.normalized));
   const publicRouteDisplay = buildPublicProfileDisplay(username.normalized);
   const publicViewAvailable = visibility.publicEnabled === true && visibility.routeStatus === 'ready' && Boolean(username.normalized);
   const avatarUrl = normalizeString(profile?.avatar_url || profile?.photo_url || user?.photoURL || '');
@@ -271,6 +278,7 @@ function buildPrivateProfileState(user = null, profile = null) {
     providerLabel: formatProviderLabel(providerId),
     authContextLine: user ? `${formatProviderLabel(providerId)} account connected` : 'Authentication required',
     publicRoutePath,
+    publicRouteUrl,
     publicRouteDisplay,
     publicViewAvailable,
     profileRecordState: profile ? 'Canonical record active' : 'Canonical record pending',
@@ -309,15 +317,165 @@ function buildPrivateProfileState(user = null, profile = null) {
 }
 
 /* =============================================================================
-   06) PROFILE STATE DERIVATION
+   07) PUBLIC PROFILE STATE DERIVATION
    ============================================================================= */
 
+function buildPublicRouteCopy(outcome, username) {
+  switch (outcome) {
+    case 'found_renderable':
+      return 'Canonical company-domain public profile is active.';
+    case 'invalid_username':
+      return 'This route candidate is not a canonically valid Neuroartan username.';
+    case 'restricted_username':
+      return 'This route candidate belongs to a protected or restricted username namespace.';
+    case 'reserved_but_hidden':
+      return 'This canonical username is reserved, but public rendering is hidden.';
+    case 'reserved_but_not_ready':
+      return 'This canonical username is reserved, but the public route is not ready for rendering yet.';
+    case 'reserved_but_disabled':
+      return 'This canonical username is reserved, but public route visibility is disabled.';
+    case 'not_found':
+      return `No public profile currently resolves for @${username || 'username'}.`;
+    case 'error':
+      return 'The public route could not be resolved right now.';
+    case 'loading':
+      return 'Resolving canonical company-domain route.';
+    default:
+      return 'Public profile route.';
+  }
+}
+
+function buildPublicStateBadge(outcome) {
+  switch (outcome) {
+    case 'found_renderable':
+      return 'Public Route';
+    case 'invalid_username':
+      return 'Invalid Route';
+    case 'restricted_username':
+      return 'Restricted';
+    case 'reserved_but_hidden':
+      return 'Hidden';
+    case 'reserved_but_not_ready':
+      return 'Not Ready';
+    case 'reserved_but_disabled':
+      return 'Disabled';
+    case 'not_found':
+      return 'Not Found';
+    case 'error':
+      return 'Route Error';
+    case 'loading':
+      return 'Resolving';
+    default:
+      return 'Public Route';
+  }
+}
+
+function buildPublicProfileState(detail = {}) {
+  const outcome = normalizeString(detail.outcome || '') || (detail.loading ? 'loading' : 'idle');
+  const publicProfile = detail.publicProfile && typeof detail.publicProfile === 'object'
+    ? detail.publicProfile
+    : null;
+  const normalizedUsername = normalizeUsername(detail.normalizedUsername || publicProfile?.public_username || detail.username || '');
+  const publicRoutePath = normalizeString(detail.publicRoutePath || publicProfile?.public_route_path || buildPublicProfilePath(normalizedUsername));
+  const publicRouteUrl = normalizeString(detail.publicRouteUrl || publicProfile?.public_route_canonical_url || buildPublicProfileUrl(normalizedUsername));
+  const publicRouteDisplay = normalizeString(detail.publicRouteDisplay || buildPublicProfileDisplay(normalizedUsername));
+  const displayName = normalizeString(publicProfile?.public_display_name || '');
+  const avatarUrl = normalizeString(publicProfile?.public_avatar_url || '');
+  const avatarHasImage = Boolean(avatarUrl);
+  const publicLinks = Array.isArray(publicProfile?.public_links) ? publicProfile.public_links : [];
+  const visibilityState = publicProfile?.public_profile_enabled === true
+    ? capitalizeWords(publicProfile?.public_profile_visibility || 'Public')
+    : outcome === 'reserved_but_hidden'
+      ? 'Hidden'
+      : outcome === 'reserved_but_disabled'
+        ? 'Disabled'
+        : 'Pending';
+  const continuityState = outcome === 'found_renderable' ? 'Active' : outcome === 'loading' ? 'Resolving' : 'Scaffolded';
+  const summary = normalizeString(publicProfile?.public_summary || '')
+    || buildPublicRouteCopy(outcome, normalizedUsername);
+
+  return {
+    surface: 'public',
+    viewerState: 'public',
+    stateKey: outcome || 'idle',
+    routeOutcome: outcome,
+    username: {
+      raw: detail.username || normalizedUsername,
+      normalized: normalizedUsername,
+      status: outcome
+    },
+    publicProfile,
+    displayName: displayName || 'Public Profile',
+    publicRoutePath,
+    publicRouteUrl,
+    publicRouteDisplay,
+    publicViewAvailable: outcome === 'found_renderable',
+    avatarUrl: avatarHasImage ? avatarUrl : '',
+    avatarHasImage,
+    avatarInitials: buildInitials(displayName || normalizedUsername || 'Neuroartan'),
+    stateBadgeLabel: buildPublicStateBadge(outcome),
+    stateLine: buildPublicRouteCopy(outcome, normalizedUsername),
+    summary,
+    menuStateLine: outcome === 'found_renderable'
+      ? 'Company-domain public identity surface'
+      : buildPublicRouteCopy(outcome, normalizedUsername),
+    primaryActionLabel: 'Copy Link',
+    primaryAction: 'copy-link',
+    routeOutcomeValue: buildPublicStateBadge(outcome),
+    routeOutcomeCopy: buildPublicRouteCopy(outcome, normalizedUsername),
+    visibilityState,
+    visibilityCopy: outcome === 'found_renderable'
+      ? (publicProfile?.public_profile_discoverable ? 'Discoverable public route' : 'Direct route with limited discovery')
+      : 'Public visibility is not currently renderable.',
+    continuityState,
+    continuityCopy: outcome === 'found_renderable'
+      ? 'This public surface is the external continuity layer for the canonical Neuroartan profile record.'
+      : 'Public continuity modules remain unavailable until the canonical route becomes renderable.',
+    identityLabel: normalizeString(publicProfile?.public_identity_label || '') || 'Public continuity identity',
+    publicLinks,
+    publicLinksAvailable: publicLinks.length > 0,
+    publicPrimaryLink: normalizeString(publicProfile?.public_primary_link || publicLinks[0]?.url || ''),
+    routeBadges: outcome === 'found_renderable'
+      ? ['Public-safe model', 'Username resolved', 'Company domain']
+      : ['Route gated', 'Canonical policy', 'Public-safe only'],
+    continuityBadges: outcome === 'found_renderable'
+      ? ['Identity', 'Presence', 'Continuity']
+      : ['Identity', 'Route', 'Continuity'],
+    publicProfileDiscoverable: publicProfile?.public_profile_discoverable === true,
+    publicProfileEnabled: publicProfile?.public_profile_enabled === true
+  };
+}
+
+function resolveInitialSurface() {
+  return document.body?.dataset.profilePage === 'public'
+    || document.body?.classList.contains('public-profile-route-active')
+    ? 'public'
+    : 'private';
+}
+
+function isPublicSurfaceActive() {
+  return document.body?.dataset.profilePage === 'public'
+    || document.body?.classList.contains('public-profile-route-active')
+    || document.documentElement?.dataset.profileSurface === 'public';
+}
+
+function shouldApplyPublicState(detail = {}) {
+  return isPublicSurfaceActive()
+    || detail?.route?.handleAsPublicRoute === true;
+}
+
+function shouldApplyPrivateState() {
+  return !isPublicSurfaceActive();
+}
+
 function getDefaultState() {
-  return buildPrivateProfileState(null, null);
+  return resolveInitialSurface() === 'public'
+    ? buildPublicProfileState({ outcome: 'loading' })
+    : buildPrivateProfileState(null, null);
 }
 
 /* =============================================================================
-   07) RUNTIME STORE
+   08) RUNTIME STORE
    ============================================================================= */
 
 function notifySubscribers() {
@@ -353,7 +511,7 @@ export function subscribeProfileRuntime(subscriber) {
 }
 
 /* =============================================================================
-   08) PROFILE ACTION DISPATCH
+   09) PROFILE ACTION DISPATCH
    ============================================================================= */
 
 function openAccountDrawer() {
@@ -399,6 +557,22 @@ function openProfileSetup(intent) {
   }));
 }
 
+async function copyProfileLink(state) {
+  const url = normalizeString(state.publicRouteUrl || window.location.href);
+  if (!url) return;
+
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url);
+      return;
+    }
+  } catch (_) {
+    /* Clipboard access fallback below. */
+  }
+
+  window.prompt('Copy public profile link', url);
+}
+
 export function requestProfileAction(action, detail = {}) {
   const state = getProfileRuntimeState();
   const normalizedAction = normalizeString(action);
@@ -426,6 +600,9 @@ export function requestProfileAction(action, detail = {}) {
         window.location.href = state.publicRoutePath;
       }
       return;
+    case 'copy-link':
+      void copyProfileLink(state);
+      return;
     case 'sign-out':
       document.dispatchEvent(new CustomEvent('account:sign-out-request', {
         detail: {
@@ -441,7 +618,7 @@ export function requestProfileAction(action, detail = {}) {
 }
 
 /* =============================================================================
-   09) EVENT BINDING
+   10) EVENT BINDING
    ============================================================================= */
 
 function bindActionDelegation() {
@@ -470,16 +647,24 @@ function bindProfileStateEvents() {
 
   document.addEventListener('account:profile-state-changed', (event) => {
     const detail = event instanceof CustomEvent ? event.detail || {} : {};
+    if (!shouldApplyPrivateState()) return;
     setRuntimeState(buildPrivateProfileState(detail.user || null, detail.profile || null));
   });
 
   document.addEventListener('account:profile-signed-out', () => {
-    setRuntimeState(getDefaultState());
+    if (!shouldApplyPrivateState()) return;
+    setRuntimeState(buildPrivateProfileState(null, null));
+  });
+
+  document.addEventListener('profile:public-state-changed', (event) => {
+    const detail = event instanceof CustomEvent ? event.detail || {} : {};
+    if (!shouldApplyPublicState(detail)) return;
+    setRuntimeState(buildPublicProfileState(detail));
   });
 }
 
 /* =============================================================================
-   10) INITIALIZATION
+   11) INITIALIZATION
    ============================================================================= */
 
 function initProfileRuntime() {
@@ -489,8 +674,16 @@ function initProfileRuntime() {
   setRuntimeState(getDefaultState());
   bindActionDelegation();
   bindProfileStateEvents();
+
   void loadProfileIdentityPolicy().then(() => {
-    setRuntimeState(buildPrivateProfileState(RUNTIME.state?.user || null, RUNTIME.state?.profile || null));
+    const state = getProfileRuntimeState();
+
+    if (state.surface === 'public') {
+      setRuntimeState(buildPublicProfileState(state));
+      return;
+    }
+
+    setRuntimeState(buildPrivateProfileState(state.user || null, state.profile || null));
   });
 
   window.NeuroartanProfileRuntime = Object.freeze({

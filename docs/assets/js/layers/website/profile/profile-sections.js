@@ -15,8 +15,8 @@ import { getProfileRuntimeState, subscribeProfileRuntime } from './profile-runti
    02) PROFILE SECTIONS HELPERS
    ============================================================================= */
 
-function getProfileSectionsRoot() {
-  return document.querySelector('[data-profile-sections][data-profile-surface="private"]');
+function getProfileSectionsRoots() {
+  return Array.from(document.querySelectorAll('[data-profile-sections]'));
 }
 
 function setText(root, selector, value) {
@@ -64,75 +64,84 @@ function capitalizeWords(value) {
     .join(' ');
 }
 
+function renderPublicLinks(root, state) {
+  const container = root.querySelector('[data-profile-public-links-list]');
+  const emptyCopy = root.querySelector('[data-profile-public-links-empty]');
+
+  if (!(container instanceof HTMLElement)) return;
+
+  clearNode(container);
+
+  if (!state.publicLinksAvailable) {
+    if (emptyCopy instanceof HTMLElement) {
+      emptyCopy.hidden = false;
+    }
+    return;
+  }
+
+  if (emptyCopy instanceof HTMLElement) {
+    emptyCopy.hidden = true;
+  }
+
+  state.publicLinks.forEach((link) => {
+    const anchor = document.createElement('a');
+    anchor.className = 'ui-button ui-button--ghost profile-panel__link-chip';
+    anchor.href = link.url;
+    anchor.textContent = link.label;
+
+    if (/^https?:\/\//i.test(link.url)) {
+      anchor.target = '_blank';
+      anchor.rel = 'noreferrer';
+    }
+
+    container.appendChild(anchor);
+  });
+}
+
+function renderPrivateSections(root, state) {
+  root.dataset.profileViewerState = state.viewerState;
+  root.dataset.profileStateKey = state.stateKey;
+}
+
+function renderPublicSections(root, state) {
+  root.dataset.profileViewerState = 'public';
+  root.dataset.profileStateKey = state.stateKey;
+
+  setText(root, '[data-profile-overview-copy]', state.summary);
+  setText(root, '[data-profile-overview-badge]', state.stateBadgeLabel);
+  renderBadges(root, '[data-profile-route-badge-list]', state.routeBadges);
+
+  setText(root, '[data-profile-identity-display-name]', state.displayName);
+  setText(root, '[data-profile-identity-username]', state.username.normalized ? `@${state.username.normalized}` : '@username');
+  setText(root, '[data-profile-route-path]', state.publicRouteDisplay || 'neuroartan.com/username');
+  setText(root, '[data-profile-identity-label]', state.identityLabel);
+
+  renderPublicLinks(root, state);
+
+  setText(root, '[data-profile-public-route-outcome]', state.routeOutcomeValue);
+  setText(root, '[data-profile-public-visibility]', state.visibilityState);
+  setText(root, '[data-profile-public-discoverable]', state.publicProfileDiscoverable ? 'Yes' : 'No');
+  setText(root, '[data-profile-public-route-url]', state.publicRouteUrl || 'https://neuroartan.com/username');
+
+  setText(root, '[data-profile-continuity-badge]', state.continuityState);
+  setText(root, '[data-profile-continuity-copy]', state.continuityCopy);
+  renderBadges(root, '[data-profile-continuity-badges]', state.continuityBadges);
+}
+
 /* =============================================================================
    03) PROFILE SECTIONS RENDER
    ============================================================================= */
 
 function renderProfileSections(state = getProfileRuntimeState()) {
-  const root = getProfileSectionsRoot();
-  if (!root) return;
+  getProfileSectionsRoots().forEach((root) => {
+    const surface = root.getAttribute('data-profile-surface');
 
-  root.dataset.profileViewerState = state.viewerState;
-  root.dataset.profileStateKey = state.stateKey;
+    if (surface === 'public') {
+      renderPublicSections(root, state);
+      return;
+    }
 
-  setText(root, '[data-profile-overview-copy]', state.summary);
-  setText(root, '[data-profile-overview-badge]', state.stateBadgeLabel);
-  renderBadges(root, '[data-profile-missing-fields-list]', state.missingFieldLabels);
-
-  setText(root, '[data-profile-account-email]', state.email || 'Not connected');
-  setText(root, '[data-profile-account-provider]', state.providerLabel);
-  setText(root, '[data-profile-account-email-verified]', state.emailVerified ? 'Verified' : 'Pending');
-  setText(root, '[data-profile-account-record-state]', state.profileRecordState);
-
-  setText(root, '[data-profile-identity-first-name]', state.firstName || 'Pending');
-  setText(root, '[data-profile-identity-last-name]', state.lastName || 'Pending');
-  setText(root, '[data-profile-identity-display-name]', state.displayName || 'Pending');
-  setText(root, '[data-profile-identity-birth-date]', state.birthDate ? state.formattedBirthDate : 'Pending');
-  setText(root, '[data-profile-identity-gender]', state.gender || 'Private by default');
-
-  setText(root, '[data-profile-username-raw]', state.username.raw || 'Pending');
-  setText(root, '[data-profile-username-normalized]', state.username.normalized || 'Not assigned');
-  setText(root, '[data-profile-username-status]', capitalizeWords(state.username.status || 'missing'));
-  setText(root, '[data-profile-route-path]', state.publicRouteDisplay);
-  setText(root, '[data-profile-route-status]', capitalizeWords(state.visibility.routeStatus || 'pending'));
-
-  setText(root, '[data-profile-visibility-status]', capitalizeWords(state.visibility.profileVisibility || 'private'));
-  setText(root, '[data-profile-public-enabled]', state.visibility.publicEnabled ? 'Enabled' : 'Disabled');
-  setText(root, '[data-profile-public-discoverable]', state.visibility.discoverable ? 'Yes' : 'No');
-  setText(
-    root,
-    '[data-profile-public-route-mode]',
-    state.publicViewAvailable
-      ? 'Renderable company-domain route'
-      : state.username.normalized
-        ? 'Reserved route awaiting public activation'
-        : 'Private owner environment'
-  );
-
-  setText(root, '[data-profile-avatar-state]', capitalizeWords(state.avatarState || 'empty'));
-  setText(
-    root,
-    '[data-profile-avatar-source]',
-    state.avatarHasImage
-      ? `${state.providerLabel} identity image`
-      : 'Profile image not yet connected'
-  );
-
-  setText(
-    root,
-    '[data-profile-continuity-badge]',
-    state.completion.complete ? 'Ready' : 'Scaffolded'
-  );
-  setText(
-    root,
-    '[data-profile-continuity-copy]',
-    state.completion.complete
-      ? 'This private profile surface is ready to become the continuity anchor for future ICOS and cross-layer identity modules.'
-      : 'Once identity completion and username governance are stable, this surface becomes the continuity anchor for future Neuroartan layers.'
-  );
-
-  root.querySelectorAll('[data-profile-action]').forEach((control) => {
-    setControlDisabled(control, state.viewerState !== 'authenticated');
+    renderPrivateSections(root, state);
   });
 }
 
@@ -144,7 +153,7 @@ function initProfileSections() {
   subscribeProfileRuntime(renderProfileSections);
 
   document.addEventListener('fragment:mounted', (event) => {
-    if (event?.detail?.name !== 'profile-private-sections') return;
+    if (event?.detail?.name !== 'profile-private-sections' && event?.detail?.name !== 'profile-public-sections') return;
     renderProfileSections();
   });
 

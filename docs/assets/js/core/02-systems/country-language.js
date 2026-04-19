@@ -316,6 +316,17 @@
     if (langEl) langEl.textContent = (state.language || DEFAULT_LANGUAGE).toUpperCase();
   };
 
+  const dispatchLocaleStateChanged = () => {
+    document.dispatchEvent(new CustomEvent('neuroartan:locale-state-changed', {
+      detail: {
+        countryCode: state.countryCode,
+        countryLabel: state.countryLabel,
+        language: state.language,
+        languages: Array.isArray(state.languages) ? [...state.languages] : []
+      }
+    }));
+  };
+
   const hydrateStateFromStorage = () => {
     state.countryCode = (getLS(STORAGE.COUNTRY_CODE, LEGACY_STORAGE.COUNTRY_CODE) || DEFAULT_COUNTRY_CODE).toUpperCase();
 
@@ -546,6 +557,10 @@
           setLS(STORAGE.COUNTRY_LABEL, state.countryLabel, LEGACY_STORAGE.COUNTRY_LABEL);
         }
 
+        setLabels();
+        buildLanguageDropdown(state.language, state.languages);
+        dispatchLocaleStateChanged();
+
         await applyTranslation(code);
         hydrateStateFromStorage();
         setLabels();
@@ -585,6 +600,8 @@
   ============================================================================= */
 
   async function detectIP() {
+    const browserLanguage = normalizeLang(navigator.language || DEFAULT_LANGUAGE);
+
     const providers = [
       async () => {
         const response = await fetch('https://ipapi.co/json/', {
@@ -632,7 +649,7 @@
         if (/^[A-Z]{2}$/.test(code)) {
           return {
             code,
-            lang: lang || DEFAULT_LANGUAGE
+            lang: lang || browserLanguage
           };
         }
       } catch (_) {}
@@ -640,7 +657,7 @@
 
     return {
       code: resolveBrowserCountryCode(),
-      lang: DEFAULT_LANGUAGE
+      lang: browserLanguage
     };
   }
 
@@ -757,6 +774,7 @@
       closeLanguageDropdown();
       setLabels();
       buildLanguageDropdown(state.language, state.languages);
+      dispatchLocaleStateChanged();
       await applyTranslation(state.language);
       hydrateStateFromStorage();
       setLabels();
@@ -831,9 +849,21 @@
     hydrateStateFromStorage();
     bindLocaleStateEvents();
 
-    const isNewSession = !sessionStorage.getItem(STORAGE.SESSION);
+    const localeAPI = getLocaleAPI();
+    const storedCountryCode = String(getLS(STORAGE.COUNTRY_CODE, LEGACY_STORAGE.COUNTRY_CODE) || '').trim().toUpperCase();
+    const storedLanguage = normalizeLang(
+      (localeAPI && typeof localeAPI.getCurrentLanguage === 'function'
+        ? localeAPI.getCurrentLanguage()
+        : getLS(STORAGE.LANGUAGE, LEGACY_STORAGE.LANGUAGE)) || ''
+    );
+    const hasPersistedLocalePreference = Boolean(storedCountryCode || storedLanguage);
 
-    if (isNewSession) {
+    let isNewSession = true;
+    try {
+      isNewSession = !sessionStorage.getItem(STORAGE.SESSION);
+    } catch {}
+
+    if (isNewSession && !hasPersistedLocalePreference) {
       const ip = await detectIP();
 
       const code = (ip.code || DEFAULT_COUNTRY_CODE).toUpperCase();
@@ -852,8 +882,15 @@
 
       setLS(STORAGE.COUNTRY_CODE, code, LEGACY_STORAGE.COUNTRY_CODE);
       setLS(STORAGE.COUNTRY_LABEL, state.countryLabel, LEGACY_STORAGE.COUNTRY_LABEL);
+      setLS(STORAGE.LANGUAGE, state.language, LEGACY_STORAGE.LANGUAGE);
 
-      sessionStorage.setItem(STORAGE.SESSION, '1');
+      try {
+        sessionStorage.setItem(STORAGE.SESSION, '1');
+      } catch {}
+    } else if (isNewSession) {
+      try {
+        sessionStorage.setItem(STORAGE.SESSION, '1');
+      } catch {}
     }
 
     refreshFooterLocaleUI();

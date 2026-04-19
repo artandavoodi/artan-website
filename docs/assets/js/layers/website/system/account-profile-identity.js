@@ -33,6 +33,53 @@ const DEFAULT_PROFILE_IDENTITY_POLICY = Object.freeze({
   public_profile_url_pattern: 'https://neuroartan.com/{username}',
   public_profile_path_pattern: '/{username}',
   public_profile_display_pattern: 'neuroartan.com/{username}',
+  public_route: {
+    protected_exact: [
+      '404',
+      '404.html',
+      'about',
+      'api',
+      'assets',
+      'collections',
+      'contact',
+      'content_sync',
+      'cookies',
+      'docs',
+      'favicon.ico',
+      'home',
+      'icos',
+      'index',
+      'index.html',
+      'investor',
+      'jobs',
+      'knowledge',
+      'legal',
+      'office',
+      'pages',
+      'press',
+      'privacy',
+      'profile',
+      'profile.html',
+      'publications',
+      'research',
+      'robots.txt',
+      'security',
+      'single',
+      'single.html',
+      'sitemap.xml',
+      'support',
+      'terms',
+      'updates',
+      'website'
+    ],
+    protected_prefixes: [
+      'assets/',
+      'collections/',
+      'content_sync/',
+      'pages/',
+      'publications/'
+    ]
+  },
   minimum_eligible_age_years: 18,
   minimum_eligible_age_review_status: 'provisional_pending_legal_review',
   username: {
@@ -92,6 +139,14 @@ const DEFAULT_PROFILE_IDENTITY_POLICY = Object.freeze({
   }
 });
 
+const REQUIRED_PROFILE_FIELDS = Object.freeze([
+  'username',
+  'first_name',
+  'last_name',
+  'display_name',
+  'date_of_birth'
+]);
+
 const WEBSITE_BASE_PATH = (() => {
   if (typeof window === 'undefined') return '';
 
@@ -121,10 +176,23 @@ export function buildProfileIdentityPolicy(raw = {}) {
   const username = raw && typeof raw === 'object' && raw.username && typeof raw.username === 'object'
     ? raw.username
     : {};
+  const publicRoute = raw && typeof raw === 'object' && raw.public_route && typeof raw.public_route === 'object'
+    ? raw.public_route
+    : {};
 
   return {
     ...DEFAULT_PROFILE_IDENTITY_POLICY,
     ...(raw && typeof raw === 'object' ? raw : {}),
+    public_route: {
+      ...DEFAULT_PROFILE_IDENTITY_POLICY.public_route,
+      ...publicRoute,
+      protected_exact: Array.isArray(publicRoute.protected_exact)
+        ? publicRoute.protected_exact.map((value) => normalizeString(value).toLowerCase()).filter(Boolean)
+        : DEFAULT_PROFILE_IDENTITY_POLICY.public_route.protected_exact,
+      protected_prefixes: Array.isArray(publicRoute.protected_prefixes)
+        ? publicRoute.protected_prefixes.map((value) => normalizeString(value).toLowerCase()).filter(Boolean)
+        : DEFAULT_PROFILE_IDENTITY_POLICY.public_route.protected_prefixes
+    },
     username: {
       ...DEFAULT_PROFILE_IDENTITY_POLICY.username,
       ...username,
@@ -242,6 +310,59 @@ export function buildDisplayName(values = {}) {
   );
 }
 
+function resolveProfileFieldValue(field, values = {}, existingProfile = null) {
+  switch (field) {
+    case 'username':
+      return normalizeUsername(
+        values.username
+        || values.username_normalized
+        || values.username_lower
+        || existingProfile?.username
+        || existingProfile?.username_normalized
+        || existingProfile?.username_lower
+        || ''
+      );
+    case 'display_name':
+      return normalizeString(
+        values.display_name
+        || existingProfile?.display_name
+        || buildDisplayName({
+          first_name: values.first_name || existingProfile?.first_name || '',
+          last_name: values.last_name || existingProfile?.last_name || '',
+          name: values.name || existingProfile?.name || ''
+        })
+      );
+    case 'date_of_birth':
+      return normalizeString(
+        values.date_of_birth
+        || values.birth_date
+        || existingProfile?.date_of_birth
+        || existingProfile?.birth_date
+        || ''
+      );
+    default:
+      return normalizeString(values[field] || existingProfile?.[field] || '');
+  }
+}
+
+export function buildProfileCompletionState(values = {}, existingProfile = null) {
+  const missingFields = REQUIRED_PROFILE_FIELDS.filter((field) => {
+    return !resolveProfileFieldValue(field, values, existingProfile);
+  });
+
+  const complete = missingFields.length === 0;
+  const percent = Math.round(
+    ((REQUIRED_PROFILE_FIELDS.length - missingFields.length) / REQUIRED_PROFILE_FIELDS.length) * 100
+  );
+
+  return {
+    complete,
+    missingFields,
+    percent: Math.max(0, Math.min(100, percent)),
+    status: complete ? 'complete' : 'incomplete'
+  };
+}
+
 /* =============================================================================
    07) PUBLIC IDENTITY HELPERS
 ============================================================================= */
@@ -355,6 +476,21 @@ export function getUsernameConfig(policy = getProfileIdentityPolicy()) {
     allowedPattern: new RegExp(username.allowed_pattern || DEFAULT_PROFILE_IDENTITY_POLICY.username.allowed_pattern),
     reservedExact: new Set((username.reserved_exact || DEFAULT_PROFILE_IDENTITY_POLICY.username.reserved_exact).map((value) => normalizeUsername(value))),
     restrictedTokens: new Set((username.restricted_tokens || DEFAULT_PROFILE_IDENTITY_POLICY.username.restricted_tokens).map((value) => normalizeUsername(value)))
+  };
+}
+
+export function getPublicRouteConfig(policy = getProfileIdentityPolicy()) {
+  const publicRoute = policy.public_route || DEFAULT_PROFILE_IDENTITY_POLICY.public_route;
+
+  return {
+    protectedExact: new Set(
+      (publicRoute.protected_exact || DEFAULT_PROFILE_IDENTITY_POLICY.public_route.protected_exact)
+        .map((value) => normalizeString(value).toLowerCase())
+        .filter(Boolean)
+    ),
+    protectedPrefixes: (publicRoute.protected_prefixes || DEFAULT_PROFILE_IDENTITY_POLICY.public_route.protected_prefixes)
+      .map((value) => normalizeString(value).toLowerCase())
+      .filter(Boolean)
   };
 }
 
@@ -486,6 +622,23 @@ export async function findProfileByUsername({
   return snapshot.docs[0]?.data() || null;
 }
 
+export async function getProfileByUid({
+  firestore,
+  uid,
+  profileCollection = 'profiles'
+} = {}) {
+  const normalizedUid = normalizeString(uid);
+  if (!firestore || !normalizedUid) return null;
+
+  const snapshot = await firestore
+    .collection(profileCollection)
+    .doc(normalizedUid)
+    .get();
+
+  if (!snapshot.exists) return null;
+  return snapshot.data() || null;
+}
+
 export async function getUsernameReservation({
   firestore,
   username,
@@ -578,6 +731,211 @@ export async function assertUsernameAvailable(options = {}) {
   return availability;
 }
 
+function normalizePublicLinks(value) {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map((entry) => {
+      if (!entry || typeof entry !== 'object') return null;
+
+      const label = normalizeString(entry.label || entry.title || entry.name || '');
+      const url = normalizeString(entry.url || entry.href || '');
+      if (!url) return null;
+
+      return {
+        label: label || url,
+        url
+      };
+    })
+    .filter(Boolean);
+}
+
+function resolvePublicLinks(values = {}, existingProfile = null) {
+  const explicitLinks = normalizePublicLinks(values.public_links);
+  if (explicitLinks.length) return explicitLinks;
+
+  return normalizePublicLinks(existingProfile?.public_links);
+}
+
+function resolvePublicVisibilityState(profile = null) {
+  const publicEnabled = profile?.public_profile_enabled === true;
+  const publicVisibility = normalizeString(profile?.public_profile_visibility || '');
+  const routeStatus = normalizeString(profile?.public_route_status || '');
+
+  if (!publicEnabled) {
+    return 'reserved_but_disabled';
+  }
+
+  if (['hidden', 'private', 'owner_only', 'internal'].includes(publicVisibility)) {
+    return 'reserved_but_hidden';
+  }
+
+  if (!['ready', 'renderable', 'active'].includes(routeStatus)) {
+    return 'reserved_but_not_ready';
+  }
+
+  return 'found_renderable';
+}
+
+export function buildPublicProfileModel(profile, policy = getProfileIdentityPolicy()) {
+  if (!profile || typeof profile !== 'object') return null;
+
+  const publicUsername = normalizeUsername(
+    profile.public_username
+    || profile.username_normalized
+    || profile.username_lower
+    || profile.username
+    || ''
+  );
+
+  if (!publicUsername) return null;
+
+  const publicLinks = normalizePublicLinks(profile.public_links);
+  const publicPrimaryLink = normalizeString(
+    profile.public_primary_link
+    || publicLinks[0]?.url
+    || ''
+  );
+  const publicSummary = normalizeString(
+    profile.public_summary
+    || profile.public_bio
+    || profile.public_tagline
+    || ''
+  );
+
+  return {
+    public_display_name: normalizeString(
+      profile.public_display_name
+      || profile.display_name
+      || buildDisplayName(profile)
+    ),
+    public_username: publicUsername,
+    public_avatar_url: normalizeString(
+      profile.public_avatar_url
+      || profile.avatar_url
+      || profile.photo_url
+      || ''
+    ),
+    public_preferred_name: normalizeString(profile.public_preferred_name || ''),
+    public_identity_label: normalizeString(profile.public_identity_label || ''),
+    public_route_path: normalizeString(
+      profile.public_route_path
+      || profile.public_profile_path
+      || buildPublicProfilePath(publicUsername, policy)
+    ),
+    public_route_status: normalizeString(profile.public_route_status || ''),
+    public_profile_enabled: profile.public_profile_enabled === true,
+    public_route_canonical_url: normalizeString(
+      profile.public_route_url
+      || profile.public_profile_url
+      || buildPublicProfileUrl(publicUsername, policy)
+    ),
+    public_profile_visibility: normalizeString(profile.public_profile_visibility || ''),
+    public_profile_discoverable: profile.public_profile_discoverable === true,
+    public_profile_state_reason: normalizeString(profile.public_profile_state_reason || ''),
+    public_summary: publicSummary,
+    public_bio: normalizeString(profile.public_bio || ''),
+    public_tagline: normalizeString(profile.public_tagline || ''),
+    public_links: publicLinks,
+    public_primary_link: publicPrimaryLink,
+    public_modules: Array.isArray(profile.public_modules) ? profile.public_modules : [],
+    public_feature_flags: Array.isArray(profile.public_feature_flags) ? profile.public_feature_flags : []
+  };
+}
+
+export async function resolvePublicProfileByUsername({
+  firestore,
+  username,
+  policy = null,
+  profileCollection = 'profiles',
+  reservationCollection = 'username_reservations'
+} = {}) {
+  const resolvedPolicy = policy || await loadProfileIdentityPolicy();
+  const candidate = normalizeString(username);
+  const localValidation = validateUsernameLocally(candidate, resolvedPolicy);
+  const normalizedUsername = normalizeUsername(candidate);
+  const publicRoutePath = buildPublicProfilePath(normalizedUsername, resolvedPolicy);
+  const publicRouteUrl = buildPublicProfileUrl(normalizedUsername, resolvedPolicy);
+  const publicRouteDisplay = buildPublicProfileDisplay(normalizedUsername, resolvedPolicy);
+
+  if (!localValidation.ok) {
+    return {
+      outcome: localValidation.state === 'reserved' || localValidation.state === 'restricted'
+        ? 'restricted_username'
+        : 'invalid_username',
+      username: candidate,
+      normalizedUsername,
+      publicRoutePath,
+      publicRouteUrl,
+      publicRouteDisplay,
+      publicProfile: null
+    };
+  }
+
+  if (!firestore) {
+    return {
+      outcome: 'error',
+      username: candidate,
+      normalizedUsername,
+      publicRoutePath,
+      publicRouteUrl,
+      publicRouteDisplay,
+      publicProfile: null,
+      reason: 'PROFILE_STORE_UNAVAILABLE'
+    };
+  }
+
+  const reservation = await getUsernameReservation({
+    firestore,
+    username: normalizedUsername,
+    reservationCollection
+  });
+
+  const reservationOwnerUid = normalizeString(reservation?.uid || '');
+  if (!reservationOwnerUid) {
+    return {
+      outcome: 'not_found',
+      username: candidate,
+      normalizedUsername,
+      publicRoutePath,
+      publicRouteUrl,
+      publicRouteDisplay,
+      publicProfile: null
+    };
+  }
+
+  const profile = await getProfileByUid({
+    firestore,
+    uid: reservationOwnerUid,
+    profileCollection
+  });
+
+  if (!profile) {
+    return {
+      outcome: 'not_found',
+      username: candidate,
+      normalizedUsername,
+      publicRoutePath,
+      publicRouteUrl,
+      publicRouteDisplay,
+      publicProfile: null
+    };
+  }
+
+  const publicProfile = buildPublicProfileModel(profile, resolvedPolicy);
+  const visibilityOutcome = resolvePublicVisibilityState(profile);
+
+  return {
+    outcome: visibilityOutcome,
+    username: candidate,
+    normalizedUsername,
+    publicRoutePath,
+    publicRouteUrl,
+    publicRouteDisplay,
+    publicProfile: visibilityOutcome === 'found_renderable' ? publicProfile : null
+  };
+}
+
 /* =============================================================================
    11) PROFILE PAYLOAD HELPERS
 ============================================================================= */
@@ -620,31 +978,61 @@ export function buildProfilePayload({
   policy = getProfileIdentityPolicy()
 } = {}) {
   const timestamp = resolveServerTimestamp(firebaseNamespace);
-  const normalizedUsername = normalizeUsername(values.username);
+  const normalizedUsername = normalizeUsername(
+    values.username
+    || existingProfile?.username
+    || existingProfile?.username_normalized
+    || existingProfile?.username_lower
+    || ''
+  );
   const authProviderPrimary = normalizeString(values.auth_provider || existingProfile?.auth_provider_primary || '');
   const authProviderLinks = resolveAuthProviderLinks(user, existingProfile, authProviderPrimary);
   const avatarUrl = normalizeString(user.photoURL || existingProfile?.avatar_url || existingProfile?.photo_url || '');
+  const completionState = buildProfileCompletionState(values, existingProfile);
   const usernameRouteReady = typeof values.username_route_ready === 'boolean'
     ? values.username_route_ready
     : (existingProfile?.username_route_ready === true || Boolean(normalizedUsername));
-  const publicProfileEnabled = typeof values.public_profile_enabled === 'boolean'
+  const requestedPublicProfileEnabled = typeof values.public_profile_enabled === 'boolean'
     ? values.public_profile_enabled
     : existingProfile?.public_profile_enabled === true;
-  const publicProfileDiscoverable = typeof values.public_profile_discoverable === 'boolean'
+  const publicProfileEnabled = Boolean(normalizedUsername) ? requestedPublicProfileEnabled : false;
+  const requestedPublicProfileDiscoverable = typeof values.public_profile_discoverable === 'boolean'
     ? values.public_profile_discoverable
     : existingProfile?.public_profile_discoverable === true;
+  const publicProfileDiscoverable = publicProfileEnabled && requestedPublicProfileDiscoverable;
   const publicRouteStatus = normalizeString(
     values.public_route_status
     || existingProfile?.public_route_status
-    || (publicProfileEnabled && usernameRouteReady ? 'ready' : 'disabled')
+    || (publicProfileEnabled && usernameRouteReady ? 'ready' : normalizedUsername ? 'disabled' : 'pending')
   );
   const profileVisibilityStatus = normalizeString(
     values.profile_visibility_status
     || existingProfile?.profile_visibility_status
     || (publicProfileEnabled ? 'controlled_public' : 'private')
   );
-  const usernameRaw = normalizeString(values.username_raw || values.username);
+  const usernameRaw = normalizeString(
+    values.username_raw
+    || values.username
+    || existingProfile?.username_raw
+    || existingProfile?.username
+    || ''
+  );
   const usernameReservedAt = existingProfile?.username_reserved_at || timestamp;
+  const publicLinks = resolvePublicLinks(values, existingProfile);
+  const publicPrimaryLink = normalizeString(
+    values.public_primary_link
+    || existingProfile?.public_primary_link
+    || publicLinks[0]?.url
+    || ''
+  );
+  const usernameStatus = normalizeString(
+    values.username_status
+    || existingProfile?.username_status
+    || (normalizedUsername ? 'reserved' : 'missing')
+  );
+  const explicitMissingRequiredFields = Array.isArray(values.missing_required_fields)
+    ? values.missing_required_fields.map((field) => normalizeString(field)).filter(Boolean)
+    : null;
 
   const payload = {
     profile_id: existingProfile?.profile_id || user.uid,
@@ -662,17 +1050,33 @@ export function buildProfilePayload({
     username_raw: usernameRaw,
     username_normalized: normalizedUsername,
     username_lower: normalizedUsername,
-    username_status: normalizeString(values.username_status || existingProfile?.username_status || 'reserved'),
+    username_status: usernameStatus,
     username_reserved_at: usernameReservedAt,
     username_route_ready: usernameRouteReady,
+    public_display_name: normalizeString(values.public_display_name || existingProfile?.public_display_name || values.display_name),
+    public_username: normalizedUsername,
+    public_avatar_url: avatarUrl,
+    public_identity_label: normalizeString(values.public_identity_label || existingProfile?.public_identity_label || ''),
     public_profile_path: buildPublicProfilePath(normalizedUsername, policy),
     public_profile_url: buildPublicProfileUrl(normalizedUsername, policy),
     public_route_path: buildPublicProfilePath(normalizedUsername, policy),
     public_route_url: buildPublicProfileUrl(normalizedUsername, policy),
+    public_route_canonical_url: buildPublicProfileUrl(normalizedUsername, policy),
     public_route_status: publicRouteStatus,
     public_profile_enabled: publicProfileEnabled,
     public_profile_discoverable: publicProfileDiscoverable,
     public_profile_visibility: publicProfileEnabled ? 'enabled' : 'disabled',
+    public_summary: normalizeString(values.public_summary || existingProfile?.public_summary || ''),
+    public_bio: normalizeString(values.public_bio || existingProfile?.public_bio || ''),
+    public_tagline: normalizeString(values.public_tagline || existingProfile?.public_tagline || ''),
+    public_links: publicLinks,
+    public_primary_link: publicPrimaryLink,
+    public_modules: Array.isArray(values.public_modules)
+      ? values.public_modules
+      : (Array.isArray(existingProfile?.public_modules) ? existingProfile.public_modules : []),
+    public_feature_flags: Array.isArray(values.public_feature_flags)
+      ? values.public_feature_flags
+      : (Array.isArray(existingProfile?.public_feature_flags) ? existingProfile.public_feature_flags : []),
     first_name: values.first_name,
     last_name: values.last_name,
     display_name: values.display_name,
@@ -684,13 +1088,18 @@ export function buildProfilePayload({
     avatar_url: avatarUrl,
     photo_url: avatarUrl,
     profile_exists: true,
-    profile_completion_status: normalizeString(values.profile_completion_status || existingProfile?.profile_completion_status || 'complete'),
-    profile_completion_percent: Number(values.profile_completion_percent || existingProfile?.profile_completion_percent || 100),
-    missing_required_fields: Array.isArray(values.missing_required_fields)
-      ? values.missing_required_fields.map((field) => normalizeString(field)).filter(Boolean)
-      : (Array.isArray(existingProfile?.missing_required_fields) ? existingProfile.missing_required_fields : []),
+    profile_completion_status: normalizeString(
+      values.profile_completion_status
+      || completionState.status
+    ),
+    profile_completion_percent: Number.isFinite(Number(values.profile_completion_percent))
+      ? Number(values.profile_completion_percent)
+      : completionState.percent,
+    missing_required_fields: explicitMissingRequiredFields || completionState.missingFields,
     profile_visibility_status: profileVisibilityStatus,
-    profile_complete: true,
+    profile_complete: typeof values.profile_complete === 'boolean'
+      ? values.profile_complete
+      : completionState.complete,
     eligibility_status: 'eligible',
     eligibility_age_years: values.eligibility_age_years,
     minimum_eligible_age_years: values.minimum_eligible_age_years,

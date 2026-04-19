@@ -1,73 +1,176 @@
 <!-- =============================================================================
 00) FILE INDEX
 01) DOCUMENT HEAD
-02) PAGE BODY
-03) SHADER MOUNT
-04) ERROR 404 SHELL
-05) ERROR 404 COPY
-06) ERROR 404 ACTIONS
-07) PAGE SCRIPTS
-08) END OF DOCUMENT
+02) BODY SHELL
+03) GLOBAL LOADING OVERLAY
+04) CUSTOM CURSOR
+05) PUBLIC PROFILE ROUTE ROOT
+05A) PUBLIC PROFILE MENU MOUNT
+05B) PUBLIC PROFILE SHELL MOUNT
+05C) PUBLIC PROFILE FOOTER MOUNT
+06) NOT FOUND ROOT
+06A) SHADER MOUNT
+06B) ERROR 404 SHELL
+07) GLOBAL OVERLAYS
+08) PAGE SCRIPTS
+09) END OF DOCUMENT
 ============================================================================= -->
 <!DOCTYPE html>
-<!-- =============================================================================
-01) DOCUMENT HEAD
-============================================================================= -->
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
+  <!-- ==========================================================================
+  01) DOCUMENT HEAD
+  ========================================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n-key="404.meta.title">Page Not Found · Neuroartan</title>
-  <meta name="description" data-i18n-key="404.meta.description" content="This destination is intentionally unavailable while Neuroartan is under active development and selected public sections are being prepared.">
+  <meta
+    name="description"
+    data-i18n-key="404.meta.description"
+    content="This destination is intentionally unavailable while Neuroartan is under active development and selected public sections are being prepared."
+  >
   <meta name="robots" content="noindex, follow">
-  <link rel="icon" href="/assets/icons/core/identity/brand/neuroartan/logo-plain.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/layers/website/app/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/layers/website/app/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/layers/website/app/touch/apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/layers/website/app/favicon/favicon.svg">
   <link rel="stylesheet" href="/assets/css/core/00-orchestrator/core.css">
+  <link rel="canonical" href="https://neuroartan.com/404.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Page Not Found · Neuroartan">
+  <meta
+    property="og:description"
+    content="This destination is intentionally unavailable while Neuroartan is under active development and selected public sections are being prepared."
+  >
+  <meta property="og:url" content="https://neuroartan.com/404.html">
+  <meta property="og:site_name" content="Neuroartan">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Page Not Found · Neuroartan">
+  <meta
+    name="twitter:description"
+    content="This destination is intentionally unavailable while Neuroartan is under active development and selected public sections are being prepared."
+  >
 </head>
-<!-- =============================================================================
-02) PAGE BODY
-============================================================================= -->
-<body class="page-404">
+
+<body class="site-body page-404" data-route-entry="public-profile">
   <!-- ==========================================================================
-  03) SHADER MOUNT
+  02) BODY SHELL
   ========================================================================== -->
-  <div data-404-shader-mount aria-hidden="true"></div>
+
   <!-- ==========================================================================
-  04) ERROR 404 SHELL
+  03) GLOBAL LOADING OVERLAY
   ========================================================================== -->
-  <main class="page-404-content" aria-labelledby="error404-title">
-    <section class="error404-shell">
-      <div class="error404-mark">404</div>
+  <div id="global-loading-overlay" class="loading-overlay" aria-hidden="true" aria-live="polite">
+    <div class="loading-overlay__backdrop"></div>
+    <div class="loading-overlay__surface" role="status" aria-label="Loading">
+      <div class="loading-overlay__spinner" aria-hidden="true"></div>
+      <p class="loading-overlay__label" data-i18n-key="loading.label">Loading</p>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+  04) CUSTOM CURSOR
+  ========================================================================== -->
+  <div class="custom-cursor"></div>
+
+  <!-- ==========================================================================
+  05) PUBLIC PROFILE ROUTE ROOT
+  ========================================================================== -->
+  <div id="public-profile-route-root" data-public-profile-route-root hidden aria-hidden="true">
+    <main id="site-main">
+      <!-- ======================================================================
+      05A) PUBLIC PROFILE MENU MOUNT
+      ====================================================================== -->
+      <div
+        id="profile-menu-mount"
+        data-include="profile-public-menu"
+        data-profile-surface="public"
+        data-profile-menu-state="empty"
+        aria-hidden="false"
+      ></div>
 
       <!-- ======================================================================
-      05) ERROR 404 COPY
+      05B) PUBLIC PROFILE SHELL MOUNT
       ====================================================================== -->
-      <div class="error404-copy">
-        <p class="error404-eyebrow">Neuroartan</p>
-        <h1 id="error404-title" class="error404-title" data-i18n-key="404.heading">This destination is under active development.</h1>
-        <p class="error404-description" data-i18n-key="404.body.1">
-          This page is intentionally routed here while Neuroartan quietly develops the next public layers of the platform and institutional website.
-        </p>
-        <p class="error404-description" data-i18n-key="404.body.2">
-          Please continue through the currently active public surfaces until additional sections are formally released.
-        </p>
-      </div>
+      <div
+        id="profile-shell-mount"
+        data-include="profile-public-shell"
+        data-profile-state="empty"
+        data-profile-visibility="public"
+        aria-hidden="false"
+      ></div>
+    </main>
 
-      <!-- ======================================================================
-      06) ERROR 404 ACTIONS
-      ====================================================================== -->
-      <div class="error404-actions" aria-label="404 recovery actions" data-i18n-aria-label="404.actions.ariaLabel">
-        <a href="/" class="ui-button ui-button--brand" data-404-home-link data-i18n-key="404.actions.home">Return to Active Homepage</a>
-        <button type="button" class="ui-button ui-button--secondary" data-404-back-button data-i18n-key="404.actions.back">Go Back</button>
-      </div>
-    </section>
-  </main>
+    <!-- ========================================================================
+    05C) PUBLIC PROFILE FOOTER MOUNT
+    ======================================================================== -->
+    <div
+      id="profile-footer-mount"
+      data-include="profile-public-footer"
+      data-profile-surface="public"
+      data-profile-footer-state="empty"
+      aria-hidden="false"
+    ></div>
+  </div>
 
   <!-- ==========================================================================
-  07) PAGE SCRIPTS
+  06) NOT FOUND ROOT
+  ========================================================================== -->
+  <div id="not-found-root" data-not-found-root>
+    <!-- ========================================================================
+    06A) SHADER MOUNT
+    ======================================================================== -->
+    <div data-404-shader-mount aria-hidden="true"></div>
+
+    <!-- ========================================================================
+    06B) ERROR 404 SHELL
+    ======================================================================== -->
+    <main class="page-404-content" aria-labelledby="error404-title">
+      <section class="error404-shell">
+        <div class="error404-mark">404</div>
+
+        <div class="error404-copy">
+          <p class="error404-eyebrow">Neuroartan</p>
+          <h1 id="error404-title" class="error404-title" data-i18n-key="404.heading">This destination is under active development.</h1>
+          <p class="error404-description" data-i18n-key="404.body.1">
+            This page is intentionally routed here while Neuroartan quietly develops the next public layers of the platform and institutional website.
+          </p>
+          <p class="error404-description" data-i18n-key="404.body.2">
+            Please continue through the currently active public surfaces until additional sections are formally released.
+          </p>
+        </div>
+
+        <div class="error404-actions" aria-label="404 recovery actions" data-i18n-aria-label="404.actions.ariaLabel">
+          <a href="/" class="ui-button ui-button--brand" data-404-home-link data-i18n-key="404.actions.home">Return to Active Homepage</a>
+          <button type="button" class="ui-button ui-button--secondary" data-404-back-button data-i18n-key="404.actions.back">Go Back</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+  07) GLOBAL OVERLAYS
+  ========================================================================== -->
+  <div id="country-overlay-mount" data-include="country-overlay"></div>
+  <div
+    id="cookie-consent-mount"
+    data-include="cookie-consent"
+    data-consent-state="pending"
+    data-consent-surface="banner"
+    data-consent-settings="available"
+    aria-hidden="true"
+  ></div>
+
+  <!-- ==========================================================================
+  08) PAGE SCRIPTS
   ========================================================================== -->
   <script type="module" src="/assets/js/core/00-orchestrator/core.js"></script>
 </body>
+
 <!-- =============================================================================
-08) END OF DOCUMENT
+09) END OF DOCUMENT
 ============================================================================= -->
 </html>

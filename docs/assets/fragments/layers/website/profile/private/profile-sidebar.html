@@ -1,0 +1,42 @@
+<!-- =============================================================================
+     01) PRIVATE PROFILE SIDEBAR
+     02) PRIVATE PROFILE SIDEBAR SURFACE
+     03) PRIVATE PROFILE PRIMARY NAVIGATION
+============================================================================= -->
+<aside class="profile-sidebar" data-profile-sidebar data-profile-surface="private" aria-label="Private profile workspace navigation">
+  <div class="profile-sidebar__surface ui-surface ui-surface--glass">
+    <div class="profile-sidebar__header">
+      <p class="profile-sidebar__eyebrow">Workspace</p>
+      <p class="profile-sidebar__summary" data-profile-sidebar-summary>Owner environment for identity, thoughts, route state, and profile settings.</p>
+    </div>
+
+    <nav class="profile-sidebar__nav" aria-label="Private profile sections">
+      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-overview" data-profile-nav-section="overview">
+        <span class="profile-sidebar__nav-title">Overview</span>
+        <span class="profile-sidebar__nav-copy" data-profile-nav-copy="overview">Identity, account state, route readiness</span>
+      </button>
+
+      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-thought-bank" data-profile-nav-section="thought-bank">
+        <span class="profile-sidebar__nav-title">Thought Bank</span>
+        <span class="profile-sidebar__nav-copy" data-profile-nav-copy="thought-bank">Private and public writing surfaces</span>
+      </button>
+
+      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-dashboard" data-profile-nav-section="dashboard">
+        <span class="profile-sidebar__nav-title">Dashboard</span>
+        <span class="profile-sidebar__nav-copy" data-profile-nav-copy="dashboard">Continuity and route intelligence</span>
+      </button>
+
+      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-settings" data-profile-nav-section="settings">
+        <span class="profile-sidebar__nav-title">Settings</span>
+        <span class="profile-sidebar__nav-copy" data-profile-nav-copy="settings">Identity, public route, visibility, media</span>
+      </button>
+    </nav>
+
+    <div class="profile-sidebar__footer">
+      <p class="profile-sidebar__footer-line" data-profile-sidebar-route-line>Public route pending</p>
+      <button class="ui-button ui-button--ghost profile-sidebar__footer-action" type="button" data-profile-action="view-public" aria-disabled="true">
+        <span data-profile-sidebar-public-label>View Public Route</span>
+      </button>
+    </div>
+  </div>
+</aside>

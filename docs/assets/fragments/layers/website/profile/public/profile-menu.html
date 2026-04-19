@@ -1,5 +1,6 @@
 <!-- =============================================================================
      01) PUBLIC PROFILE MENU
+     02) PUBLIC PROFILE MENU SURFACE
 ============================================================================= -->
 <nav class="profile-menu" data-profile-menu data-profile-surface="public" aria-label="Public profile menu">
   <div class="profile-menu__rail">
@@ -16,8 +17,15 @@
         </div>
       </a>
 
+      <div class="profile-menu__status">
+        <p class="profile-menu__status-line" data-profile-menu-state-line>Resolving public company-domain route.</p>
+      </div>
+
       <div class="profile-menu__actions">
         <a class="ui-button ui-button--ghost profile-menu__link" href="/">Home</a>
+        <button class="ui-button ui-button--ghost profile-menu__action" type="button" data-profile-action="copy-link">
+          <span data-profile-menu-copy-label>Copy Link</span>
+        </button>
       </div>
     </div>
   </div>

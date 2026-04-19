@@ -334,20 +334,66 @@
   }
 
   function getSelectedCountryCode() {
-    const storageKeys = ['countryCode', 'localeCountryCode'];
+    const storageKeys = [
+      'neuroartan_country_code',
+      'artan_country_code',
+      'countryCode',
+      'localeCountryCode'
+    ];
 
     for (const key of storageKeys) {
-      const value = window.localStorage.getItem(key);
-      const normalized = String(value || '').trim().toUpperCase();
-      if (/^[A-Z]{2}$/.test(normalized)) return normalized;
+      try {
+        const localValue = window.localStorage.getItem(key);
+        const localNormalized = String(localValue || '').trim().toUpperCase();
+        if (/^[A-Z]{2}$/.test(localNormalized)) return localNormalized;
+      } catch {}
+
+      try {
+        const sessionValue = window.sessionStorage.getItem(key);
+        const sessionNormalized = String(sessionValue || '').trim().toUpperCase();
+        if (/^[A-Z]{2}$/.test(sessionNormalized)) return sessionNormalized;
+      } catch {}
     }
 
     return '';
   }
 
-  function isHomePage() {
-    const path = window.location.pathname || '';
-    return path === '/' || path.endsWith('/index.html');
+  function normalizeLanguageCode(value = '') {
+    const raw = String(value || '').trim().toLowerCase();
+    if (!raw) return '';
+    return raw.split(/[-_]/)[0] || '';
+  }
+
+  function getStoredPreferredLanguageCode() {
+    const storageKeys = [
+      'neuroartan_language',
+      'neuroartan-language',
+      'artan_language',
+      'selectedLanguage',
+      'preferredLanguage',
+      'language',
+      'lang'
+    ];
+
+    for (const key of storageKeys) {
+      try {
+        const localValue = normalizeLanguageCode(window.localStorage.getItem(key) || '');
+        if (localValue) return localValue;
+      } catch {}
+
+      try {
+        const sessionValue = normalizeLanguageCode(window.sessionStorage.getItem(key) || '');
+        if (sessionValue) return sessionValue;
+      } catch {}
+    }
+
+    const localeApi = window.NEUROARTAN_TRANSLATION || window.ARTAN_TRANSLATION || null;
+    if (localeApi && typeof localeApi.getCurrentLanguage === 'function') {
+      const runtimeLanguage = normalizeLanguageCode(localeApi.getCurrentLanguage());
+      if (runtimeLanguage) return runtimeLanguage;
+    }
+
+    return normalizeLanguageCode(document.documentElement.getAttribute('lang') || navigator.language || '');
   }
 
   /* =============================================================================
@@ -574,7 +620,7 @@
      09) LANGUAGE / REGION HELPERS
   ============================================================================= */
   function getPreferredLanguageLabel(preferredLanguageCode = '') {
-    const explicitCode = String(preferredLanguageCode || '').trim().toLowerCase();
+    const explicitCode = normalizeLanguageCode(preferredLanguageCode) || getStoredPreferredLanguageCode();
 
     if (explicitCode) {
       try {
@@ -827,6 +873,12 @@
   function readStoredConsent() {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch {
+    }
+
+    try {
+      const raw = window.sessionStorage.getItem(STORAGE_KEY);
       return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
@@ -837,8 +889,11 @@
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     } catch {
-      return;
     }
+
+    try {
+      window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch {}
   }
 
   function applyStoredConsentToInputs() {
@@ -904,12 +959,7 @@
   ============================================================================= */
   function shouldAutoOpenBanner(stored) {
     if (!stored) return true;
-
-    const mount = getMount();
-    const mountState = mount?.dataset?.consentState || 'pending';
-    if (isHomePage() && mountState === 'pending') return true;
-
-    return stored.state === 'pending';
+    return String(stored.state || 'pending').trim() === 'pending';
   }
 
   /* =============================================================================
@@ -1364,6 +1414,11 @@
       const detail = getEventDetail(event);
       syncLanguageValue(detail.language || '');
       closeLanguageSettingsInline();
+    });
+
+    document.addEventListener('neuroartan:locale-state-changed', (event) => {
+      const detail = getEventDetail(event);
+      syncLanguageValue(detail.language || '');
     });
 
     document.addEventListener('translation:complete', (event) => {

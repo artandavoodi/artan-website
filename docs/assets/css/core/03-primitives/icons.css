@@ -113,14 +113,6 @@ svg.ui-icon-theme-aware,
   color:var(--icon-color);
 }
 
-svg.ui-icon-theme-aware,
-.ui-icon-theme-aware svg,
-svg.ui-icon-theme-aware *,
-.ui-icon-theme-aware svg *{
-  fill:currentColor;
-  stroke:currentColor;
-}
-
 .ui-icon-theme-aware-muted,
 img.ui-icon-theme-aware-muted,
 svg.ui-icon-theme-aware-muted,
@@ -131,14 +123,6 @@ svg.ui-icon-theme-aware-muted,
   color:var(--icon-color-muted);
 }
 
-svg.ui-icon-theme-aware-muted,
-.ui-icon-theme-aware-muted svg,
-svg.ui-icon-theme-aware-muted *,
-.ui-icon-theme-aware-muted svg *{
-  fill:currentColor;
-  stroke:currentColor;
-}
-
 .ui-icon-theme-aware-accent,
 img.ui-icon-theme-aware-accent,
 svg.ui-icon-theme-aware-accent,
@@ -147,14 +131,6 @@ svg.ui-icon-theme-aware-accent,
 [data-ui-icon-accent]{
   filter:var(--icon-image-filter-strong) !important;
   color:var(--icon-color-accent);
-}
-
-svg.ui-icon-theme-aware-accent,
-.ui-icon-theme-aware-accent svg,
-svg.ui-icon-theme-aware-accent *,
-.ui-icon-theme-aware-accent svg *{
-  fill:currentColor;
-  stroke:currentColor;
 }
 
 .ui-icon-mask,

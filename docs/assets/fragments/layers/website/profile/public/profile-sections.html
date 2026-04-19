@@ -1,21 +1,125 @@
 <!-- =============================================================================
      01) PUBLIC PROFILE SECTIONS
+     02) PUBLIC PROFILE GRID
 ============================================================================= -->
 <section class="profile-sections" data-profile-sections data-profile-surface="public" aria-label="Public profile sections">
   <div class="profile-sections__grid">
-    <article class="profile-panel profile-panel--wide ui-card ui-surface--glass">
+    <article class="profile-panel profile-panel--wide ui-card ui-surface--glass" data-profile-section-card>
       <div class="profile-panel__inner">
         <div class="profile-panel__header">
           <div>
-            <h2 class="profile-panel__title">Public Route Scaffold</h2>
-            <p class="profile-panel__intro">Public rendering remains deferred until canonical route resolution, visibility, and route-readiness doctrine are fully implemented.</p>
+            <h2 class="profile-panel__title" data-profile-section-title>Public Overview</h2>
+            <p class="profile-panel__intro" data-profile-overview-copy>
+              This company-domain profile route presents the public-safe continuity surface for the resolved Neuroartan identity.
+            </p>
+          </div>
+          <span class="ui-badge ui-badge--outline" data-profile-overview-badge>Public Route</span>
+        </div>
+
+        <div class="profile-panel__badge-list" data-profile-route-badge-list>
+          <span class="ui-badge ui-badge--outline">Public-safe model</span>
+          <span class="ui-badge ui-badge--outline">Username resolved</span>
+          <span class="ui-badge ui-badge--outline">Company domain</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="profile-panel ui-card ui-surface--glass" data-profile-section-card>
+      <div class="profile-panel__inner">
+        <div class="profile-panel__header">
+          <div>
+            <h2 class="profile-panel__title" data-profile-section-title>Identity</h2>
+            <p class="profile-panel__intro">Public-safe identity values resolved for the canonical route.</p>
           </div>
         </div>
 
-        <div class="profile-panel__badge-list">
-          <span class="ui-badge ui-badge--outline">Public-safe model only</span>
-          <span class="ui-badge ui-badge--outline">Username resolved</span>
-          <span class="ui-badge ui-badge--outline">Company-domain route</span>
+        <div class="profile-panel__rows">
+          <div class="profile-panel__row">
+            <p class="profile-panel__label">Display name</p>
+            <p class="profile-panel__value" data-profile-identity-display-name>Public Profile</p>
+          </div>
+          <div class="profile-panel__row">
+            <p class="profile-panel__label">Username</p>
+            <p class="profile-panel__value" data-profile-identity-username>@username</p>
+          </div>
+          <div class="profile-panel__row">
+            <p class="profile-panel__label">Canonical route</p>
+            <p class="profile-panel__value" data-profile-route-path>neuroartan.com/username</p>
+          </div>
+          <div class="profile-panel__row">
+            <p class="profile-panel__label">Identity label</p>
+            <p class="profile-panel__value" data-profile-identity-label>Public continuity identity</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="profile-panel ui-card ui-surface--glass" data-profile-section-card>
+      <div class="profile-panel__inner">
+        <div class="profile-panel__header">
+          <div>
+            <h2 class="profile-panel__title" data-profile-section-title>Public Links</h2>
+            <p class="profile-panel__intro">Approved public identity links and future route-connected endpoints.</p>
+          </div>
+        </div>
+
+        <div class="profile-panel__meta">
+          <div class="profile-panel__badge-list" data-profile-public-links-list></div>
+          <p class="profile-panel__meta-label" data-profile-public-links-empty>No public links have been published yet.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="profile-panel ui-card ui-surface--glass" data-profile-section-card>
+      <div class="profile-panel__inner">
+        <div class="profile-panel__header">
+          <div>
+            <h2 class="profile-panel__title" data-profile-section-title>Public Route State</h2>
+            <p class="profile-panel__intro">Canonical route-readiness and public availability state.</p>
+          </div>
+        </div>
+
+        <div class="profile-panel__rows">
+          <div class="profile-panel__row">
+            <p class="profile-panel__label">Route outcome</p>
+            <p class="profile-panel__value" data-profile-public-route-outcome>Resolving</p>
+          </div>
+          <div class="profile-panel__row">
+            <p class="profile-panel__label">Visibility</p>
+            <p class="profile-panel__value" data-profile-public-visibility>Pending</p>
+          </div>
+          <div class="profile-panel__row">
+            <p class="profile-panel__label">Discoverable</p>
+            <p class="profile-panel__value" data-profile-public-discoverable>Pending</p>
+          </div>
+          <div class="profile-panel__row">
+            <p class="profile-panel__label">Canonical URL</p>
+            <p class="profile-panel__value" data-profile-public-route-url>https://neuroartan.com/username</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="profile-panel profile-panel--wide ui-card ui-surface--glass" data-profile-section-card>
+      <div class="profile-panel__inner">
+        <div class="profile-panel__header">
+          <div>
+            <h2 class="profile-panel__title" data-profile-section-title>Continuity Presence</h2>
+            <p class="profile-panel__intro">Public identity on Neuroartan is the outward-facing surface of a deeper continuity architecture.</p>
+          </div>
+          <span class="ui-badge ui-badge--outline" data-profile-continuity-badge>Scaffolded</span>
+        </div>
+
+        <div class="profile-panel__continuity">
+          <p class="profile-panel__continuity-copy" data-profile-continuity-copy>
+            Public continuity modules, publications, and additional presence blocks will expand from this canonical company-domain identity route.
+          </p>
+
+          <div class="profile-panel__badge-list" data-profile-continuity-badges>
+            <span class="ui-badge ui-badge--outline">Identity</span>
+            <span class="ui-badge ui-badge--outline">Route</span>
+            <span class="ui-badge ui-badge--outline">Continuity</span>
+          </div>
         </div>
       </div>
     </article>

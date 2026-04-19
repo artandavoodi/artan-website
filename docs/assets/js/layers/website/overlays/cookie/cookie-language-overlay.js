@@ -140,7 +140,7 @@
   }
 
   function getStoredLanguage() {
-    const keys = ['neuroartan_language', 'artan_language', 'language'];
+    const keys = ['neuroartan_language', 'neuroartan-language', 'artan_language', 'language'];
     for (const key of keys) {
       try {
         const value = normalizeLang(window.localStorage.getItem(key) || '');
@@ -309,6 +309,7 @@
       window.localStorage.setItem('neuroartan_country_label', countryName);
       window.localStorage.setItem('artan_country_label', countryName);
       window.localStorage.setItem('neuroartan_language', language);
+      window.localStorage.setItem('neuroartan-language', language);
       window.localStorage.setItem('artan_language', language);
       window.localStorage.setItem('neuroartan_languages', JSON.stringify(Array.from(new Set(languages))));
       window.localStorage.setItem('artan_languages', JSON.stringify(Array.from(new Set(languages))));

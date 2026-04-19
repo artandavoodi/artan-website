@@ -15,12 +15,20 @@ import { getProfileRuntimeState, subscribeProfileRuntime } from './profile-runti
    ============================================================================= */
 
 function renderProfileShell(state = getProfileRuntimeState()) {
-  const root = document.querySelector('[data-profile-shell][data-profile-surface="private"]');
-  if (!root) return;
+  const roots = Array.from(document.querySelectorAll('[data-profile-shell]'));
 
-  root.dataset.profileViewerState = state.viewerState;
-  root.dataset.profileStateKey = state.stateKey;
-  root.dataset.profileCompletionState = state.completion.complete ? 'complete' : 'incomplete';
+  roots.forEach((root) => {
+    root.dataset.profileViewerState = state.viewerState;
+    root.dataset.profileStateKey = state.stateKey;
+    root.dataset.profileSurfaceState = state.surface;
+
+    if (state.surface === 'private') {
+      root.dataset.profileCompletionState = state.completion.complete ? 'complete' : 'incomplete';
+      return;
+    }
+
+    root.dataset.profileRouteOutcome = state.routeOutcome || 'idle';
+  });
 }
 
 /* =============================================================================
@@ -31,7 +39,7 @@ function initProfileShell() {
   subscribeProfileRuntime(renderProfileShell);
 
   document.addEventListener('fragment:mounted', (event) => {
-    if (event?.detail?.name !== 'profile-private-shell') return;
+    if (event?.detail?.name !== 'profile-private-shell' && event?.detail?.name !== 'profile-public-shell') return;
     renderProfileShell();
   });
 

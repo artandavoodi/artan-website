@@ -15,8 +15,8 @@ import { getProfileRuntimeState, subscribeProfileRuntime } from './profile-runti
    02) PROFILE HEADER HELPERS
    ============================================================================= */
 
-function getProfileHeaderRoot() {
-  return document.querySelector('[data-profile-header][data-profile-surface="private"]');
+function getProfileHeaderRoots() {
+  return Array.from(document.querySelectorAll('[data-profile-header]'));
 }
 
 function setText(root, selector, value) {
@@ -45,6 +45,14 @@ function applyBadgeTone(badge, tone) {
   }
 }
 
+function capitalizeWords(value) {
+  return String(value || '')
+    .split(/[\s_-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 function formatUsernameCopy(state) {
   if (!state.username.normalized) {
     return 'Username not yet reserved';
@@ -69,22 +77,48 @@ function formatVisibilityCopy(state) {
   return 'Public route not yet enabled';
 }
 
-function capitalizeWords(value) {
-  return String(value || '')
-    .split(/[\s_-]+/)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
+function resolvePublicBadgeTone(state) {
+  switch (state.routeOutcome) {
+    case 'found_renderable':
+      return 'success';
+    case 'invalid_username':
+    case 'restricted_username':
+    case 'not_found':
+    case 'error':
+      return 'danger';
+    case 'reserved_but_hidden':
+    case 'reserved_but_not_ready':
+    case 'reserved_but_disabled':
+    case 'loading':
+      return 'warning';
+    default:
+      return '';
+  }
 }
 
-/* =============================================================================
-   03) PROFILE HEADER RENDER
-   ============================================================================= */
+function renderAvatar(root, state) {
+  const image = root.querySelector('[data-profile-avatar-image]');
+  const placeholder = root.querySelector('[data-profile-avatar-placeholder]');
 
-function renderProfileHeader(state = getProfileRuntimeState()) {
-  const root = getProfileHeaderRoot();
-  if (!root) return;
+  if (image instanceof HTMLImageElement) {
+    if (state.avatarHasImage && state.avatarUrl) {
+      image.hidden = false;
+      image.src = state.avatarUrl;
+      image.alt = `${state.displayName} avatar`;
+    } else {
+      image.hidden = true;
+      image.removeAttribute('src');
+      image.alt = '';
+    }
+  }
 
+  if (placeholder instanceof HTMLElement) {
+    placeholder.textContent = state.avatarInitials;
+    placeholder.hidden = state.avatarHasImage;
+  }
+}
+
+function renderPrivateHeader(root, state) {
   root.dataset.profileViewerState = state.viewerState;
   root.dataset.profileStateKey = state.stateKey;
 
@@ -119,25 +153,7 @@ function renderProfileHeader(state = getProfileRuntimeState()) {
   setText(root, '[data-profile-visibility-state]', capitalizeWords(state.visibility.profileVisibility || 'private'));
   setText(root, '[data-profile-visibility-copy]', formatVisibilityCopy(state));
 
-  const image = root.querySelector('[data-profile-avatar-image]');
-  const placeholder = root.querySelector('[data-profile-avatar-placeholder]');
-
-  if (image instanceof HTMLImageElement) {
-    if (state.avatarHasImage && state.avatarUrl) {
-      image.hidden = false;
-      image.src = state.avatarUrl;
-      image.alt = `${state.displayName} avatar`;
-    } else {
-      image.hidden = true;
-      image.removeAttribute('src');
-      image.alt = '';
-    }
-  }
-
-  if (placeholder instanceof HTMLElement) {
-    placeholder.textContent = state.avatarInitials;
-    placeholder.hidden = state.avatarHasImage;
-  }
+  renderAvatar(root, state);
 
   const avatarAction = root.querySelector('[data-profile-action="change-avatar"]');
   setControlDisabled(avatarAction, state.viewerState !== 'authenticated');
@@ -163,6 +179,52 @@ function renderProfileHeader(state = getProfileRuntimeState()) {
   setControlDisabled(publicAction, !state.publicViewAvailable);
 }
 
+function renderPublicHeader(root, state) {
+  root.dataset.profileViewerState = 'public';
+  root.dataset.profileStateKey = state.stateKey;
+
+  const badge = root.querySelector('[data-profile-header-state-badge]');
+  if (badge) {
+    badge.textContent = state.stateBadgeLabel;
+    applyBadgeTone(badge, resolvePublicBadgeTone(state));
+  }
+
+  setText(root, '[data-profile-header-state-line]', state.stateLine);
+  setText(root, '[data-profile-display-name]', state.displayName);
+  setText(root, '[data-profile-username]', state.username.normalized ? `@${state.username.normalized}` : '@username');
+  setText(root, '[data-profile-route-display]', state.publicRouteDisplay || 'neuroartan.com/username');
+  setText(root, '[data-profile-summary]', state.summary);
+  setText(root, '[data-profile-primary-action-label]', state.primaryActionLabel);
+  setText(root, '[data-profile-route-outcome-value]', state.routeOutcomeValue);
+  setText(root, '[data-profile-route-outcome-copy]', state.routeOutcomeCopy);
+  setText(root, '[data-profile-visibility-state]', state.visibilityState);
+  setText(root, '[data-profile-visibility-copy]', state.visibilityCopy);
+  setText(root, '[data-profile-continuity-state]', state.continuityState);
+  setText(root, '[data-profile-continuity-copy]', state.continuityCopy);
+
+  renderAvatar(root, state);
+
+  const copyAction = root.querySelector('[data-profile-action="copy-link"]');
+  setControlDisabled(copyAction, !state.publicRouteUrl);
+}
+
+/* =============================================================================
+   03) PROFILE HEADER RENDER
+   ============================================================================= */
+
+function renderProfileHeader(state = getProfileRuntimeState()) {
+  getProfileHeaderRoots().forEach((root) => {
+    const surface = root.getAttribute('data-profile-surface');
+
+    if (surface === 'public') {
+      renderPublicHeader(root, state);
+      return;
+    }
+
+    renderPrivateHeader(root, state);
+  });
+}
+
 /* =============================================================================
    04) PROFILE HEADER INIT
    ============================================================================= */
@@ -171,7 +233,7 @@ function initProfileHeader() {
   subscribeProfileRuntime(renderProfileHeader);
 
   document.addEventListener('fragment:mounted', (event) => {
-    if (event?.detail?.name !== 'profile-private-header') return;
+    if (event?.detail?.name !== 'profile-private-header' && event?.detail?.name !== 'profile-public-header') return;
     renderProfileHeader();
   });
 

@@ -1,6 +1,6 @@
 /* =============================================================================
    01) MODULE IMPORTS
-   02) PROFILE MENU RENDER HELPERS
+   02) PROFILE MENU HELPERS
    03) PROFILE MENU RENDER
    04) PROFILE MENU INIT
    ============================================================================= */
@@ -12,11 +12,11 @@
 import { getProfileRuntimeState, subscribeProfileRuntime } from './profile-runtime.js';
 
 /* =============================================================================
-   02) PROFILE MENU RENDER HELPERS
+   02) PROFILE MENU HELPERS
    ============================================================================= */
 
-function getProfileMenuRoot() {
-  return document.querySelector('[data-profile-menu][data-profile-surface="private"]');
+function getProfileMenuRoots() {
+  return Array.from(document.querySelectorAll('[data-profile-menu]'));
 }
 
 function setText(root, selector, value) {
@@ -35,14 +35,7 @@ function setControlDisabled(control, disabled) {
   control.setAttribute('aria-disabled', disabled ? 'true' : 'false');
 }
 
-/* =============================================================================
-   03) PROFILE MENU RENDER
-   ============================================================================= */
-
-function renderProfileMenu(state = getProfileRuntimeState()) {
-  const root = getProfileMenuRoot();
-  if (!root) return;
-
+function renderPrivateMenu(root, state) {
   root.dataset.profileViewerState = state.viewerState;
   root.dataset.profileStateKey = state.stateKey;
 
@@ -54,6 +47,34 @@ function renderProfileMenu(state = getProfileRuntimeState()) {
   setControlDisabled(publicAction, !state.publicViewAvailable);
 }
 
+function renderPublicMenu(root, state) {
+  root.dataset.profileViewerState = 'public';
+  root.dataset.profileStateKey = state.stateKey;
+
+  setText(root, '[data-profile-menu-state-line]', state.menuStateLine);
+  setText(root, '[data-profile-menu-copy-label]', state.primaryActionLabel);
+
+  const copyAction = root.querySelector('[data-profile-action="copy-link"]');
+  setControlDisabled(copyAction, !state.publicRouteUrl);
+}
+
+/* =============================================================================
+   03) PROFILE MENU RENDER
+   ============================================================================= */
+
+function renderProfileMenu(state = getProfileRuntimeState()) {
+  getProfileMenuRoots().forEach((root) => {
+    const surface = root.getAttribute('data-profile-surface');
+
+    if (surface === 'public') {
+      renderPublicMenu(root, state);
+      return;
+    }
+
+    renderPrivateMenu(root, state);
+  });
+}
+
 /* =============================================================================
    04) PROFILE MENU INIT
    ============================================================================= */
@@ -62,7 +83,7 @@ function initProfileMenu() {
   subscribeProfileRuntime(renderProfileMenu);
 
   document.addEventListener('fragment:mounted', (event) => {
-    if (event?.detail?.name !== 'profile-private-menu') return;
+    if (event?.detail?.name !== 'profile-private-menu' && event?.detail?.name !== 'profile-public-menu') return;
     renderProfileMenu();
   });
 

@@ -15,8 +15,8 @@ import { getProfileRuntimeState, subscribeProfileRuntime } from './profile-runti
    02) PROFILE FOOTER HELPERS
    ============================================================================= */
 
-function getProfileFooterRoot() {
-  return document.querySelector('[data-profile-footer][data-profile-surface="private"]');
+function getProfileFooterRoots() {
+  return Array.from(document.querySelectorAll('[data-profile-footer]'));
 }
 
 function setText(root, selector, value) {
@@ -25,14 +25,7 @@ function setText(root, selector, value) {
   node.textContent = value;
 }
 
-/* =============================================================================
-   03) PROFILE FOOTER RENDER
-   ============================================================================= */
-
-function renderProfileFooter(state = getProfileRuntimeState()) {
-  const root = getProfileFooterRoot();
-  if (!root) return;
-
+function renderPrivateFooter(root, state) {
   root.dataset.profileViewerState = state.viewerState;
   root.dataset.profileStateKey = state.stateKey;
 
@@ -53,6 +46,42 @@ function renderProfileFooter(state = getProfileRuntimeState()) {
   );
 }
 
+function renderPublicFooter(root, state) {
+  root.dataset.profileViewerState = 'public';
+  root.dataset.profileStateKey = state.stateKey;
+
+  setText(
+    root,
+    '[data-profile-footer-environment]',
+    state.publicViewAvailable
+      ? 'Company-domain identity surface'
+      : 'Canonical public route surface'
+  );
+
+  setText(
+    root,
+    '[data-profile-footer-route]',
+    state.publicRouteDisplay || 'neuroartan.com/username'
+  );
+}
+
+/* =============================================================================
+   03) PROFILE FOOTER RENDER
+   ============================================================================= */
+
+function renderProfileFooter(state = getProfileRuntimeState()) {
+  getProfileFooterRoots().forEach((root) => {
+    const surface = root.getAttribute('data-profile-surface');
+
+    if (surface === 'public') {
+      renderPublicFooter(root, state);
+      return;
+    }
+
+    renderPrivateFooter(root, state);
+  });
+}
+
 /* =============================================================================
    04) PROFILE FOOTER INIT
    ============================================================================= */
@@ -61,7 +90,7 @@ function initProfileFooter() {
   subscribeProfileRuntime(renderProfileFooter);
 
   document.addEventListener('fragment:mounted', (event) => {
-    if (event?.detail?.name !== 'profile-private-footer') return;
+    if (event?.detail?.name !== 'profile-private-footer' && event?.detail?.name !== 'profile-public-footer') return;
     renderProfileFooter();
   });
 

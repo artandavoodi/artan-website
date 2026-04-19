@@ -290,8 +290,10 @@ window.NEUROARTAN_TRANSLATION = (() => {
   /* =============================================================================
      04A) LANGUAGE STATE & STORAGE
   ============================================================================= */
-  const STORAGE_KEY = 'neuroartan-language';
-  const LEGACY_STORAGE_KEYS = [
+  const STORAGE_KEYS = [
+    'neuroartan_language',
+    'neuroartan-language',
+    'artan_language',
     'selectedLanguage',
     'preferredLanguage',
     'language',
@@ -305,9 +307,7 @@ window.NEUROARTAN_TRANSLATION = (() => {
   }
 
   function readStoredLanguage() {
-    const keys = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS];
-
-    for (const key of keys) {
+    for (const key of STORAGE_KEYS) {
       try {
         const localValue = localStorage.getItem(key);
         if (localValue) return normalizeLang(localValue);
@@ -331,13 +331,15 @@ window.NEUROARTAN_TRANSLATION = (() => {
   function writeStoredLanguage(lang) {
     const normalized = normalizeLang(lang) || 'en';
 
-    try {
-      localStorage.setItem(STORAGE_KEY, normalized);
-    } catch {}
+    STORAGE_KEYS.slice(0, 3).forEach((key) => {
+      try {
+        localStorage.setItem(key, normalized);
+      } catch {}
 
-    try {
-      sessionStorage.setItem(STORAGE_KEY, normalized);
-    } catch {}
+      try {
+        sessionStorage.setItem(key, normalized);
+      } catch {}
+    });
 
     window.__NEUROARTAN_LANG__ = normalized;
   }

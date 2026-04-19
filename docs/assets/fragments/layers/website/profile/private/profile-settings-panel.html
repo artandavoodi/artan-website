@@ -1,0 +1,190 @@
+<!-- =============================================================================
+     01) PRIVATE PROFILE SETTINGS PANEL
+     02) SETTINGS HEADER
+     03) SETTINGS NAVIGATION
+     04) SETTINGS PANES
+============================================================================= -->
+<div class="profile-settings" data-profile-settings-panel data-profile-surface="private">
+  <article class="profile-settings__shell ui-card ui-surface--glass">
+    <div class="profile-settings__header">
+      <div>
+        <h2 class="profile-settings__title">Profile Settings</h2>
+        <p class="profile-settings__intro" data-profile-settings-copy>
+          Edit the owner-facing profile record, govern the public route, and prepare the profile surface for continuity and public presence.
+        </p>
+      </div>
+    </div>
+
+    <div class="profile-settings__nav" role="tablist" aria-label="Profile settings sections">
+      <button class="profile-settings__nav-item" type="button" data-profile-settings-pane-target="identity">Identity</button>
+      <button class="profile-settings__nav-item" type="button" data-profile-settings-pane-target="route">Route</button>
+      <button class="profile-settings__nav-item" type="button" data-profile-settings-pane-target="visibility">Visibility</button>
+      <button class="profile-settings__nav-item" type="button" data-profile-settings-pane-target="media">Media</button>
+    </div>
+  </article>
+
+  <div class="profile-settings__panes">
+    <section class="profile-settings__pane ui-card ui-surface--glass" data-profile-settings-pane="identity">
+      <div class="profile-settings__pane-header">
+        <div>
+          <h3 class="profile-settings__pane-title">Identity Details</h3>
+          <p class="profile-settings__pane-copy">These values feed the canonical private profile record and the mature private profile surface.</p>
+        </div>
+      </div>
+
+      <form class="profile-settings__form" data-profile-save-form data-profile-save-scope="identity" novalidate>
+        <div class="profile-settings__field-grid">
+          <label class="profile-settings__field">
+            <span class="profile-settings__label">First name</span>
+            <input class="ui-field" type="text" name="first_name" autocomplete="given-name">
+          </label>
+
+          <label class="profile-settings__field">
+            <span class="profile-settings__label">Last name</span>
+            <input class="ui-field" type="text" name="last_name" autocomplete="family-name">
+          </label>
+
+          <label class="profile-settings__field">
+            <span class="profile-settings__label">Display name</span>
+            <input class="ui-field" type="text" name="display_name" autocomplete="nickname">
+          </label>
+
+          <label class="profile-settings__field">
+            <span class="profile-settings__label">Date of birth</span>
+            <input class="ui-field" type="date" name="date_of_birth" autocomplete="bday">
+          </label>
+
+          <label class="profile-settings__field profile-settings__field--full">
+            <span class="profile-settings__label">Gender</span>
+            <select class="ui-field" name="gender">
+              <option value="">Private by default</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="non-binary">Non-binary</option>
+              <option value="prefer_not_to_say">Prefer not to say</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="profile-settings__status" data-profile-save-status="identity" aria-live="polite"></div>
+
+        <div class="profile-settings__actions">
+          <button class="ui-button ui-button--secondary" type="submit" data-profile-save-submit="identity">Save Identity</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="profile-settings__pane ui-card ui-surface--glass" data-profile-settings-pane="route" hidden>
+      <div class="profile-settings__pane-header">
+        <div>
+          <h3 class="profile-settings__pane-title">Username &amp; Public Route</h3>
+          <p class="profile-settings__pane-copy">This section governs the public identity handle that resolves to `neuroartan.com/{username}`.</p>
+        </div>
+      </div>
+
+      <form class="profile-settings__form" data-profile-save-form data-profile-save-scope="route" novalidate>
+        <div class="profile-settings__field-grid">
+          <label class="profile-settings__field">
+            <span class="profile-settings__label">Username</span>
+            <input class="ui-field" type="text" name="username" autocapitalize="off" spellcheck="false">
+            <span class="profile-settings__hint" data-profile-settings-username-note>
+              Username changes are governed by the canonical reservation policy.
+            </span>
+          </label>
+
+          <label class="profile-settings__field">
+            <span class="profile-settings__label">Public display name</span>
+            <input class="ui-field" type="text" name="public_display_name">
+          </label>
+
+          <label class="profile-settings__field">
+            <span class="profile-settings__label">Identity label</span>
+            <input class="ui-field" type="text" name="public_identity_label" placeholder="Founder, Researcher, Builder">
+          </label>
+
+          <label class="profile-settings__field">
+            <span class="profile-settings__label">Primary public link</span>
+            <input class="ui-field" type="url" name="public_primary_link" placeholder="https://">
+          </label>
+
+          <label class="profile-settings__field profile-settings__field--full">
+            <span class="profile-settings__label">Public summary</span>
+            <textarea class="ui-field profile-settings__textarea" rows="5" name="public_summary" placeholder="Short public-safe summary for the company-domain profile surface."></textarea>
+          </label>
+        </div>
+
+        <div class="profile-settings__status" data-profile-save-status="route" aria-live="polite"></div>
+
+        <div class="profile-settings__actions">
+          <button class="ui-button ui-button--secondary" type="submit" data-profile-save-submit="route">Save Route Settings</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="profile-settings__pane ui-card ui-surface--glass" data-profile-settings-pane="visibility" hidden>
+      <div class="profile-settings__pane-header">
+        <div>
+          <h3 class="profile-settings__pane-title">Visibility &amp; Public Presence</h3>
+          <p class="profile-settings__pane-copy">Control whether the reserved username is publicly renderable and discoverable.</p>
+        </div>
+      </div>
+
+      <form class="profile-settings__form" data-profile-save-form data-profile-save-scope="visibility" novalidate>
+        <div class="profile-settings__toggle-list">
+          <label class="profile-settings__toggle">
+            <input type="checkbox" name="public_profile_enabled">
+            <span class="profile-settings__toggle-copy">
+              <strong>Enable public profile route</strong>
+              <span>Allow the canonical public route to render when username, visibility, and readiness conditions are satisfied.</span>
+            </span>
+          </label>
+
+          <label class="profile-settings__toggle">
+            <input type="checkbox" name="public_profile_discoverable">
+            <span class="profile-settings__toggle-copy">
+              <strong>Allow discovery</strong>
+              <span>Permit public-safe discovery once the route is live.</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="profile-settings__status" data-profile-save-status="visibility" aria-live="polite"></div>
+
+        <div class="profile-settings__actions">
+          <button class="ui-button ui-button--secondary" type="submit" data-profile-save-submit="visibility">Save Visibility</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="profile-settings__pane ui-card ui-surface--glass" data-profile-settings-pane="media" hidden>
+      <div class="profile-settings__pane-header">
+        <div>
+          <h3 class="profile-settings__pane-title">Media &amp; Avatar</h3>
+          <p class="profile-settings__pane-copy">Image upload remains delegated to the canonical account/profile setup flow until the dedicated media system is connected here.</p>
+        </div>
+      </div>
+
+      <div class="profile-settings__media">
+        <div class="profile-settings__media-preview">
+          <div class="profile-settings__media-avatar ui-surface">
+            <img data-profile-settings-avatar-image alt="" hidden>
+            <span data-profile-settings-avatar-placeholder>NU</span>
+          </div>
+
+          <div class="profile-settings__media-copy">
+            <p class="profile-settings__media-label" data-profile-settings-avatar-state>Avatar pending</p>
+            <p class="profile-settings__media-note" data-profile-settings-avatar-note>
+              Use the managed image flow to update the canonical avatar source for the private and public profile surfaces.
+            </p>
+          </div>
+        </div>
+
+        <div class="profile-settings__actions">
+          <button class="ui-button ui-button--secondary" type="button" data-profile-action="change-avatar">
+            Open Image Setup
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -24,7 +24,6 @@
   color:var(--text-secondary-color);
   text-align:initial;
   position:relative;
-  z-index:2;
   direction:ltr;
   text-align:left;
 }
@@ -81,9 +80,11 @@
   gap:0.5rem;
   flex-wrap:wrap;
   direction:ltr;
+  overflow:visible;
 }
 
 .locale-item{
+  position:relative;
   display:inline-flex;
   align-items:center;
 }
