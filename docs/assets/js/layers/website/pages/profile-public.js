@@ -1,26 +1,27 @@
 /* =============================================================================
-   01) PROFILE PAGE AUTHORITY
-   02) PROFILE PAGE INIT
+   01) PUBLIC PROFILE PAGE AUTHORITY
+   02) PUBLIC PROFILE INIT
    ============================================================================= */
 
 /* =============================================================================
-   01) PROFILE PAGE AUTHORITY
+   01) PUBLIC PROFILE PAGE AUTHORITY
    ============================================================================= */
 
-function initProfilePage() {
-  const root = document.querySelector('body[data-profile-page]');
+function initPublicProfilePage() {
+  const root = document.querySelector('body[data-profile-page="public"]');
   if (!root) return;
 
-  root.dataset.profilePageReady = 'true';
-  document.documentElement.dataset.activePage = 'profile';
+  root.dataset.profilePageMode = 'public';
+  root.dataset.profileSurface = 'public';
+  document.documentElement.dataset.profileSurface = 'public';
 }
 
 /* =============================================================================
-   02) PROFILE PAGE INIT
+   02) PUBLIC PROFILE INIT
    ============================================================================= */
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initProfilePage, { once: true });
+  document.addEventListener('DOMContentLoaded', initPublicProfilePage, { once: true });
 } else {
-  initProfilePage();
+  initPublicProfilePage();
 }

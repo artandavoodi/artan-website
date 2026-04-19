@@ -3,13 +3,14 @@
    01) MODULE IDENTITY
    02) WEBSITE LAYER AUTHORITIES · NAVIGATION
    03) WEBSITE LAYER AUTHORITIES · OVERLAYS
-   04) WEBSITE LAYER AUTHORITIES · RENDERERS
-   05) WEBSITE LAYER AUTHORITIES · SECTIONS
-   06) WEBSITE LAYER AUTHORITIES · SYSTEM
-   07) WEBSITE LAYER AUTHORITIES · PAGES
-   08) WEBSITE LAYER AUTHORITIES · UI
-   09) WEBSITE LAYER AUTHORITIES · MOTION
-   10) END OF FILE
+   04) WEBSITE LAYER AUTHORITIES · PROFILE
+   05) WEBSITE LAYER AUTHORITIES · RENDERERS
+   06) WEBSITE LAYER AUTHORITIES · SECTIONS
+   07) WEBSITE LAYER AUTHORITIES · SYSTEM
+   08) WEBSITE LAYER AUTHORITIES · PAGES
+   09) WEBSITE LAYER AUTHORITIES · UI
+   10) WEBSITE LAYER AUTHORITIES · MOTION
+   11) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -29,37 +30,42 @@ import '../overlays/account/00-account-all.js';
 import '../overlays/cookie/00-cookie-all.js';
 
 /* =============================================================================
-   04) WEBSITE LAYER AUTHORITIES · RENDERERS
+   04) WEBSITE LAYER AUTHORITIES · PROFILE
+============================================================================= */
+import '../profile/00-profile-all.js';
+
+/* =============================================================================
+   05) WEBSITE LAYER AUTHORITIES · RENDERERS
 ============================================================================= */
 import '../renderers/00-renderers-all.js';
 
 /* =============================================================================
-   05) WEBSITE LAYER AUTHORITIES · SECTIONS
+   06) WEBSITE LAYER AUTHORITIES · SECTIONS
 ============================================================================= */
 import '../sections/00-sections-all.js';
 
 /* =============================================================================
-   06) WEBSITE LAYER AUTHORITIES · SYSTEM
+   07) WEBSITE LAYER AUTHORITIES · SYSTEM
 ============================================================================= */
 import '../system/00-system-all.js';
 
 /* =============================================================================
-   07) WEBSITE LAYER AUTHORITIES · PAGES
+   08) WEBSITE LAYER AUTHORITIES · PAGES
 ============================================================================= */
 import '../pages/00-pages-all.js';
 
 /* =============================================================================
-   08) WEBSITE LAYER AUTHORITIES · UI
+   09) WEBSITE LAYER AUTHORITIES · UI
 ============================================================================= */
 import '../ui/effects/00-effects-all.js';
 import '../ui/homepage/00-homepage-all.js';
 import '../ui/pages/00-ui-pages-all.js';
 
 /* =============================================================================
-   09) WEBSITE LAYER AUTHORITIES · MOTION
+   10) WEBSITE LAYER AUTHORITIES · MOTION
 ============================================================================= */
 import '../motion/00-motion-all.js';
 
 /* =============================================================================
-   10) END OF FILE
+   11) END OF FILE
 ============================================================================= */

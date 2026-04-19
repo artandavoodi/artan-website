@@ -312,9 +312,9 @@ body.light-mode .stage-video-overlay{
   background:radial-gradient(circle at center, rgba(145,124,111,0.28) 0%, rgba(145,124,111,0.20) 24%, rgba(18,14,10,0.26) 54%, rgba(18,14,10,0.38) 100%);
 }
 
-body.intro-loading .stage-video-overlay{opacity:1;}
-body.intro-reveal .stage-video-overlay{opacity:0.96;}
-body.site-entered.hero-lock-released .stage-video-overlay{opacity:0;display:none;}
+body.home-page.intro-loading .stage-video-overlay{opacity:1;}
+body.home-page.intro-reveal .stage-video-overlay{opacity:0.96;}
+body.home-page.site-entered.hero-lock-released .stage-video-overlay{opacity:0;display:none;}
 
 #institutional-menu-mount{
   position:fixed;
@@ -329,7 +329,7 @@ body.site-entered.hero-lock-released .stage-video-overlay{opacity:0;display:none
   transition:opacity 700ms cubic-bezier(0.22,1,0.36,1), transform 900ms cubic-bezier(0.22,1,0.36,1), visibility 0s linear 900ms;
 }
 
-body.site-entered #institutional-menu-mount{
+body.home-page.site-entered #institutional-menu-mount{
   opacity:1;
   visibility:visible;
   pointer-events:auto;
@@ -760,7 +760,7 @@ body.hero-stage-hidden .stage-video-overlay{
   display:none !important;
 }
 
-body:not(.site-entered) .stage-circle{
+body.home-page:not(.site-entered) .stage-circle{
   opacity:1;
   transform:translateZ(0);
   transition:
@@ -931,53 +931,53 @@ body:not(.site-entered) .stage-circle{
 /* =============================================================================
    16) PRE-ENTER ISOLATION — HIDE GLOBAL UI + POST-ENTER CONTENT
 ============================================================================= */
-body:not(.site-entered) #menu-mount,
-body:not(.site-entered) #footer-mount,
-body:not(.site-entered) footer,
-body:not(.site-entered) .site-footer,
-body:not(.site-entered) .country-overlay,
-body:not(.site-entered) .country-selector,
-body:not(.site-entered) [data-country-overlay]{
+body.home-page:not(.site-entered) #menu-mount,
+body.home-page:not(.site-entered) #footer-mount,
+body.home-page:not(.site-entered) footer,
+body.home-page:not(.site-entered) .site-footer,
+body.home-page:not(.site-entered) .country-overlay,
+body.home-page:not(.site-entered) .country-selector,
+body.home-page:not(.site-entered) [data-country-overlay]{
   display:none !important;
   visibility:hidden !important;
   pointer-events:none !important;
 }
 
-body:not(.site-entered) #site-main,
-body:not(.site-entered) main{
+body.home-page:not(.site-entered) #site-main,
+body.home-page:not(.site-entered) main{
   display:none;
 }
 
 /* =============================================================================
    17) INTRO LOGO ANIMATION (HERO-OWNED — PRE-ENTER SYSTEM)
 ============================================================================= */
-body.intro-loading{overflow:hidden;}
+body.home-page.intro-loading{overflow:hidden;}
 
-body.intro-loading .stage-circle,
-body.intro-reveal .stage-circle{
+body.home-page.intro-loading .stage-circle,
+body.home-page.intro-reveal .stage-circle{
   opacity:1;
   visibility:visible;
 }
 
-body.intro-loading #header-controls,
-body.intro-loading .site-essence,
-body.intro-loading .site-footer,
-body.intro-loading .footer-separator,
-body.intro-loading #menu-overlay{
+body.home-page.intro-loading #header-controls,
+body.home-page.intro-loading .site-essence,
+body.home-page.intro-loading .site-footer,
+body.home-page.intro-loading .footer-separator,
+body.home-page.intro-loading #menu-overlay{
   opacity:0;
   pointer-events:none;
 }
 
-body.intro-loading #announcement,
-body.intro-loading #enter-button,
-body.intro-loading .enter-button{
+body.home-page.intro-loading #announcement,
+body.home-page.intro-loading #enter-button,
+body.home-page.intro-loading .enter-button{
   opacity:0;
   transform:translateY(18px);
 }
 
-body.intro-reveal #announcement,
-body.intro-reveal #enter-button,
-body.intro-reveal .enter-button{
+body.home-page.intro-reveal #announcement,
+body.home-page.intro-reveal #enter-button,
+body.home-page.intro-reveal .enter-button{
   opacity:1;
   transform:translateY(0);
   transition:opacity 0.65s ease, transform 0.85s var(--intro-ease);
@@ -1041,12 +1041,12 @@ body[dir="rtl"] .site-logo.intro-logo{
 }
 
 @media (prefers-reduced-motion:reduce){
-  body.intro-loading{overflow:auto;}
+  body.home-page.intro-loading{overflow:auto;}
   .site-logo.intro-logo,
   .site-logo.intro-logo.intro-fade,
-  body.intro-reveal #announcement,
-  body.intro-reveal #enter-button,
-  body.intro-reveal .enter-button{
+  body.home-page.intro-reveal #announcement,
+  body.home-page.intro-reveal #enter-button,
+  body.home-page.intro-reveal .enter-button{
     transition:none !important;
     animation:none !important;
     transform:none !important;

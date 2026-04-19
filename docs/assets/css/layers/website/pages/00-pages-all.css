@@ -14,6 +14,8 @@
    02) PAGE AUTHORITY IMPORTS
 ============================================================================= */
 @import url('./404.css');
+@import url('./profile-private.css');
+@import url('./profile-public.css');
 
 /* =============================================================================
    03) END OF FILE

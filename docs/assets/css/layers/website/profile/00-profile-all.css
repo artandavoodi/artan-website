@@ -1,0 +1,18 @@
+/* =============================================================================
+   01. PROFILE SHARED LAYER ENTRY
+   02. PROFILE MENU
+   03. PROFILE FOOTER
+   04. PROFILE SHELL
+   05. PROFILE HEADER
+   06. PROFILE SECTIONS
+   ============================================================================= */
+
+/* =============================================================================
+   01. PROFILE SHARED LAYER ENTRY
+   ============================================================================= */
+
+@import url('./profile-menu.css');
+@import url('./profile-footer.css');
+@import url('./profile-shell.css');
+@import url('./profile-header.css');
+@import url('./profile-sections.css');

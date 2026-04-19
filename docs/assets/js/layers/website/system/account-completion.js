@@ -479,7 +479,17 @@ import {
   ============================================================================= */
   function isProfileComplete(profile) {
     if (!profile) return false;
-    return REQUIRED_PROFILE_FIELDS.every((field) => normalizeString(profile[field]));
+
+    return REQUIRED_PROFILE_FIELDS.every((field) => {
+      switch (field) {
+        case 'username':
+          return normalizeString(profile.username || profile.username_normalized || profile.username_lower);
+        case 'date_of_birth':
+          return normalizeString(profile.date_of_birth || profile.birth_date);
+        default:
+          return normalizeString(profile[field]);
+      }
+    });
   }
 
   function buildProfilePrefill(user, profile = null) {
@@ -497,7 +507,7 @@ import {
       username: profile?.username || onboarding.username || providerContext.username || '',
       password: onboarding.password || '',
       password_confirm: onboarding.password_confirm || onboarding.password || '',
-      date_of_birth: profile?.date_of_birth || onboarding.date_of_birth || '',
+      date_of_birth: profile?.date_of_birth || profile?.birth_date || onboarding.date_of_birth || '',
       gender: profile?.gender || onboarding.gender || ''
     };
 

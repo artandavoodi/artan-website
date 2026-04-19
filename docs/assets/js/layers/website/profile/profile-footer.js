@@ -1,8 +1,8 @@
 /* =============================================================================
    01) MODULE IMPORTS
-   02) PROFILE MENU RENDER HELPERS
-   03) PROFILE MENU RENDER
-   04) PROFILE MENU INIT
+   02) PROFILE FOOTER HELPERS
+   03) PROFILE FOOTER RENDER
+   04) PROFILE FOOTER INIT
    ============================================================================= */
 
 /* =============================================================================
@@ -12,11 +12,11 @@
 import { getProfileRuntimeState, subscribeProfileRuntime } from './profile-runtime.js';
 
 /* =============================================================================
-   02) PROFILE MENU RENDER HELPERS
+   02) PROFILE FOOTER HELPERS
    ============================================================================= */
 
-function getProfileMenuRoot() {
-  return document.querySelector('[data-profile-menu][data-profile-surface="private"]');
+function getProfileFooterRoot() {
+  return document.querySelector('[data-profile-footer][data-profile-surface="private"]');
 }
 
 function setText(root, selector, value) {
@@ -25,48 +25,47 @@ function setText(root, selector, value) {
   node.textContent = value;
 }
 
-function setControlDisabled(control, disabled) {
-  if (!(control instanceof HTMLElement)) return;
-
-  if (control instanceof HTMLButtonElement) {
-    control.disabled = disabled;
-  }
-
-  control.setAttribute('aria-disabled', disabled ? 'true' : 'false');
-}
-
 /* =============================================================================
-   03) PROFILE MENU RENDER
+   03) PROFILE FOOTER RENDER
    ============================================================================= */
 
-function renderProfileMenu(state = getProfileRuntimeState()) {
-  const root = getProfileMenuRoot();
+function renderProfileFooter(state = getProfileRuntimeState()) {
+  const root = getProfileFooterRoot();
   if (!root) return;
 
   root.dataset.profileViewerState = state.viewerState;
   root.dataset.profileStateKey = state.stateKey;
 
-  setText(root, '[data-profile-menu-state-line]', state.menuStateLine);
-  setText(root, '[data-profile-menu-account-label]', state.accountButtonLabel);
-  setText(root, '[data-profile-menu-public-label]', state.publicActionLabel);
+  setText(
+    root,
+    '[data-profile-footer-environment]',
+    state.viewerState === 'authenticated'
+      ? 'Authenticated owner environment'
+      : 'Private continuity environment'
+  );
 
-  const publicAction = root.querySelector('[data-profile-action="view-public"]');
-  setControlDisabled(publicAction, !state.publicViewAvailable);
+  setText(
+    root,
+    '[data-profile-footer-route]',
+    state.username.normalized
+      ? `${state.publicViewAvailable ? 'Public route ready' : 'Reserved route'} · ${state.publicRouteDisplay}`
+      : 'Owner route · /profile.html'
+  );
 }
 
 /* =============================================================================
-   04) PROFILE MENU INIT
+   04) PROFILE FOOTER INIT
    ============================================================================= */
 
-function initProfileMenu() {
-  subscribeProfileRuntime(renderProfileMenu);
+function initProfileFooter() {
+  subscribeProfileRuntime(renderProfileFooter);
 
   document.addEventListener('fragment:mounted', (event) => {
-    if (event?.detail?.name !== 'profile-private-menu') return;
-    renderProfileMenu();
+    if (event?.detail?.name !== 'profile-private-footer') return;
+    renderProfileFooter();
   });
 
-  renderProfileMenu();
+  renderProfileFooter();
 }
 
-initProfileMenu();
+initProfileFooter();

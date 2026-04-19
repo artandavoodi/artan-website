@@ -1,0 +1,66 @@
+<!-- =============================================================================
+     01) PRIVATE PROFILE MENU
+     02) PRIVATE PROFILE MENU SURFACE
+     03) PRIVATE PROFILE MENU BRAND
+     04) PRIVATE PROFILE MENU ACTIONS
+============================================================================= -->
+<nav class="profile-menu" data-profile-menu data-profile-surface="private" aria-label="Private profile menu">
+  <div class="profile-menu__rail">
+    <div class="profile-menu__surface ui-surface ui-surface--glass">
+      <!-- =========================================================================
+           03) PRIVATE PROFILE MENU BRAND
+      ========================================================================= -->
+      <a class="profile-menu__brand" href="/" aria-label="Go to Neuroartan home">
+        <img
+          class="profile-menu__brand-mark"
+          src="assets/icons/core/identity/brand/neuroartan/logo-plain.svg"
+          alt="Neuroartan"
+        >
+        <div class="profile-menu__brand-copy">
+          <p class="profile-menu__brand-eyebrow">Neuroartan</p>
+          <p class="profile-menu__brand-title">Private Profile</p>
+        </div>
+      </a>
+
+      <div class="profile-menu__status">
+        <p class="profile-menu__status-line" data-profile-menu-state-line>Owner environment awaiting account access</p>
+      </div>
+
+      <!-- =========================================================================
+           04) PRIVATE PROFILE MENU ACTIONS
+      ========================================================================= -->
+      <div class="profile-menu__actions">
+        <a class="ui-button ui-button--ghost profile-menu__link" href="/">Home</a>
+
+        <button class="ui-button ui-button--ghost profile-menu__action" type="button" data-profile-action="view-public" aria-disabled="true">
+          <img
+            class="ui-icon-theme-aware ui-icon-sm"
+            src="assets/icons/layers/website/system/navigation/globe.svg"
+            alt=""
+            aria-hidden="true"
+          >
+          <span data-profile-menu-public-label>Public Route</span>
+        </button>
+
+        <button class="ui-icon-button profile-menu__icon-action" type="button" aria-label="Profile settings" disabled>
+          <img
+            class="ui-icon-theme-aware ui-icon-sm"
+            src="assets/icons/core/interface/actions/settings.svg"
+            alt=""
+            aria-hidden="true"
+          >
+        </button>
+
+        <button class="ui-button ui-button--secondary profile-menu__action profile-menu__action--account" type="button" data-profile-action="account">
+          <img
+            class="ui-icon-theme-aware ui-icon-sm"
+            src="assets/icons/layers/website/system/navigation/profile.svg"
+            alt=""
+            aria-hidden="true"
+          >
+          <span data-profile-menu-account-label>Continue</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,72 @@
+/* =============================================================================
+   01) PROFILE SHELL FOUNDATION
+   02) PROFILE SHELL SURFACE
+   03) PROFILE SHELL INNER COMPOSITION
+   04) PROFILE SHARED CONTROL STATES
+   ============================================================================= */
+
+/* =============================================================================
+   01) PROFILE SHELL FOUNDATION
+   ============================================================================= */
+
+.profile-shell{
+  width:100%;
+}
+
+.profile-shell__rail{
+  width:var(--profile-page-rail-width, var(--site-rail-width));
+  margin:0 auto;
+}
+
+/* =============================================================================
+   02) PROFILE SHELL SURFACE
+   ============================================================================= */
+
+.profile-shell__surface{
+  position:relative;
+  overflow:hidden;
+  padding:var(--profile-shell-surface-padding, var(--spacing-xl));
+  border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-medium);
+}
+
+.profile-shell__ambient{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 16% 18%, color-mix(in srgb, var(--text-color) 7%, transparent) 0%, transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-secondary) 85%, transparent) 0%, transparent 32%);
+  opacity:0.78;
+  pointer-events:none;
+}
+
+/* =============================================================================
+   03) PROFILE SHELL INNER COMPOSITION
+   ============================================================================= */
+
+.profile-shell__inner{
+  position:relative;
+  z-index:1;
+  display:grid;
+  gap:var(--profile-shell-inner-gap, var(--spacing-xl));
+}
+
+.profile-shell__mount{
+  width:100%;
+}
+
+/* =============================================================================
+   04) PROFILE SHARED CONTROL STATES
+   ============================================================================= */
+
+.profile-shell [aria-disabled="true"],
+.profile-shell button:disabled{
+  opacity:0.48;
+  pointer-events:none;
+}
+
+@media (max-width:820px){
+  .profile-shell__surface{
+    padding:var(--profile-shell-surface-padding-mobile, var(--spacing-lg));
+  }
+}

@@ -1,0 +1,92 @@
+<!-- =============================================================================
+     01) PRIVATE PROFILE HEADER
+     02) PRIVATE PROFILE HEADER SURFACE
+     03) PRIVATE PROFILE IDENTITY BLOCK
+     04) PRIVATE PROFILE METRICS
+============================================================================= -->
+<section class="profile-header" data-profile-header data-profile-surface="private" aria-label="Private profile header">
+  <div class="profile-header__surface">
+    <div class="profile-header__identity-block">
+      <div class="profile-header__avatar-shell">
+        <div class="profile-header__avatar-surface ui-surface">
+          <img class="profile-header__avatar-image" data-profile-avatar-image alt="" hidden>
+          <span class="profile-header__avatar-placeholder" data-profile-avatar-placeholder>NU</span>
+        </div>
+
+        <button class="ui-icon-button profile-header__avatar-action" type="button" data-profile-action="change-avatar" aria-label="Change profile image">
+          <img
+            class="ui-icon-theme-aware ui-icon-sm"
+            src="assets/icons/core/interface/actions/image.svg"
+            alt=""
+            aria-hidden="true"
+          >
+        </button>
+      </div>
+
+      <div class="profile-header__copy">
+        <div class="profile-header__eyebrow-row">
+          <span class="ui-badge ui-badge--outline" data-profile-header-state-badge>Guest</span>
+          <p class="profile-header__state-line" data-profile-header-state-line>Authenticate to enter your private continuity environment.</p>
+        </div>
+
+        <div class="profile-header__identity">
+          <h1 class="profile-header__display-name" data-profile-display-name>Private Profile</h1>
+
+          <div class="profile-header__identity-line">
+            <p class="profile-header__username" data-profile-username>@username</p>
+            <span class="profile-header__identity-separator" aria-hidden="true">•</span>
+            <p class="profile-header__route" data-profile-route-display>neuroartan.com/username</p>
+          </div>
+        </div>
+
+        <p class="profile-header__summary" data-profile-summary>Continue with your Neuroartan account to activate a private owner environment for identity, route readiness, and continuity state.</p>
+
+        <div class="profile-header__actions">
+          <button class="ui-button ui-button--secondary" type="button" data-profile-primary-action data-profile-action="account">
+            <span data-profile-primary-action-label>Continue with Account</span>
+          </button>
+
+          <button class="ui-button ui-button--ghost" type="button" data-profile-secondary-action data-profile-action="edit-username">
+            <img
+              class="ui-icon-theme-aware ui-icon-sm"
+              src="assets/icons/core/interface/actions/edit.svg"
+              alt=""
+              aria-hidden="true"
+            >
+            <span data-profile-secondary-action-label>Edit Username</span>
+          </button>
+
+          <button class="ui-button ui-button--ghost" type="button" data-profile-public-action data-profile-action="view-public" aria-disabled="true">
+            <img
+              class="ui-icon-theme-aware ui-icon-sm"
+              src="assets/icons/layers/website/system/navigation/globe.svg"
+              alt=""
+              aria-hidden="true"
+            >
+            <span data-profile-public-action-label>Public Route</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-header__metrics">
+      <article class="profile-header__metric ui-card">
+        <p class="profile-header__metric-label">Completion</p>
+        <p class="profile-header__metric-value" data-profile-completion-percent>0%</p>
+        <p class="profile-header__metric-copy" data-profile-completion-copy>Profile completion required</p>
+      </article>
+
+      <article class="profile-header__metric ui-card">
+        <p class="profile-header__metric-label">Username</p>
+        <p class="profile-header__metric-value" data-profile-username-state>Missing</p>
+        <p class="profile-header__metric-copy" data-profile-username-copy>Username not yet reserved</p>
+      </article>
+
+      <article class="profile-header__metric ui-card">
+        <p class="profile-header__metric-label">Visibility</p>
+        <p class="profile-header__metric-value" data-profile-visibility-state>Private</p>
+        <p class="profile-header__metric-copy" data-profile-visibility-copy>Public route not yet enabled</p>
+      </article>
+    </div>
+  </div>
+</section>

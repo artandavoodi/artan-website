@@ -588,6 +588,30 @@ function resolveServerTimestamp(firebaseNamespace) {
     : new Date().toISOString();
 }
 
+function uniqueStrings(values = []) {
+  return Array.from(new Set(
+    values
+      .map((value) => normalizeString(value))
+      .filter(Boolean)
+  ));
+}
+
+function resolveAuthProviderLinks(user, existingProfile = null, explicitProvider = '') {
+  const existingProviders = Array.isArray(existingProfile?.auth_provider_links)
+    ? existingProfile.auth_provider_links
+    : [];
+
+  const providerData = Array.isArray(user?.providerData)
+    ? user.providerData.map((provider) => provider?.providerId || '')
+    : [];
+
+  return uniqueStrings([
+    explicitProvider,
+    ...existingProviders,
+    ...providerData
+  ]);
+}
+
 export function buildProfilePayload({
   firebaseNamespace = typeof window !== 'undefined' ? window.firebase : null,
   user,
@@ -596,27 +620,84 @@ export function buildProfilePayload({
   policy = getProfileIdentityPolicy()
 } = {}) {
   const timestamp = resolveServerTimestamp(firebaseNamespace);
+  const normalizedUsername = normalizeUsername(values.username);
+  const authProviderPrimary = normalizeString(values.auth_provider || existingProfile?.auth_provider_primary || '');
+  const authProviderLinks = resolveAuthProviderLinks(user, existingProfile, authProviderPrimary);
+  const avatarUrl = normalizeString(user.photoURL || existingProfile?.avatar_url || existingProfile?.photo_url || '');
+  const usernameRouteReady = typeof values.username_route_ready === 'boolean'
+    ? values.username_route_ready
+    : (existingProfile?.username_route_ready === true || Boolean(normalizedUsername));
+  const publicProfileEnabled = typeof values.public_profile_enabled === 'boolean'
+    ? values.public_profile_enabled
+    : existingProfile?.public_profile_enabled === true;
+  const publicProfileDiscoverable = typeof values.public_profile_discoverable === 'boolean'
+    ? values.public_profile_discoverable
+    : existingProfile?.public_profile_discoverable === true;
+  const publicRouteStatus = normalizeString(
+    values.public_route_status
+    || existingProfile?.public_route_status
+    || (publicProfileEnabled && usernameRouteReady ? 'ready' : 'disabled')
+  );
+  const profileVisibilityStatus = normalizeString(
+    values.profile_visibility_status
+    || existingProfile?.profile_visibility_status
+    || (publicProfileEnabled ? 'controlled_public' : 'private')
+  );
+  const usernameRaw = normalizeString(values.username_raw || values.username);
+  const usernameReservedAt = existingProfile?.username_reserved_at || timestamp;
 
   const payload = {
+    profile_id: existingProfile?.profile_id || user.uid,
+    auth_user_id: user.uid,
+    record_version: Number(existingProfile?.record_version || 1),
     uid: user.uid,
+    auth_provider_primary: authProviderPrimary,
+    auth_provider_links: authProviderLinks,
+    auth_email: normalizeEmail(values.email || user.email || ''),
+    auth_phone: normalizeString(values.phone || existingProfile?.auth_phone || ''),
+    auth_email_verified: user.emailVerified === true || existingProfile?.auth_email_verified === true,
+    auth_phone_verified: existingProfile?.auth_phone_verified === true,
     email: normalizeEmail(values.email || user.email || ''),
-    username: values.username,
-    username_lower: values.username,
-    public_profile_path: buildPublicProfilePath(values.username, policy),
-    public_profile_url: buildPublicProfileUrl(values.username, policy),
+    username: normalizedUsername,
+    username_raw: usernameRaw,
+    username_normalized: normalizedUsername,
+    username_lower: normalizedUsername,
+    username_status: normalizeString(values.username_status || existingProfile?.username_status || 'reserved'),
+    username_reserved_at: usernameReservedAt,
+    username_route_ready: usernameRouteReady,
+    public_profile_path: buildPublicProfilePath(normalizedUsername, policy),
+    public_profile_url: buildPublicProfileUrl(normalizedUsername, policy),
+    public_route_path: buildPublicProfilePath(normalizedUsername, policy),
+    public_route_url: buildPublicProfileUrl(normalizedUsername, policy),
+    public_route_status: publicRouteStatus,
+    public_profile_enabled: publicProfileEnabled,
+    public_profile_discoverable: publicProfileDiscoverable,
+    public_profile_visibility: publicProfileEnabled ? 'enabled' : 'disabled',
     first_name: values.first_name,
     last_name: values.last_name,
     display_name: values.display_name,
+    birth_date: values.date_of_birth,
     date_of_birth: values.date_of_birth,
     gender: values.gender || '',
-    auth_provider: values.auth_provider,
-    photo_url: user.photoURL || existingProfile?.photo_url || '',
+    auth_provider: authProviderPrimary,
+    avatar_state: normalizeString(values.avatar_state || existingProfile?.avatar_state || (avatarUrl ? 'active' : 'empty')),
+    avatar_url: avatarUrl,
+    photo_url: avatarUrl,
+    profile_exists: true,
+    profile_completion_status: normalizeString(values.profile_completion_status || existingProfile?.profile_completion_status || 'complete'),
+    profile_completion_percent: Number(values.profile_completion_percent || existingProfile?.profile_completion_percent || 100),
+    missing_required_fields: Array.isArray(values.missing_required_fields)
+      ? values.missing_required_fields.map((field) => normalizeString(field)).filter(Boolean)
+      : (Array.isArray(existingProfile?.missing_required_fields) ? existingProfile.missing_required_fields : []),
+    profile_visibility_status: profileVisibilityStatus,
     profile_complete: true,
     eligibility_status: 'eligible',
     eligibility_age_years: values.eligibility_age_years,
     minimum_eligible_age_years: values.minimum_eligible_age_years,
     eligibility_policy_status: normalizeString(policy.minimum_eligible_age_review_status || ''),
     eligibility_checked_at: timestamp,
+    created_by_context: existingProfile?.created_by_context || 'website-account-completion',
+    last_updated_by_context: 'website-account-completion',
     updated_at: timestamp
   };
 
@@ -642,7 +723,8 @@ export async function reserveUsernameProfile({
     throw createUsernameError('PROFILE_STORE_UNAVAILABLE');
   }
 
-  const normalizedUsername = normalizeUsername(values.username);
+  const rawUsername = normalizeString(values.username);
+  const normalizedUsername = normalizeUsername(rawUsername);
   const reservationRef = firestore.collection(reservationCollection).doc(normalizedUsername);
   const profileRef = firestore.collection(profileCollection).doc(user.uid);
   const timestamp = resolveServerTimestamp(firebaseNamespace);
@@ -668,6 +750,7 @@ export async function reserveUsernameProfile({
       user,
       values: {
         ...values,
+        username_raw: values.username_raw || rawUsername,
         username: normalizedUsername
       },
       existingProfile,

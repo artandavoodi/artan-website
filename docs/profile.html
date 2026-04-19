@@ -1,60 +1,227 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) BASIC META
+     02) OPEN GRAPH
+     03) TWITTER CARD
+     04) STRUCTURED DATA
+     05) FONTS
+     06) GLOBAL LOADING OVERLAY
+     07) CUSTOM CURSOR
+     08) MAIN CONTENT
+     08A) HEADER CONTROLS
+     08B) PROFILE MENU MOUNT
+     08C) ACCOUNT DRAWER MOUNT
+     08D) SIGN-IN DRAWER MOUNT
+     08E) SIGN-UP DRAWER MOUNT
+     08F) APPLE PROVIDER SHEET MOUNT
+     08G) GOOGLE PROVIDER SHEET MOUNT
+     08H) EMAIL AUTH DRAWER MOUNT
+     08I) PHONE AUTH DRAWER MOUNT
+     08J) AUTH FLOW MOUNT
+     08K) PROFILE PAGE SHELL
+     09) PROFILE FOOTER MOUNT
+     10) COUNTRY OVERLAY MOUNT
+     10A) COOKIE CONSENT MOUNT
+     11) CORE SCRIPT
+============================================================================= -->
 <!DOCTYPE html>
-<!-- =========================================================
-     00. FILE INDEX
-     01. DOCUMENT HEAD
-     02. CUSTOM CURSOR
-     03. PROFILE PAGE ROOT
-     04. PROFILE MOUNT SHELL
-     05. PROFILE SCRIPT LAYER
-     ========================================================= -->
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile · Neuroartan</title>
-  <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="description" content="Private profile access surface for Neuroartan account state, profile completion, and authenticated platform continuity.">
-  <link rel="canonical" href="https://neuroartan.com/profile.html">
-  <link rel="icon" href="assets/icons/core/identity/brand/neuroartan/logo-plain.svg" type="image/svg+xml">
+    <!-- =============================================================================
+         01) BASIC META
+    ============================================================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Neuroartan</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/layers/website/app/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/layers/website/app/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/layers/website/app/touch/apple-touch-icon.png">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/layers/website/app/favicon/favicon.svg">
+    <link rel="stylesheet" href="assets/css/core/00-orchestrator/core.css">
+    <meta name="description" content="Private profile environment for Neuroartan account continuity, identity state, and authenticated profile access.">
+    <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="canonical" href="https://neuroartan.com/profile.html">
+    <meta name="application-name" content="Neuroartan">
+    <meta name="apple-mobile-web-app-title" content="Neuroartan">
 
-  <link rel="stylesheet" href="assets/css/core/00-orchestrator/core.css">
-  <link rel="stylesheet" href="assets/css/layers/website/system/auth.css">
-  <link rel="stylesheet" href="assets/css/layers/website/pages/profile.css">
-  <link rel="stylesheet" href="assets/css/layers/website/components/profile/profile-shell.css">
-  <link rel="stylesheet" href="assets/css/layers/website/components/profile/profile-header.css">
-  <link rel="stylesheet" href="assets/css/layers/website/components/profile/profile-sections.css">
+    <!-- =============================================================================
+         02) OPEN GRAPH
+    ============================================================================= -->
+    <meta property="og:title" content="Profile | Neuroartan">
+    <meta property="og:description" content="Private profile environment for Neuroartan account continuity, identity state, and authenticated profile access.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Neuroartan">
+    <meta property="og:url" content="https://neuroartan.com/profile.html">
+    <meta property="og:image" content="https://neuroartan.com/assets/images/layers/website/brand/logo.svg">
+    <meta property="og:image:alt" content="Neuroartan logo">
 
-  <script src="assets/js/core/01-foundation/cursor.js" defer></script>
-  <script type="module" src="assets/js/layers/website/system/firebase-config.js"></script>
-  <script type="module" src="assets/js/layers/website/system/auth.js"></script>
-  <script type="module" src="assets/js/layers/website/system/account-completion.js"></script>
-  <script type="module" src="assets/js/layers/website/system/profile-state.js"></script>
-  <script type="module" src="assets/js/layers/website/system/profile-router.js"></script>
-  <script type="module" src="assets/js/layers/website/system/profile-save.js"></script>
-  <script type="module" src="assets/js/layers/website/pages/profile.js"></script>
+    <!-- =============================================================================
+         03) TWITTER CARD
+    ============================================================================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Profile | Neuroartan">
+    <meta name="twitter:description" content="Private profile environment for Neuroartan account continuity, identity state, and authenticated profile access.">
+    <meta name="twitter:image" content="https://neuroartan.com/assets/images/layers/website/brand/logo.svg">
+    <meta name="twitter:site" content="@artandavoodi">
+
+    <!-- =============================================================================
+         04) STRUCTURED DATA
+    ============================================================================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://neuroartan.com/#website",
+          "url": "https://neuroartan.com/",
+          "name": "Neuroartan",
+          "inLanguage": "en"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://neuroartan.com/profile.html#webpage",
+          "url": "https://neuroartan.com/profile.html",
+          "name": "Profile | Neuroartan",
+          "isPartOf": {
+            "@id": "https://neuroartan.com/#website"
+          },
+          "inLanguage": "en",
+          "description": "Private profile environment for Neuroartan account continuity, identity state, and authenticated profile access."
+        }
+      ]
+    }
+    </script>
+
+    <!-- =============================================================================
+         05) FONTS
+    ============================================================================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- =============================================================================
+         END OF HEAD
+    ============================================================================= -->
 </head>
-<body class="profile-page" data-profile-page="private">
-  <!-- =========================================================
-       02. CUSTOM CURSOR
-       ========================================================= -->
-  <div class="custom-cursor" aria-hidden="true"></div>
 
-  <!-- =========================================================
-       03. PROFILE PAGE ROOT
-       ========================================================= -->
-  <main class="profile-page-root" data-profile-page-root>
-    <!-- =======================================================
-         04. PROFILE MOUNT SHELL
-         ======================================================= -->
-    <section class="profile-page-shell" data-profile-page-shell>
-      <div class="profile-shell-mount" data-profile-shell-mount></div>
-      <div class="profile-header-mount" data-profile-header-mount></div>
-      <div class="profile-sections-mount" data-profile-sections-mount></div>
-    </section>
+<body class="site-body profile-page" data-profile-page="private">
+<!-- =============================================================================
+     06) GLOBAL LOADING OVERLAY
+============================================================================= -->
+<div id="global-loading-overlay" class="loading-overlay" aria-hidden="true" aria-live="polite">
+  <div class="loading-overlay__backdrop"></div>
+  <div class="loading-overlay__surface" role="status" aria-label="Loading">
+    <div class="loading-overlay__spinner" aria-hidden="true"></div>
+    <p class="loading-overlay__label" data-i18n-key="loading.label">Loading</p>
+  </div>
+</div>
 
-    <noscript>
-      <p>JavaScript is required for authenticated private profile state and profile continuity systems.</p>
-    </noscript>
-  </main>
+<!-- =============================================================================
+     07) CUSTOM CURSOR
+============================================================================= -->
+<div class="custom-cursor"></div>
+
+<!-- =============================================================================
+     08) MAIN CONTENT
+============================================================================= -->
+<main id="site-main">
+<!-- =============================================================================
+     08A) PROFILE MENU MOUNT
+============================================================================= -->
+<div id="profile-menu-mount"
+     data-include="profile-private-menu"
+     data-profile-surface="private"
+     data-profile-menu-state="empty"
+     aria-hidden="false"></div>
+
+<!-- =============================================================================
+     08B) ACCOUNT DRAWER MOUNT
+============================================================================= -->
+<div id="account-drawer-mount" data-include="account-drawer"></div>
+
+<!-- =============================================================================
+     08C) SIGN-IN DRAWER MOUNT
+============================================================================= -->
+<div id="account-sign-in-drawer-mount" data-include="account-sign-in-drawer"></div>
+
+<!-- =============================================================================
+     08D) SIGN-UP DRAWER MOUNT
+============================================================================= -->
+<div id="account-sign-up-drawer-mount" data-include="account-sign-up-drawer"></div>
+
+<!-- =============================================================================
+     08E) APPLE PROVIDER SHEET MOUNT
+============================================================================= -->
+<div id="account-provider-apple-sheet-mount" data-include="account-provider-apple-sheet"></div>
+
+<!-- =============================================================================
+     08F) GOOGLE PROVIDER SHEET MOUNT
+============================================================================= -->
+<div id="account-provider-google-sheet-mount" data-include="account-provider-google-sheet"></div>
+
+<!-- =============================================================================
+     08G) EMAIL AUTH DRAWER MOUNT
+============================================================================= -->
+<div id="account-email-auth-drawer-mount" data-include="account-email-auth-drawer"></div>
+
+<!-- =============================================================================
+     08H) PHONE AUTH DRAWER MOUNT
+============================================================================= -->
+<div id="account-phone-auth-drawer-mount" data-include="account-phone-auth-drawer"></div>
+
+<!-- =============================================================================
+     08I) AUTH FLOW MOUNT
+============================================================================= -->
+<div id="auth-flow-mount"
+     data-auth-state="guest"
+     data-auth-surface="profile"
+     data-auth-providers="apple google email phone"
+     aria-hidden="true"></div>
+
+<!-- =============================================================================
+     08J) PROFILE PAGE SHELL
+============================================================================= -->
+<div id="profile-shell-mount"
+     data-include="profile-private-shell"
+     data-profile-state="empty"
+     data-profile-visibility="private"
+     aria-hidden="false"></div>
+
+</main>
+
+<!-- =============================================================================
+     09) PROFILE FOOTER MOUNT
+============================================================================= -->
+<div id="profile-footer-mount"
+     data-include="profile-private-footer"
+     data-profile-surface="private"
+     data-profile-footer-state="empty"
+     aria-hidden="false"></div>
+
+<!-- =============================================================================
+     10) COUNTRY OVERLAY MOUNT
+============================================================================= -->
+<div id="country-overlay-mount" data-include="country-overlay"></div>
+
+<!-- =============================================================================
+     10A) COOKIE CONSENT MOUNT
+============================================================================= -->
+<div id="cookie-consent-mount"
+     data-include="cookie-consent"
+     data-consent-state="pending"
+     data-consent-surface="banner"
+     data-consent-settings="available"
+     aria-hidden="true"></div>
+
+<!-- =============================================================================
+     11) CORE SCRIPT
+============================================================================= -->
+<script type="module" src="assets/js/core/00-orchestrator/core.js"></script>
+
+<!-- =============================================================================
+     END OF BODY
+============================================================================= -->
 </body>
 </html>
