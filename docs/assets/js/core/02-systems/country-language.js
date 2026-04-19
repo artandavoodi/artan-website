@@ -714,14 +714,6 @@
     const closeBtn = getCountryOverlayCloseButton();
     if (closeBtn) closeBtn.onclick = closeCountryOverlay;
 
-    const overlay = getCountryOverlayRoot();
-    if (overlay && !overlay.__neuroartanBackdropBound) {
-      overlay.__neuroartanBackdropBound = true;
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeCountryOverlay();
-      }, { passive: true });
-    }
-
     if (!document.body.dataset.countryOverlayEscapeBound) {
       document.body.dataset.countryOverlayEscapeBound = 'true';
       document.addEventListener('keydown', (e) => {
