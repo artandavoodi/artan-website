@@ -122,11 +122,14 @@
     if (hasRequiredFirebaseRuntime()) return true;
 
     if (!sdkLoadPromise) {
-      sdkLoadPromise = Promise.all(FIREBASE_SDK_SOURCES.map((src) => loadScriptOnce(src)))
-        .catch((error) => {
-          sdkLoadPromise = null;
-          throw error;
-        });
+      sdkLoadPromise = (async () => {
+        for (const src of FIREBASE_SDK_SOURCES) {
+          await loadScriptOnce(src);
+        }
+      })().catch((error) => {
+        sdkLoadPromise = null;
+        throw error;
+      });
     }
 
     await sdkLoadPromise;
