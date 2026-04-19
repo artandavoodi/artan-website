@@ -1,0 +1,81 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) STAGE CORE EFFECT SHELL
+   02) STAGE CORE EFFECT MOUNT
+   03) STAGE CORE EFFECT CANVAS
+   04) STAGE CORE EFFECT LAYER ORDER
+   05) STAGE CORE EFFECT MODE STATE
+============================================================================= */
+
+/* =============================================================================
+   01) STAGE CORE EFFECT SHELL
+============================================================================= */
+#stage-cognitive-core-shell{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+
+/* =============================================================================
+   02) STAGE CORE EFFECT MOUNT
+============================================================================= */
+#stage-cognitive-core-shell [data-home-stage-core-effect="mount"]{
+  position:absolute;
+  inset:0;
+  display:block;
+  border-radius:50%;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* =============================================================================
+   03) STAGE CORE EFFECT CANVAS
+============================================================================= */
+#stage-cognitive-core-shell canvas[data-home-stage-core-effect="canvas"]{
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:0.9;
+  mix-blend-mode:screen;
+}
+
+/* =============================================================================
+   04) STAGE CORE EFFECT LAYER ORDER
+============================================================================= */
+#stage-cognitive-core-shell > :not([data-home-stage-core-effect="mount"]){
+  position:relative;
+  z-index:1;
+}
+
+#stage-cognitive-core-shell [data-home-stage-core-effect="mount"],
+#stage-cognitive-core-shell canvas[data-home-stage-core-effect="canvas"]{
+  will-change:transform, opacity, filter;
+}
+
+/* =============================================================================
+   05) STAGE CORE EFFECT MODE STATE
+============================================================================= */
+#stage-cognitive-core-shell[data-core-effect-ready="true"] [data-home-stage-core-effect="mount"]{
+  opacity:1;
+}
+
+#stage-cognitive-core-shell[data-core-effect-mode="idle"] canvas[data-home-stage-core-effect="canvas"]{
+  opacity:0.54;
+}
+
+#stage-cognitive-core-shell[data-core-effect-mode="listening"] canvas[data-home-stage-core-effect="canvas"]{
+  opacity:0.84;
+}
+
+#stage-cognitive-core-shell[data-core-effect-mode="thinking"] canvas[data-home-stage-core-effect="canvas"]{
+  opacity:0.72;
+}
+
+#stage-cognitive-core-shell[data-core-effect-mode="responding"] canvas[data-home-stage-core-effect="canvas"]{
+  opacity:0.96;
+}

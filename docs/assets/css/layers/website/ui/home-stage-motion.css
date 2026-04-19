@@ -1,0 +1,200 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) STAGE CORE AMBIENT FIELDS
+   02) STAGE MICROPHONE MOTION FIELDS
+   03) ACTIVE MODE VISIBILITY
+   04) LISTENING MODE MOTION
+   05) THINKING MODE MOTION
+   06) RESPONDING MODE MOTION
+   07) ACTIVE MICROPHONE STATE
+   08) KEYFRAMES
+============================================================================= */
+
+/* =============================================================================
+   01) STAGE CORE AMBIENT FIELDS
+============================================================================= */
+#stage-cognitive-core-shell::before,
+#stage-cognitive-core-shell::after,
+#stage-microphone-button::before,
+#stage-microphone-button::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(1);
+  border-radius:50%;
+  pointer-events:none;
+  opacity:0;
+  transition:
+    opacity 0.35s ease,
+    transform 0.7s cubic-bezier(0.22,1,0.36,1),
+    filter 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+
+#stage-cognitive-core-shell::before{
+  width:min(13rem, 44vw);
+  height:min(13rem, 44vw);
+  background:radial-gradient(circle, rgba(145,124,111,0.18) 0%, rgba(145,124,111,0.08) 38%, rgba(145,124,111,0.02) 58%, rgba(145,124,111,0) 74%);
+  filter:blur(10px);
+  z-index:0;
+}
+
+#stage-cognitive-core-shell::after{
+  width:min(17rem, 58vw);
+  height:min(17rem, 58vw);
+  border:1px solid rgba(255,255,255,0.10);
+  z-index:0;
+}
+
+/* =============================================================================
+   02) STAGE MICROPHONE MOTION FIELDS
+============================================================================= */
+#stage-microphone-button::before{
+  width:100%;
+  height:100%;
+  background:radial-gradient(circle, rgba(145,124,111,0.22) 0%, rgba(145,124,111,0.10) 42%, rgba(145,124,111,0) 72%);
+  filter:blur(12px);
+  z-index:0;
+}
+
+#stage-microphone-button::after{
+  width:calc(100% + 1.2rem);
+  height:calc(100% + 1.2rem);
+  border:1px solid rgba(255,255,255,0.12);
+  z-index:0;
+}
+
+/* =============================================================================
+   03) ACTIVE MODE VISIBILITY
+============================================================================= */
+#stage-cognitive-core-shell[data-voice-mode="listening"]::before,
+#stage-cognitive-core-shell[data-voice-mode="thinking"]::before,
+#stage-cognitive-core-shell[data-voice-mode="responding"]::before,
+#stage-microphone-button[data-voice-active="true"]::before,
+#stage-microphone-button[data-voice-active="true"]::after{
+  opacity:1;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="listening"]::after,
+#stage-cognitive-core-shell[data-voice-mode="thinking"]::after,
+#stage-cognitive-core-shell[data-voice-mode="responding"]::after{
+  opacity:0.82;
+}
+
+/* =============================================================================
+   04) LISTENING MODE MOTION
+============================================================================= */
+#stage-cognitive-core-shell[data-voice-mode="listening"]::before{
+  animation:stage-voice-core-breathe 1.35s cubic-bezier(0.22,1,0.36,1) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="listening"]::after{
+  animation:stage-voice-ring-listening 2.1s linear infinite;
+}
+
+#stage-microphone-button[data-voice-mode="listening"]::before,
+#stage-microphone-button[data-voice-mode="listening"]::after{
+  animation:stage-mic-pulse-listening 1.25s cubic-bezier(0.22,1,0.36,1) infinite;
+}
+
+/* =============================================================================
+   05) THINKING MODE MOTION
+============================================================================= */
+#stage-cognitive-core-shell[data-voice-mode="thinking"]::before{
+  animation:stage-voice-core-think 1.8s ease-in-out infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="thinking"]::after{
+  animation:stage-voice-ring-thinking 2.6s ease-in-out infinite;
+}
+
+#stage-microphone-button[data-voice-mode="thinking"]::before,
+#stage-microphone-button[data-voice-mode="thinking"]::after{
+  animation:stage-mic-pulse-thinking 1.9s ease-in-out infinite;
+}
+
+/* =============================================================================
+   06) RESPONDING MODE MOTION
+============================================================================= */
+#stage-cognitive-core-shell[data-voice-mode="responding"]::before{
+  animation:stage-voice-core-respond 1s cubic-bezier(0.22,1,0.36,1) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="responding"]::after{
+  animation:stage-voice-ring-responding 1.45s cubic-bezier(0.22,1,0.36,1) infinite;
+}
+
+#stage-microphone-button[data-voice-mode="responding"]::before,
+#stage-microphone-button[data-voice-mode="responding"]::after{
+  animation:stage-mic-pulse-responding 0.95s cubic-bezier(0.22,1,0.36,1) infinite;
+}
+
+/* =============================================================================
+   07) ACTIVE MICROPHONE STATE
+============================================================================= */
+#stage-microphone-button[data-voice-active="true"]{
+  color:color-mix(in srgb, var(--text-color) 82%, rgba(145,124,111,1));
+  opacity:1;
+  transform:scale(1.04);
+}
+
+#stage-microphone-button[data-voice-active="true"] .stage-microphone-icon{
+  opacity:1;
+}
+
+/* =============================================================================
+   08) KEYFRAMES
+============================================================================= */
+@keyframes stage-voice-core-breathe{
+  0%{transform:translate(-50%,-50%) scale(0.88);opacity:0.34;}
+  50%{transform:translate(-50%,-50%) scale(1.1);opacity:0.92;}
+  100%{transform:translate(-50%,-50%) scale(0.88);opacity:0.34;}
+}
+
+@keyframes stage-voice-core-think{
+  0%{transform:translate(-50%,-50%) scale(0.96);opacity:0.36;}
+  50%{transform:translate(-50%,-50%) scale(1.04);opacity:0.72;}
+  100%{transform:translate(-50%,-50%) scale(0.96);opacity:0.36;}
+}
+
+@keyframes stage-voice-core-respond{
+  0%{transform:translate(-50%,-50%) scale(0.92);opacity:0.34;}
+  50%{transform:translate(-50%,-50%) scale(1.16);opacity:1;}
+  100%{transform:translate(-50%,-50%) scale(0.92);opacity:0.34;}
+}
+
+@keyframes stage-voice-ring-listening{
+  0%{transform:translate(-50%,-50%) scale(0.94) rotate(0deg);opacity:0.18;}
+  50%{transform:translate(-50%,-50%) scale(1.02) rotate(180deg);opacity:0.58;}
+  100%{transform:translate(-50%,-50%) scale(0.94) rotate(360deg);opacity:0.18;}
+}
+
+@keyframes stage-voice-ring-thinking{
+  0%{transform:translate(-50%,-50%) scale(0.98) rotate(0deg);opacity:0.14;}
+  50%{transform:translate(-50%,-50%) scale(1.01) rotate(180deg);opacity:0.4;}
+  100%{transform:translate(-50%,-50%) scale(0.98) rotate(360deg);opacity:0.14;}
+}
+
+@keyframes stage-voice-ring-responding{
+  0%{transform:translate(-50%,-50%) scale(0.92);opacity:0.16;}
+  50%{transform:translate(-50%,-50%) scale(1.08);opacity:0.7;}
+  100%{transform:translate(-50%,-50%) scale(0.92);opacity:0.16;}
+}
+
+@keyframes stage-mic-pulse-listening{
+  0%{transform:translate(-50%,-50%) scale(0.92);opacity:0.18;}
+  50%{transform:translate(-50%,-50%) scale(1.14);opacity:0.62;}
+  100%{transform:translate(-50%,-50%) scale(0.92);opacity:0.18;}
+}
+
+@keyframes stage-mic-pulse-thinking{
+  0%{transform:translate(-50%,-50%) scale(0.98);opacity:0.14;}
+  50%{transform:translate(-50%,-50%) scale(1.04);opacity:0.34;}
+  100%{transform:translate(-50%,-50%) scale(0.98);opacity:0.14;}
+}
+
+@keyframes stage-mic-pulse-responding{
+  0%{transform:translate(-50%,-50%) scale(0.9);opacity:0.2;}
+  50%{transform:translate(-50%,-50%) scale(1.18);opacity:0.74;}
+  100%{transform:translate(-50%,-50%) scale(0.9);opacity:0.2;}
+}

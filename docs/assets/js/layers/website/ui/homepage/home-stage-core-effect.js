@@ -1,0 +1,336 @@
+/* =========================================================
+   00. FILE INDEX
+   01. MODULE STATE
+   02. DOM CONSTANTS
+   03. MODE CONSTANTS
+   04. STATE HELPERS
+   05. DOM HELPERS
+   06. CANVAS HELPERS
+   07. RENDER HELPERS
+   08. EVENT BINDING
+   09. MODULE BOOT
+   ========================================================= */
+
+/* =========================================================
+   01. MODULE STATE
+   ========================================================= */
+
+const HOME_STAGE_CORE_EFFECT_STATE = {
+  isBound: false,
+  mode: 'idle',
+  rafId: null,
+  resizeObserver: null,
+  canvas: null,
+  context: null,
+  shell: null,
+  mount: null,
+  width: 0,
+  height: 0,
+  dpr: 1,
+  startTime: 0,
+  energy: 0,
+  targetEnergy: 0,
+};
+
+/* =========================================================
+   02. DOM CONSTANTS
+   ========================================================= */
+
+const HOME_STAGE_CORE_EFFECT_SELECTORS = {
+  shell: '#stage-cognitive-core-shell',
+  microphoneButton: '#stage-microphone-button',
+};
+
+/* =========================================================
+   03. MODE CONSTANTS
+   ========================================================= */
+
+const HOME_STAGE_CORE_EFFECT_MODE_ENERGY = Object.freeze({
+  idle: 0.12,
+  listening: 0.72,
+  thinking: 0.48,
+  responding: 1.0,
+});
+
+/* =========================================================
+   04. STATE HELPERS
+   ========================================================= */
+
+function normalizeHomeStageCoreEffectMode(mode) {
+  if (typeof mode !== 'string') {
+    return 'idle';
+  }
+
+  const nextMode = mode.trim().toLowerCase();
+  return Object.prototype.hasOwnProperty.call(HOME_STAGE_CORE_EFFECT_MODE_ENERGY, nextMode)
+    ? nextMode
+    : 'idle';
+}
+
+function setHomeStageCoreEffectMode(mode) {
+  const nextMode = normalizeHomeStageCoreEffectMode(mode);
+  HOME_STAGE_CORE_EFFECT_STATE.mode = nextMode;
+  HOME_STAGE_CORE_EFFECT_STATE.targetEnergy = HOME_STAGE_CORE_EFFECT_MODE_ENERGY[nextMode];
+
+  if (HOME_STAGE_CORE_EFFECT_STATE.shell) {
+    HOME_STAGE_CORE_EFFECT_STATE.shell.dataset.coreEffectMode = nextMode;
+  }
+}
+
+/* =========================================================
+   05. DOM HELPERS
+   ========================================================= */
+
+function getHomeStageCoreEffectNodes() {
+  return {
+    shell: document.querySelector(HOME_STAGE_CORE_EFFECT_SELECTORS.shell),
+    microphoneButton: document.querySelector(HOME_STAGE_CORE_EFFECT_SELECTORS.microphoneButton),
+  };
+}
+
+function ensureHomeStageCoreEffectMount() {
+  const nodes = getHomeStageCoreEffectNodes();
+
+  if (!nodes.shell) {
+    return false;
+  }
+
+  let mount = nodes.shell.querySelector('[data-home-stage-core-effect="mount"]');
+  if (!mount) {
+    mount = document.createElement('div');
+    mount.setAttribute('data-home-stage-core-effect', 'mount');
+    mount.setAttribute('aria-hidden', 'true');
+    nodes.shell.appendChild(mount);
+  }
+
+  let canvas = mount.querySelector('canvas[data-home-stage-core-effect="canvas"]');
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.setAttribute('data-home-stage-core-effect', 'canvas');
+    canvas.setAttribute('aria-hidden', 'true');
+    mount.appendChild(canvas);
+  }
+
+  HOME_STAGE_CORE_EFFECT_STATE.shell = nodes.shell;
+  HOME_STAGE_CORE_EFFECT_STATE.mount = mount;
+  HOME_STAGE_CORE_EFFECT_STATE.canvas = canvas;
+  HOME_STAGE_CORE_EFFECT_STATE.context = canvas.getContext('2d', { alpha: true });
+
+  nodes.shell.dataset.coreEffectReady = 'true';
+  setHomeStageCoreEffectMode(HOME_STAGE_CORE_EFFECT_STATE.mode);
+  return Boolean(HOME_STAGE_CORE_EFFECT_STATE.context);
+}
+
+/* =========================================================
+   06. CANVAS HELPERS
+   ========================================================= */
+
+function resizeHomeStageCoreEffectCanvas() {
+  const { shell, canvas } = HOME_STAGE_CORE_EFFECT_STATE;
+
+  if (!shell || !canvas) {
+    return;
+  }
+
+  const rect = shell.getBoundingClientRect();
+  const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+  const width = Math.max(1, Math.round(rect.width));
+  const height = Math.max(1, Math.round(rect.height));
+
+  HOME_STAGE_CORE_EFFECT_STATE.width = width;
+  HOME_STAGE_CORE_EFFECT_STATE.height = height;
+  HOME_STAGE_CORE_EFFECT_STATE.dpr = dpr;
+
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+
+  const context = HOME_STAGE_CORE_EFFECT_STATE.context;
+  if (context) {
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    context.scale(dpr, dpr);
+  }
+}
+
+/* =========================================================
+   07. RENDER HELPERS
+   ========================================================= */
+
+function drawHomeStageCoreEffectOrb(context, cx, cy, radius, color, alpha, blur) {
+  context.save();
+  context.globalAlpha = alpha;
+  context.filter = `blur(${blur}px)`;
+  context.fillStyle = color;
+  context.beginPath();
+  context.arc(cx, cy, radius, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
+}
+
+function renderHomeStageCoreEffectFrame(timestamp) {
+  const {
+    context,
+    width,
+    height,
+    mode,
+    targetEnergy,
+  } = HOME_STAGE_CORE_EFFECT_STATE;
+
+  if (!context || !width || !height) {
+    HOME_STAGE_CORE_EFFECT_STATE.rafId = window.requestAnimationFrame(renderHomeStageCoreEffectFrame);
+    return;
+  }
+
+  if (!HOME_STAGE_CORE_EFFECT_STATE.startTime) {
+    HOME_STAGE_CORE_EFFECT_STATE.startTime = timestamp;
+  }
+
+  const elapsed = (timestamp - HOME_STAGE_CORE_EFFECT_STATE.startTime) / 1000;
+  HOME_STAGE_CORE_EFFECT_STATE.energy += (targetEnergy - HOME_STAGE_CORE_EFFECT_STATE.energy) * 0.08;
+
+  const energy = HOME_STAGE_CORE_EFFECT_STATE.energy;
+  const cx = width / 2;
+  const cy = height / 2;
+  const baseRadius = Math.min(width, height) * 0.13;
+  const orbitRadius = Math.min(width, height) * (0.12 + energy * 0.08);
+  const responseBoost = mode === 'responding' ? 1 : 0;
+  const listenBoost = mode === 'listening' ? 1 : 0;
+  const thinkBoost = mode === 'thinking' ? 1 : 0;
+
+  context.clearRect(0, 0, width, height);
+
+  const coreGradient = context.createRadialGradient(
+    cx,
+    cy,
+    baseRadius * 0.08,
+    cx,
+    cy,
+    baseRadius * (2.1 + energy * 0.5)
+  );
+  coreGradient.addColorStop(0, `rgba(255,255,255,${0.22 + energy * 0.12})`);
+  coreGradient.addColorStop(0.22, `rgba(145,124,111,${0.24 + energy * 0.18})`);
+  coreGradient.addColorStop(0.5, `rgba(121,101,255,${0.14 + responseBoost * 0.08})`);
+  coreGradient.addColorStop(0.74, `rgba(66,194,255,${0.08 + listenBoost * 0.08})`);
+  coreGradient.addColorStop(1, 'rgba(0,0,0,0)');
+
+  context.save();
+  context.globalCompositeOperation = 'lighter';
+  context.fillStyle = coreGradient;
+  context.beginPath();
+  context.arc(cx, cy, Math.min(width, height) * 0.42, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
+
+  const ringCount = 3;
+  for (let index = 0; index < ringCount; index += 1) {
+    const ringPhase = elapsed * (0.48 + energy * 0.52) + index * 0.85;
+    const ringRadius = baseRadius * (1.05 + index * 0.42) + Math.sin(ringPhase) * (4 + energy * 8);
+    context.save();
+    context.strokeStyle = `rgba(255,255,255,${0.05 + energy * 0.08 - index * 0.015})`;
+    context.lineWidth = 1 + (responseBoost * 0.3);
+    context.filter = `blur(${2 + energy * 4}px)`;
+    context.beginPath();
+    context.arc(cx, cy, ringRadius, 0, Math.PI * 2);
+    context.stroke();
+    context.restore();
+  }
+
+  const blobCount = 4;
+  for (let index = 0; index < blobCount; index += 1) {
+    const angle = elapsed * (0.9 + energy * 1.4) * (index % 2 === 0 ? 1 : -1) + index * (Math.PI / 2);
+    const wobble = Math.sin(elapsed * (1.4 + index * 0.2) + index) * (6 + energy * 10);
+    const orbX = cx + Math.cos(angle) * (orbitRadius + wobble * 0.35);
+    const orbY = cy + Math.sin(angle * (1.08 + thinkBoost * 0.08)) * (orbitRadius * 0.72 + wobble * 0.28);
+    const orbRadius = baseRadius * (0.48 + index * 0.05 + energy * 0.22);
+
+    const color = index % 3 === 0
+      ? 'rgba(255,255,255,1)'
+      : index % 3 === 1
+        ? 'rgba(145,124,111,1)'
+        : 'rgba(88,164,255,1)';
+
+    drawHomeStageCoreEffectOrb(
+      context,
+      orbX,
+      orbY,
+      orbRadius,
+      color,
+      0.08 + energy * 0.1 + responseBoost * 0.03,
+      14 + energy * 18
+    );
+  }
+
+  drawHomeStageCoreEffectOrb(
+    context,
+    cx,
+    cy,
+    baseRadius * (0.62 + energy * 0.18),
+    'rgba(255,255,255,1)',
+    0.12 + energy * 0.14,
+    10 + energy * 12
+  );
+
+  HOME_STAGE_CORE_EFFECT_STATE.rafId = window.requestAnimationFrame(renderHomeStageCoreEffectFrame);
+}
+
+function startHomeStageCoreEffectLoop() {
+  if (HOME_STAGE_CORE_EFFECT_STATE.rafId) {
+    return;
+  }
+
+  HOME_STAGE_CORE_EFFECT_STATE.rafId = window.requestAnimationFrame(renderHomeStageCoreEffectFrame);
+}
+
+/* =========================================================
+   08. EVENT BINDING
+   ========================================================= */
+
+function bindHomeStageCoreEffectEvents() {
+  document.addEventListener('neuroartan:home-stage-voice-mode', (event) => {
+    setHomeStageCoreEffectMode(event?.detail?.mode ?? 'idle');
+  });
+
+  document.addEventListener('neuroartan:home-stage-voice-activated', () => {
+    setHomeStageCoreEffectMode('listening');
+  });
+
+  document.addEventListener('neuroartan:home-stage-voice-deactivated', () => {
+    setHomeStageCoreEffectMode('idle');
+  });
+
+  if ('ResizeObserver' in window && HOME_STAGE_CORE_EFFECT_STATE.shell) {
+    HOME_STAGE_CORE_EFFECT_STATE.resizeObserver = new ResizeObserver(() => {
+      resizeHomeStageCoreEffectCanvas();
+    });
+    HOME_STAGE_CORE_EFFECT_STATE.resizeObserver.observe(HOME_STAGE_CORE_EFFECT_STATE.shell);
+  } else {
+    window.addEventListener('resize', resizeHomeStageCoreEffectCanvas, { passive: true });
+  }
+}
+
+/* =========================================================
+   09. MODULE BOOT
+   ========================================================= */
+
+function bootHomeStageCoreEffect() {
+  if (HOME_STAGE_CORE_EFFECT_STATE.isBound) {
+    resizeHomeStageCoreEffectCanvas();
+    return;
+  }
+
+  if (!ensureHomeStageCoreEffectMount()) {
+    return;
+  }
+
+  HOME_STAGE_CORE_EFFECT_STATE.isBound = true;
+  resizeHomeStageCoreEffectCanvas();
+  bindHomeStageCoreEffectEvents();
+  startHomeStageCoreEffectLoop();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootHomeStageCoreEffect, { once: true });
+} else {
+  bootHomeStageCoreEffect();
+}
