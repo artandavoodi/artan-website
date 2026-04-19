@@ -14,8 +14,8 @@
    02) LAYOUT AUTHORITY IMPORTS
 ============================================================================= */
 @import url('./collections.css');
-@import url('./hero.css');
 @import url('./home.css');
+@import url('./about.css');
 @import url('./publication.css');
 
 /* =============================================================================

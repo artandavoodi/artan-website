@@ -6,7 +6,9 @@
      04) STRUCTURED DATA
      05) FONTS
      06) GLOBAL LOADING OVERLAY
+     07) HOME SCROLL GRADIENT
      08) CUSTOM CURSOR
+     09) HIDDEN SITE NAME
      10) MAIN CONTENT
      10A) HEADER CONTROLS
      10B) INSTITUTIONAL MENU MOUNT
@@ -20,21 +22,23 @@
      10J) PHONE AUTH DRAWER MOUNT
      10K) AUTH FLOW MOUNT
      10L) PROFILE SHELL MOUNT
-     11) HOME HERO STAGE
-     11A) HOME HERO VIDEO
-     12) HOME HERO HEADLINES
-     13) HOME ESSENCE
-     13A) HOME ESSENCE EFFECT LAYER
-     14) HOME ICOS CHAPTER
-     15) HOME FEATURED FUNCTIONS TRANSITION SHELL
-     15A) HOME FEATURED FUNCTIONS
-     15B) HOME INSIGHTS AND RESEARCH
-     16) HOME CLOSING
-     17) HOME UPDATES
+     11) ABOUT HERO STAGE
+     11A) ABOUT HERO VIDEO
+     12) ABOUT HERO HEADLINES
+     13) ABOUT ESSENCE
+     13A) ABOUT ESSENCE EFFECT LAYER
+     14) ABOUT ICOS CHAPTER
+     15) ABOUT FEATURED FUNCTIONS TRANSITION SHELL
+     15A) ABOUT FEATURED FUNCTIONS
+     15B) ABOUT INSIGHTS AND RESEARCH
+     16) ABOUT CLOSING
+     17) ABOUT UPDATES
      18) INSTITUTIONAL LINKS MOUNT
      19) FOOTER MOUNT
      20) COUNTRY OVERLAY MOUNT
      20A) COOKIE CONSENT MOUNT
+     20B) HOME HERO SHADER SYSTEM
+     20C) HOME HERO SHADER MOUNT
      21) CORE SCRIPT
 ============================================================================= -->
 <!DOCTYPE html>
@@ -45,28 +49,28 @@
     ============================================================================= -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuroartan | Intelligence Cognitive Operating System</title>
+    <title>About | Neuroartan</title>
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/layers/website/app/favicon/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/layers/website/app/favicon/favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/layers/website/app/touch/apple-touch-icon.png">
     <link rel="icon" type="image/svg+xml" href="/assets/icons/layers/website/app/favicon/favicon.svg">
     <link rel="stylesheet" href="/assets/css/core/00-orchestrator/core.css">
-    <meta name="description" content="Neuroartan builds cognitive systems for reflection, continuity, and human understanding. ICOS is its cognitive operating system for voice-based reflection, memory continuity, and long-term self-understanding across time.">
+    <meta name="description" content="About Neuroartan — institutional direction, product vision, and the cognitive systems architecture behind ICOS.">
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
     <meta name="theme-color" content="#0a0a0a">
-    <meta name="keywords" content="Neuroartan, ICOS, cognitive operating system, reflection, continuity, self-understanding, voice-trained cognition, cognitive systems, pattern awareness, expressed cognition">
-    <link rel="canonical" href="https://neuroartan.com/">
+    <meta name="keywords" content="About Neuroartan, Neuroartan company, ICOS, cognitive systems, platform vision, institutional direction, cognitive operating system">
+    <link rel="canonical" href="https://neuroartan.com/about/">
     <meta name="application-name" content="Neuroartan">
     <meta name="apple-mobile-web-app-title" content="Neuroartan">
 
     <!-- =============================================================================
          02) OPEN GRAPH
     ============================================================================= -->
-    <meta property="og:title" content="Neuroartan | Intelligence Cognitive Operating System">
-    <meta property="og:description" content="Neuroartan builds cognitive systems for reflection, continuity, and human understanding. ICOS is its cognitive operating system for voice-based reflection, memory continuity, and long-term self-understanding across time.">
+    <meta property="og:title" content="About | Neuroartan">
+    <meta property="og:description" content="About Neuroartan — institutional direction, product vision, and the cognitive systems architecture behind ICOS.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Neuroartan">
-    <meta property="og:url" content="https://neuroartan.com/">
+    <meta property="og:url" content="https://neuroartan.com/about/">
     <meta property="og:image" content="https://neuroartan.com/assets/images/layers/website/brand/logo.svg">
     <meta property="og:image:alt" content="Neuroartan logo">
 
@@ -74,8 +78,8 @@
          03) TWITTER CARD
     ============================================================================= -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Neuroartan | Intelligence Cognitive Operating System">
-    <meta name="twitter:description" content="Neuroartan builds cognitive systems for reflection, continuity, and human understanding. ICOS is its cognitive operating system for voice-based reflection, memory continuity, and long-term self-understanding across time.">
+    <meta name="twitter:title" content="About | Neuroartan">
+    <meta name="twitter:description" content="About Neuroartan — institutional direction, product vision, and the cognitive systems architecture behind ICOS.">
     <meta name="twitter:image" content="https://neuroartan.com/assets/images/layers/website/brand/logo.svg">
     <meta name="twitter:site" content="@artandavoodi">
 
@@ -139,9 +143,9 @@
         },
         {
           "@type": "WebPage",
-          "@id": "https://neuroartan.com/#webpage",
-          "url": "https://neuroartan.com/",
-          "name": "Neuroartan | Intelligence Cognitive Operating System",
+          "@id": "https://neuroartan.com/about/#webpage",
+          "url": "https://neuroartan.com/about/",
+          "name": "About | Neuroartan",
           "isPartOf": {
             "@id": "https://neuroartan.com/#website"
           },
@@ -152,7 +156,7 @@
             "@id": "https://neuroartan.com/assets/images/layers/website/brand/logo.svg"
           },
           "inLanguage": "en",
-          "description": "Neuroartan builds cognitive systems for reflection, continuity, and human understanding. ICOS is its cognitive operating system for voice-based reflection, memory continuity, and long-term self-understanding across time."
+          "description": "About Neuroartan — institutional direction, product vision, and the cognitive systems architecture behind ICOS."
         }
       ]
     }
@@ -170,6 +174,7 @@
     ============================================================================= -->
 </head>
 
+<!-- ABOUT PAGE — copied from homepage and now operating as a dedicated page shell. Asset paths are root-relative and page identity is About. -->
 <body class="site-body about-page">
 <!-- =============================================================================
      06) GLOBAL LOADING OVERLAY
@@ -183,10 +188,19 @@
 </div>
 
 <!-- =============================================================================
+     07) HOME SCROLL GRADIENT
+============================================================================= -->
+<div class="home-scroll-gradient" aria-hidden="true"></div>
+
+<!-- =============================================================================
      08) CUSTOM CURSOR
 ============================================================================= -->
 <div class="custom-cursor"></div>
 
+<!-- =============================================================================
+     09) HIDDEN SITE NAME
+============================================================================= -->
+<h1 style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">Neuroartan builds cognitive systems for reflection, continuity, and human understanding.</h1>
 
 
 <!-- =============================================================================
@@ -205,11 +219,11 @@
 <!-- =============================================================================
      10B) INSTITUTIONAL MENU MOUNT
 ============================================================================= -->
-<div id="institutional-menu-mount" data-include="institutional-menu"></div>
+<div id="institutional-menu-mount" data-include="institutional-menu" data-page-context="about"></div>
 <!-- =============================================================================
      10C) SECONDARY MENU MOUNT
 ============================================================================= -->
-<div id="menu-mount" data-include="menu"></div>
+<div id="menu-mount" data-include="menu" data-page-context="about"></div>
 
 <!-- =============================================================================
      10D) ACCOUNT DRAWER MOUNT
@@ -264,11 +278,11 @@
      aria-hidden="true"></div>
 
 <!-- =============================================================================
-     11) HOME HERO STAGE
+     11) ABOUT HERO STAGE
 ============================================================================= -->
 <section class="home-hero-stage" aria-hidden="false">
   <!-- =============================================================================
-       11A) HOME HERO VIDEO
+       11A) ABOUT HERO VIDEO
   ============================================================================= -->
   <section id="home-hero" class="home-hero" aria-hidden="true" data-motion="fade">
     <div class="home-hero-video" aria-hidden="true">
@@ -288,7 +302,7 @@
   </section>
 
   <!-- =============================================================================
-       12) HOME HERO HEADLINES
+       12) ABOUT HERO HEADLINES
   ============================================================================= -->
   <section class="home-hero-headlines home-hero-headlines--flow" aria-hidden="false">
     <div class="home-hero-headlines__inner">
@@ -299,12 +313,12 @@
 </section>
 
 <!-- =============================================================================
-     13) HOME ESSENCE
+     13) ABOUT ESSENCE
 ============================================================================= -->
 <section class="home-section home-essence home-essence--center" id="home-essence" data-motion="lift">
   <div class="home-inner home-essence-inner">
     <!-- =============================================================================
-         13A) HOME ESSENCE EFFECT LAYER
+         13A) ABOUT ESSENCE EFFECT LAYER
     ============================================================================= -->
     <section class="home-essence-effect home-essence-effect--flow" aria-hidden="false">
       <div class="home-essence-effect__inner">
@@ -342,11 +356,11 @@
 </section>
 
 <!-- =============================================================================
-     14) HOME ICOS STACK SHELL
+     14) ABOUT ICOS STACK SHELL
 ============================================================================= -->
 <div class="home-icos-stack-shell" id="home-icos-stack-shell">
   <!-- ===========================================================================
-       14A) HOME ICOS CHAPTER
+       14A) ABOUT ICOS CHAPTER
   =========================================================================== -->
   <section class="home-section home-icos-chapter" id="home-icos-chapter">
     <div class="home-icos-chapter-stage" id="home-icos-stage">
@@ -377,16 +391,16 @@
   </section>
 
   <!-- ===========================================================================
-       15) HOME FEATURED FUNCTIONS TRANSITION SHELL
+       15) ABOUT FEATURED FUNCTIONS TRANSITION SHELL
   =========================================================================== -->
   <div class="home-featured-transition-shell" id="home-featured-transition-shell">
     <!-- ==========================================================================
-         15A) HOME FEATURED FUNCTIONS
+         15A) ABOUT FEATURED FUNCTIONS
     ========================================================================== -->
     <div id="home-featured-functions-mount" data-include="home-featured-functions"></div>
 
     <!-- ==========================================================================
-         15B) HOME INSIGHTS AND RESEARCH
+         15B) ABOUT INSIGHTS AND RESEARCH
     ========================================================================== -->
     <section class="home-section home-notes home-insights-chapter home-insights-chapter--cover" id="home-insights-chapter" data-motion="lift">
       <div class="home-inner home-rail">
@@ -401,7 +415,7 @@
 </div>
 
 <!-- =============================================================================
-     16) HOME CLOSING
+     16) ABOUT CLOSING
 ============================================================================= -->
 <div class="home-closing home-closing-chapter" id="home-closing" aria-label="ARTAN status">
   <p class="home-closing-line" data-i18n-key="home.closing.line1" data-motion="fade">
@@ -413,7 +427,7 @@
 </div>
 
 <!-- =============================================================================
-     17) HOME UPDATES
+     17) ABOUT UPDATES
 ============================================================================= -->
 <section class="home-section home-books home-updates-chapter" id="home-updates-chapter" data-motion="lift">
   <div class="home-inner home-rail">
@@ -453,6 +467,15 @@
      data-consent-settings="available"
      aria-hidden="true"></div>
 
+<!-- =============================================================================
+     20B) HOME HERO SHADER SYSTEM
+============================================================================= -->
+<div id="home-hero-shader-system" hidden aria-hidden="true"></div>
+
+<!-- =============================================================================
+     20C) HOME HERO SHADER MOUNT
+============================================================================= -->
+<div id="home-hero-shader-mount" hidden aria-hidden="true"></div>
 
 <!-- =============================================================================
      21) CORE SCRIPT

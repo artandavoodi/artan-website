@@ -26,24 +26,13 @@
      11J) PHONE AUTH DRAWER MOUNT
      11K) AUTH FLOW MOUNT
      11L) PROFILE SHELL MOUNT
-     12) HOME HERO STAGE
-     12A) HOME HERO VIDEO
-     13) HOME HERO HEADLINES
-     14) HOME ESSENCE
-     14A) HOME ESSENCE EFFECT LAYER
-     15) HOME ICOS CHAPTER
-     16) HOME FEATURED FUNCTIONS TRANSITION SHELL
-     16A) HOME FEATURED FUNCTIONS
-     16B) HOME INSIGHTS AND RESEARCH
-     17) HOME CLOSING
-     18) HOME UPDATES
-     20) INSTITUTIONAL LINKS MOUNT
-     21) FOOTER MOUNT
-     22) COUNTRY OVERLAY MOUNT
-     22A) COOKIE CONSENT MOUNT
-     22B) HOME HERO SHADER SYSTEM
-     22C) HOME HERO SHADER MOUNT
-     23) CORE SCRIPT
+     12) INSTITUTIONAL LINKS MOUNT
+     13) FOOTER MOUNT
+     14) COUNTRY OVERLAY MOUNT
+     14A) COOKIE CONSENT MOUNT
+     15) HOME HERO SHADER SYSTEM
+     15A) HOME HERO SHADER MOUNT
+     16) CORE SCRIPT
 ============================================================================= -->
 <!DOCTYPE html>
 <html lang="en">
@@ -265,8 +254,8 @@
 
                 <div class="stage-region stage-region-bottom" id="stage-bottom">
                     <div class="stage-container-gap stage-fade-on-enter" id="stage-enter">
-                        <a id="enter-button" class="enter-button enter-breathe" href="#site-main" aria-label="Enter site by scrolling">
-                            <img src="assets/icons/core/interface/navigation/scroll-down.svg" alt="" class="enter-button-icon">
+                        <a id="enter-button" class="enter-button enter-breathe" href="/pages/about/" aria-label="About">
+                            <span class="enter-button-label">About</span>
                         </a>
                     </div>
                 </div>
@@ -350,187 +339,24 @@
      aria-hidden="true"></div>
 
 <!-- =============================================================================
-     12) HOME HERO STAGE
-============================================================================= -->
-<section class="home-hero-stage" aria-hidden="false">
-  <!-- =============================================================================
-       12A) HOME HERO VIDEO
-  ============================================================================= -->
-  <section id="home-hero" class="home-hero" aria-hidden="true" data-motion="fade">
-    <div class="home-hero-video" aria-hidden="true">
-      <video class="home-hero-video-media" autoplay muted playsinline loop preload="metadata">
-        <source src="assets/video/core/video-4.webm" type="video/webm" />
-      </video>
-    </div>
-
-    <div class="home-hero-overlay" aria-hidden="true"></div>
-    <div class="home-hero-matte" aria-hidden="true"></div>
-
-    <div class="home-hero-logo-layer" aria-hidden="false">
-      <a class="home-hero-logo-link" href="index.html" aria-label="ARTAN">
-        <img class="home-hero-logo" src="assets/icons/core/identity/brand/neuroartan/logo-typo.svg" alt="ARTAN" />
-      </a>
-    </div>
-  </section>
-
-  <!-- =============================================================================
-       13) HOME HERO HEADLINES
-  ============================================================================= -->
-  <section class="home-hero-headlines home-hero-headlines--flow" aria-hidden="false">
-    <div class="home-hero-headlines__inner">
-      <p class="home-hero-headline" data-headline="intelligence-cognitive" data-i18n-key="home.hero.headline.intelligenceCognitive">INTELLIGENCE COGNITIVE</p>
-      <p class="home-hero-headline" data-headline="operating-system" data-i18n-key="home.hero.headline.operatingSystem">OPERATING SYSTEM</p>
-    </div>
-  </section>
-</section>
-
-<!-- =============================================================================
-     14) HOME ESSENCE
-============================================================================= -->
-<section class="home-section home-essence home-essence--center" id="home-essence" data-motion="lift">
-  <div class="home-inner home-essence-inner">
-    <!-- =============================================================================
-         14A) HOME ESSENCE EFFECT LAYER
-    ============================================================================= -->
-    <section class="home-essence-effect home-essence-effect--flow" aria-hidden="false">
-      <div class="home-essence-effect__inner">
-        <div class="home-ink-reveal home-essence-reveal" id="home-ink-reveal" aria-label="Site essence">
-          <div class="home-ink-stack" aria-hidden="false">
-            <p class="home-text ink-line home-ink-layer"
-               aria-hidden="false"
-               data-ink-layer="1"
-               data-i18n-key="home.essence.line1"
-               data-essence-text="Clear thinking as the starting point">
-              Clear thinking as the starting point
-            </p>
-
-            <p class="home-text ink-line ink-line--sub home-ink-layer"
-               aria-hidden="false"
-               data-ink-layer="2"
-               data-i18n-key="home.essence.line2"
-               data-essence-text="Clear words as structure and expression">
-              Clear words as structure and expression
-            </p>
-
-            <p class="home-text ink-line ink-line--sub home-ink-layer"
-               aria-hidden="false"
-               data-ink-layer="3"
-               data-ink-last="true"
-               data-i18n-key="home.essence.line3"
-               data-essence-text="Clear action as disciplined execution">
-              Clear action as disciplined execution
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</section>
-
-<!-- =============================================================================
-     15) HOME ICOS STACK SHELL
-============================================================================= -->
-<div class="home-icos-stack-shell" id="home-icos-stack-shell">
-  <!-- ===========================================================================
-       15A) HOME ICOS CHAPTER
-  =========================================================================== -->
-  <section class="home-section home-icos-chapter" id="home-icos-chapter">
-    <div class="home-icos-chapter-stage" id="home-icos-stage">
-      <div class="home-icos-chapter-composition home-icos-pinned-composition" id="home-icos-pinned-composition">
-        <figure class="home-figure home-icos-chapter-figure" id="home-icos-figure">
-          <div id="system-node-mount" data-include="system-node"></div>
-        </figure>
-
-        <div class="home-inner home-icos-chapter-copy home-icos-chapter-split" id="home-icos-copy">
-          <div class="home-icos-chapter-left" id="home-icos-copy-left">
-            <h2 class="home-title home-icos-chapter-anchor" data-i18n-key="home.icos.anchor">
-              Introducing cognitive continuity through voice, memory, and reflective pattern modeling
-            </h2>
-          </div>
-
-          <div class="home-icos-chapter-right" id="home-icos-copy-right">
-            <p class="home-text home-icos-chapter-body" data-i18n-key="home.icos.body">
-              ICOS gives you one continuous space to think, speak, and reflect, turning your voice, memory, and patterns into a durable cognitive profile across time.
-            </p>
-
-            <p class="home-text home-icos-chapter-highlight" data-i18n-key="home.icos.highlight">
-              It helps you understand yourself with greater clarity over time, recognize recurring structures in thought and emotion, and make more deliberate decisions with continuity.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================================================================
-       15B) HOME FEATURED FUNCTIONS TRANSITION SHELL
-  =========================================================================== -->
-  <div class="home-featured-transition-shell" id="home-featured-transition-shell">
-    <!-- ==========================================================================
-         15B.I) HOME FEATURED FUNCTIONS
-    ========================================================================== -->
-    <div id="home-featured-functions-mount" data-include="home-featured-functions"></div>
-
-    <!-- ==========================================================================
-         15B.II) HOME INSIGHTS AND RESEARCH
-    ========================================================================== -->
-    <section class="home-section home-notes home-insights-chapter home-insights-chapter--cover" id="home-insights-chapter" data-motion="lift">
-      <div class="home-inner home-rail">
-        <div class="featured-header" data-motion="lift">
-          <h2 class="home-title" data-i18n-key="home.notes.title">Insights &amp; Research</h2>
-          <p class="home-text" data-i18n-key="home.notes.text">Research, ideas, and working insights shaping the product.</p>
-        </div>
-        <div id="featured-notes" class="notes-list" role="list" aria-label="Notes" data-collection="featuredNotes" data-motion="lift"></div>
-      </div>
-    </section>
-  </div>
-</div>
-
-<!-- =============================================================================
-     17) HOME CLOSING
-============================================================================= -->
-<div class="home-closing home-closing-chapter" id="home-closing" aria-label="ARTAN status">
-  <p class="home-closing-line" data-i18n-key="home.closing.line1" data-motion="fade">
-    ICOS helps you understand yourself more clearly across time and make better decisions
-  </p>
-  <p class="home-closing-line home-closing-line--sub" data-i18n-key="home.closing.line2" data-motion="fade">
-    It turns reflection, memory, and insight into a cognitive system you can use over time
-  </p>
-</div>
-
-<!-- =============================================================================
-     18) HOME UPDATES
-============================================================================= -->
-<section class="home-section home-books home-updates-chapter" id="home-updates-chapter" data-motion="lift">
-  <div class="home-inner home-rail">
-    <h2 class="home-title" data-i18n-key="home.updates.title" data-motion="lift">Updates</h2>
-    <p class="home-text" data-i18n-key="home.updates.text" data-motion="lift">
-      Product updates, research notes, and release signals<br>
-      A clear record of what is live, what is evolving, and what comes next<br>
-      One product direction, tracked in public over time
-    </p>
-  </div>
-</section>
-
-<!-- =============================================================================
-     20) INSTITUTIONAL LINKS MOUNT
+     12) INSTITUTIONAL LINKS MOUNT
 ============================================================================= -->
 <div id="institutional-links-mount" data-include="institutional-links"></div>
 
 </main>
 
 <!-- =============================================================================
-     21) FOOTER MOUNT
+     13) FOOTER MOUNT
 ============================================================================= -->
 <div id="footer-mount" data-include="footer"></div>
 
 <!-- =============================================================================
-     22) COUNTRY OVERLAY MOUNT
+     14) COUNTRY OVERLAY MOUNT
 ============================================================================= -->
 <div id="country-overlay-mount" data-include="country-overlay"></div>
 
 <!-- =============================================================================
-     22A) COOKIE CONSENT MOUNT
+     14A) COOKIE CONSENT MOUNT
 ============================================================================= -->
 <div id="cookie-consent-mount"
      data-include="cookie-consent"
@@ -540,17 +366,17 @@
      aria-hidden="true"></div>
 
 <!-- =============================================================================
-     22B) HOME HERO SHADER SYSTEM
+     15) HOME HERO SHADER SYSTEM
 ============================================================================= -->
 <div id="home-hero-shader-system" hidden aria-hidden="true"></div>
 
 <!-- =============================================================================
-     22C) HOME HERO SHADER MOUNT
+     15A) HOME HERO SHADER MOUNT
 ============================================================================= -->
 <div id="home-hero-shader-mount" hidden aria-hidden="true"></div>
 
 <!-- =============================================================================
-     23) CORE SCRIPT
+     16) CORE SCRIPT
 ============================================================================= -->
 <script type="module" src="assets/js/core/00-orchestrator/core.js"></script>
 

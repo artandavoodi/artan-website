@@ -2,7 +2,7 @@
    00) FILE INDEX
    01) MODULE IDENTITY
    02) ENTER GATE
-   03) HOME HERO HEADLINE SCROLL SEQUENCE
+   03) HOME LANDING HEADLINE SCROLL SEQUENCE
    04) END OF FILE
 ============================================================================= */
 
@@ -15,7 +15,7 @@
   ============================================================================= */
   window.__artanRunAfterEnter(() => {
     /* =============================================================================
-       03) HOME HERO HEADLINE SCROLL SEQUENCE
+       03) HOME LANDING HEADLINE SCROLL SEQUENCE
        - default: both recessed
        - range 1: first line active
        - range 2: second line active

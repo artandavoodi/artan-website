@@ -6,7 +6,7 @@
    04) DOM HELPERS
    05) MENU QUERIES
    06) COUNTRY SELECTOR QUERIES
-   07) PAGE STATE HELPERS
+   07) PAGE IDENTITY HELPERS
    08) COUNTRY OVERLAY STATE
    09) GEOMETRY HELPERS
    10) SECONDARY TOGGLE BINDING
@@ -194,10 +194,14 @@
   }
 
   /* =============================================================================
-     07) PAGE STATE HELPERS
+     07) PAGE IDENTITY HELPERS
   ============================================================================= */
   function isHomePage() {
-    return !!(byId('home-hero') || q('.stage-circle') || byId('home-essence'));
+    return body.classList.contains('home-page');
+  }
+
+  function isAboutPage() {
+    return body.classList.contains('about-page');
   }
 
   /* =============================================================================
@@ -290,13 +294,13 @@
       let threshold = Number.POSITIVE_INFINITY;
 
       if (isHomePage()) {
-        if (essence) {
-          threshold = getPageTop(essence) + 48;
-        } else if (hero) {
-          threshold = getPageTop(hero) + getOuterHeight(hero) + 220;
-        } else if (stage) {
+        if (stage) {
           threshold = getPageTop(stage) + getOuterHeight(stage) + 220;
+        } else {
+          threshold = window.innerHeight || 0;
         }
+      } else if (isAboutPage()) {
+        threshold = 12;
       } else if (siteMain) {
         threshold = Math.max(12, getPageTop(siteMain) + 12);
       } else {

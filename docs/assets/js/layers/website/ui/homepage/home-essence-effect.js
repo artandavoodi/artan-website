@@ -2,7 +2,7 @@
    00) FILE INDEX
    01) MODULE IDENTITY
    02) ENTER GATE
-   03) HOME ESSENCE SCROLL SEQUENCE
+   03) ABOUT ESSENCE SCROLL SEQUENCE
    04) END OF FILE
 ============================================================================= */
 
@@ -15,7 +15,7 @@
   ============================================================================= */
   window.__artanRunAfterEnter(() => {
     /* =============================================================================
-       03) HOME ESSENCE SCROLL SEQUENCE
+       03) ABOUT ESSENCE SCROLL SEQUENCE
        Canonical sequence per sentence:
        - phase A: 50% emergence
        - phase B: 100% focus with a longer readable hold
