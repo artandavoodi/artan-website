@@ -61,5 +61,61 @@
     "pixel_ratio_cap": 1.75,
     "transparent": false,
     "aspect_ratio": "2.5:1"
+  },
+  "article": {
+    "slug": "thought-capture",
+    "eyebrow": "ICOS Featured Capability",
+    "headline": "Thought Capture preserves what would otherwise disappear.",
+    "intro": "Thought Capture is the preservation layer of ICOS. It is designed to help a person capture spoken and written thought before it dissolves, fragments, or becomes inaccessible. Instead of letting insight remain temporary, ICOS turns thought into a structured continuity asset that can later be retrieved, linked, developed, and reflected upon. This is one of the foundational capabilities of the product because continuity begins where loss stops.",
+    "summary": [
+      "Thought Capture helps the user preserve fleeting ideas, questions, reflections, and spoken impressions before they disappear.",
+      "It turns raw thought into a retrievable continuity resource rather than leaving it as unstructured memory.",
+      "Over time, it becomes one of the strongest foundations for reflection, graphing, pattern recognition, and profile development."
+    ],
+    "sections": [
+      {
+        "title": "What it is",
+        "body": [
+          "Thought Capture is the part of ICOS that allows a user to preserve thinking in the moment it appears. It supports the idea that thoughts often arrive before structure, before editing, and before certainty, and that those early moments are often the most valuable to preserve.",
+          "Its purpose is not merely note storage. Its purpose is to stop insight, tension, uncertainty, and emerging understanding from being lost before they can enter the larger continuity system."
+        ]
+      },
+      {
+        "title": "What it does",
+        "body": [
+          "Thought Capture gives the user a way to record ideas, questions, fragments, spoken reflections, or incomplete formulations in a form that remains usable later. Once captured, those moments can be revisited, linked into broader continuity, and developed further through reflection and structure.",
+          "This changes the role of capture from passive storage to active preservation of cognitive material. A thought is not only saved. It is kept available for future meaning."
+        ]
+      },
+      {
+        "title": "Why it matters",
+        "body": [
+          "Many important thoughts are lost not because they were unimportant, but because they arrived in the wrong moment, in incomplete form, or without a system ready to hold them. Thought Capture matters because a serious continuity product must begin with preservation before it can offer depth.",
+          "Without capture, continuity collapses into memory loss. With capture, even a fragment can become part of a larger future architecture of understanding."
+        ]
+      },
+      {
+        "title": "How it fits into ICOS",
+        "body": [
+          "Thought Capture is one of the first layers in the full ICOS loop. A user expresses something, the system captures it, and that moment can later be reflected on, linked, graphed, patterned, and situated inside longer continuity. It is therefore not only an input mechanism. It is one of the product’s foundational infrastructures.",
+          "It connects directly to reflection, memory, cognitive graph, pattern mapping, and longitudinal continuity. Without reliable capture, none of those later layers can become truly meaningful."
+        ]
+      },
+      {
+        "title": "Public and future significance",
+        "body": [
+          "In the future, Thought Capture also strengthens the public and legacy dimensions of the profile because continuity depends on preserved material. A profile that becomes more faithful over time depends on having a real archive of expressed thinking, not only polished outputs or later summaries.",
+          "This makes Thought Capture foundational to the long-term ambition of ICOS as a serious continuity platform rather than a session-based assistant."
+        ]
+      }
+    ],
+    "key_points": [
+      "Thought Capture preserves ideas before they disappear or fragment.",
+      "It treats early, incomplete thought as valuable continuity material rather than noise.",
+      "The capability turns raw thought into retrievable and developable structure.",
+      "It is one of the foundational layers that later enables reflection, graphing, and pattern recognition.",
+      "This is where continuity begins: not after the thought is polished, but when it is first preserved."
+    ],
+    "closing": "Thought Capture is where continuity begins. It helps a person preserve the moments that would otherwise vanish, so thought becomes something that can be returned to, developed, and understood over time."
   }
 }

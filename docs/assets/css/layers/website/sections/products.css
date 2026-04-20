@@ -1,0 +1,330 @@
+/* =============================================================================
+   FILE INDEX
+   01) PRODUCTS PAGE SCOPE
+   02) PRODUCTS PAGE SHELL
+   03) PRODUCTS SECTION / RAIL
+   04) PRODUCTS HERO
+   05) PRODUCTS HUB LAYOUT
+   06) PRODUCTS SIDEBAR SHELL
+   07) PRODUCTS INDEX SHELL
+   08) PRODUCTS TOPBAR
+   09) PRODUCTS CARD SYSTEM
+   10) PRODUCTS RESPONSIVE BEHAVIOR
+============================================================================= */
+
+/* =============================================================================
+   01) PRODUCTS PAGE SCOPE
+============================================================================= */
+.products-page {
+  position: relative;
+}
+
+.products-page .products-shell,
+.products-page .products-hero,
+.products-page .products-index {
+  position: relative;
+  width: 100%;
+}
+
+.products-page #products-sidebar-mount,
+.products-page #products-index-shell-mount,
+.products-page [data-products-sidebar-slot],
+.products-page [data-products-index-shell-slot],
+.products-page [data-products-index-slot],
+.products-page [data-products-content-slot],
+.products-page .products-sidebar-slot,
+.products-page .products-index-shell-slot,
+.products-page .products-index-slot,
+.products-page .products-content-slot {
+  min-width: 0;
+}
+
+/* =============================================================================
+   02) PRODUCTS PAGE SHELL
+============================================================================= */
+.products-page .products-shell {
+  display: grid;
+  gap: var(--space-8, 4rem);
+}
+
+/* =============================================================================
+   03) PRODUCTS SECTION / RAIL
+============================================================================= */
+.products-page .products-section {
+  width: 100%;
+}
+
+.products-page .products-hero {
+  padding-block: var(--space-8, 4rem) 0;
+}
+
+.products-page .products-index {
+  padding-block: 0 var(--space-9, 5rem);
+}
+
+.products-page .products-rail {
+  width: 100%;
+  max-width: var(--content-width, 120rem);
+  margin: 0 auto;
+  padding-inline: var(--page-gutter, 2rem);
+  box-sizing: border-box;
+}
+
+/* =============================================================================
+   04) PRODUCTS HERO
+============================================================================= */
+.products-page .products-hero .products-rail {
+  display: grid;
+  gap: var(--space-4, 1.5rem);
+}
+
+.products-page .products-hero__title {
+  margin: 0;
+  color: var(--text-primary, #fff);
+}
+
+.products-page .products-hero__text {
+  margin: 0;
+  max-width: 56rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.72));
+}
+
+/* =============================================================================
+   05) PRODUCTS HUB LAYOUT
+============================================================================= */
+.products-page .products-hub-layout {
+  display: grid;
+  grid-template-columns: minmax(16rem, 19rem) minmax(0, 1fr);
+  gap: var(--space-6, 2.5rem);
+  align-items: start;
+  margin-block-end: var(--space-6, 2.5rem);
+}
+
+.products-page #products-sidebar-mount,
+.products-page [data-products-sidebar-slot],
+.products-page .products-sidebar-slot {
+  position: relative;
+}
+
+.products-page #products-index-shell-mount,
+.products-page [data-products-index-shell-slot],
+.products-page [data-products-index-slot],
+.products-page [data-products-content-slot],
+.products-page .products-index-shell-slot,
+.products-page .products-index-slot,
+.products-page .products-content-slot {
+  position: relative;
+  min-width: 0;
+}
+
+/* =============================================================================
+   06) PRODUCTS SIDEBAR SHELL
+============================================================================= */
+.products-page .products-sidebar {
+  position: sticky;
+  top: calc(var(--header-height, 5rem) + var(--space-4, 1.5rem));
+  width: 100%;
+}
+
+.products-page .products-sidebar__inner {
+  display: grid;
+  gap: var(--space-5, 2rem);
+  padding: var(--space-5, 2rem);
+  border: 1px solid var(--border-soft, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-xl, 1.5rem);
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(20px);
+}
+
+.products-page .products-sidebar__header {
+  display: grid;
+  gap: var(--space-2, 0.75rem);
+}
+
+.products-page .products-sidebar__eyebrow {
+  margin: 0;
+  font: inherit;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+}
+
+.products-page .products-sidebar__title {
+  margin: 0;
+  color: var(--text-primary, #fff);
+}
+
+.products-page .products-sidebar__description {
+  margin: 0;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.72));
+}
+
+.products-page .products-sidebar__list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.products-page .products-sidebar__link {
+  display: block;
+  padding: 0.8rem 0.95rem;
+  border-radius: 0.9rem;
+  color: var(--text-primary, #fff);
+  text-decoration: none;
+  background: transparent;
+  transition: background 180ms ease, color 180ms ease, opacity 180ms ease;
+}
+
+.products-page .products-sidebar__link:hover,
+.products-page .products-sidebar__link:focus-visible,
+.products-page .products-sidebar__link--active {
+  background: var(--surface-hover, rgba(255, 255, 255, 0.06));
+  color: var(--text-primary, #fff);
+}
+
+.products-page .products-sidebar__link--disabled {
+  opacity: 0.5;
+}
+
+/* =============================================================================
+   07) PRODUCTS INDEX SHELL
+============================================================================= */
+.products-page .products-index,
+.products-page .products-index-shell {
+  width: 100%;
+}
+
+.products-page .products-index-shell__inner {
+  display: grid;
+  gap: var(--space-6, 2.5rem);
+  width: 100%;
+  min-width: 0;
+}
+
+.products-page .products-index-shell__header {
+  display: grid;
+  gap: var(--space-3, 1rem);
+}
+
+.products-page .products-index-shell__eyebrow {
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+}
+
+.products-page .products-index-shell__title {
+  margin: 0;
+  color: var(--text-primary, #fff);
+}
+
+.products-page .products-index-shell__description {
+  margin: 0;
+  max-width: 48rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.72));
+}
+
+/* =============================================================================
+   08) PRODUCTS TOPBAR
+============================================================================= */
+.products-page .products-topbar {
+  width: 100%;
+}
+
+.products-page .products-topbar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.products-page .products-topbar__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.72));
+  text-decoration: none;
+  background: transparent;
+  transition: background 180ms ease, color 180ms ease, opacity 180ms ease;
+}
+
+.products-page .products-topbar__link:hover,
+.products-page .products-topbar__link:focus-visible,
+.products-page .products-topbar__link--active {
+  background: var(--surface-hover, rgba(255, 255, 255, 0.06));
+  color: var(--text-primary, #fff);
+}
+
+.products-page .products-topbar__link--disabled {
+  opacity: 0.5;
+}
+
+/* =============================================================================
+   09) PRODUCTS CARD SYSTEM
+============================================================================= */
+.products-page .products-index .notes-list,
+.products-page .products-index-shell__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5, 2rem);
+  align-items: stretch;
+}
+
+.products-page .products-index .book-card,
+.products-page .products-index-shell .book-card {
+  display: flex;
+  min-width: 0;
+  min-height: 100%;
+}
+
+.products-page .products-index .book-card__link,
+.products-page .products-index-shell .book-card__link,
+.products-page .products-index .book-card[aria-disabled="true"],
+.products-page .products-index-shell .book-card[aria-disabled="true"] {
+  display: flex;
+  min-height: 100%;
+  padding: var(--space-5, 2rem);
+  border: 1px solid var(--border-soft, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-xl, 1.5rem);
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.04));
+  color: inherit;
+  text-decoration: none;
+}
+
+.products-page .products-index .book-card__content,
+.products-page .products-index-shell .book-card__content {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3, 1rem);
+  width: 100%;
+  min-width: 0;
+}
+
+/* =============================================================================
+   10) PRODUCTS RESPONSIVE BEHAVIOR
+============================================================================= */
+@media (max-width: 1100px) {
+  .products-page .products-hub-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .products-page .products-sidebar {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .products-page .products-index .notes-list,
+  .products-page .products-index-shell__list {
+    grid-template-columns: 1fr;
+  }
+
+  .products-page .products-rail {
+    padding-inline: var(--space-4, 1.5rem);
+  }
+}

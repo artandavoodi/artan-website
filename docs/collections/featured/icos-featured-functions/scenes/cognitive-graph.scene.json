@@ -62,5 +62,61 @@
     "pixel_ratio_cap": 1.75,
     "transparent": false,
     "aspect_ratio": "2.5:1"
+  },
+  "article": {
+    "slug": "cognitive-graph",
+    "eyebrow": "ICOS Featured Capability",
+    "headline": "Cognitive Graph turns scattered thought into navigable structure.",
+    "intro": "Cognitive Graph is the structural mapping layer of ICOS. It connects thoughts, memories, reflections, patterns, and recurring themes into a navigable relationship field so the user can see not only isolated moments, but how those moments belong to a larger architecture of mind. Instead of leaving cognition fragmented across separate entries, sessions, and impressions, ICOS uses Cognitive Graph to help continuity become visible.",
+    "summary": [
+      "Cognitive Graph helps the user see relationships between ideas, memories, reflections, and recurring patterns.",
+      "It transforms isolated moments into a connected structure that can be explored, revisited, and understood over time.",
+      "Over time, it becomes one of the strongest ways the profile reveals long-range cognition rather than one-off interaction history."
+    ],
+    "sections": [
+      {
+        "title": "What it is",
+        "body": [
+          "Cognitive Graph is the navigable structural layer of ICOS. It is where separate moments of thought begin to form a visible field of relationships rather than remaining as disconnected entries or sessions.",
+          "The graph is not intended as a decorative visualization. Its purpose is to make continuity legible by showing how concepts, memories, reflections, emotional recurrences, and repeated questions connect to one another across time."
+        ]
+      },
+      {
+        "title": "What it does",
+        "body": [
+          "Cognitive Graph helps the user discover how one thought leads to another, how one concern recurs across different moments, and how patterns of mind begin to form recognizable structures. It gives the user a way to move through their own continuity system as a connected landscape rather than a chronological pile.",
+          "This allows the system to support relationship discovery, conceptual navigation, and a more mature understanding of how a person’s cognition is organized across repeated interaction."
+        ]
+      },
+      {
+        "title": "Why it matters",
+        "body": [
+          "Much of human thinking is fragmented by default. Notes stay in one place, conversations in another, memories in another, and repeated themes often remain unseen because there is no system that reveals their structure. Cognitive Graph addresses that problem directly.",
+          "It matters because continuity is not only about storage. It is about relation. A person understands themselves more deeply when they can see how one thought, one memory, one question, and one emotional direction belong to a larger pattern."
+        ]
+      },
+      {
+        "title": "How it fits into ICOS",
+        "body": [
+          "Cognitive Graph is where the continuity architecture of ICOS becomes spatially and structurally intelligible. It supports reflection, memory, pattern mapping, and longitudinal understanding by linking moments into a governed network.",
+          "As the profile matures, the graph becomes more valuable because it is not only showing what happened. It is showing how the user’s internal landscape is organized. This makes the profile more navigable, more meaningful, and more useful as a continuity system."
+        ]
+      },
+      {
+        "title": "Public and future significance",
+        "body": [
+          "In the longer term, Cognitive Graph helps establish one of the strongest distinctions of ICOS: a profile is not only searchable or interactive, it is structurally intelligible. A trained profile can eventually reveal how its knowledge, memory, and expression relate internally, not merely how it responds in isolated exchanges.",
+          "This makes Cognitive Graph a foundational capability for both private reflection and future public profile intelligence, because it gives shape to continuity itself."
+        ]
+      }
+    ],
+    "key_points": [
+      "Cognitive Graph connects isolated moments into a visible continuity structure.",
+      "It helps the user discover relationships between thoughts, memories, reflections, and recurring themes.",
+      "The graph is a structural tool, not a decorative visual layer.",
+      "It makes long-range cognition more intelligible by revealing patterns across time.",
+      "This capability strengthens the profile as a navigable intelligence surface rather than a collection of disconnected sessions."
+    ],
+    "closing": "Cognitive Graph is where continuity becomes visible. It helps the user move through their own mind as a connected structure, making reflection deeper, pattern recognition stronger, and the entire profile more coherent over time."
   }
 }

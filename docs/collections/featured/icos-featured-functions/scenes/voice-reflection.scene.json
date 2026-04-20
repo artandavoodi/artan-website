@@ -61,5 +61,61 @@
     "pixel_ratio_cap": 1.75,
     "transparent": false,
     "aspect_ratio": "2.5:1"
+  },
+  "article": {
+    "slug": "voice-reflection",
+    "eyebrow": "ICOS Featured Capability",
+    "headline": "Voice Reflection turns speech into structured clarity.",
+    "intro": "Voice Reflection is the voice-first reflective layer of ICOS. It allows a person to speak naturally, think out loud, and receive structured reflection that improves clarity, articulation, and continuity over time. Instead of treating voice as a cosmetic input method, ICOS treats voice as identity infrastructure and as one of the most important ways a profile becomes more faithful to the person it represents.",
+    "summary": [
+      "Voice Reflection gives the user a direct spoken interface for reflection, sense-making, and continuity building.",
+      "It helps transform unstructured speech into recognizable patterns, clearer articulation, and meaningful reflective feedback.",
+      "Over time, it strengthens the user’s profile by contributing voice tone, pacing, expression style, and continuity depth to the model."
+    ],
+    "sections": [
+      {
+        "title": "What it is",
+        "body": [
+          "Voice Reflection is a voice-first reflective environment inside ICOS. A user speaks, asks, pauses, wonders, or thinks aloud, and the system responds with structure rather than generic assistant output.",
+          "The purpose is not only transcription or voice chat convenience. The purpose is to let spoken expression become a serious continuity signal that helps the system understand how the user thinks, expresses, and responds over time."
+        ]
+      },
+      {
+        "title": "What it does",
+        "body": [
+          "Voice Reflection helps the user turn speech into clarity. It can surface the structure of a thought, identify emotional or conceptual direction, and help the user see what they are actually trying to ask, resolve, or express.",
+          "It supports immediate reflective value in the first interaction while also contributing to long-range continuity. Each spoken session can become part of the user’s growing profile, helping the system build stronger fidelity in tone, rhythm, and reflective usefulness."
+        ]
+      },
+      {
+        "title": "Why it matters",
+        "body": [
+          "People often think more honestly and more fluidly in speech than in writing. Voice Reflection makes that spoken layer usable. It gives the user a way to capture thoughts before they disappear, before they are over-edited, and before they lose emotional truth.",
+          "This matters because ICOS is designed as a continuity platform. If voice is one of the most direct carriers of identity, then voice must be part of the system’s core architecture, not an optional decoration."
+        ]
+      },
+      {
+        "title": "How it fits into ICOS",
+        "body": [
+          "Voice Reflection sits at the intersection of capture, reflection, continuity, and profile formation. It helps the user in the moment, but it also strengthens the longer-term profile model by contributing expressive data that text alone cannot fully provide.",
+          "As the user continues to interact, the system becomes more capable of reflecting with the user’s own style, voice tendencies, pacing, and interaction rhythm. This is one of the foundations of the continuity model that ICOS is building."
+        ]
+      },
+      {
+        "title": "Public and future significance",
+        "body": [
+          "Voice Reflection is also one of the foundations for the public and legacy dimensions of ICOS. A profile that can eventually be discovered, interacted with, and permissioned for future continuity depends on voice fidelity being meaningful and governed from the beginning.",
+          "This makes Voice Reflection more than a feature. It is one of the identity-forming infrastructures of the product."
+        ]
+      }
+    ],
+    "key_points": [
+      "Voice is treated as identity infrastructure, not as a cosmetic interface layer.",
+      "Spoken reflection becomes part of the user’s continuity record.",
+      "The system helps the user recognize structure, emotion, and intention inside spoken thought.",
+      "Repeated use improves profile fidelity, voice fidelity, and reflective usefulness over time.",
+      "This capability supports both private reflection and the long-term continuity architecture of ICOS."
+    ],
+    "closing": "Voice Reflection is where speech stops being ephemeral and starts becoming continuity. It helps a person think in their own voice, hear themselves more clearly, and build a profile that becomes more faithful with every meaningful interaction."
   }
 }

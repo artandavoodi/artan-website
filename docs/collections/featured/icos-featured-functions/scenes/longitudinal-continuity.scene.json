@@ -61,5 +61,61 @@
     "pixel_ratio_cap": 1.75,
     "transparent": false,
     "aspect_ratio": "2.5:1"
+  },
+  "article": {
+    "slug": "longitudinal-continuity",
+    "eyebrow": "ICOS Featured Capability",
+    "headline": "Longitudinal Continuity makes change visible across time.",
+    "intro": "Longitudinal Continuity is the time-based continuity layer of ICOS. It helps the user observe progress, drift, recurrence, and lasting change across longer arcs rather than only through isolated sessions. Instead of treating reflection as disconnected moments, ICOS is designed to help a person understand how they evolve across weeks, months, and years, and how that evolution forms the deeper structure of the profile.",
+    "summary": [
+      "Longitudinal Continuity helps the user see how thought, emotion, behavior, and identity shift across time rather than only in isolated moments.",
+      "It turns reflection into a temporal system, making progress, drift, return, and transformation easier to recognize.",
+      "Over time, it becomes one of the strongest ways the profile shows not just what happened, but how a person has changed."
+    ],
+    "sections": [
+      {
+        "title": "What it is",
+        "body": [
+          "Longitudinal Continuity is the part of ICOS that helps a user understand themselves across duration. It is not limited to the present session. It is designed to reveal what is stable, what is changing, what is recurring, and what is quietly transforming over time.",
+          "The purpose is to make continuity measurable in a human sense. Not only by counting activity, but by making visible the deeper movements of cognition, emotion, expression, and self-organization across longer periods."
+        ]
+      },
+      {
+        "title": "What it does",
+        "body": [
+          "Longitudinal Continuity helps the user see whether a pattern is temporary or enduring, whether a new way of thinking is emerging, whether an old concern is still returning, and whether apparent progress is actually stable or only momentary.",
+          "It allows the system to place present reflection inside a larger temporal frame. This changes the quality of self-understanding because the user is no longer limited to what feels immediate. They can begin to see the shape of their trajectory."
+        ]
+      },
+      {
+        "title": "Why it matters",
+        "body": [
+          "Many systems can capture a thought. Very few systems can help a person understand how they are changing. Longitudinal Continuity matters because real growth, confusion, healing, repetition, and transformation happen over time, not only in one entry or one conversation.",
+          "ICOS is intended to become a continuity platform, and that means it must reveal not only moments of clarity, but the longer arc in which those moments belong. A person often needs to see movement across time in order to trust what is changing and what is not."
+        ]
+      },
+      {
+        "title": "How it fits into ICOS",
+        "body": [
+          "Longitudinal Continuity connects directly with reflection, emotional tracking, pattern mapping, memory, profile formation, and cognitive graph. It is one of the main ways the profile becomes more than a session history. It becomes a temporal intelligence surface.",
+          "As the system matures, this capability helps the user navigate their own development with more honesty and more structure. It supports recognition of long-term themes and gives depth to the meaning of continuity itself."
+        ]
+      },
+      {
+        "title": "Public and future significance",
+        "body": [
+          "In the future, Longitudinal Continuity may become one of the strongest differentiators of public or legacy continuity profiles because it helps make visible how a person’s voice, thought, and priorities evolved over time rather than presenting them as a static identity snapshot.",
+          "This makes it foundational not only for private self-understanding, but for the larger ambition of building profiles that feel temporally real, not merely interactively convincing."
+        ]
+      }
+    ],
+    "key_points": [
+      "Longitudinal Continuity reveals change, recurrence, and drift across time.",
+      "It helps the user understand trajectory rather than only isolated reflection.",
+      "The capability makes continuity temporal, not just archival.",
+      "It strengthens the profile as a record of development rather than a collection of separate moments.",
+      "This is one of the foundations of how ICOS helps a person understand who they are becoming."
+    ],
+    "closing": "Longitudinal Continuity is where reflection becomes trajectory. It helps a person see not only what they are thinking now, but how they are changing across time, and why that change matters."
   }
 }

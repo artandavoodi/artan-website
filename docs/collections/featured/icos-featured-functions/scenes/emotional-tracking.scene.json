@@ -61,5 +61,61 @@
     "pixel_ratio_cap": 1.75,
     "transparent": false,
     "aspect_ratio": "2.5:1"
+  },
+  "article": {
+    "slug": "emotional-tracking",
+    "eyebrow": "ICOS Featured Capability",
+    "headline": "Emotional Tracking reveals movement, not just moments.",
+    "intro": "Emotional Tracking is the longitudinal emotional observation layer of ICOS. It helps the user see how emotional tone, sensitivity, recurrence, and internal shifts move across time rather than appearing as disconnected moods or isolated events. Instead of flattening feeling into simplistic labels, ICOS is designed to help a person observe emotional movement with more nuance, context, and continuity.",
+    "summary": [
+      "Emotional Tracking helps the user recognize how emotional states shift, recur, soften, intensify, or reorganize over time.",
+      "It places emotion inside continuity, so the person can understand not only what they felt, but how that feeling belongs to larger patterns, contexts, and periods of life.",
+      "Over time, it becomes a major source of self-understanding because it reveals emotional structure rather than only emotional snapshots."
+    ],
+    "sections": [
+      {
+        "title": "What it is",
+        "body": [
+          "Emotional Tracking is the layer of ICOS that helps a user observe emotional continuity with greater precision. It is not simply a mood log and it is not intended to reduce a person’s life to a few labels. Its purpose is to help emotion become more legible across time.",
+          "Rather than storing isolated emotional moments, the system helps the user understand how emotional states evolve, how certain emotional tones recur, and how those recurrences relate to context, memory, reflection, and expression."
+        ]
+      },
+      {
+        "title": "What it does",
+        "body": [
+          "Emotional Tracking makes it possible to observe movement. A user can begin to see whether a feeling is recurring, whether it belongs to a larger pattern, whether it appears under specific conditions, and whether it is transforming over time rather than simply repeating in the same form.",
+          "This helps the system move from moment-level interpretation to continuity-level understanding. A feeling is not treated as an isolated signal; it becomes part of a larger emotional landscape that can be studied with more nuance."
+        ]
+      },
+      {
+        "title": "Why it matters",
+        "body": [
+          "Much of emotional life remains difficult to understand because most systems flatten it into binary or overly simplified categories. That makes it harder to recognize texture, recurrence, transition, and emotional structure over time.",
+          "Emotional Tracking matters because ICOS is designed to help a person see themselves more clearly. Emotional clarity is a major part of that. A person often changes not only through decisions and ideas, but through the emotional currents that shape those decisions and ideas."
+        ]
+      },
+      {
+        "title": "How it fits into ICOS",
+        "body": [
+          "Emotional Tracking connects directly with reflection, continuity, memory, pattern mapping, and profile formation. It helps the profile understand not only what the user says, but the emotional environments through which certain themes recur.",
+          "Over time, this makes the continuity model more faithful and more useful. It allows the product to reflect not only conceptual patterns, but also emotional movement, which is often one of the strongest hidden architectures of self-understanding."
+        ]
+      },
+      {
+        "title": "Public and future significance",
+        "body": [
+          "In the future, Emotional Tracking strengthens the product’s long-range identity model because emotional continuity is part of how a person becomes recognizable across time. This does not mean reductive profiling. It means that feeling, tone, sensitivity, and recurrence are part of the architecture of continuity.",
+          "This makes Emotional Tracking an important layer for both private self-understanding and the larger fidelity of the profile as a trained continuity surface."
+        ]
+      }
+    ],
+    "key_points": [
+      "Emotional Tracking reveals movement across time, not just isolated moods.",
+      "It helps the user understand recurrence, transition, and emotional context with more nuance.",
+      "It places emotion inside continuity rather than flattening it into single moments.",
+      "This capability strengthens reflection, pattern recognition, and long-range self-understanding.",
+      "It contributes to a more faithful continuity profile by making emotional structure visible."
+    ],
+    "closing": "Emotional Tracking helps a person see not only what they felt, but how feeling moves through their life. It turns emotional life into something more legible, more continuous, and more deeply understood."
   }
 }

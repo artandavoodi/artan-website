@@ -1,0 +1,90 @@
+{
+  "id": "products",
+  "label": "Products",
+  "title": "Products",
+  "description": "Canonical registry for the Neuroartan Products section shell, navigation, and routed section rendering.",
+  "defaultSection": "overview",
+  "layout": {
+    "sidebar": true,
+    "topbar": true,
+    "hero": true,
+    "contentPanel": true
+  },
+  "hero": {
+    "eyebrow": "Products",
+    "title": "Products",
+    "description": "A governed products hub for ICOS systems, capabilities, workflows, integrations, and software pathways."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "label": "Overview",
+      "title": "Overview",
+      "route": "/pages/products/overview/index.html",
+      "description": "Core product framing, architecture direction, and category definition for ICOS.",
+      "status": "active",
+      "showInSidebar": true,
+      "showInTopbar": true,
+      "contentSource": {
+        "type": "page",
+        "path": "/pages/products/overview/index.html"
+      }
+    },
+    {
+      "id": "capabilities",
+      "label": "Capabilities",
+      "title": "Capabilities",
+      "route": "/pages/products/capabilities/index.html",
+      "description": "The core ICOS capability system, including reflective cognition, continuity, voice, patterning, and profile intelligence.",
+      "status": "active",
+      "showInSidebar": true,
+      "showInTopbar": true,
+      "contentSource": {
+        "type": "json",
+        "path": "/assets/data/sections/products/capabilities.json"
+      }
+    },
+    {
+      "id": "workflows",
+      "label": "Workflows",
+      "title": "Workflows",
+      "route": "/pages/products/workflows/index.html",
+      "description": "Structured product journeys, user loops, and operational pathways across ICOS usage states.",
+      "status": "active",
+      "showInSidebar": true,
+      "showInTopbar": true,
+      "contentSource": {
+        "type": "page",
+        "path": "/pages/products/workflows/index.html"
+      }
+    },
+    {
+      "id": "integrations",
+      "label": "Integrations",
+      "title": "Integrations",
+      "route": "/pages/products/integrations/index.html",
+      "description": "Reserved for future integration architecture, linked services, identity sources, and external system intake.",
+      "status": "active",
+      "showInSidebar": true,
+      "showInTopbar": true,
+      "contentSource": {
+        "type": "page",
+        "path": "/pages/products/integrations/index.html"
+      }
+    },
+    {
+      "id": "software",
+      "label": "Software",
+      "title": "Software",
+      "route": "/pages/software/index.html",
+      "description": "Software pathways, release-facing systems, and product-adjacent implementation surfaces.",
+      "status": "linked",
+      "showInSidebar": true,
+      "showInTopbar": true,
+      "contentSource": {
+        "type": "page",
+        "path": "/pages/software/index.html"
+      }
+    }
+  ]
+}

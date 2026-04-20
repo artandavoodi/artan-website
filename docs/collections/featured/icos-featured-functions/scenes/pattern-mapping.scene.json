@@ -61,5 +61,61 @@
     "pixel_ratio_cap": 1.75,
     "transparent": false,
     "aspect_ratio": "2.5:1"
+  },
+  "article": {
+    "slug": "pattern-mapping",
+    "eyebrow": "ICOS Featured Capability",
+    "headline": "Pattern Mapping reveals the structures hiding inside repetition.",
+    "intro": "Pattern Mapping is the structural recognition layer of ICOS. It helps the user identify recurring forms across language, emotion, cognition, and behavior so that repeated signals stop feeling random and start becoming intelligible. Instead of leaving repetition as background noise, ICOS is designed to make recurring structures visible, comparable, and meaningful over time.",
+    "summary": [
+      "Pattern Mapping helps the user recognize recurring structures across thoughts, emotions, questions, reactions, and expressions.",
+      "It reveals repetition not as sameness alone, but as information about how a person organizes, revisits, or loops through inner life.",
+      "Over time, it becomes one of the most important ways the profile turns continuity into self-understanding."
+    ],
+    "sections": [
+      {
+        "title": "What it is",
+        "body": [
+          "Pattern Mapping is the part of ICOS that detects and reveals recurring structures across a person’s continuity record. These structures may appear in how a user asks questions, how certain emotional states return, how themes cluster, or how particular forms of reasoning repeat across different contexts.",
+          "Its purpose is not simplistic labeling. Its purpose is to make the user’s recurring internal architecture more visible, so repetition becomes interpretable rather than vague or invisible."
+        ]
+      },
+      {
+        "title": "What it does",
+        "body": [
+          "Pattern Mapping helps the user see that many forms of thought and feeling are not isolated. They often repeat in recognizable ways across time, language, mood, and context. The system can help surface where certain structures recur, where loops persist, where tensions return, and where the same inner shape appears under different surface content.",
+          "This allows the user to move from isolated reflection to structural reflection. They begin to understand not only what happened, but what keeps happening and why that matters."
+        ]
+      },
+      {
+        "title": "Why it matters",
+        "body": [
+          "A person often does not change simply because they had one insight. Change becomes possible when recurring structures are finally visible. Pattern Mapping matters because repeated questions, repeated conflicts, repeated hopes, repeated emotional turns, and repeated cognitive habits are often the hidden architecture of a life.",
+          "When these structures become visible, the user gains a deeper form of clarity. They can see what is recurring, what is stabilizing, what is unresolved, and what may be ready to evolve."
+        ]
+      },
+      {
+        "title": "How it fits into ICOS",
+        "body": [
+          "Pattern Mapping connects directly with reflection, emotional tracking, cognitive graph, longitudinal continuity, and profile formation. It is one of the main layers through which ICOS becomes more than a memory system. It becomes a structure-revealing system.",
+          "As the profile grows, Pattern Mapping helps the platform transform accumulated continuity into actionable self-recognition. The user does not only see history. They see architecture."
+        ]
+      },
+      {
+        "title": "Public and future significance",
+        "body": [
+          "In the longer term, Pattern Mapping strengthens the fidelity of any serious continuity profile because it shows not only what a person has said or stored, but the recurring structures that define how they move through thought and expression over time.",
+          "This makes it foundational to the larger vision of ICOS as a continuity platform in which identity is not represented only by data points, but by the patterns that organize those data points into something meaningful."
+        ]
+      }
+    ],
+    "key_points": [
+      "Pattern Mapping reveals recurring structures across language, emotion, cognition, and behavior.",
+      "It helps the user recognize repetition as meaningful architecture rather than background noise.",
+      "The capability turns continuity into structural insight.",
+      "It supports deeper self-recognition by surfacing loops, recurrences, and recurring tensions.",
+      "This is one of the major ways ICOS helps a person understand how their inner life is organized over time."
+    ],
+    "closing": "Pattern Mapping is where repetition becomes intelligible. It helps a person see the recurring structures shaping their life, so continuity becomes not only recorded, but understood."
   }
 }
