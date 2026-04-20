@@ -136,9 +136,23 @@ function bootHomeSettingsPanel() {
     return;
   }
 
+  const nodes = getHomeSettingsPanelNodes();
+  if (!nodes.panel) {
+    return;
+  }
+
   HOME_SETTINGS_PANEL_STATE.isBound = true;
   bindHomeSettingsPanel();
 }
+
+document.addEventListener('fragment:mounted', (event) => {
+  if (event?.detail?.name !== 'home-settings-panel') return;
+  bootHomeSettingsPanel();
+});
+
+document.addEventListener('neuroartan:runtime-ready', () => {
+  bootHomeSettingsPanel();
+});
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', bootHomeSettingsPanel, { once: true });

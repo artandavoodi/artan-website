@@ -117,9 +117,23 @@ function bootHomeSidebar() {
     return;
   }
 
+  const nodes = getHomeSidebarNodes();
+  if (!nodes.root) {
+    return;
+  }
+
   HOME_SIDEBAR_STATE.isBound = true;
   bindHomeSidebar();
 }
+
+document.addEventListener('fragment:mounted', (event) => {
+  if (event?.detail?.name !== 'home-sidebar') return;
+  bootHomeSidebar();
+});
+
+document.addEventListener('neuroartan:runtime-ready', () => {
+  bootHomeSidebar();
+});
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', bootHomeSidebar, { once: true });

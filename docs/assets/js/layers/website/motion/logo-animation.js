@@ -172,6 +172,12 @@
     const enterButton = qs("#enter-button");
     const essence = qs(".site-essence");
 
+    const requiresExplicitEnter = (() => {
+      if (!(enterButton instanceof HTMLAnchorElement)) return false;
+      const href = (enterButton.getAttribute("href") || "").trim();
+      return href === "#site-main";
+    })();
+
     // ===== Global chrome =====
     const headerControls = qs("#header-controls");
     const footerSeparator = qs(".footer-separator");
@@ -310,6 +316,13 @@
       }
     };
 
+    const activateLandingShell = () => {
+      body.classList.remove("intro-loading", "intro-reveal");
+      body.classList.add("site-entered");
+      showChrome();
+      unlockScroll();
+    };
+
     // During intro: hide stage content (and the in-layout logo) so ONLY overlay shows.
     const hideStageContent = () => {
       // Removed hiding of stageCircle via aria-hidden and pointerEvents for accessibility.
@@ -416,7 +429,7 @@
       window.setTimeout(() => body.classList.remove("enter-transition"), 1600);
     });
 
-    if (enterButton) {
+    if (enterButton && requiresExplicitEnter) {
       enterButton.addEventListener("click", (e) => {
         e.preventDefault();
         enterSite();
@@ -458,8 +471,12 @@
       setStageVideoMask({ opacity: 0.5, hard: true });
       revealStageContent();
 
-      // Stage is revealed but site is not entered yet: keep the page locked.
-      lockScroll();
+      if (requiresExplicitEnter) {
+        // Stage is revealed but site is not entered yet: keep the page locked.
+        lockScroll();
+      } else {
+        activateLandingShell();
+      }
 
       return;
     }
@@ -473,8 +490,12 @@
       body.classList.add("intro-reveal");
       revealStageContent();
 
-      // Reduced motion still follows the same rule: locked until ENTER.
-      lockScroll();
+      if (requiresExplicitEnter) {
+        // Reduced motion still follows the same rule: locked until ENTER.
+        lockScroll();
+      } else {
+        activateLandingShell();
+      }
 
       return;
     }
@@ -598,6 +619,10 @@
 
       if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
       revealStageContent();
+
+      if (!requiresExplicitEnter) {
+        activateLandingShell();
+      }
     });
 
     raf2(() => {

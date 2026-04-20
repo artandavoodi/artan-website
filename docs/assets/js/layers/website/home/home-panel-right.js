@@ -172,9 +172,23 @@ function bootHomePanelRight() {
     return;
   }
 
+  const nodes = getHomePanelRightNodes();
+  if (!nodes.panel) {
+    return;
+  }
+
   HOME_PANEL_RIGHT_STATE.isBound = true;
   bindHomePanelRight();
 }
+
+document.addEventListener('fragment:mounted', (event) => {
+  if (event?.detail?.name !== 'home-panel-right') return;
+  bootHomePanelRight();
+});
+
+document.addEventListener('neuroartan:runtime-ready', () => {
+  bootHomePanelRight();
+});
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', bootHomePanelRight, { once: true });

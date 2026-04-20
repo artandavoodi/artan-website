@@ -122,9 +122,23 @@ function bootHomeDashboardTopbar() {
     return;
   }
 
+  const nodes = getHomeDashboardTopbarNodes();
+  if (!nodes.root) {
+    return;
+  }
+
   HOME_DASHBOARD_TOPBAR_STATE.isBound = true;
   bindHomeDashboardTopbar();
 }
+
+document.addEventListener('fragment:mounted', (event) => {
+  if (event?.detail?.name !== 'home-dashboard-topbar') return;
+  bootHomeDashboardTopbar();
+});
+
+document.addEventListener('neuroartan:runtime-ready', () => {
+  bootHomeDashboardTopbar();
+});
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', bootHomeDashboardTopbar, { once: true });

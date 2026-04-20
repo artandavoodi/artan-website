@@ -82,6 +82,13 @@ function getFragmentPaths() {
     'profile-public-sections': assetPath('/assets/fragments/layers/website/profile/public/profile-sections.html'),
     'profile-public-footer': assetPath('/assets/fragments/layers/website/profile/public/profile-footer.html'),
     'footer': assetPath('/assets/fragments/layers/website/footer/footer.html'),
+    'home-dashboard-topbar': assetPath('/assets/fragments/layers/website/home/home-dashboard-topbar.html'),
+    'home-sidebar': assetPath('/assets/fragments/layers/website/home/home-sidebar.html'),
+    'home-panel-left': assetPath('/assets/fragments/layers/website/home/home-panel-left.html'),
+    'home-panel-right': assetPath('/assets/fragments/layers/website/home/home-panel-right.html'),
+    'home-search-shell': assetPath('/assets/fragments/layers/website/home/home-search-shell.html'),
+    'home-settings-panel': assetPath('/assets/fragments/layers/website/home/home-settings-panel.html'),
+    'home-footer': assetPath('/assets/fragments/layers/website/home/home-footer.html'),
     'brain-activity': assetPath('/assets/fragments/layers/website/system/brain-activity.html'),
     'system-node': assetPath('/assets/fragments/layers/website/system/system-node.html')
   };

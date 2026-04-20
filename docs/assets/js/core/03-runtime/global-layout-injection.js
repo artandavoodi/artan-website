@@ -169,6 +169,11 @@ async function fetchTextFromCandidates(path, cache = 'no-store') {
 }
 
 function resolveFragmentPath(name) {
+  const authority = window.NeuroartanFragmentAuthorities;
+  if (authority && typeof authority.resolveFragmentPath === 'function') {
+    return authority.resolveFragmentPath(name);
+  }
+
   return FRAGMENT_PATHS[name] || assetPath(`/assets/fragments/layers/website/${name}.html`);
 }
 

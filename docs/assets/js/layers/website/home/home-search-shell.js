@@ -166,9 +166,23 @@ function bootHomeSearchShell() {
     return;
   }
 
+  const nodes = getHomeSearchShellNodes();
+  if (!nodes.shell || !nodes.form || !nodes.input) {
+    return;
+  }
+
   HOME_SEARCH_SHELL_STATE.isBound = true;
   bindHomeSearchShell();
 }
+
+document.addEventListener('fragment:mounted', (event) => {
+  if (event?.detail?.name !== 'home-search-shell') return;
+  bootHomeSearchShell();
+});
+
+document.addEventListener('neuroartan:runtime-ready', () => {
+  bootHomeSearchShell();
+});
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', bootHomeSearchShell, { once: true });
