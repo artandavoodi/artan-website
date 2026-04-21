@@ -1,0 +1,35 @@
+{
+  "id": "products-overview",
+  "label": "Overview",
+  "title": "Overview",
+  "description": "Section-local registry for the Overview product page. This file defines the internal navigation and anchor structure inside Overview itself, separate from the Products top-bar scope.",
+  "defaultSection": "core-framing",
+  "page": {
+    "route": "/pages/products/overview/index.html",
+    "title": "Overview",
+    "description": "ICOS is defined as a new category: a voice-trained reflective cognition system that organizes memory continuity, emotional patterning, profile intelligence, and long-term self-authored development into one governed product architecture."
+  },
+  "sections": [
+    {
+      "id": "core-framing",
+      "label": "Core Framing",
+      "title": "Core Framing",
+      "anchor": "#core-framing",
+      "description": "Defines ICOS as a continuity system rather than a generic chatbot surface, and positions the page as the conceptual framing layer of the product."
+    },
+    {
+      "id": "release-status",
+      "label": "Release / Version / Status",
+      "title": "Release / Version / Status",
+      "anchor": "#release-status",
+      "description": "Explains the current maturity state, version posture, and staged development status of the product architecture."
+    },
+    {
+      "id": "usage-layer",
+      "label": "Usage Layer",
+      "title": "Usage Layer",
+      "anchor": "#usage-layer",
+      "description": "Describes how a user enters and interacts with ICOS through reflection, capture, continuity review, and long-term profile formation."
+    }
+  ]
+}

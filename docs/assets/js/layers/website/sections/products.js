@@ -7,12 +7,11 @@
    05) HELPERS
    06) REGISTRY LOADERS
    07) SECTION RESOLUTION
-   08) HERO SYNCHRONIZATION
-   09) PRODUCTS RENDERERS
-   10) INDEX LOADERS
-   11) PAGE REGISTRATION
-   12) BOOTSTRAP
-   13) INITIALIZATION
+   08) INDEX SHELL RENDERER
+   09) INDEX LOADERS
+   10) PAGE REGISTRATION
+   11) BOOTSTRAP
+   12) INITIALIZATION
 ============================================================================= */
 
 /* =============================================================================
@@ -56,15 +55,6 @@
   const SEARCH_CONTENT_INDEX_URL = assetPath('/assets/data/search/content-index.json');
   const SEARCH_ENTITY_INDEX_URL = assetPath('/assets/data/search/entity-index.json');
   const PRODUCTS_REGISTRY_URL = assetPath('/assets/data/sections/products.json');
-
-  const SIDEBAR_SELECTORS = [
-    '#products-sidebar-mount',
-    '[data-products-sidebar-slot]',
-    '[data-products-sidebar]',
-    '[data-sidebar-slot]',
-    '.products-sidebar-slot',
-    '.products-sidebar'
-  ];
 
   const INDEX_SHELL_SELECTORS = [
     '#products-index-shell-mount',
@@ -124,10 +114,20 @@
     return response.json();
   }
 
+  function isOverviewSection() {
+    return state.activeSection?.id === 'overview';
+  }
+
   function mountHtml(target, html, mountKey) {
     if (!target) return;
     target.innerHTML = html;
     target.setAttribute(`data-${mountKey}-mounted`, 'true');
+  }
+
+  function clearMount(target, mountKey) {
+    if (!target) return;
+    target.innerHTML = '';
+    target.setAttribute(`data-${mountKey}-mounted`, 'false');
   }
 
   /* =============================================================================
@@ -154,83 +154,10 @@
     state.activeSection = matchedSection || defaultSection || registry.sections[0];
   }
 
-  /* =============================================================================
-     08) HERO SYNCHRONIZATION
-  ============================================================================= */
-  function syncHero() {
-    const registry = state.registry;
-    const activeSection = state.activeSection;
-    if (!registry || !activeSection) return;
-
-    const heroTitle = document.querySelector('.products-page .products-hero .home-title');
-    const heroText = document.querySelector('.products-page .products-hero .home-text');
-
-    if (heroTitle) {
-      heroTitle.textContent = activeSection.title || registry.hero?.title || registry.title || 'Products';
-    }
-
-    if (heroText) {
-      heroText.innerHTML = escapeHtml(activeSection.description || registry.hero?.description || registry.description || '');
-    }
-  }
 
   /* =============================================================================
-     09) PRODUCTS RENDERERS
+     08) INDEX SHELL RENDERER
   ============================================================================= */
-  function renderSidebar() {
-    const root = getSectionRoot();
-    const target = getFirstMatch(SIDEBAR_SELECTORS, root);
-    const registry = state.registry;
-    const activeSection = state.activeSection;
-
-    if (!target || !registry || !activeSection) return;
-
-    const items = registry.sections
-      .filter((section) => section.showInSidebar)
-      .map((section) => {
-        const isActive = section.id === activeSection.id;
-        const isDisabled = section.status === 'planned';
-        const className = [
-          'products-sidebar__link',
-          isActive ? 'products-sidebar__link--active' : '',
-          isDisabled ? 'products-sidebar__link--disabled' : ''
-        ].filter(Boolean).join(' ');
-
-        if (isDisabled) {
-          return `
-            <li class="products-sidebar__item">
-              <span class="${className}" aria-disabled="true" data-products-nav="${escapeHtml(section.id)}">${escapeHtml(section.label)}</span>
-            </li>
-          `;
-        }
-
-        return `
-          <li class="products-sidebar__item">
-            <a class="${className}" href="${escapeHtml(section.route)}" data-products-nav="${escapeHtml(section.id)}" aria-current="${isActive ? 'page' : 'false'}">${escapeHtml(section.label)}</a>
-          </li>
-        `;
-      })
-      .join('');
-
-    mountHtml(target, `
-      <aside class="products-sidebar" aria-label="Products index navigation">
-        <div class="products-sidebar__inner">
-          <header class="products-sidebar__header">
-            <p class="products-sidebar__eyebrow">${escapeHtml(registry.label || 'Products')}</p>
-            <h2 class="products-sidebar__title">Index</h2>
-            <p class="products-sidebar__description">${escapeHtml(registry.description || '')}</p>
-          </header>
-
-          <nav class="products-sidebar__nav" aria-label="Products sections">
-            <ul class="products-sidebar__list">
-              ${items}
-            </ul>
-          </nav>
-        </div>
-      </aside>
-    `, 'products-sidebar');
-  }
-
   function renderIndexShell() {
     const root = getSectionRoot();
     const target = getFirstMatch(INDEX_SHELL_SELECTORS, root);
@@ -238,6 +165,11 @@
     const activeSection = state.activeSection;
 
     if (!target || !registry || !activeSection) return;
+
+    if (isOverviewSection()) {
+      clearMount(target, 'products-index-shell');
+      return;
+    }
 
     const cards = registry.sections.map((section) => {
       const isDisabled = section.status === 'planned';
@@ -270,7 +202,9 @@
         <div class="products-index-shell__inner">
           <header class="products-index-shell__header" data-motion="lift">
             <p class="products-index-shell__eyebrow">${escapeHtml(registry.label || 'Products')}</p>
-            <h2 class="products-index-shell__title">${escapeHtml(activeSection.title || activeSection.label || registry.title || 'Products')}</h2>
+            <div class="products-index-shell__title-row">
+              <h2 class="products-index-shell__title">${escapeHtml(activeSection.title || activeSection.label || registry.title || 'Products')}</h2>
+            </div>
             <p class="products-index-shell__description">${escapeHtml(activeSection.description || registry.description || '')}</p>
           </header>
 
@@ -283,7 +217,7 @@
   }
 
   /* =============================================================================
-     10) INDEX LOADERS
+     09) INDEX LOADERS
   ============================================================================= */
   async function loadSearchIndexes() {
     const [routeIndex, contentIndex, entityIndex] = await Promise.all([
@@ -298,7 +232,7 @@
   }
 
   /* =============================================================================
-     11) PAGE REGISTRATION
+     10) PAGE REGISTRATION
   ============================================================================= */
   function registerPageState() {
     const root = getSectionRoot();
@@ -309,12 +243,11 @@
     root.setAttribute('data-route-index-loaded', String(Boolean(state.routeIndex)));
     root.setAttribute('data-content-index-loaded', String(Boolean(state.contentIndex)));
     root.setAttribute('data-entity-index-loaded', String(Boolean(state.entityIndex)));
-    root.setAttribute('data-products-sidebar-mounted', String(Boolean(getFirstMatch(SIDEBAR_SELECTORS, root)?.getAttribute('data-products-sidebar-mounted') === 'true')));
     root.setAttribute('data-products-index-shell-mounted', String(Boolean(getFirstMatch(INDEX_SHELL_SELECTORS, root)?.getAttribute('data-products-index-shell-mounted') === 'true')));
   }
 
   /* =============================================================================
-     12) BOOTSTRAP
+     11) BOOTSTRAP
   ============================================================================= */
   async function boot() {
     try {
@@ -324,8 +257,6 @@
       ]);
 
       resolveActiveSection();
-      syncHero();
-      renderSidebar();
       renderIndexShell();
       registerPageState();
 
@@ -344,7 +275,7 @@
   }
 
   /* =============================================================================
-     13) INITIALIZATION
+     12) INITIALIZATION
   ============================================================================= */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot, { once: true });

@@ -75,6 +75,7 @@ import './press-room.js';
 import './pricing.js';
 import './procurement.js';
 import './products.js';
+import './products-sidebar.js';
 import './profiles.js';
 import './promotions.js';
 import './prompt-center.js';

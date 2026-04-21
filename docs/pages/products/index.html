@@ -279,19 +279,6 @@
      11) PRODUCTS PAGE SHELL
 ============================================================================= -->
 <div class="products-shell" data-page-shell="products">
-  <!-- =============================================================================
-       11A) PRODUCTS HERO
-  ============================================================================= -->
-  <section class="home-section products-hero" id="products-hero" data-motion="lift">
-    <div class="home-inner home-rail">
-      <h2 class="home-title" data-motion="lift">Products</h2>
-      <p class="home-text" data-motion="lift">
-        A governed products hub for ICOS systems, capabilities, workflows, integrations, and software pathways<br>
-        One structural map for how Neuroartan product surfaces are organized, explained, and expanded over time<br>
-        Product architecture, capability systems, and implementation pathways in one place
-      </p>
-    </div>
-  </section>
 
   <!-- =============================================================================
        11B) PRODUCTS HUB LAYOUT
@@ -302,12 +289,12 @@
         <!-- =============================================================================
              11C) PRODUCTS SIDEBAR MOUNT
         ============================================================================= -->
-        <div id="products-sidebar-mount" data-include="products-sidebar"></div>
+        <div id="products-sidebar-mount" data-include="products-sidebar" data-products-sidebar-slot></div>
 
         <!-- =============================================================================
              11D) PRODUCTS INDEX SHELL MOUNT
         ============================================================================= -->
-        <div id="products-index-shell-mount" data-include="products-index-shell"></div>
+        <div id="products-index-shell-mount" data-products-index-shell-slot data-products-content-slot></div>
       </div>
     </div>
   </section>

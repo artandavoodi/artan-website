@@ -48,6 +48,7 @@ const FRAGMENT_PATHS = {
   'institutional-links': assetPath('/assets/fragments/layers/website/navigation/institutional-links.html'),
   'institutional-menu': assetPath('/assets/fragments/layers/website/navigation/institutional-menu.html'),
   'products-local-nav': assetPath('/assets/fragments/layers/website/navigation/products-local-nav.html'),
+  'products-sidebar': assetPath('/assets/fragments/layers/website/sections/products/products-sidebar.html'),
   'menu': assetPath('/assets/fragments/layers/website/navigation/menu.html'),
   'profile-private-menu': assetPath('/assets/fragments/layers/website/profile/private/profile-menu.html'),
   'profile-private-shell': assetPath('/assets/fragments/layers/website/profile/private/profile-shell.html'),

@@ -2,7 +2,7 @@
   "id": "products",
   "label": "Products",
   "title": "Products",
-  "description": "Canonical registry for the Neuroartan Products section shell, navigation, and routed section rendering.",
+  "description": "Canonical registry for the Neuroartan product system, including ICOS category framing, capability architecture, user workflows, integrations, and software-facing implementation surfaces.",
   "defaultSection": "overview",
   "layout": {
     "sidebar": true,
@@ -13,7 +13,7 @@
   "hero": {
     "eyebrow": "Products",
     "title": "Products",
-    "description": "A governed products hub for ICOS systems, capabilities, workflows, integrations, and software pathways."
+    "description": "Neuroartan Products defines ICOS as a new category: a voice-trained reflective cognition system that organizes continuity, pattern intelligence, profile memory, and long-term self-authored development into one governed product architecture."
   },
   "sections": [
     {
@@ -21,7 +21,7 @@
       "label": "Overview",
       "title": "Overview",
       "route": "/pages/products/overview/index.html",
-      "description": "Core product framing, architecture direction, and category definition for ICOS.",
+      "description": "ICOS is positioned as a new product category: a user-trained reflective cognition system where voice, memory continuity, emotional patterning, and profile intelligence are organized into one long-term architecture.",
       "status": "active",
       "showInSidebar": true,
       "showInTopbar": true,
@@ -35,7 +35,7 @@
       "label": "Capabilities",
       "title": "Capabilities",
       "route": "/pages/products/capabilities/index.html",
-      "description": "The core ICOS capability system, including reflective cognition, continuity, voice, patterning, and profile intelligence.",
+      "description": "Core capabilities include voice training, reflective dialogue, thought-pattern analysis, emotion-aware interpretation, graph-linked continuity, profile memory, and longitudinal cognitive structuring across the user’s evolving record.",
       "status": "active",
       "showInSidebar": true,
       "showInTopbar": true,
@@ -49,7 +49,7 @@
       "label": "Workflows",
       "title": "Workflows",
       "route": "/pages/products/workflows/index.html",
-      "description": "Structured product journeys, user loops, and operational pathways across ICOS usage states.",
+      "description": "Product workflows define how users capture, decode, label, link, reflect on, and govern their own material so the system can support continuity, insight retrieval, self-review, and structured long-term development.",
       "status": "active",
       "showInSidebar": true,
       "showInTopbar": true,
@@ -63,7 +63,7 @@
       "label": "Integrations",
       "title": "Integrations",
       "route": "/pages/products/integrations/index.html",
-      "description": "Reserved for future integration architecture, linked services, identity sources, and external system intake.",
+      "description": "Integration architecture is reserved for identity sources, external knowledge inputs, continuity-linked services, and future governed system connections that extend ICOS without fragmenting profile ownership.",
       "status": "active",
       "showInSidebar": true,
       "showInTopbar": true,
@@ -77,7 +77,7 @@
       "label": "Software",
       "title": "Software",
       "route": "/pages/software/index.html",
-      "description": "Software pathways, release-facing systems, and product-adjacent implementation surfaces.",
+      "description": "Software surfaces translate the product architecture into release-facing systems, interface layers, profile infrastructure, and implementation pathways that operationalize ICOS as a governed software institution.",
       "status": "linked",
       "showInSidebar": true,
       "showInTopbar": true,
