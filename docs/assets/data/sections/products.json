@@ -20,7 +20,7 @@
       "id": "overview",
       "label": "Overview",
       "title": "Overview",
-      "route": "/pages/products/overview/index.html",
+      "route": "/pages/products/index.html",
       "description": "ICOS is positioned as a new product category: a user-trained reflective cognition system where voice, memory continuity, emotional patterning, and profile intelligence are organized into one long-term architecture.",
       "status": "active",
       "showInSidebar": true,

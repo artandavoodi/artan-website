@@ -127,6 +127,10 @@
     return state.activeSection?.id === 'overview';
   }
 
+  function getActiveContentSourcePath() {
+    return state.activeSection?.contentSource?.path || '';
+  }
+
   function mountHtml(target, html, mountKey) {
     if (!target) return;
     target.innerHTML = html;
@@ -145,7 +149,7 @@
   async function renderOverviewContent(target) {
     if (!target) return;
 
-    const overviewUrl = assetPath('/pages/products/overview/index.html');
+    const overviewUrl = assetPath(getActiveContentSourcePath() || '/pages/products/overview/index.html');
     const html = await fetchText(overviewUrl);
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
