@@ -173,10 +173,18 @@ async function fetchTextFromCandidates(path, cache = 'no-store') {
 function resolveFragmentPath(name) {
   const authority = window.NeuroartanFragmentAuthorities;
   if (authority && typeof authority.resolveFragmentPath === 'function') {
-    return authority.resolveFragmentPath(name);
+    const resolved = authority.resolveFragmentPath(name);
+    if (resolved) return resolved;
   }
 
-  return FRAGMENT_PATHS[name] || assetPath(`/assets/fragments/layers/website/${name}.html`);
+  const normalized = String(name || '').trim();
+  if (!normalized) return '';
+
+  if (normalized.startsWith('/') || normalized.startsWith('./') || normalized.endsWith('.html')) {
+    return assetPath(normalized);
+  }
+
+  return FRAGMENT_PATHS[normalized] || assetPath(`/assets/fragments/layers/website/${normalized}.html`);
 }
 
 /* =============================================================================

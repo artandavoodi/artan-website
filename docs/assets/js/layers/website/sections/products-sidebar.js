@@ -9,10 +9,9 @@
    07) SIDEBAR CONTENT SYNC
    08) ACTIVE ANCHOR SYNC
    09) TOGGLE BINDING
-   10) FRAGMENT OBSERVER
-   11) STATE OBSERVER
-   12) BOOTSTRAP
-   13) INITIALIZATION
+   10) FRAGMENT HYDRATION
+   11) BOOTSTRAP
+   12) INITIALIZATION
 ============================================================================= */
 
 /* =============================================================================
@@ -24,7 +23,7 @@
   /* =============================================================================
      02) CONSTANTS
   ============================================================================= */
-  const ROOT_SELECTOR = '.products-page';
+  const ROOT_SELECTOR = '.products-page, .products-overview-page';
   const TOGGLE_SELECTOR = '[data-products-sidebar-toggle]';
   const STATE_ATTR = 'data-products-sidebar-open';
   const TITLE_SELECTOR = '[data-products-sidebar-title]';
@@ -181,8 +180,19 @@
     });
   }
 
-  function hasSidebarMount(root) {
-    return Boolean(getTitle(root) && getDescription(root) && getNavList(root));
+  function hydrateSidebar(root, registry) {
+    if (!root || !registry) return false;
+
+    const title = getTitle(root);
+    const description = getDescription(root);
+    const navList = getNavList(root);
+
+    if (!title || !description || !navList) return false;
+
+    syncSidebarContent(root, registry);
+    syncActiveAnchor(root, registry);
+    syncState(root);
+    return true;
   }
 
   /* =============================================================================
@@ -204,20 +214,21 @@
   }
 
   /* =============================================================================
-     10) FRAGMENT OBSERVER
+     10) FRAGMENT HYDRATION
   ============================================================================= */
-  function observeFragment(root, getRegistry) {
-    if (!root || root.getAttribute('data-products-sidebar-fragment-observer-bound') === 'true') return;
+  function observeFragmentHydration(root, registry) {
+    if (!root || !registry) return;
+    if (root.getAttribute('data-products-sidebar-hydration-bound') === 'true') return;
 
-    root.setAttribute('data-products-sidebar-fragment-observer-bound', 'true');
+    root.setAttribute('data-products-sidebar-hydration-bound', 'true');
 
-    const observer = new MutationObserver(async () => {
-      if (!hasSidebarMount(root)) return;
+    if (hydrateSidebar(root, registry)) {
+      return;
+    }
 
-      const registry = await getRegistry();
-      syncSidebarContent(root, registry);
-      syncActiveAnchor(root, registry);
-      syncState(root);
+    const observer = new MutationObserver(() => {
+      if (!hydrateSidebar(root, registry)) return;
+      observer.disconnect();
     });
 
     observer.observe(root, {
@@ -227,25 +238,7 @@
   }
 
   /* =============================================================================
-     11) STATE OBSERVER
-  ============================================================================= */
-  function observeState(root) {
-    if (!root || root.getAttribute('data-products-sidebar-state-observer-bound') === 'true') return;
-
-    root.setAttribute('data-products-sidebar-state-observer-bound', 'true');
-
-    const observer = new MutationObserver(() => {
-      syncState(root);
-    });
-
-    observer.observe(root, {
-      attributes: true,
-      attributeFilter: [STATE_ATTR]
-    });
-  }
-
-  /* =============================================================================
-     12) BOOTSTRAP
+     11) BOOTSTRAP
   ============================================================================= */
   async function boot() {
     const root = getRoot();
@@ -255,31 +248,19 @@
       root.setAttribute(STATE_ATTR, 'false');
     }
 
-    const getRegistry = async () => loadLocalRegistry().catch(() => null);
-
-    try {
-      const registry = await getRegistry();
-      if (hasSidebarMount(root)) {
-        syncSidebarContent(root, registry);
-        syncActiveAnchor(root, registry);
-      }
-    } catch (error) {
-      console.error('[products-sidebar] registry sync failed', error);
-    }
+    const registry = await loadLocalRegistry().catch(() => null);
 
     syncState(root);
     bindToggle(root);
-    observeFragment(root, getRegistry);
-    observeState(root);
+    observeFragmentHydration(root, registry);
 
-    window.addEventListener('hashchange', async () => {
-      const registry = await getRegistry();
+    window.addEventListener('hashchange', () => {
       syncActiveAnchor(root, registry);
     });
   }
 
   /* =============================================================================
-     13) INITIALIZATION
+     12) INITIALIZATION
   ============================================================================= */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot, { once: true });

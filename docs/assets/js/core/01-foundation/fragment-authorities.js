@@ -102,8 +102,17 @@ function getFragmentPaths() {
    05) PATH HELPERS
 ============================================================================= */
 function resolveFragmentPath(name) {
+  const normalized = String(name || '').trim();
+  if (!normalized) return '';
+
   const registry = getFragmentPaths();
-  return registry[name] || assetPath(`/assets/fragments/layers/website/${name}.html`);
+  if (registry[normalized]) return registry[normalized];
+
+  if (normalized.startsWith('/') || normalized.startsWith('./') || normalized.endsWith('.html')) {
+    return assetPath(normalized);
+  }
+
+  return assetPath(`/assets/fragments/layers/website/${normalized}.html`);
 }
 
 /* =============================================================================

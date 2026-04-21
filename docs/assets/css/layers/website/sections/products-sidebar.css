@@ -111,9 +111,11 @@
 
 .products-page .products-sidebar__description {
   margin: 0;
-  width: auto;
+  width: 100%;
   max-width: none;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
   color: var(--text-secondary, rgba(255, 255, 255, 0.72));
   font-size: var(--font-size-body-1);
   line-height: var(--line-height-body);

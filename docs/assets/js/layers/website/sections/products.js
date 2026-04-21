@@ -5,13 +5,14 @@
    03) CONSTANTS
    04) STATE
    05) HELPERS
-   06) REGISTRY LOADERS
-   07) SECTION RESOLUTION
-   08) INDEX SHELL RENDERER
-   09) INDEX LOADERS
-   10) PAGE REGISTRATION
-   11) BOOTSTRAP
-   12) INITIALIZATION
+   06) CONTENT HELPERS
+   07) REGISTRY LOADERS
+   08) SECTION RESOLUTION
+   09) INDEX SHELL RENDERER
+   10) INDEX LOADERS
+   11) PAGE REGISTRATION
+   12) BOOTSTRAP
+   13) INITIALIZATION
 ============================================================================= */
 
 /* =============================================================================
@@ -114,6 +115,14 @@
     return response.json();
   }
 
+  async function fetchText(url) {
+    const response = await fetch(url, { cache: 'no-cache' });
+    if (!response.ok) {
+      throw new Error(`Failed to load ${url}: HTTP ${response.status}`);
+    }
+    return response.text();
+  }
+
   function isOverviewSection() {
     return state.activeSection?.id === 'overview';
   }
@@ -131,14 +140,33 @@
   }
 
   /* =============================================================================
-     06) REGISTRY LOADERS
+     06) CONTENT HELPERS
+  ============================================================================= */
+  async function renderOverviewContent(target) {
+    if (!target) return;
+
+    const overviewUrl = assetPath('/pages/products/overview/index.html');
+    const html = await fetchText(overviewUrl);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const content = doc.querySelector('.products-overview-content');
+
+    if (!content) {
+      throw new Error('Overview content root `.products-overview-content` not found.');
+    }
+
+    mountHtml(target, content.outerHTML, 'products-index-shell');
+  }
+
+  /* =============================================================================
+     07) REGISTRY LOADERS
   ============================================================================= */
   async function loadProductsRegistry() {
     state.registry = await fetchJson(PRODUCTS_REGISTRY_URL);
   }
 
   /* =============================================================================
-     07) SECTION RESOLUTION
+     08) SECTION RESOLUTION
   ============================================================================= */
   function resolveActiveSection() {
     const registry = state.registry;
@@ -156,9 +184,9 @@
 
 
   /* =============================================================================
-     08) INDEX SHELL RENDERER
+     09) INDEX SHELL RENDERER
   ============================================================================= */
-  function renderIndexShell() {
+  async function renderIndexShell() {
     const root = getSectionRoot();
     const target = getFirstMatch(INDEX_SHELL_SELECTORS, root);
     const registry = state.registry;
@@ -167,7 +195,7 @@
     if (!target || !registry || !activeSection) return;
 
     if (isOverviewSection()) {
-      clearMount(target, 'products-index-shell');
+      await renderOverviewContent(target);
       return;
     }
 
@@ -217,7 +245,7 @@
   }
 
   /* =============================================================================
-     09) INDEX LOADERS
+     10) INDEX LOADERS
   ============================================================================= */
   async function loadSearchIndexes() {
     const [routeIndex, contentIndex, entityIndex] = await Promise.all([
@@ -232,7 +260,7 @@
   }
 
   /* =============================================================================
-     10) PAGE REGISTRATION
+     11) PAGE REGISTRATION
   ============================================================================= */
   function registerPageState() {
     const root = getSectionRoot();
@@ -247,7 +275,7 @@
   }
 
   /* =============================================================================
-     11) BOOTSTRAP
+     12) BOOTSTRAP
   ============================================================================= */
   async function boot() {
     try {
@@ -257,7 +285,7 @@
       ]);
 
       resolveActiveSection();
-      renderIndexShell();
+      await renderIndexShell();
       registerPageState();
 
       state.isReady = true;
@@ -275,7 +303,7 @@
   }
 
   /* =============================================================================
-     12) INITIALIZATION
+     13) INITIALIZATION
   ============================================================================= */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot, { once: true });

@@ -74,6 +74,27 @@
   margin-block-end: var(--space-6, 2.5rem);
 }
 
+.products-page[data-products-sidebar-open="false"] .products-hub-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.products-page #products-sidebar-mount,
+.products-page [data-products-sidebar-slot],
+.products-page .products-sidebar-slot,
+.products-page #products-sidebar-mount > .products-sidebar,
+.products-page #products-sidebar-mount .products-sidebar__inner {
+  display: contents;
+}
+
+.products-page .products-sidebar__header,
+.products-page .products-sidebar__summary {
+  grid-column: 1 / -1;
+}
+
+.products-page .products-sidebar__panel {
+  grid-column: 1;
+  min-width: 0;
+}
 
 .products-page #products-index-shell-mount,
 .products-page [data-products-index-shell-slot],
@@ -83,7 +104,18 @@
 .products-page .products-index-slot,
 .products-page .products-content-slot {
   position: relative;
+  grid-column: 2;
   min-width: 0;
+}
+
+.products-page[data-products-sidebar-open="false"] #products-index-shell-mount,
+.products-page[data-products-sidebar-open="false"] [data-products-index-shell-slot],
+.products-page[data-products-sidebar-open="false"] [data-products-index-slot],
+.products-page[data-products-sidebar-open="false"] [data-products-content-slot],
+.products-page[data-products-sidebar-open="false"] .products-index-shell-slot,
+.products-page[data-products-sidebar-open="false"] .products-index-slot,
+.products-page[data-products-sidebar-open="false"] .products-content-slot {
+  grid-column: 1 / -1;
 }
 
 /* =============================================================================
@@ -122,10 +154,22 @@
   flex: 0 1 auto;
 }
 
+
 .products-page .products-index-shell__description {
   margin: 0;
   max-width: 48rem;
   color: var(--text-secondary, rgba(255, 255, 255, 0.72));
+}
+
+.products-page .products-overview-content {
+  display: grid;
+  gap: var(--space-6, 2.5rem);
+  width: 100%;
+  min-width: 0;
+}
+
+.products-page .products-overview-block {
+  scroll-margin-top: calc(var(--header-height, 5rem) + var(--products-local-nav-height, 3.55rem) + var(--space-5, 2rem));
 }
 
 /* =============================================================================
@@ -174,8 +218,22 @@
    07) PRODUCTS RESPONSIVE BEHAVIOR
 ============================================================================= */
 @media (max-width: 1100px) {
-  .products-page .products-hub-layout {
+  .products-page .products-hub-layout,
+  .products-page[data-products-sidebar-open="false"] .products-hub-layout {
     grid-template-columns: 1fr;
+  }
+
+  .products-page .products-sidebar__header,
+  .products-page .products-sidebar__summary,
+  .products-page .products-sidebar__panel,
+  .products-page #products-index-shell-mount,
+  .products-page [data-products-index-shell-slot],
+  .products-page [data-products-index-slot],
+  .products-page [data-products-content-slot],
+  .products-page .products-index-shell-slot,
+  .products-page .products-index-slot,
+  .products-page .products-content-slot {
+    grid-column: 1 / -1;
   }
 
   .products-page .products-index-shell__title-row {
