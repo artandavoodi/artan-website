@@ -712,8 +712,8 @@ body.theme-light #stage-glass-vessel-inner{
   opacity:0.9;
   transition:transform 0.22s ease, opacity 0.22s ease;
   background-color:currentColor;
-  -webkit-mask-image:url("../../../../icons/core/interface/actions/mic.svg");
-  mask-image:url("../../../../icons/core/interface/actions/mic.svg");
+  -webkit-mask-image:url("../../../../icons/core/media/unclassified/mic.svg");
+  mask-image:url("../../../../icons/core/media/unclassified/mic.svg");
   -webkit-mask-repeat:no-repeat;
   mask-repeat:no-repeat;
   -webkit-mask-position:center;
