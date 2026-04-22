@@ -107,6 +107,10 @@
       .replace(/'/g, '&#39;');
   }
 
+  function normalizeString(value) {
+    return String(value ?? '').trim();
+  }
+
   async function fetchJson(url) {
     const response = await fetch(url, { cache: 'no-cache' });
     if (!response.ok) {
@@ -127,14 +131,23 @@
     return state.activeSection?.id === 'overview';
   }
 
+  function getActiveContentSource() {
+    return state.activeSection?.contentSource || null;
+  }
+
+  function getActiveContentSourceType() {
+    return normalizeString(getActiveContentSource()?.type || '').toLowerCase();
+  }
+
   function getActiveContentSourcePath() {
-    return state.activeSection?.contentSource?.path || '';
+    return getActiveContentSource()?.path || '';
   }
 
   function mountHtml(target, html, mountKey) {
     if (!target) return;
     target.innerHTML = html;
     target.setAttribute(`data-${mountKey}-mounted`, 'true');
+    window.NeuroMotion?.scan?.(target);
   }
 
   function clearMount(target, mountKey) {
@@ -160,6 +173,65 @@
     }
 
     mountHtml(target, content.outerHTML, 'products-index-shell');
+  }
+
+  function renderDetailList(items = []) {
+    if (!Array.isArray(items) || !items.length) return '';
+
+    return `
+      <ul class="products-detail-block__highlights" aria-label="Capability highlights">
+        ${items.map((item) => `<li class="products-detail-block__highlight">${escapeHtml(item)}</li>`).join('')}
+      </ul>
+    `;
+  }
+
+  async function renderJsonContent(target) {
+    if (!target) return;
+
+    const contentUrl = assetPath(getActiveContentSourcePath());
+    const json = await fetchJson(contentUrl);
+    const page = json?.page && typeof json.page === 'object' ? json.page : {};
+    const sections = Array.isArray(json?.sections) ? json.sections : [];
+
+    if (!sections.length) {
+      throw new Error('JSON content source did not provide any sections.');
+    }
+
+    const blocks = sections.map((section) => {
+      const sectionId = escapeHtml(section.id || '');
+      const title = escapeHtml(section.title || section.label || '');
+      const intro = escapeHtml(section.description || '');
+      const paragraphs = Array.isArray(section.paragraphs)
+        ? section.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')
+        : '';
+      const highlights = renderDetailList(section.highlights);
+
+      return `
+        <section class="products-detail-block" id="${sectionId}" aria-labelledby="${sectionId}-title" data-motion="lift">
+          <div class="products-detail-block__inner">
+            <div class="products-detail-block__copy">
+              <h2 class="products-detail-block__title" id="${sectionId}-title">${title}</h2>
+              ${intro ? `<p class="products-detail-block__intro">${intro}</p>` : ''}
+              <div class="products-detail-block__prose">${paragraphs}</div>
+            </div>
+            ${highlights}
+          </div>
+        </section>
+      `;
+    }).join('');
+
+    mountHtml(target, `
+      <section class="products-detail-shell" aria-label="${escapeHtml(page.title || state.activeSection?.title || 'Products detail content')}">
+        <div class="products-detail-shell__inner">
+          ${page.description
+            ? `<header class="products-detail-shell__header" data-motion="lift"><p class="products-detail-shell__description">${escapeHtml(page.description)}</p></header>`
+            : ''}
+          <div class="products-detail-content">
+            ${blocks}
+          </div>
+        </div>
+      </section>
+    `, 'products-index-shell');
   }
 
   /* =============================================================================
@@ -200,6 +272,11 @@
 
     if (isOverviewSection()) {
       await renderOverviewContent(target);
+      return;
+    }
+
+    if (getActiveContentSourceType() === 'json') {
+      await renderJsonContent(target);
       return;
     }
 

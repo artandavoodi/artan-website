@@ -88,12 +88,11 @@ export function observeMotionItems(items = [], options = {}) {
   }
 
   const observer = new IntersectionObserver(
-    (entries) => {
+    (entries, currentObserver) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && entry.intersectionRatio > threshold) {
           entry.target.classList.add('motion-visible');
-        } else {
-          entry.target.classList.remove('motion-visible');
+          currentObserver.unobserve(entry.target);
         }
       });
     },

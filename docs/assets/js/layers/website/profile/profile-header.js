@@ -25,6 +25,12 @@ function setText(root, selector, value) {
   node.textContent = value;
 }
 
+function setHidden(root, selector, hidden) {
+  const node = root.querySelector(selector);
+  if (!(node instanceof HTMLElement)) return;
+  node.hidden = hidden;
+}
+
 function setControlDisabled(control, disabled) {
   if (!(control instanceof HTMLElement)) return;
 
@@ -195,12 +201,21 @@ function renderPublicHeader(root, state) {
   setText(root, '[data-profile-route-display]', state.publicRouteDisplay || 'neuroartan.com/username');
   setText(root, '[data-profile-summary]', state.summary);
   setText(root, '[data-profile-primary-action-label]', state.primaryActionLabel);
-  setText(root, '[data-profile-route-outcome-value]', state.routeOutcomeValue);
-  setText(root, '[data-profile-route-outcome-copy]', state.routeOutcomeCopy);
-  setText(root, '[data-profile-visibility-state]', state.visibilityState);
-  setText(root, '[data-profile-visibility-copy]', state.visibilityCopy);
-  setText(root, '[data-profile-continuity-state]', state.continuityState);
-  setText(root, '[data-profile-continuity-copy]', state.continuityCopy);
+  setText(root, '[data-profile-verified-label]', state.verificationLabel);
+  setText(root, '[data-profile-creator-line]', state.creatorLine);
+  setText(root, '[data-profile-joined-year]', state.joinedYearLabel);
+  setText(root, '[data-profile-interaction-mode]', state.interactionModeLabel);
+  setText(root, '[data-profile-availability-state]', state.availabilityLabel);
+  setText(root, '[data-profile-legacy-state]', state.legacyStateLabel);
+  setText(root, '[data-profile-trust-value]', state.trustValue);
+  setText(root, '[data-profile-trust-copy]', state.trustCopy);
+  setText(root, '[data-profile-availability-value]', state.availabilityValue);
+  setText(root, '[data-profile-availability-copy]', state.availabilityCopy);
+  setText(root, '[data-profile-route-metric-value]', state.routeOutcomeValue);
+  setText(root, '[data-profile-route-metric-copy]', state.visibilityCopy || state.routeOutcomeCopy);
+
+  setHidden(root, '[data-profile-verified-block]', !state.verificationVisible);
+  setHidden(root, '[data-profile-creator-line]', !state.creatorLine);
 
   renderAvatar(root, state);
 

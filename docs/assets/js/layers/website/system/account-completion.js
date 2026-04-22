@@ -572,6 +572,33 @@ import {
     }));
   }
 
+  function resetAccountSurfaces(reason = 'session-transition') {
+    document.dispatchEvent(new CustomEvent('account:close-all', {
+      detail: {
+        source: MODULE_ID,
+        reason
+      }
+    }));
+
+    [
+      'account-drawer:close-request',
+      'account-sign-in-drawer:close-request',
+      'account-sign-up-drawer:close-request',
+      'account-email-auth-drawer:close-request',
+      'account-phone-auth-drawer:close-request',
+      'account-forgot-password-drawer:close-request',
+      'account-provider-apple-sheet:close-request',
+      'account-provider-google-sheet:close-request'
+    ].forEach((eventName) => {
+      document.dispatchEvent(new CustomEvent(eventName, {
+        detail: {
+          source: MODULE_ID,
+          reason
+        }
+      }));
+    });
+  }
+
   /* =============================================================================
      13) ACCOUNT FLOW HELPERS
   ============================================================================= */
@@ -1168,6 +1195,7 @@ import {
   ============================================================================= */
   async function handleSignedInState(user) {
     const requestId = ++RUNTIME.profileRequestId;
+    resetAccountSurfaces('signed-in');
 
     try {
       const profile = await getProfileByUid(user.uid);
@@ -1197,6 +1225,7 @@ import {
     ++RUNTIME.profileRequestId;
     clearOnboardingContext();
     clearFlowState();
+    resetAccountSurfaces('signed-out');
     emitSignedOutState();
   }
 

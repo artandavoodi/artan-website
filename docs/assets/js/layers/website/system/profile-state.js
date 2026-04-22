@@ -94,6 +94,8 @@ function buildBaseState(route = getPublicRouteState()) {
     publicRouteUrl: route.publicRouteUrl || '',
     publicRouteDisplay: route.publicRouteDisplay || '',
     publicProfile: null,
+    model: null,
+    creator: null,
     reason: route.reason || '',
     error: ''
   };
@@ -150,6 +152,8 @@ async function buildRegistryResolutionState(route) {
       public_route_path: normalizeString(publicProfile.public_route_path || route.publicRoutePath),
       public_route_canonical_url: normalizeString(publicProfile.public_route_canonical_url || route.publicRouteUrl)
     },
+    model: model || null,
+    creator: model?.creator || null,
     reason: renderable ? '' : 'PUBLIC_ROUTE_NOT_PUBLISHED'
   };
 }
@@ -200,6 +204,14 @@ export function subscribePublicProfileState(subscriber) {
 async function resolveStateForRoute(route) {
   const requestId = ++RUNTIME.requestId;
   const baseState = buildBaseState(route);
+  let registryModel = null;
+  let registryCreator = null;
+
+  try {
+    await loadPublicModelRegistry();
+    registryModel = getPublicModelByUsername(route.normalizedUsername || route.routeCandidate);
+    registryCreator = registryModel?.creator || null;
+  } catch (_) {}
 
   if (!route.handleAsPublicRoute) {
     setState(baseState);
@@ -257,7 +269,9 @@ async function resolveStateForRoute(route) {
       ...baseState,
       ...resolution,
       loading: false,
-      route
+      route,
+      model: registryModel || null,
+      creator: registryCreator
     });
   } catch (error) {
     if (requestId !== RUNTIME.requestId) return;

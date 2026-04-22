@@ -111,7 +111,10 @@
   --home-featured-functions-card-matte-surface-bottom: rgba(0, 0, 0, 0.22);
 }
 
-body.light-mode .home-featured-functions{
+html.light-mode .home-featured-functions,
+body.light-mode .home-featured-functions,
+html.theme-light .home-featured-functions,
+body.theme-light .home-featured-functions{
   --home-featured-functions-timeline-track: color-mix(in srgb, var(--text-color) 12%, transparent);
   --home-featured-functions-dot-opacity: 0.18;
   --home-featured-functions-card-border-color: rgba(0, 0, 0, 0.08);
@@ -124,14 +127,17 @@ body.light-mode .home-featured-functions{
   --home-featured-functions-card-placeholder-fill-top: rgba(0, 0, 0, 0.03);
   --home-featured-functions-card-placeholder-fill-bottom: rgba(0, 0, 0, 0.015);
   --home-featured-functions-card-spectrum-opacity: 0.06;
-  --home-featured-functions-card-summary-color: rgba(255, 255, 255, 0.94);
-  --home-featured-functions-card-icon-filter: brightness(0) invert(1);
-  --home-featured-functions-card-matte-surface-top: rgba(0, 0, 0, 0.16);
-  --home-featured-functions-card-matte-surface-mid: rgba(0, 0, 0, 0.10);
-  --home-featured-functions-card-matte-surface-bottom: rgba(0, 0, 0, 0.24);
+  --home-featured-functions-card-summary-color: rgba(17, 17, 17, 0.88);
+  --home-featured-functions-card-icon-filter: brightness(0) saturate(100%);
+  --home-featured-functions-card-matte-surface-top: rgba(255, 255, 255, 0.82);
+  --home-featured-functions-card-matte-surface-mid: rgba(255, 255, 255, 0.66);
+  --home-featured-functions-card-matte-surface-bottom: rgba(255, 255, 255, 0.9);
 }
 
-body.dark-mode .home-featured-functions{
+html.dark-mode .home-featured-functions,
+body.dark-mode .home-featured-functions,
+html.theme-dark .home-featured-functions,
+body.theme-dark .home-featured-functions{
   --home-featured-functions-timeline-track: color-mix(in srgb, var(--text-color) 16%, transparent);
   --home-featured-functions-dot-opacity: 0.24;
 }

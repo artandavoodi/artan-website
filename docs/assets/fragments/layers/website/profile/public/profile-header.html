@@ -21,12 +21,32 @@
         </div>
 
         <div class="profile-header__identity">
-          <h1 class="profile-header__display-name" data-profile-display-name>Public Profile</h1>
+          <div class="profile-header__display-row">
+            <h1 class="profile-header__display-name" data-profile-display-name>Public Profile</h1>
+            <span class="profile-header__verified" data-profile-verified-block hidden>
+              <img
+                src="/assets/icons/core/identity/trust/verified.svg"
+                alt=""
+                class="profile-header__verified-icon ui-icon-theme-aware ui-icon-sm"
+                aria-hidden="true">
+              <span class="profile-header__verified-label" data-profile-verified-label>Verified</span>
+            </span>
+          </div>
 
           <div class="profile-header__identity-line">
             <p class="profile-header__username" data-profile-username>@username</p>
             <span class="profile-header__identity-separator" aria-hidden="true">•</span>
             <p class="profile-header__route" data-profile-route-display>neuroartan.com/username</p>
+          </div>
+        </div>
+
+        <div class="profile-header__trust-row">
+          <p class="profile-header__creator-line" data-profile-creator-line hidden>Artan Davoodi · Founder</p>
+          <div class="profile-header__meta-list" aria-label="Public profile trust metadata">
+            <span class="profile-header__meta-item" data-profile-joined-year>Joined year pending</span>
+            <span class="profile-header__meta-item" data-profile-interaction-mode>Interaction pending</span>
+            <span class="profile-header__meta-item" data-profile-availability-state>Availability pending</span>
+            <span class="profile-header__meta-item" data-profile-legacy-state>State pending</span>
           </div>
         </div>
 
@@ -46,21 +66,21 @@
 
     <div class="profile-header__metrics">
       <article class="profile-header__metric ui-card">
+        <p class="profile-header__metric-label">Trust</p>
+        <p class="profile-header__metric-value" data-profile-trust-value>Pending</p>
+        <p class="profile-header__metric-copy" data-profile-trust-copy>Verification data is loading.</p>
+      </article>
+
+      <article class="profile-header__metric ui-card">
+        <p class="profile-header__metric-label">Availability</p>
+        <p class="profile-header__metric-value" data-profile-availability-value>Pending</p>
+        <p class="profile-header__metric-copy" data-profile-availability-copy>Interaction availability is pending.</p>
+      </article>
+
+      <article class="profile-header__metric ui-card">
         <p class="profile-header__metric-label">Route</p>
-        <p class="profile-header__metric-value" data-profile-route-outcome-value>Resolving</p>
-        <p class="profile-header__metric-copy" data-profile-route-outcome-copy>Canonical route state is loading.</p>
-      </article>
-
-      <article class="profile-header__metric ui-card">
-        <p class="profile-header__metric-label">Visibility</p>
-        <p class="profile-header__metric-value" data-profile-visibility-state>Unknown</p>
-        <p class="profile-header__metric-copy" data-profile-visibility-copy>Public visibility state is pending.</p>
-      </article>
-
-      <article class="profile-header__metric ui-card">
-        <p class="profile-header__metric-label">Continuity</p>
-        <p class="profile-header__metric-value" data-profile-continuity-state>Pending</p>
-        <p class="profile-header__metric-copy" data-profile-continuity-copy>Public continuity modules are not yet populated.</p>
+        <p class="profile-header__metric-value" data-profile-route-metric-value>Resolving</p>
+        <p class="profile-header__metric-copy" data-profile-route-metric-copy>Canonical route state is loading.</p>
       </article>
     </div>
   </div>

@@ -30,6 +30,7 @@
   const TITLE_SELECTOR = '[data-products-sidebar-title]';
   const DESCRIPTION_SELECTOR = '[data-products-sidebar-description]';
   const NAV_LIST_SELECTOR = '[data-products-sidebar-list]';
+  const PRODUCTS_REGISTRY_URL = '/assets/data/sections/products.json';
 
   /* =============================================================================
      03) PATH HELPERS
@@ -87,9 +88,18 @@
       .replace(/'/g, '&#39;');
   }
 
-  function isOverviewContext() {
-    const pathname = window.location.pathname || '';
-    return pathname.includes('/pages/products/overview/') || pathname.endsWith('/pages/products/index.html');
+  function normalizePath(path) {
+    const value = String(path || '').trim();
+    if (!value) return '/';
+    return value.endsWith('/') ? value.slice(0, -1) || '/' : value;
+  }
+
+  function resolveActiveSection(registry) {
+    const currentPath = normalizePath(window.location.pathname || '/');
+    const sections = Array.isArray(registry?.sections) ? registry.sections : [];
+    const matched = sections.find((section) => normalizePath(section.route) === currentPath);
+    const fallback = sections.find((section) => section.id === registry?.defaultSection);
+    return matched || fallback || sections[0] || null;
   }
 
   /* =============================================================================
@@ -104,11 +114,13 @@
   }
 
   async function loadLocalRegistry() {
-    if (isOverviewContext()) {
-      return fetchJson(assetPath('/assets/data/sections/products-overview.json'));
-    }
+    const productsRegistry = await fetchJson(assetPath(PRODUCTS_REGISTRY_URL));
+    const activeSection = resolveActiveSection(productsRegistry);
+    const localSourcePath = String(activeSection?.localNavigationSource?.path || '').trim();
 
-    return null;
+    if (!localSourcePath) return null;
+
+    return fetchJson(assetPath(localSourcePath));
   }
 
   /* =============================================================================

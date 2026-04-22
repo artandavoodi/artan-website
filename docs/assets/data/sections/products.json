@@ -25,6 +25,10 @@
       "status": "active",
       "showInSidebar": true,
       "showInTopbar": true,
+      "localNavigationSource": {
+        "type": "json",
+        "path": "/assets/data/sections/products-overview.json"
+      },
       "contentSource": {
         "type": "page",
         "path": "/pages/products/overview/index.html"
@@ -39,6 +43,10 @@
       "status": "active",
       "showInSidebar": true,
       "showInTopbar": true,
+      "localNavigationSource": {
+        "type": "json",
+        "path": "/assets/data/sections/products/capabilities.json"
+      },
       "contentSource": {
         "type": "json",
         "path": "/assets/data/sections/products/capabilities.json"

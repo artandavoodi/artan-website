@@ -69,6 +69,14 @@ function capitalizeWords(value) {
     .join(' ');
 }
 
+function uniqueLabels(values = []) {
+  return Array.from(new Set(
+    values
+      .map((value) => normalizeString(value))
+      .filter(Boolean)
+  ));
+}
+
 function formatProviderLabel(providerId) {
   switch (normalizeString(providerId)) {
     case 'google':
@@ -381,6 +389,14 @@ function buildPublicProfileState(detail = {}) {
   const publicProfile = detail.publicProfile && typeof detail.publicProfile === 'object'
     ? detail.publicProfile
     : null;
+  const model = detail.model && typeof detail.model === 'object'
+    ? detail.model
+    : null;
+  const creator = detail.creator && typeof detail.creator === 'object'
+    ? detail.creator
+    : model?.creator && typeof model.creator === 'object'
+      ? model.creator
+      : null;
   const normalizedUsername = normalizeUsername(detail.normalizedUsername || publicProfile?.public_username || detail.username || '');
   const publicRoutePath = normalizeString(detail.publicRoutePath || publicProfile?.public_route_path || buildPublicProfilePath(normalizedUsername));
   const publicRouteUrl = normalizeString(detail.publicRouteUrl || publicProfile?.public_route_canonical_url || buildPublicProfileUrl(normalizedUsername));
@@ -389,6 +405,18 @@ function buildPublicProfileState(detail = {}) {
   const avatarUrl = normalizeString(publicProfile?.public_avatar_url || '');
   const avatarHasImage = Boolean(avatarUrl);
   const publicLinks = Array.isArray(publicProfile?.public_links) ? publicProfile.public_links : [];
+  const trustClassification = normalizeString(model?.trust_classification || '');
+  const creatorName = normalizeString(creator?.display_name || '');
+  const creatorTitle = normalizeString(creator?.title || '');
+  const creatorLine = creatorName
+    ? `${creatorName}${creatorTitle ? ` · ${creatorTitle}` : ''}`
+    : '';
+  const interactionEntry = normalizeString(model?.interaction_entry || '');
+  const joinedYear = normalizeString(model?.joined_year || '');
+  const availability = normalizeString(model?.availability || '');
+  const legacyState = normalizeString(model?.legacy_state || '');
+  const modelMaturity = normalizeString(model?.model_maturity || '');
+  const verificationVisible = outcome === 'found_renderable' && Boolean(trustClassification);
   const visibilityState = publicProfile?.public_profile_enabled === true
     ? capitalizeWords(publicProfile?.public_profile_visibility || 'Public')
     : outcome === 'reserved_but_hidden'
@@ -410,6 +438,8 @@ function buildPublicProfileState(detail = {}) {
       normalized: normalizedUsername,
       status: outcome
     },
+    model,
+    creator,
     publicProfile,
     displayName: displayName || 'Public Profile',
     publicRoutePath,
@@ -427,6 +457,20 @@ function buildPublicProfileState(detail = {}) {
       : buildPublicRouteCopy(outcome, normalizedUsername),
     primaryActionLabel: 'Copy Link',
     primaryAction: 'copy-link',
+    verificationVisible,
+    verificationLabel: verificationVisible ? 'Verified' : '',
+    verificationCopy: trustClassification || buildPublicRouteCopy(outcome, normalizedUsername),
+    creatorLine,
+    joinedYearLabel: joinedYear ? `Joined ${joinedYear}` : 'Joined year pending',
+    interactionModeLabel: interactionEntry || 'Interaction pending',
+    availabilityLabel: availability || 'Availability pending',
+    legacyStateLabel: legacyState || 'State pending',
+    trustValue: verificationVisible ? 'Verified' : buildPublicStateBadge(outcome),
+    trustCopy: trustClassification || buildPublicRouteCopy(outcome, normalizedUsername),
+    availabilityValue: availability || 'Pending',
+    availabilityCopy: interactionEntry
+      ? `Interaction: ${interactionEntry}`
+      : 'Interaction mode is not yet declared.',
     routeOutcomeValue: buildPublicStateBadge(outcome),
     routeOutcomeCopy: buildPublicRouteCopy(outcome, normalizedUsername),
     visibilityState,
@@ -442,10 +486,18 @@ function buildPublicProfileState(detail = {}) {
     publicLinksAvailable: publicLinks.length > 0,
     publicPrimaryLink: normalizeString(publicProfile?.public_primary_link || publicLinks[0]?.url || ''),
     routeBadges: outcome === 'found_renderable'
-      ? ['Public-safe model', 'Username resolved', 'Company domain']
+      ? uniqueLabels([
+          trustClassification || 'Public-safe model',
+          modelMaturity || 'Username resolved',
+          publicProfile?.public_profile_discoverable ? 'Discoverable' : 'Company domain'
+        ])
       : ['Route gated', 'Canonical policy', 'Public-safe only'],
     continuityBadges: outcome === 'found_renderable'
-      ? ['Identity', 'Presence', 'Continuity']
+      ? uniqueLabels([
+          interactionEntry || 'Identity',
+          availability || 'Presence',
+          legacyState || 'Continuity'
+        ])
       : ['Identity', 'Route', 'Continuity'],
     publicProfileDiscoverable: publicProfile?.public_profile_discoverable === true,
     publicProfileEnabled: publicProfile?.public_profile_enabled === true

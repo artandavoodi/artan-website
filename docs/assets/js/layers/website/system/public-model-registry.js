@@ -94,6 +94,29 @@ function buildPublicProfileFromModel(model, founder) {
   };
 }
 
+function buildCreatorFromModel(model, founder) {
+  if (founder) {
+    return {
+      display_name: normalizeString(founder.display_name || founder.public_name || ''),
+      title: normalizeString(founder.title || ''),
+      username: normalizeUsername(founder.username || ''),
+      image: normalizeString(founder.image || '')
+    };
+  }
+
+  const displayName = normalizeString(model?.creator_display_name || model?.display_name || '');
+  if (!displayName) {
+    return null;
+  }
+
+  return {
+    display_name: displayName,
+    title: normalizeString(model?.creator_title || ''),
+    username: normalizeUsername(model?.creator_username || ''),
+    image: normalizeString(model?.creator_image || '')
+  };
+}
+
 function buildResolvedModel(model, founder) {
   const displayName = normalizeString(
     model.display_name
@@ -109,6 +132,7 @@ function buildResolvedModel(model, founder) {
     ...model,
     display_name: displayName,
     username,
+    creator: buildCreatorFromModel(model, founder),
     public_profile: publicProfile,
     public_route_path: publicRoutePath,
     search_blob: uniqueStrings([
