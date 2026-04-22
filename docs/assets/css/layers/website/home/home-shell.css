@@ -70,8 +70,11 @@ body.theme-light .home-shell{
 }
 
 .home-shell__footer{
-  bottom:calc(env(safe-area-inset-bottom, 0px) + 1rem);
-  width:var(--footer-rail-width);
+  bottom:env(safe-area-inset-bottom, 0px);
+  left:0;
+  right:0;
+  transform:none;
+  width:100%;
 }
 
 .home-shell__topbar > *,
@@ -103,7 +106,10 @@ body.theme-light .home-shell{
   }
 
   .home-shell__footer{
-    bottom:calc(env(safe-area-inset-bottom, 0px) + 0.85rem);
-    width:var(--footer-rail-width);
+    bottom:env(safe-area-inset-bottom, 0px);
+    left:0;
+    right:0;
+    transform:none;
+    width:100%;
   }
 }

@@ -1,61 +1,51 @@
 <!-- =============================================================================
-     HOME FOOTER FRAGMENT
-     Purpose: modular home-layer footer for dashboard/app surfaces.
-     Notes:
-     - distinct from the institutional footer
-     - optimized for platform/dashboard surfaces
-     - keeps platform actions, support, and state links compact
+00) FILE INDEX
+01) HOME FOOTER SHELL
+02) FLEX RAIL
+03) BRAND BLOCK
+04) LOCALE BLOCK
+05) END OF FOOTER
 ============================================================================= -->
 
-<footer class="home-footer" id="home-footer" aria-label="Home footer">
-  <div class="home-footer__inner">
-    <div class="home-footer__left">
-      <span class="home-footer__copy" data-home-footer-copy>© 2026 Neuroartan</span>
+<!-- =============================================================================
+01) HOME FOOTER SHELL
+============================================================================= -->
+<hr class="home-footer-separator" aria-hidden="true">
 
-      <nav class="home-footer__nav" aria-label="Home footer navigation">
-        <a class="home-footer__link" href="/pages/about/">About</a>
-        <a class="home-footer__link" href="/platform/">Platform</a>
-        <a class="home-footer__link" href="/knowledge-research/">Knowledge</a>
-        <a class="home-footer__link" href="/updates/">Updates</a>
-      </nav>
+<footer class="site-footer home-footer" id="home-footer" aria-label="Home footer">
+  <!-- ==========================================================================
+  02) FLEX RAIL
+  ========================================================================== -->
+  <div class="footer-flex">
+    <!-- ========================================================================
+    03) BRAND BLOCK
+    ======================================================================== -->
+    <div class="footer-left">
+      <span class="footer-brand">© 2026 Neuroartan</span>
     </div>
 
-    <div class="footer-locale home-footer__locale">
+    <!-- ========================================================================
+    04) LOCALE BLOCK
+    ======================================================================== -->
+    <div class="footer-locale">
       <div class="locale-item">
-        <button
-          class="locale-button"
-          type="button"
-          aria-label="Select language"
-          aria-haspopup="listbox"
-          aria-expanded="false"
-          data-home-footer-language-toggle="true">
-          <span data-home-footer-language-value="true">EN</span>
+        <button id="language-toggle" class="locale-button" aria-label="Select language and locale" data-locale-trigger="language">
+          <span id="current-language">—</span>
         </button>
-        <div class="language-dropdown" data-home-footer-language-dropdown="true" aria-hidden="true"></div>
+        <div id="language-dropdown" class="language-dropdown" aria-hidden="true"></div>
       </div>
 
       <span class="footer-separator-dot">•</span>
 
       <div class="locale-item">
-        <button
-          class="locale-button"
-          type="button"
-          aria-label="Select country and region"
-          data-home-footer-country-selector="true">
-          <span data-home-footer-country-value="true">United States</span>
+        <button id="country-selector" class="locale-button" aria-label="Select country and region" data-locale-trigger="country">
+          <span id="current-country">—</span>
         </button>
       </div>
-
-      <span class="footer-separator-dot">•</span>
-
-      <button
-        class="locale-button home-footer__privacy-action"
-        data-home-footer-action="privacy"
-        type="button"
-        aria-controls="cookie-consent-mount"
-        aria-expanded="false">
-        Privacy
-      </button>
     </div>
   </div>
 </footer>
+
+<!-- =============================================================================
+05) END OF FOOTER
+============================================================================= -->

@@ -2,9 +2,8 @@
    00. FILE INDEX
    01. MODULE STATE
    02. DOM HELPERS
-   03. ACTION HELPERS
-   04. EVENT BINDING
-   05. MODULE BOOT
+   03. EVENT HELPERS
+   04. MODULE BOOT
    ========================================================= */
 
 /* =========================================================
@@ -20,71 +19,24 @@ const HOME_FOOTER_STATE = {
    02. DOM HELPERS
    ========================================================= */
 
-function getHomeFooterNodes() {
-  const root = document.querySelector('#home-footer');
-
-  return {
-    root,
-    copy: root ? root.querySelector('[data-home-footer-copy]') : null,
-  };
-}
-
-function dispatchHomeFooterEvent(name, detail = {}) {
-  document.dispatchEvent(new CustomEvent(name, { detail }));
-}
-
 function getLiveFooterRoot() {
-  return document.querySelector('#home-footer');
-}
-
-function renderHomeFooter() {
-  const nodes = getHomeFooterNodes();
-
-  if (nodes.copy) {
-    nodes.copy.textContent = `© ${new Date().getFullYear()} Neuroartan`;
-  }
+  return document.querySelector('#home-footer.site-footer');
 }
 
 /* =========================================================
-   03. ACTION HELPERS
+   03. EVENT HELPERS
    ========================================================= */
 
-function handleHomeFooterAction(actionLabel) {
-  const normalized = typeof actionLabel === 'string' ? actionLabel.trim().toLowerCase() : '';
-
-  if (normalized === 'privacy') {
-    dispatchHomeFooterEvent('neuroartan:cookie-consent-open-requested', {
+function dispatchHomeFooterMounted() {
+  document.dispatchEvent(new CustomEvent('neuroartan:footer-mounted', {
+    detail: {
       source: 'home-footer',
-      surface: 'settings',
-    });
-  }
+    },
+  }));
 }
 
 /* =========================================================
-   04. EVENT BINDING
-   ========================================================= */
-
-function bindHomeFooter() {
-  document.addEventListener('click', (event) => {
-    const root = getLiveFooterRoot();
-    if (!root) return;
-
-    const target = event.target.closest('#home-footer [data-home-footer-action]');
-
-    if (!target || !root.contains(target)) {
-      return;
-    }
-
-    handleHomeFooterAction(
-      target.getAttribute('data-home-footer-action')
-      || target.textContent
-      || ''
-    );
-  });
-}
-
-/* =========================================================
-   05. MODULE BOOT
+   04. MODULE BOOT
    ========================================================= */
 
 function bootHomeFooter() {
@@ -96,13 +48,12 @@ function bootHomeFooter() {
   HOME_FOOTER_STATE.root = root;
 
   if (HOME_FOOTER_STATE.isBound) {
-    renderHomeFooter();
+    dispatchHomeFooterMounted();
     return;
   }
 
   HOME_FOOTER_STATE.isBound = true;
-  renderHomeFooter();
-  bindHomeFooter();
+  dispatchHomeFooterMounted();
 }
 
 document.addEventListener('fragment:mounted', (event) => {
