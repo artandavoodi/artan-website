@@ -17,6 +17,7 @@ import {
   buildPublicProfileDisplay,
   buildPublicProfilePath,
   buildPublicProfileUrl,
+  getProfileIdentityBackendState,
   getProfileIdentityPolicy,
   getPublicRouteConfig,
   loadProfileIdentityPolicy,
@@ -26,6 +27,7 @@ import {
 } from './account-profile-identity.js';
 import {
   getPublicModelByUsername,
+  getPublicModelRegistryBackendState,
   loadPublicModelRegistry
 } from './public-model-registry.js';
 
@@ -57,6 +59,8 @@ function getProfileRouterBackendState() {
   return {
     supabaseConfigured: hasSupabaseClient(),
     profilesTable: SUPABASE_PROFILES_TABLE,
+    profileIdentityBackendState: getProfileIdentityBackendState(),
+    publicModelRegistryBackendState: getPublicModelRegistryBackendState(),
     migrationStatus: 'transitional_static_public_route_resolution'
   };
 }
@@ -89,6 +93,12 @@ function createDefaultRouteState() {
  * and public registry projection behavior until backend-native public profile
  * routing is fully implemented. This file must not silently treat the static
  * registry as the canonical owner of public-route truth.
+ */
+/*
+ * Transitional scope note:
+ * This router currently determines candidate public-route ownership through
+ * local policy validation plus public-registry projection fallback. Backend-
+ * native public profile resolution still remains a later migration step.
  */
 function decodePathSegment(segment) {
   try {
@@ -228,8 +238,8 @@ export function subscribePublicRoute(subscriber) {
 
 export async function refreshPublicRoute(pathname = window.location.pathname) {
   const policy = await loadProfileIdentityPolicy();
-  const resolvedRoute = resolvePublicRoute(pathname, policy);
   RUNTIME.backendState = getProfileRouterBackendState();
+  const resolvedRoute = resolvePublicRoute(pathname, policy);
 
   if (resolvedRoute.handleAsPublicRoute && resolvedRoute.outcome === 'restricted_username') {
     try {

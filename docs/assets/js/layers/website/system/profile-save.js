@@ -22,6 +22,9 @@ import {
   evaluateEligibility,
   getProfileByUid,
   getSupabaseClient as getProfileIdentitySupabaseClient,
+  getSupabaseProfileByAuthUserId as getSupabaseIdentityProfileByAuthUserId,
+  getSupabaseProfileByUsername,
+  getSupabaseUsernameReservation,
   loadProfileIdentityPolicy,
   normalizeEmail,
   normalizeString,
@@ -49,12 +52,93 @@ const SAVE_SCOPES = Object.freeze(['identity', 'route', 'visibility']);
 /* =============================================================================
    04) SUPABASE HELPERS
 ============================================================================= */
+/*
+ * Transitional rule:
+ * Supabase-backed profile persistence below is now the approved canonical
+ * direction, but username-reservation governance is still in migration. This
+ * file must therefore preserve collision safety and avoid silently treating the
+ * profile row alone as the complete public-route ownership system.
+ */
 function getSupabaseClient() {
   return getProfileIdentitySupabaseClient();
 }
 
 function hasSupabaseClient() {
   return !!getSupabaseClient();
+}
+
+function isSupabaseRelationMissingError(error) {
+  const code = normalizeString(error?.code || '').toUpperCase();
+  const message = normalizeString(error?.message || '').toLowerCase();
+
+  return code === '42P01' || message.includes('does not exist');
+}
+
+async function getSupabaseProfileByAuthUserId(supabase, authUserId) {
+  return getSupabaseIdentityProfileByAuthUserId({
+    supabase,
+    authUserId
+  });
+}
+
+async function ensureSupabaseUsernameAvailability(values, existingProfile, user, supabase) {
+  const normalizedUsername = normalizeUsername(values.username || existingProfile?.username || '');
+  if (!normalizedUsername) return normalizedUsername;
+
+  const currentAuthUserId = normalizeString(user?.id || user?.uid || '');
+  const currentProfileId = normalizeString(existingProfile?.id || '');
+
+  const conflictingProfile = await getSupabaseProfileByUsername({
+    supabase,
+    username: normalizedUsername
+  });
+
+  if (conflictingProfile) {
+    const conflictingAuthUserId = normalizeString(conflictingProfile.auth_user_id || '');
+    const conflictingProfileId = normalizeString(conflictingProfile.id || '');
+
+    if (conflictingAuthUserId && currentAuthUserId && conflictingAuthUserId !== currentAuthUserId) {
+      const error = new Error('USERNAME_TAKEN');
+      error.code = 'USERNAME_TAKEN';
+      throw error;
+    }
+
+    if (conflictingProfileId && currentProfileId && conflictingProfileId !== currentProfileId) {
+      const error = new Error('USERNAME_TAKEN');
+      error.code = 'USERNAME_TAKEN';
+      throw error;
+    }
+  }
+
+  try {
+    const reservation = await getSupabaseUsernameReservation({
+      supabase,
+      username: normalizedUsername
+    });
+
+    if (!reservation) return normalizedUsername;
+
+    const reservationAuthUserId = normalizeString(reservation.auth_user_id || reservation.owner_auth_user_id || '');
+    const reservationProfileId = normalizeString(reservation.profile_id || reservation.owner_profile_id || '');
+
+    if (reservationAuthUserId && currentAuthUserId && reservationAuthUserId !== currentAuthUserId) {
+      const error = new Error('USERNAME_TAKEN');
+      error.code = 'USERNAME_TAKEN';
+      throw error;
+    }
+
+    if (reservationProfileId && currentProfileId && reservationProfileId !== currentProfileId) {
+      const error = new Error('USERNAME_TAKEN');
+      error.code = 'USERNAME_TAKEN';
+      throw error;
+    }
+  } catch (error) {
+    if (!isSupabaseRelationMissingError(error)) {
+      throw error;
+    }
+  }
+
+  return normalizedUsername;
 }
 
 /* =============================================================================
@@ -251,6 +335,8 @@ function resolveProfileSaveErrorCode(error) {
   if (message.includes('could not reach cloud firestore backend')) return 'PROFILE_STORE_UNAVAILABLE';
   if (message.includes('row-level security')) return 'PROFILE_SAVE_BLOCKED';
   if (message.includes('jwt')) return 'AUTH_REQUIRED';
+  if (message.includes('duplicate key')) return 'USERNAME_TAKEN';
+  if (message.includes('unique constraint')) return 'USERNAME_TAKEN';
   return 'PROFILE_SAVE_FAILED';
 }
 
@@ -285,24 +371,8 @@ function messageForProfileSaveError(code) {
 /* =============================================================================
    09) SAVE EXECUTION
 ============================================================================= */
-async function getSupabaseProfileByAuthUserId(supabase, authUserId) {
-  if (!supabase || !authUserId) return null;
-
-  const { data, error } = await supabase
-    .from(PROFILE_COLLECTION)
-    .select(SUPABASE_PROFILE_SELECT_FIELDS)
-    .eq('auth_user_id', authUserId)
-    .maybeSingle();
-
-  if (error) {
-    throw error;
-  }
-
-  return data || null;
-}
-
 async function persistProfileWithSupabase(scope, values, existingProfile, user, policy, supabase) {
-  const normalizedUsername = normalizeUsername(values.username || existingProfile?.username || '');
+  const normalizedUsername = await ensureSupabaseUsernameAvailability(values, existingProfile, user, supabase);
 
   if (scope === 'visibility' && values.public_profile_enabled && !normalizedUsername) {
     const error = new Error('USERNAME_REQUIRED');
@@ -337,6 +407,7 @@ async function persistProfileWithSupabase(scope, values, existingProfile, user, 
 
   const supabasePayload = {
     auth_user_id: user.id || user.uid,
+    public_username: payload.public_username || payload.username || normalizedUsername || '',
     username: payload.username || normalizedUsername || currentProfile?.username || '',
     display_name: payload.display_name || '',
     avatar_url: payload.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
@@ -345,16 +416,37 @@ async function persistProfileWithSupabase(scope, values, existingProfile, user, 
     profile_status: payload.profile_status || currentProfile?.profile_status || 'active',
     public_profile_enabled: payload.public_profile_enabled === true,
     public_profile_discoverable: payload.public_profile_discoverable === true,
+    public_profile_visibility: payload.public_profile_enabled ? 'public' : 'private',
+    public_route_path: payload.public_route_path || '',
+    public_route_url: payload.public_route_url || '',
+    public_route_canonical_url: payload.public_route_canonical_url || '',
+    public_route_status: payload.public_route_status || '',
     public_display_name: payload.public_display_name || '',
     public_identity_label: payload.public_identity_label || '',
     public_summary: payload.public_summary || '',
     public_primary_link: payload.public_primary_link || '',
+    public_bio: payload.public_bio || payload.public_summary || '',
+    public_tagline: payload.public_tagline || '',
+    public_links: payload.public_links || [],
+    public_modules: payload.public_modules || [],
+    public_feature_flags: payload.public_feature_flags || [],
     email: payload.email || normalizeEmail(user.email || ''),
     first_name: payload.first_name || '',
     last_name: payload.last_name || '',
     date_of_birth: payload.date_of_birth || payload.birth_date || '',
     birth_date: payload.birth_date || payload.date_of_birth || '',
     gender: payload.gender || '',
+    profile_exists: true,
+    profile_complete: payload.profile_complete === true,
+    profile_completion_status: payload.profile_completion_status || '',
+    profile_completion_percent: Number.isFinite(payload.profile_completion_percent) ? payload.profile_completion_percent : null,
+    missing_required_fields: Array.isArray(payload.missing_required_fields) ? payload.missing_required_fields : [],
+    profile_visibility_status: payload.profile_visibility_status || '',
+    eligibility_status: payload.eligibility_status || '',
+    eligibility_age_years: Number.isFinite(payload.eligibility_age_years) ? payload.eligibility_age_years : null,
+    minimum_eligible_age_years: Number.isFinite(payload.minimum_eligible_age_years) ? payload.minimum_eligible_age_years : null,
+    eligibility_policy_status: payload.eligibility_policy_status || '',
+    eligibility_checked_at: payload.eligibility_checked_at || null,
     username_lower: payload.username_lower || normalizeUsername(payload.username || normalizedUsername || ''),
     username_normalized: payload.username_lower || normalizeUsername(payload.username || normalizedUsername || '')
   };
@@ -460,7 +552,7 @@ async function handleSaveRequest(form) {
       }
 
       const policy = await loadProfileIdentityPolicy();
-      const existingProfile = await getSupabaseProfileByAuthUserId(supabase, user.id);
+      const existingProfile = await getSupabaseProfileByAuthUserId(supabase, user.id || user.uid);
       const values = buildScopedValues(scope, form, existingProfile, user);
 
       await persistProfileWithSupabase(scope, values, existingProfile, user, policy, supabase);

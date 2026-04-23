@@ -10,9 +10,10 @@
    08) PUBLIC IDENTITY HELPERS
    09) ELIGIBILITY HELPERS
    10) USERNAME POLICY HELPERS
-   11) FIRESTORE CONTINUITY HELPERS
-   12) PROFILE PAYLOAD HELPERS
-   13) END OF FILE
+   11) SUPABASE PROFILE IDENTITY HELPERS
+   12) FIRESTORE CONTINUITY HELPERS
+   13) PROFILE PAYLOAD HELPERS
+   14) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -32,6 +33,7 @@ let profileIdentityPolicyPromise = null;
 const PROFILE_IDENTITY_POLICY_URL = '/assets/data/accounts/profile-identity-policy.json';
 const SUPABASE_PROFILES_TABLE = 'profiles';
 const SUPABASE_USERNAME_RESERVATIONS_TABLE = 'username_reservations';
+const SUPABASE_PROFILE_IDENTITY_SELECT_FIELDS = 'id, auth_user_id, username, username_lower, username_normalized, username_status, username_route_ready, username_reserved_at, public_username, public_display_name, public_avatar_url, public_identity_label, public_profile_enabled, public_profile_discoverable, public_profile_visibility, public_route_path, public_route_url, public_route_canonical_url, public_route_status, public_summary, public_bio, public_tagline, public_links, public_primary_link, public_modules, public_feature_flags, first_name, last_name, display_name, email, avatar_url, photo_url, birth_date, date_of_birth, gender, profile_exists, profile_completion_status, profile_completion_percent, missing_required_fields, profile_visibility_status, profile_complete, eligibility_status, eligibility_age_years, minimum_eligible_age_years, eligibility_policy_status, eligibility_checked_at, created_at, updated_at';
 const DEFAULT_PROFILE_IDENTITY_POLICY = Object.freeze({
   public_profile_url_pattern: 'https://neuroartan.com/{username}',
   public_profile_path_pattern: '/{username}',
@@ -179,9 +181,73 @@ export function getProfileIdentityBackendState() {
     supabaseConfigured: hasSupabaseProfileIdentityBackend(),
     profilesTable: SUPABASE_PROFILES_TABLE,
     usernameReservationsTable: SUPABASE_USERNAME_RESERVATIONS_TABLE,
+    selectFields: SUPABASE_PROFILE_IDENTITY_SELECT_FIELDS,
     migrationStatus: 'transitional_firestore_continuity'
   };
 }
+/* =============================================================================
+   11) SUPABASE PROFILE IDENTITY HELPERS
+============================================================================= */
+export async function getSupabaseProfileByAuthUserId({
+  supabase = getSupabaseClient(),
+  authUserId
+} = {}) {
+  const normalizedAuthUserId = normalizeString(authUserId);
+  if (!supabase || !normalizedAuthUserId) return null;
+
+  const { data, error } = await supabase
+    .from(SUPABASE_PROFILES_TABLE)
+    .select(SUPABASE_PROFILE_IDENTITY_SELECT_FIELDS)
+    .eq('auth_user_id', normalizedAuthUserId)
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return data || null;
+}
+
+export async function getSupabaseProfileByUsername({
+  supabase = getSupabaseClient(),
+  username
+} = {}) {
+  const normalizedUsername = normalizeUsername(username);
+  if (!supabase || !normalizedUsername) return null;
+
+  const { data, error } = await supabase
+    .from(SUPABASE_PROFILES_TABLE)
+    .select(SUPABASE_PROFILE_IDENTITY_SELECT_FIELDS)
+    .eq('username_lower', normalizedUsername)
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return data || null;
+}
+
+export async function getSupabaseUsernameReservation({
+  supabase = getSupabaseClient(),
+  username
+} = {}) {
+  const normalizedUsername = normalizeUsername(username);
+  if (!supabase || !normalizedUsername) return null;
+
+  const { data, error } = await supabase
+    .from(SUPABASE_USERNAME_RESERVATIONS_TABLE)
+    .select('*')
+    .eq('username_lower', normalizedUsername)
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return data || null;
+}
+
 
 /* =============================================================================
    05) ASSET PATH HELPERS
@@ -646,7 +712,7 @@ export function messageForUsernameError(code, policy = getProfileIdentityPolicy(
 }
 
 /* =============================================================================
-   11) FIRESTORE CONTINUITY HELPERS
+   12) FIRESTORE CONTINUITY HELPERS
 ============================================================================= */
 /*
  * Transitional rule:
@@ -988,7 +1054,7 @@ export async function resolvePublicProfileByUsername({
 }
 
 /* =============================================================================
-   12) PROFILE PAYLOAD HELPERS
+   13) PROFILE PAYLOAD HELPERS
 ============================================================================= */
 function resolveServerTimestamp(firebaseNamespace) {
   const fieldValue = firebaseNamespace?.firestore?.FieldValue;
@@ -1233,5 +1299,5 @@ export async function reserveUsernameProfile({
 }
 
 /* =============================================================================
-   13) END OF FILE
+   14) END OF FILE
 ============================================================================= */
