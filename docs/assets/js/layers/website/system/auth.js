@@ -2,21 +2,22 @@
    00) FILE INDEX
    01) MODULE IDENTITY
    02) MODULE STATE
-   03) FIREBASE STATE
-   04) PROFILE ROUTES
-   05) ROUTE HELPERS
-   06) DOM TEXT HELPERS
-   07) DOM IMAGE HELPERS
-   08) PROFILE SURFACE RESOLUTION
-   09) PROFILE SURFACE — SIGNED IN
-   10) PROFILE SURFACE — SIGNED OUT
-   11) AUTH STATE HANDLERS
-   12) AUTH BINDING
-   13) ACCOUNT REQUEST HELPERS
-   14) PROFILE STATE EVENTS
-   15) EVENT REBINDING
-   16) INITIALIZATION
-   17) END OF FILE
+   03) SUPABASE STATE
+   04) FIREBASE FALLBACK STATE
+   05) PROFILE ROUTES
+   06) ROUTE HELPERS
+   07) DOM TEXT HELPERS
+   08) DOM IMAGE HELPERS
+   09) PROFILE SURFACE RESOLUTION
+   10) PROFILE SURFACE — SIGNED IN
+   11) PROFILE SURFACE — SIGNED OUT
+   12) AUTH STATE HANDLERS
+   13) AUTH BINDING
+   14) ACCOUNT REQUEST HELPERS
+   15) PROFILE STATE EVENTS
+   16) EVENT REBINDING
+   17) INITIALIZATION
+   18) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -34,9 +35,19 @@
   let authBound = false;
   let firebaseReadyEventsBound = false;
   let profileStateEventsBound = false;
+  let authSource = 'none';
+  let supabaseReadyEventsBound = false;
 
   /* =============================================================================
-     03) FIREBASE STATE
+     03) SUPABASE STATE
+  ============================================================================= */
+  function getSupabaseClient() {
+    if (typeof window === 'undefined') return null;
+    return window.neuroartanSupabase || null;
+  }
+
+  /* =============================================================================
+     04) FIREBASE FALLBACK STATE
   ============================================================================= */
   function getFirebaseAuth() {
     const firebaseReady = typeof window !== 'undefined' && typeof window.firebase !== 'undefined';
@@ -50,20 +61,20 @@
   }
 
   /* =============================================================================
-     04) PROFILE ROUTES
+     05) PROFILE ROUTES
   ============================================================================= */
   const PROFILE_ROUTE_MATCHERS = ['/profile.html', '/profile/'];
   const CORE_NEUROARTAN_LOGO = 'assets/icons/core/identity/brand/neuroartan/logo-plain.svg';
 
   /* =============================================================================
-     05) ROUTE HELPERS
+     06) ROUTE HELPERS
   ============================================================================= */
   function isProfileRoute(pathname) {
     return PROFILE_ROUTE_MATCHERS.some((route) => pathname.endsWith(route));
   }
 
   /* =============================================================================
-     06) DOM TEXT HELPERS
+     07) DOM TEXT HELPERS
   ============================================================================= */
   function setText(id, value) {
     const element = document.getElementById(id);
@@ -72,7 +83,7 @@
   }
 
   /* =============================================================================
-     07) DOM IMAGE HELPERS
+     08) DOM IMAGE HELPERS
   ============================================================================= */
   function setImage(id, src, alt) {
     const element = document.getElementById(id);
@@ -82,7 +93,7 @@
   }
 
   /* =============================================================================
-     08) PROFILE SURFACE RESOLUTION
+     09) PROFILE SURFACE RESOLUTION
   ============================================================================= */
   function resolveDisplayName(user, profile) {
     return profile?.display_name || user?.displayName || 'Neuroartan User';
@@ -105,7 +116,7 @@
   }
 
   /* =============================================================================
-     09) PROFILE SURFACE — SIGNED IN
+     10) PROFILE SURFACE — SIGNED IN
   ============================================================================= */
   function updateProfileSurface(user, profile = null, profileComplete = true) {
     if (!user) return;
@@ -133,7 +144,7 @@
   }
 
   /* =============================================================================
-     10) PROFILE SURFACE — SIGNED OUT
+     11) PROFILE SURFACE — SIGNED OUT
   ============================================================================= */
   function updateSignedOutSurface() {
     if (!isProfileRoute(window.location.pathname)) return;
@@ -160,7 +171,7 @@
   }
 
   /* =============================================================================
-     11) AUTH STATE HANDLERS
+     12) AUTH STATE HANDLERS
   ============================================================================= */
   function handleSignedOutState() {
     updateSignedOutSurface();
@@ -171,10 +182,42 @@
   }
 
   /* =============================================================================
-     12) AUTH BINDING
+     13) AUTH BINDING
   ============================================================================= */
   function bindAuthState() {
-    if (authBound) return;
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      if (authSource === 'supabase') return;
+      authSource = 'supabase';
+      authBound = true;
+
+      supabase.auth.getSession()
+        .then(({ data }) => {
+          const user = data?.session?.user || null;
+          if (user) {
+            handleSignedInState(user);
+            return;
+          }
+
+          handleSignedOutState();
+        })
+        .catch(() => {
+          handleSignedOutState();
+        });
+
+      supabase.auth.onAuthStateChange((_event, session) => {
+        const user = session?.user || null;
+
+        if (user) {
+          handleSignedInState(user);
+          return;
+        }
+
+        handleSignedOutState();
+      });
+
+      return;
+    }
 
     const authInstance = getFirebaseAuth();
     if (!authInstance) {
@@ -182,6 +225,9 @@
       return;
     }
 
+    if (authSource === 'firebase') return;
+
+    authSource = 'firebase';
     authBound = true;
 
     authInstance.onAuthStateChanged((user) => {
@@ -195,9 +241,18 @@
   }
 
   /* =============================================================================
-     13) ACCOUNT REQUEST HELPERS
+     14) ACCOUNT REQUEST HELPERS
   ============================================================================= */
   function requestLogout() {
+    const supabase = getSupabaseClient();
+
+    if (supabase) {
+      supabase.auth.signOut().catch((error) => {
+        console.error('[Neuroartan][Auth] Sign-out failed.', error);
+      });
+      return;
+    }
+
     document.dispatchEvent(new CustomEvent('account:sign-out-request', {
       detail: {
         source: 'profile-shell'
@@ -206,6 +261,21 @@
   }
 
   function requestGoogleLogin() {
+    const supabase = getSupabaseClient();
+
+    if (supabase) {
+      const redirectTo = `${window.location.origin}/profile.html`;
+      supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo
+        }
+      }).catch((error) => {
+        console.error('[Neuroartan][Auth] Google sign-in failed.', error);
+      });
+      return;
+    }
+
     document.dispatchEvent(new CustomEvent('account:provider-submit', {
       detail: {
         source: 'profile-shell',
@@ -215,7 +285,7 @@
   }
 
   /* =============================================================================
-     14) PROFILE STATE EVENTS
+     15) PROFILE STATE EVENTS
   ============================================================================= */
   function bindProfileStateEvents() {
     if (profileStateEventsBound) return;
@@ -240,30 +310,50 @@
   }
 
   /* =============================================================================
-     15) EVENT REBINDING
+     16) EVENT REBINDING
   ============================================================================= */
+  function bindSupabaseReadyEvents() {
+    if (supabaseReadyEventsBound) return;
+    supabaseReadyEventsBound = true;
+
+    document.addEventListener('neuroartan:supabase-ready', () => {
+      authBound = false;
+      authSource = 'none';
+      bindAuthState();
+    });
+  }
+
   function bindFirebaseReadyEvents() {
     if (firebaseReadyEventsBound) return;
     firebaseReadyEventsBound = true;
 
     document.addEventListener('neuroartan:firebase-ready', () => {
       authBound = false;
+      authSource = 'none';
+      bindAuthState();
+    });
+
+    document.addEventListener('neuroartan:supabase-ready', () => {
+      authBound = false;
+      authSource = 'none';
       bindAuthState();
     });
 
     window.addEventListener('load', () => {
       authBound = false;
+      authSource = 'none';
       bindAuthState();
     }, { once: true });
   }
 
   /* =============================================================================
-     16) INITIALIZATION
+     17) INITIALIZATION
   ============================================================================= */
   function boot() {
     if (bootBound) return;
     bootBound = true;
 
+    bindSupabaseReadyEvents();
     bindFirebaseReadyEvents();
     bindProfileStateEvents();
     bindAuthState();
@@ -279,5 +369,5 @@
 })();
 
 /* =============================================================================
-   17) END OF FILE
+   18) END OF FILE
 ============================================================================= */

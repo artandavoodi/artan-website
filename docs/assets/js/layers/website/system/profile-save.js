@@ -3,14 +3,15 @@
    01) MODULE IMPORTS
    02) MODULE STATE
    03) CONSTANTS
-   04) FIREBASE HELPERS
-   05) STATE STORE
-   06) VALUE HELPERS
-   07) ERROR HELPERS
-   08) SAVE EXECUTION
-   09) EVENT BINDING
-   10) INITIALIZATION
-   11) END OF FILE
+   04) SUPABASE HELPERS
+   05) FIREBASE HELPERS
+   06) STATE STORE
+   07) VALUE HELPERS
+   08) ERROR HELPERS
+   09) SAVE EXECUTION
+   10) EVENT BINDING
+   11) INITIALIZATION
+   12) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -20,6 +21,7 @@ import {
   buildProfilePayload,
   evaluateEligibility,
   getProfileByUid,
+  getSupabaseClient as getProfileIdentitySupabaseClient,
   loadProfileIdentityPolicy,
   normalizeEmail,
   normalizeString,
@@ -41,10 +43,22 @@ const RUNTIME = (window.__NEUROARTAN_PROFILE_SAVE__ ||= {
 ============================================================================= */
 const PROFILE_COLLECTION = 'profiles';
 const USERNAME_RESERVATION_COLLECTION = 'username_reservations';
+const SUPABASE_PROFILE_SELECT_FIELDS = 'id, auth_user_id, username, display_name, avatar_url, bio, visibility_state, profile_status, public_profile_enabled, public_profile_discoverable, public_display_name, public_identity_label, public_summary, public_primary_link, email, first_name, last_name, date_of_birth, birth_date, gender, username_lower, username_normalized';
 const SAVE_SCOPES = Object.freeze(['identity', 'route', 'visibility']);
 
 /* =============================================================================
-   04) FIREBASE HELPERS
+   04) SUPABASE HELPERS
+============================================================================= */
+function getSupabaseClient() {
+  return getProfileIdentitySupabaseClient();
+}
+
+function hasSupabaseClient() {
+  return !!getSupabaseClient();
+}
+
+/* =============================================================================
+   05) FIREBASE HELPERS
 ============================================================================= */
 function hasFirebaseAuth() {
   return !!(window.firebase && typeof window.firebase.auth === 'function');
@@ -101,7 +115,7 @@ async function waitForFirebaseReady(timeoutMs = 15000) {
 }
 
 /* =============================================================================
-   05) STATE STORE
+   06) STATE STORE
 ============================================================================= */
 function createScopeState() {
   return {
@@ -164,7 +178,7 @@ export function subscribePrivateProfileSaveState(subscriber) {
 }
 
 /* =============================================================================
-   06) VALUE HELPERS
+   07) VALUE HELPERS
 ============================================================================= */
 function getExistingProfileSeed(existingProfile = null, user = null) {
   return {
@@ -223,7 +237,7 @@ function buildScopedValues(scope, form, existingProfile = null, user = null) {
 }
 
 /* =============================================================================
-   07) ERROR HELPERS
+   08) ERROR HELPERS
 ============================================================================= */
 function resolveProfileSaveErrorCode(error) {
   const code = normalizeString(error?.code || '');
@@ -235,6 +249,8 @@ function resolveProfileSaveErrorCode(error) {
   if (message.includes('cloud firestore api has not been used')) return 'FIRESTORE_API_DISABLED';
   if (message.includes('client is offline')) return 'PROFILE_STORE_UNAVAILABLE';
   if (message.includes('could not reach cloud firestore backend')) return 'PROFILE_STORE_UNAVAILABLE';
+  if (message.includes('row-level security')) return 'PROFILE_SAVE_BLOCKED';
+  if (message.includes('jwt')) return 'AUTH_REQUIRED';
   return 'PROFILE_SAVE_FAILED';
 }
 
@@ -243,6 +259,8 @@ function messageForProfileSaveError(code) {
     case 'FIREBASE_NOT_READY':
     case 'PROFILE_STORE_UNAVAILABLE':
       return 'Profile storage is not available right now.';
+    case 'PROFILE_SAVE_BLOCKED':
+      return 'Profile save is blocked by backend access policy right now.';
     case 'API_KEY_HTTP_REFERRER_BLOCKED':
       return 'Profile runtime is blocked by Firebase referrer restrictions for this origin.';
     case 'FIRESTORE_API_DISABLED':
@@ -265,8 +283,110 @@ function messageForProfileSaveError(code) {
 }
 
 /* =============================================================================
-   08) SAVE EXECUTION
+   09) SAVE EXECUTION
 ============================================================================= */
+async function getSupabaseProfileByAuthUserId(supabase, authUserId) {
+  if (!supabase || !authUserId) return null;
+
+  const { data, error } = await supabase
+    .from(PROFILE_COLLECTION)
+    .select(SUPABASE_PROFILE_SELECT_FIELDS)
+    .eq('auth_user_id', authUserId)
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return data || null;
+}
+
+async function persistProfileWithSupabase(scope, values, existingProfile, user, policy, supabase) {
+  const normalizedUsername = normalizeUsername(values.username || existingProfile?.username || '');
+
+  if (scope === 'visibility' && values.public_profile_enabled && !normalizedUsername) {
+    const error = new Error('USERNAME_REQUIRED');
+    error.code = 'USERNAME_REQUIRED';
+    throw error;
+  }
+
+  if (values.date_of_birth) {
+    const eligibility = evaluateEligibility(values.date_of_birth, policy);
+    if (!eligibility.eligible) {
+      const error = new Error(eligibility.reason || 'INVALID_DATE_OF_BIRTH');
+      error.code = eligibility.reason || 'INVALID_DATE_OF_BIRTH';
+      throw error;
+    }
+
+    values.eligibility_age_years = eligibility.ageYears;
+    values.minimum_eligible_age_years = eligibility.minimumAge;
+  }
+
+  const payload = buildProfilePayload({
+    user,
+    values: {
+      ...values,
+      username: normalizedUsername || values.username || ''
+    },
+    existingProfile,
+    policy
+  });
+
+  const currentProfile = existingProfile || await getSupabaseProfileByAuthUserId(supabase, user.id || user.uid);
+  const existingRecordId = currentProfile?.id || null;
+
+  const supabasePayload = {
+    auth_user_id: user.id || user.uid,
+    username: payload.username || normalizedUsername || currentProfile?.username || '',
+    display_name: payload.display_name || '',
+    avatar_url: payload.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
+    bio: payload.public_summary || currentProfile?.bio || '',
+    visibility_state: payload.public_profile_enabled ? 'public' : 'private',
+    profile_status: payload.profile_status || currentProfile?.profile_status || 'active',
+    public_profile_enabled: payload.public_profile_enabled === true,
+    public_profile_discoverable: payload.public_profile_discoverable === true,
+    public_display_name: payload.public_display_name || '',
+    public_identity_label: payload.public_identity_label || '',
+    public_summary: payload.public_summary || '',
+    public_primary_link: payload.public_primary_link || '',
+    email: payload.email || normalizeEmail(user.email || ''),
+    first_name: payload.first_name || '',
+    last_name: payload.last_name || '',
+    date_of_birth: payload.date_of_birth || payload.birth_date || '',
+    birth_date: payload.birth_date || payload.date_of_birth || '',
+    gender: payload.gender || '',
+    username_lower: payload.username_lower || normalizeUsername(payload.username || normalizedUsername || ''),
+    username_normalized: payload.username_lower || normalizeUsername(payload.username || normalizedUsername || '')
+  };
+
+  if (existingRecordId) {
+    const { data, error } = await supabase
+      .from(PROFILE_COLLECTION)
+      .update(supabasePayload)
+      .eq('id', existingRecordId)
+      .select(SUPABASE_PROFILE_SELECT_FIELDS)
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  }
+
+  const { data, error } = await supabase
+    .from(PROFILE_COLLECTION)
+    .insert(supabasePayload)
+    .select(SUPABASE_PROFILE_SELECT_FIELDS)
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
 async function persistProfile(scope, values, existingProfile, user, policy, firestore) {
   const normalizedUsername = normalizeUsername(values.username || existingProfile?.username || '');
 
@@ -324,32 +444,54 @@ async function handleSaveRequest(form) {
   });
 
   try {
-    const ready = await waitForFirebaseReady();
-    if (!ready) {
-      const error = new Error('FIREBASE_NOT_READY');
-      error.code = 'FIREBASE_NOT_READY';
-      throw error;
+    const supabase = getSupabaseClient();
+
+    if (supabase) {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        throw sessionError;
+      }
+
+      const user = sessionData?.session?.user || null;
+      if (!user?.id) {
+        const error = new Error('AUTH_REQUIRED');
+        error.code = 'AUTH_REQUIRED';
+        throw error;
+      }
+
+      const policy = await loadProfileIdentityPolicy();
+      const existingProfile = await getSupabaseProfileByAuthUserId(supabase, user.id);
+      const values = buildScopedValues(scope, form, existingProfile, user);
+
+      await persistProfileWithSupabase(scope, values, existingProfile, user, policy, supabase);
+    } else {
+      const ready = await waitForFirebaseReady();
+      if (!ready) {
+        const error = new Error('FIREBASE_NOT_READY');
+        error.code = 'FIREBASE_NOT_READY';
+        throw error;
+      }
+
+      const auth = getFirebaseAuth();
+      const firestore = getFirestore();
+      const user = auth?.currentUser || null;
+
+      if (!auth || !firestore || !user?.uid) {
+        const error = new Error('AUTH_REQUIRED');
+        error.code = 'AUTH_REQUIRED';
+        throw error;
+      }
+
+      const policy = await loadProfileIdentityPolicy();
+      const existingProfile = await getProfileByUid({
+        firestore,
+        uid: user.uid,
+        profileCollection: PROFILE_COLLECTION
+      });
+      const values = buildScopedValues(scope, form, existingProfile, user);
+
+      await persistProfile(scope, values, existingProfile, user, policy, firestore);
     }
-
-    const auth = getFirebaseAuth();
-    const firestore = getFirestore();
-    const user = auth?.currentUser || null;
-
-    if (!auth || !firestore || !user?.uid) {
-      const error = new Error('AUTH_REQUIRED');
-      error.code = 'AUTH_REQUIRED';
-      throw error;
-    }
-
-    const policy = await loadProfileIdentityPolicy();
-    const existingProfile = await getProfileByUid({
-      firestore,
-      uid: user.uid,
-      profileCollection: PROFILE_COLLECTION
-    });
-    const values = buildScopedValues(scope, form, existingProfile, user);
-
-    await persistProfile(scope, values, existingProfile, user, policy, firestore);
 
     setScopeState(scope, {
       status: 'success',
@@ -375,7 +517,7 @@ async function handleSaveRequest(form) {
 }
 
 /* =============================================================================
-   09) EVENT BINDING
+   10) EVENT BINDING
 ============================================================================= */
 function bindFormSaves() {
   document.addEventListener('submit', (event) => {
@@ -389,7 +531,7 @@ function bindFormSaves() {
 }
 
 /* =============================================================================
-   10) INITIALIZATION
+   11) INITIALIZATION
 ============================================================================= */
 function initProfileSave() {
   if (RUNTIME.initialized) return;
@@ -402,5 +544,5 @@ function initProfileSave() {
 initProfileSave();
 
 /* =============================================================================
-   11) END OF FILE
+   12) END OF FILE
 ============================================================================= */

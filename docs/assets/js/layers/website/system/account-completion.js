@@ -4,25 +4,26 @@
    02) MODULE IDENTITY
    03) RUNTIME STATE
    04) CONSTANTS
-   05) FIREBASE HELPERS
-   06) ROUTE AND DRAWER HELPERS
-   07) FORM HELPERS
-   08) FLOW STATE HELPERS
-   09) ONBOARDING CONTEXT HELPERS
-   10) ACCOUNT STORE HELPERS
-   11) PROFILE RESOLUTION HELPERS
-   12) PROFILE SURFACE EVENTS
-   13) ACCOUNT FLOW HELPERS
-   14) USERNAME STATUS FLOW
-   15) PROVIDER AUTH FLOW
-   16) EMAIL AND PASSWORD SIGN-IN FLOW
-   17) EMAIL ONBOARDING FLOW
-   18) PHONE AND PASSWORD RECOVERY FLOW
-   19) PROFILE SETUP FLOW
-   20) AUTH STATE HANDLERS
-   21) EVENT BINDING
-   22) INITIALIZATION
-   23) END OF FILE
+   05) SUPABASE HELPERS
+   06) FIREBASE HELPERS
+   07) ROUTE AND DRAWER HELPERS
+   08) FORM HELPERS
+   09) FLOW STATE HELPERS
+   10) ONBOARDING CONTEXT HELPERS
+   11) ACCOUNT STORE HELPERS
+   12) PROFILE RESOLUTION HELPERS
+   13) PROFILE SURFACE EVENTS
+   14) ACCOUNT FLOW HELPERS
+   15) USERNAME STATUS FLOW
+   16) PROVIDER AUTH FLOW
+   17) EMAIL AND PASSWORD SIGN-IN FLOW
+   18) EMAIL ONBOARDING FLOW
+   19) PHONE AND PASSWORD RECOVERY FLOW
+   20) PROFILE SETUP FLOW
+   21) AUTH STATE HANDLERS
+   22) EVENT BINDING
+   23) INITIALIZATION
+   24) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -67,6 +68,8 @@ import {
   const RUNTIME = (window.__NEUROARTAN_ACCOUNT_COMPLETION__ ||= {
     authBound: false,
     firebaseReadyBound: false,
+    supabaseReadyBound: false,
+    authSource: 'none',
     profileRequestId: 0,
     profileSaveInProgress: false,
     onboardingContext: {},
@@ -78,6 +81,17 @@ import {
   /* =============================================================================
      04) CONSTANTS
   ============================================================================= */
+  /* =============================================================================
+     05) SUPABASE HELPERS
+  ============================================================================= */
+  function getSupabaseClient() {
+    if (typeof window === 'undefined') return null;
+    return window.neuroartanSupabase || null;
+  }
+
+  function hasSupabaseClient() {
+    return !!getSupabaseClient();
+  }
   const MODULE_ID = 'account-completion';
   const PROFILE_ROUTE = '/profile.html';
   const INDEX_ROUTE = '/';
@@ -89,7 +103,7 @@ import {
   const USERNAME_STATUS_EVENT = 'account:profile-setup-username-status';
   const USERNAME_VALIDATION_DEBOUNCE_MS = 240;
   /* =============================================================================
-     05) FIREBASE HELPERS
+     06) FIREBASE HELPERS
   ============================================================================= */
   function hasFirebaseAuth() {
     return !!(window.firebase && typeof window.firebase.auth === 'function');
@@ -151,7 +165,7 @@ import {
   }
 
   /* =============================================================================
-     06) ROUTE AND DRAWER HELPERS
+     07) ROUTE AND DRAWER HELPERS
   ============================================================================= */
   function isProfileRoute(pathname = window.location.pathname) {
     return PROFILE_ROUTE_MATCHERS.some((route) => pathname.endsWith(route));
@@ -223,7 +237,7 @@ import {
   }
 
   /* =============================================================================
-     07) FORM HELPERS
+     08) FORM HELPERS
   ============================================================================= */
   function getFieldFromForm(form, selector) {
     if (!(form instanceof HTMLFormElement)) return null;
@@ -365,7 +379,7 @@ import {
   }
 
   /* =============================================================================
-     08) FLOW STATE HELPERS
+     09) FLOW STATE HELPERS
   ============================================================================= */
   function readFlowState() {
     try {
@@ -424,7 +438,7 @@ import {
   }
 
   /* =============================================================================
-     09) ONBOARDING CONTEXT HELPERS
+     10) ONBOARDING CONTEXT HELPERS
   ============================================================================= */
   function patchOnboardingContext(detail = {}) {
     const splitName = splitFullName(detail.name || detail.full_name || '');
@@ -461,7 +475,7 @@ import {
   }
 
   /* =============================================================================
-     10) ACCOUNT STORE HELPERS
+     11) ACCOUNT STORE HELPERS
   ============================================================================= */
   async function getProfileByUid(uid) {
     const firestore = getFirestore();
@@ -494,7 +508,7 @@ import {
   }
 
   /* =============================================================================
-     11) PROFILE RESOLUTION HELPERS
+     12) PROFILE RESOLUTION HELPERS
   ============================================================================= */
   function isProfileComplete(profile) {
     if (!profile) return false;
@@ -537,7 +551,7 @@ import {
   }
 
   /* =============================================================================
-     12) PROFILE SURFACE EVENTS
+     13) PROFILE SURFACE EVENTS
   ============================================================================= */
   function emitProfileState(user, profile) {
     document.dispatchEvent(new CustomEvent('account:profile-state-changed', {
@@ -600,7 +614,7 @@ import {
   }
 
   /* =============================================================================
-     13) ACCOUNT FLOW HELPERS
+     14) ACCOUNT FLOW HELPERS
   ============================================================================= */
   async function ensureReadyOrThrow() {
     const ready = await ensureFirebaseServices();
@@ -670,7 +684,7 @@ import {
   }
 
   /* =============================================================================
-     14) USERNAME STATUS FLOW
+     15) USERNAME STATUS FLOW
   ============================================================================= */
   function requestUsernameAvailability(detail = {}) {
     const normalized = normalizeUsername(detail.username || detail.raw_username || '');
@@ -747,20 +761,34 @@ import {
   }
 
   /* =============================================================================
-     15) PROVIDER AUTH FLOW
+     16) PROVIDER AUTH FLOW
   ============================================================================= */
   async function handleProviderSubmit(detail = {}) {
     const provider = normalizeString(detail.provider || '');
     if (!provider) return;
 
     try {
-      const { auth } = await ensureReadyOrThrow();
+      const supabase = getSupabaseClient();
 
       setFlowState({
         resolveProfile: true,
         redirectToProfile: true
       });
 
+      if (supabase && (provider === 'google' || provider === 'apple')) {
+        const redirectTo = `${window.location.origin}${PROFILE_ROUTE}`;
+
+        await supabase.auth.signInWithOAuth({
+          provider,
+          options: {
+            redirectTo
+          }
+        });
+
+        return;
+      }
+
+      const { auth } = await ensureReadyOrThrow();
       let providerInstance = null;
 
       if (provider === 'google') {
@@ -807,7 +835,7 @@ import {
   }
 
   /* =============================================================================
-     16) EMAIL AND PASSWORD SIGN-IN FLOW
+     17) EMAIL AND PASSWORD SIGN-IN FLOW
   ============================================================================= */
   async function handleSignInSubmit(detail = {}) {
     const form = detail.form instanceof HTMLFormElement
@@ -841,7 +869,6 @@ import {
     setFormBusy(form, true);
 
     try {
-      const { auth } = await ensureReadyOrThrow();
       const email = await resolveEmailIdentity(identity);
 
       if (!email) {
@@ -854,6 +881,24 @@ import {
         redirectToProfile: true
       });
 
+      const supabase = getSupabaseClient();
+      if (supabase) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        if (data?.user) {
+          await handleSignedInState(data.user);
+        }
+        return;
+      }
+
+      const { auth } = await ensureReadyOrThrow();
       const credential = await auth.signInWithEmailAndPassword(email, password);
       if (credential?.user) {
         await handleSignedInState(credential.user);
@@ -871,7 +916,7 @@ import {
   }
 
   /* =============================================================================
-     17) EMAIL ONBOARDING FLOW
+     18) EMAIL ONBOARDING FLOW
   ============================================================================= */
   function handleEmailOnboardingRequest(detail = {}) {
     const email = normalizeEmail(detail.email || '');
@@ -891,7 +936,7 @@ import {
   }
 
   /* =============================================================================
-     18) PHONE AND PASSWORD RECOVERY FLOW
+     19) PHONE AND PASSWORD RECOVERY FLOW
   ============================================================================= */
   function handlePhoneAuthRequest(detail = {}) {
     const form = document.querySelector('[data-account-phone-auth-form="true"]');
@@ -922,6 +967,20 @@ import {
     setFormBusy(form, true);
 
     try {
+      const supabase = getSupabaseClient();
+      if (supabase) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}${PROFILE_ROUTE}`
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        form.reset();
+        return;
+      }
+
       const { auth } = await ensureReadyOrThrow();
       await auth.sendPasswordResetEmail(email);
       form.reset();
@@ -937,7 +996,7 @@ import {
   }
 
   /* =============================================================================
-     19) PROFILE SETUP FLOW
+     20) PROFILE SETUP FLOW
   ============================================================================= */
   async function handleProfileSetupSubmit(detail = {}) {
     const form = document.querySelector('[data-account-profile-setup-form="true"]');
@@ -1191,7 +1250,7 @@ import {
   }
 
   /* =============================================================================
-     20) AUTH STATE HANDLERS
+     21) AUTH STATE HANDLERS
   ============================================================================= */
   async function handleSignedInState(user) {
     const requestId = ++RUNTIME.profileRequestId;
@@ -1226,16 +1285,54 @@ import {
     clearOnboardingContext();
     clearFlowState();
     resetAccountSurfaces('signed-out');
+    RUNTIME.authSource = 'none';
     emitSignedOutState();
   }
 
   function bindAuthState() {
-    if (RUNTIME.authBound) return;
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      if (RUNTIME.authSource === 'supabase') return;
+
+      RUNTIME.authBound = true;
+      RUNTIME.authSource = 'supabase';
+
+      supabase.auth.getSession()
+        .then(({ data }) => {
+          const user = data?.session?.user || null;
+
+          if (user) {
+            void handleSignedInState(user);
+            return;
+          }
+
+          handleSignedOutState();
+        })
+        .catch(() => {
+          handleSignedOutState();
+        });
+
+      supabase.auth.onAuthStateChange((_event, session) => {
+        const user = session?.user || null;
+
+        if (user) {
+          void handleSignedInState(user);
+          return;
+        }
+
+        handleSignedOutState();
+      });
+
+      return;
+    }
+
+    if (RUNTIME.authBound && RUNTIME.authSource === 'firebase') return;
 
     const auth = getFirebaseAuth();
     if (!auth) return;
 
     RUNTIME.authBound = true;
+    RUNTIME.authSource = 'firebase';
 
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -1248,14 +1345,26 @@ import {
   }
 
   /* =============================================================================
-     21) EVENT BINDING
+     22) EVENT BINDING
   ============================================================================= */
+  function bindSupabaseReadyEvents() {
+    if (RUNTIME.supabaseReadyBound) return;
+    RUNTIME.supabaseReadyBound = true;
+
+    window.addEventListener('neuroartan:supabase-ready', () => {
+      RUNTIME.authBound = false;
+      RUNTIME.authSource = 'none';
+      bindAuthState();
+    });
+  }
+
   function bindFirebaseReadyEvents() {
     if (RUNTIME.firebaseReadyBound) return;
     RUNTIME.firebaseReadyBound = true;
 
     document.addEventListener('neuroartan:firebase-ready', () => {
       RUNTIME.authBound = false;
+      RUNTIME.authSource = 'none';
       bindAuthState();
     });
   }
@@ -1323,9 +1432,18 @@ import {
 
     document.addEventListener('account:sign-out-request', async () => {
       try {
-        const auth = getFirebaseAuth();
-        if (!auth) return;
-        await auth.signOut();
+        const supabase = getSupabaseClient();
+        if (supabase) {
+          const { error } = await supabase.auth.signOut();
+          if (error) {
+            throw error;
+          }
+        } else {
+          const auth = getFirebaseAuth();
+          if (!auth) return;
+          await auth.signOut();
+        }
+
         clearOnboardingContext();
         clearFlowState();
         if (!isIndexRoute()) {
@@ -1378,7 +1496,7 @@ import {
   }
 
   /* =============================================================================
-     22) INITIALIZATION
+     23) INITIALIZATION
   ============================================================================= */
   function boot() {
     void loadProfileIdentityPolicy()
@@ -1393,6 +1511,7 @@ import {
         console.error('Profile identity policy boot load failed:', error);
       });
 
+    bindSupabaseReadyEvents();
     bindFirebaseReadyEvents();
     bindAccountEvents();
     bindAuthState();
@@ -1406,5 +1525,5 @@ import {
 })();
 
 /* =============================================================================
-   23) END OF FILE
+   24) END OF FILE
 ============================================================================= */

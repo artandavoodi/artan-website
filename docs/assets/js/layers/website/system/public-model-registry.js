@@ -3,11 +3,12 @@
    01) MODULE IDENTITY
    02) IMPORTS
    03) MODULE STATE
-   04) HELPERS
-   05) DATA LOADERS
-   06) MODEL HELPERS
-   07) SEARCH HELPERS
-   08) END OF FILE
+   04) BACKEND HELPERS
+   05) HELPERS
+   06) DATA LOADERS
+   07) MODEL HELPERS
+   08) SEARCH HELPERS
+   09) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -25,6 +26,7 @@ import { normalizeString, normalizeUsername } from './account-profile-identity.j
 ============================================================================= */
 const PUBLIC_MODEL_REGISTRY_URL = '/assets/data/profiles/public-models.json';
 const FOUNDER_DATA_URL = '/assets/data/company/founder.json';
+const SUPABASE_PUBLIC_MODELS_SELECT_FIELDS = 'id, slug, model_name, description, model_visibility, model_status, readiness_state, publication_state';
 
 const PUBLIC_MODEL_REGISTRY_STATE = {
   registry: null,
@@ -33,7 +35,27 @@ const PUBLIC_MODEL_REGISTRY_STATE = {
 };
 
 /* =============================================================================
-   04) HELPERS
+   04) BACKEND HELPERS
+============================================================================= */
+function getSupabaseClient() {
+  if (typeof window === 'undefined') return null;
+  return window.neuroartanSupabase || null;
+}
+
+export function hasPublicModelBackend() {
+  return !!getSupabaseClient();
+}
+
+export function getPublicModelRegistryBackendState() {
+  return {
+    supabaseConfigured: hasPublicModelBackend(),
+    selectFields: SUPABASE_PUBLIC_MODELS_SELECT_FIELDS,
+    migrationStatus: 'transitional_static_registry_projection'
+  };
+}
+
+/* =============================================================================
+   05) HELPERS
 ============================================================================= */
 function assetPath(path) {
   const pathname = window.location.pathname || '';
@@ -171,8 +193,15 @@ function scoreMatch(query, candidate) {
 }
 
 /* =============================================================================
-   05) DATA LOADERS
+   06) DATA LOADERS
 ============================================================================= */
+/*
+ * Transitional rule:
+ * The static JSON registry remains a public projection surface only. It is not
+ * the canonical owner of model truth. Canonical model records must migrate into
+ * the backend-native model layer while this loader remains as tolerated
+ * continuity for the live public surface.
+ */
 export async function loadPublicModelRegistry() {
   if (PUBLIC_MODEL_REGISTRY_STATE.registry) {
     return PUBLIC_MODEL_REGISTRY_STATE.registry;
@@ -184,9 +213,11 @@ export async function loadPublicModelRegistry() {
       fetchJson(FOUNDER_DATA_URL).catch(() => null)
     ])
       .then(([registry, founder]) => {
+        PUBLIC_MODEL_REGISTRY_STATE.backendState = getPublicModelRegistryBackendState();
         PUBLIC_MODEL_REGISTRY_STATE.founder = founder;
         PUBLIC_MODEL_REGISTRY_STATE.registry = {
           ...registry,
+          backend_state: getPublicModelRegistryBackendState(),
           models: Array.isArray(registry?.models)
             ? registry.models.map((model) => {
               const resolvedFounder = model.identity_ref && founder?.id === model.identity_ref ? founder : null;
@@ -210,12 +241,13 @@ export function getPublicModelRegistry() {
     id: 'public-models',
     title: 'Public continuity models',
     description: '',
+    backend_state: getPublicModelRegistryBackendState(),
     models: []
   };
 }
 
 /* =============================================================================
-   06) MODEL HELPERS
+   07) MODEL HELPERS
 ============================================================================= */
 export function getPublicModels() {
   return [...(getPublicModelRegistry().models || [])];
@@ -244,7 +276,7 @@ export function getSelectablePublicModels() {
 }
 
 /* =============================================================================
-   07) SEARCH HELPERS
+   08) SEARCH HELPERS
 ============================================================================= */
 export function searchPublicModels(query) {
   const normalizedQuery = normalizeString(query);
@@ -264,5 +296,5 @@ export function searchPublicModels(query) {
 }
 
 /* =============================================================================
-   08) END OF FILE
+   09) END OF FILE
 ============================================================================= */

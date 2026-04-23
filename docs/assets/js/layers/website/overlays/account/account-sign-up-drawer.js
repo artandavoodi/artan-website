@@ -2,18 +2,22 @@
    00) FILE INDEX
    01) MODULE IDENTITY
    02) STATE
-   03) DRAWER QUERY HELPERS
-   04) STATE VISIBILITY HELPERS
-   05) OPEN / CLOSE HELPERS
-   06) OPEN REQUEST BINDING
-   07) CLOSE REQUEST BINDING
-   08) GLOBAL CLICK BINDING
-   09) ROUTE REQUEST BINDING
-   09A) INNER ROUTE CONTROLS
-   10) ESCAPE BINDING
-   11) EVENT REBINDING
-   12) BOOTSTRAP
-   13) END OF FILE
+   03) BACKEND QUERY HELPERS
+   04) DRAWER QUERY HELPERS
+   05) STATE VISIBILITY HELPERS
+   06) OPEN / CLOSE HELPERS
+   06A) INNER ROUTE REQUEST HELPERS
+   07) OPEN REQUEST BINDING
+   08) CLOSE REQUEST BINDING
+   09) GLOBAL CLICK BINDING
+   10) ROUTE REQUEST BINDING
+   10A) INNER ROUTE CONTROLS
+   10B) PROVIDER REQUEST HELPERS
+   10C) FORM SUBMIT BINDING
+   11) ESCAPE BINDING
+   12) EVENT REBINDING
+   13) BOOTSTRAP
+   14) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -30,7 +34,15 @@
   let mountEventsBound = false;
 
   /* =============================================================================
-     03) DRAWER QUERY HELPERS
+     03) BACKEND QUERY HELPERS
+  ============================================================================= */
+  function getSupabaseClient() {
+    if (typeof window === 'undefined') return null;
+    return window.neuroartanSupabase || null;
+  }
+
+  /* =============================================================================
+     04) DRAWER QUERY HELPERS
   ============================================================================= */
   function getDrawer() {
     return document.getElementById('account-sign-up-drawer');
@@ -57,7 +69,7 @@
   }
 
   /* =============================================================================
-     04) STATE VISIBILITY HELPERS
+     05) STATE VISIBILITY HELPERS
   ============================================================================= */
   function normalizeStateVisibility() {
     const drawer = getDrawer();
@@ -68,7 +80,7 @@
   }
 
   /* =============================================================================
-     05) OPEN / CLOSE HELPERS
+     06) OPEN / CLOSE HELPERS
   ============================================================================= */
   function openDrawer() {
     const drawer = getDrawer();
@@ -90,7 +102,7 @@
   }
 
   /* =============================================================================
-     05A) INNER ROUTE REQUEST HELPERS
+     06A) INNER ROUTE REQUEST HELPERS
   ============================================================================= */
   function requestInnerView(action) {
     if (!action) return;
@@ -104,7 +116,7 @@
   }
 
   /* =============================================================================
-     06) OPEN REQUEST BINDING
+     07) OPEN REQUEST BINDING
   ============================================================================= */
   function bindOpenRequests() {
     if (document.documentElement.dataset.accountSignUpDrawerOpenBound === 'true') return;
@@ -116,7 +128,7 @@
   }
 
   /* =============================================================================
-     07) CLOSE REQUEST BINDING
+     08) CLOSE REQUEST BINDING
   ============================================================================= */
   function bindCloseRequests() {
     if (document.documentElement.dataset.accountSignUpDrawerCloseBound === 'true') return;
@@ -128,7 +140,7 @@
   }
 
   /* =============================================================================
-     08) GLOBAL CLICK BINDING
+     09) GLOBAL CLICK BINDING
   ============================================================================= */
   function bindGlobalClicks() {
     if (document.documentElement.dataset.accountSignUpDrawerGlobalClickBound === 'true') return;
@@ -150,7 +162,7 @@
   }
 
   /* =============================================================================
-     09) ROUTE REQUEST BINDING
+     10) ROUTE REQUEST BINDING
   ============================================================================= */
   function bindRouteRequests() {
     if (document.documentElement.dataset.accountSignUpDrawerRouteBound === 'true') return;
@@ -168,7 +180,7 @@
   }
 
   /* =============================================================================
-     09A) INNER ROUTE CONTROLS
+     10A) INNER ROUTE CONTROLS
   ============================================================================= */
   function bindInnerRouteControls() {
     if (document.documentElement.dataset.accountSignUpDrawerInnerRouteBound === 'true') return;
@@ -219,7 +231,7 @@
       if (googleControl) {
         event.preventDefault();
         event.stopPropagation();
-        requestInnerView('provider-google');
+        requestGoogleProviderLogin();
         return;
       }
 
@@ -232,7 +244,29 @@
   }
 
   /* =============================================================================
-     09B) FORM SUBMIT BINDING
+     10B) PROVIDER REQUEST HELPERS
+  ============================================================================= */
+  function requestGoogleProviderLogin() {
+    const supabase = getSupabaseClient();
+
+    if (supabase) {
+      const redirectTo = `${window.location.origin}/profile.html`;
+      supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo
+        }
+      }).catch((error) => {
+        console.error('[Neuroartan][Account Sign-Up Drawer] Google sign-in failed.', error);
+      });
+      return;
+    }
+
+    requestInnerView('provider-google');
+  }
+
+  /* =============================================================================
+     10C) FORM SUBMIT BINDING
   ============================================================================= */
   function bindFormSubmit() {
     if (document.documentElement.dataset.accountSignUpDrawerFormBound === 'true') return;
@@ -303,7 +337,7 @@
   }
 
   /* =============================================================================
-     10) ESCAPE BINDING
+     11) ESCAPE BINDING
   ============================================================================= */
   function bindEscape() {
     if (document.documentElement.dataset.accountSignUpDrawerEscapeBound === 'true') return;
@@ -318,7 +352,7 @@
   }
 
   /* =============================================================================
-     11) EVENT REBINDING
+     12) EVENT REBINDING
   ============================================================================= */
   function bindMountEvents() {
     if (mountEventsBound) return;
@@ -334,7 +368,7 @@
   }
 
   /* =============================================================================
-     12) BOOTSTRAP
+     13) BOOTSTRAP
   ============================================================================= */
   function init() {
     if (document.documentElement.dataset.accountSignUpDrawerInitialized === 'true' && getDrawer()) return;
@@ -375,6 +409,6 @@
   }
 
   /* =============================================================================
-     13) END OF FILE
+     14) END OF FILE
   ============================================================================= */
 })();

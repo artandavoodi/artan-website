@@ -2,19 +2,28 @@
    00) FILE INDEX
    01) MODULE IDENTITY
    02) MODULE STATE
-   03) FIREBASE CONFIGURATION
-   04) FIREBASE SDK ASSETS
-   05) FIREBASE AVAILABILITY HELPERS
-   06) SCRIPT LOAD HELPERS
-   07) FIREBASE READINESS EVENTS
-   08) FIREBASE INITIALIZATION
-   09) END OF FILE
+   03) CONTINUITY STATUS
+   04) FIREBASE CONFIGURATION
+   05) FIREBASE SDK ASSETS
+   06) FIREBASE AVAILABILITY HELPERS
+   07) SCRIPT LOAD HELPERS
+   08) FIREBASE READINESS EVENTS
+   09) FIREBASE INITIALIZATION
+   10) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
    01) MODULE IDENTITY
 ============================================================================= */
 /* /website/docs/assets/js/layers/website/system/firebase-config.js */
+
+/*
+ * Transitional rule:
+ * This file remains a Firebase-owned continuity layer only. New backend-native
+ * architecture must not be added here. Supabase-first backend ownership now
+ * lives in sovereign backend modules, while this file remains tolerated only
+ * until the migration plan is fully executed.
+ */
 
 (() => {
   'use strict';
@@ -28,7 +37,19 @@
   let bootPromise = null;
 
   /* =============================================================================
-     03) FIREBASE CONFIGURATION
+     03) CONTINUITY STATUS
+  ============================================================================= */
+  function getFirebaseContinuityState() {
+    return {
+      provider: 'firebase',
+      migrationStatus: 'transitional_continuity_only',
+      canonicalBackend: 'supabase',
+      runtimeLoaded: hasRequiredFirebaseRuntime()
+    };
+  }
+
+  /* =============================================================================
+     04) FIREBASE CONFIGURATION
   ============================================================================= */
   const firebaseConfig = {
     apiKey: 'AIzaSyAogPapUYgtIa2YRO26qRoFy2uWJwBjoM4',
@@ -41,7 +62,7 @@
   };
 
   /* =============================================================================
-     04) FIREBASE SDK ASSETS
+     05) FIREBASE SDK ASSETS
   ============================================================================= */
   const FIREBASE_SDK_VERSION = '9.23.0';
   const FIREBASE_SDK_SOURCES = [
@@ -51,7 +72,7 @@
   ];
 
   /* =============================================================================
-     05) FIREBASE AVAILABILITY HELPERS
+     06) FIREBASE AVAILABILITY HELPERS
   ============================================================================= */
   function hasFirebaseRuntime() {
     return !!(window.firebase && Array.isArray(window.firebase.apps));
@@ -70,7 +91,7 @@
   }
 
   /* =============================================================================
-     06) SCRIPT LOAD HELPERS
+     07) SCRIPT LOAD HELPERS
   ============================================================================= */
   function findExistingScript(src) {
     const resolved = new URL(src, window.location.origin).href;
@@ -137,14 +158,15 @@
   }
 
   /* =============================================================================
-     07) FIREBASE READINESS EVENTS
+     08) FIREBASE READINESS EVENTS
   ============================================================================= */
   function dispatchFirebaseReady() {
     document.dispatchEvent(new CustomEvent('neuroartan:firebase-ready', {
       detail: {
         appName: '[DEFAULT]',
         hasAuth: hasFirebaseAuthRuntime(),
-        hasFirestore: hasFirebaseFirestoreRuntime()
+        hasFirestore: hasFirebaseFirestoreRuntime(),
+        continuityState: getFirebaseContinuityState()
       }
     }));
   }
@@ -164,7 +186,7 @@
   }
 
   /* =============================================================================
-     08) FIREBASE INITIALIZATION
+     09) FIREBASE INITIALIZATION
   ============================================================================= */
   async function boot() {
     if (initialized) return;
@@ -186,6 +208,7 @@
       }
 
       initialized = true;
+      window.neuroartanFirebaseContinuityState = getFirebaseContinuityState();
       dispatchFirebaseReady();
     })()
       .catch((error) => {
@@ -208,5 +231,5 @@
 })();
 
 /* =============================================================================
-   09) END OF FILE
+   10) END OF FILE
 ============================================================================= */

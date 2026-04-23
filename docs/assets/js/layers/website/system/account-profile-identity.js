@@ -3,15 +3,16 @@
    01) MODULE IDENTITY
    02) MODULE STATE
    03) CONSTANTS
-   04) ASSET PATH HELPERS
-   05) POLICY HELPERS
-   06) NORMALIZATION HELPERS
-   07) PUBLIC IDENTITY HELPERS
-   08) ELIGIBILITY HELPERS
-   09) USERNAME POLICY HELPERS
-   10) PROFILE IDENTITY STORE HELPERS
-   11) PROFILE PAYLOAD HELPERS
-   12) END OF FILE
+   04) BACKEND HELPERS
+   05) ASSET PATH HELPERS
+   06) POLICY HELPERS
+   07) NORMALIZATION HELPERS
+   08) PUBLIC IDENTITY HELPERS
+   09) ELIGIBILITY HELPERS
+   10) USERNAME POLICY HELPERS
+   11) FIRESTORE CONTINUITY HELPERS
+   12) PROFILE PAYLOAD HELPERS
+   13) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -29,6 +30,8 @@ let profileIdentityPolicyPromise = null;
    03) CONSTANTS
 ============================================================================= */
 const PROFILE_IDENTITY_POLICY_URL = '/assets/data/accounts/profile-identity-policy.json';
+const SUPABASE_PROFILES_TABLE = 'profiles';
+const SUPABASE_USERNAME_RESERVATIONS_TABLE = 'username_reservations';
 const DEFAULT_PROFILE_IDENTITY_POLICY = Object.freeze({
   public_profile_url_pattern: 'https://neuroartan.com/{username}',
   public_profile_path_pattern: '/{username}',
@@ -159,9 +162,29 @@ const WEBSITE_BASE_PATH = (() => {
 
   return '';
 })();
+/* =============================================================================
+   04) BACKEND HELPERS
+============================================================================= */
+export function getSupabaseClient() {
+  if (typeof window === 'undefined') return null;
+  return window.neuroartanSupabase || null;
+}
+
+export function hasSupabaseProfileIdentityBackend() {
+  return !!getSupabaseClient();
+}
+
+export function getProfileIdentityBackendState() {
+  return {
+    supabaseConfigured: hasSupabaseProfileIdentityBackend(),
+    profilesTable: SUPABASE_PROFILES_TABLE,
+    usernameReservationsTable: SUPABASE_USERNAME_RESERVATIONS_TABLE,
+    migrationStatus: 'transitional_firestore_continuity'
+  };
+}
 
 /* =============================================================================
-   04) ASSET PATH HELPERS
+   05) ASSET PATH HELPERS
 ============================================================================= */
 function assetPath(path) {
   const normalized = normalizeString(path);
@@ -170,7 +193,7 @@ function assetPath(path) {
 }
 
 /* =============================================================================
-   05) POLICY HELPERS
+   06) POLICY HELPERS
 ============================================================================= */
 export function buildProfileIdentityPolicy(raw = {}) {
   const username = raw && typeof raw === 'object' && raw.username && typeof raw.username === 'object'
@@ -242,7 +265,7 @@ export function getProfileIdentityPolicy() {
 }
 
 /* =============================================================================
-   06) NORMALIZATION HELPERS
+   07) NORMALIZATION HELPERS
 ============================================================================= */
 export function normalizeString(value) {
   return String(value || '').trim();
@@ -385,7 +408,7 @@ export function buildProfileCompletionState(values = {}, existingProfile = null)
 }
 
 /* =============================================================================
-   07) PUBLIC IDENTITY HELPERS
+   08) PUBLIC IDENTITY HELPERS
 ============================================================================= */
 export function buildPublicProfileUrl(username, policy = getProfileIdentityPolicy()) {
   if (!normalizeString(username)) return '';
@@ -412,7 +435,7 @@ export function buildPublicProfileDisplay(username, policy = getProfileIdentityP
 }
 
 /* =============================================================================
-   08) ELIGIBILITY HELPERS
+   09) ELIGIBILITY HELPERS
 ============================================================================= */
 export function parseDateOfBirth(value) {
   const normalized = normalizeString(value);
@@ -486,7 +509,7 @@ export function evaluateEligibility(dateOfBirthValue, policy = getProfileIdentit
 }
 
 /* =============================================================================
-   09) USERNAME POLICY HELPERS
+   10) USERNAME POLICY HELPERS
 ============================================================================= */
 export function getUsernameConfig(policy = getProfileIdentityPolicy()) {
   const username = policy.username || DEFAULT_PROFILE_IDENTITY_POLICY.username;
@@ -623,12 +646,19 @@ export function messageForUsernameError(code, policy = getProfileIdentityPolicy(
 }
 
 /* =============================================================================
-   10) PROFILE IDENTITY STORE HELPERS
+   11) FIRESTORE CONTINUITY HELPERS
 ============================================================================= */
+/*
+ * Transitional rule:
+ * The functions in this section remain Firestore-backed continuity helpers until
+ * the Supabase profile and username-reservation layers are implemented as the
+ * canonical replacement. New architecture must not deepen Firestore ownership
+ * beyond tolerated migration continuity.
+ */
 export async function findProfileByUsername({
   firestore,
   username,
-  profileCollection = 'profiles'
+  profileCollection = SUPABASE_PROFILES_TABLE
 } = {}) {
   const normalizedUsername = normalizeUsername(username);
   if (!firestore || !normalizedUsername) return null;
@@ -646,7 +676,7 @@ export async function findProfileByUsername({
 export async function getProfileByUid({
   firestore,
   uid,
-  profileCollection = 'profiles'
+  profileCollection = SUPABASE_PROFILES_TABLE
 } = {}) {
   const normalizedUid = normalizeString(uid);
   if (!firestore || !normalizedUid) return null;
@@ -663,7 +693,7 @@ export async function getProfileByUid({
 export async function getUsernameReservation({
   firestore,
   username,
-  reservationCollection = 'username_reservations'
+  reservationCollection = SUPABASE_USERNAME_RESERVATIONS_TABLE
 } = {}) {
   const normalizedUsername = normalizeUsername(username);
   if (!firestore || !normalizedUsername) return null;
@@ -682,8 +712,8 @@ export async function getUsernameAvailability({
   username,
   currentUid = '',
   policy = null,
-  profileCollection = 'profiles',
-  reservationCollection = 'username_reservations'
+  profileCollection = SUPABASE_PROFILES_TABLE,
+  reservationCollection = SUPABASE_USERNAME_RESERVATIONS_TABLE
 } = {}) {
   const resolvedPolicy = policy || await loadProfileIdentityPolicy();
   const localValidation = validateUsernameLocally(username, resolvedPolicy);
@@ -868,8 +898,8 @@ export async function resolvePublicProfileByUsername({
   firestore,
   username,
   policy = null,
-  profileCollection = 'profiles',
-  reservationCollection = 'username_reservations'
+  profileCollection = SUPABASE_PROFILES_TABLE,
+  reservationCollection = SUPABASE_USERNAME_RESERVATIONS_TABLE
 } = {}) {
   const resolvedPolicy = policy || await loadProfileIdentityPolicy();
   const candidate = normalizeString(username);
@@ -958,7 +988,7 @@ export async function resolvePublicProfileByUsername({
 }
 
 /* =============================================================================
-   11) PROFILE PAYLOAD HELPERS
+   12) PROFILE PAYLOAD HELPERS
 ============================================================================= */
 function resolveServerTimestamp(firebaseNamespace) {
   const fieldValue = firebaseNamespace?.firestore?.FieldValue;
@@ -1144,8 +1174,8 @@ export async function reserveUsernameProfile({
   user,
   values,
   policy = null,
-  profileCollection = 'profiles',
-  reservationCollection = 'username_reservations'
+  profileCollection = SUPABASE_PROFILES_TABLE,
+  reservationCollection = SUPABASE_USERNAME_RESERVATIONS_TABLE
 } = {}) {
   const resolvedPolicy = policy || await loadProfileIdentityPolicy();
 
@@ -1203,5 +1233,5 @@ export async function reserveUsernameProfile({
 }
 
 /* =============================================================================
-   12) END OF FILE
+   13) END OF FILE
 ============================================================================= */

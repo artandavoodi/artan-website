@@ -3,10 +3,11 @@
    01) MODULE IDENTITY
    02) IMPORTS
    03) MODULE STATE
-   04) HELPERS
-   05) STORE HELPERS
-   06) INITIALIZATION
-   07) END OF FILE
+   04) BACKEND HELPERS
+   05) HELPERS
+   06) STORE HELPERS
+   07) INITIALIZATION
+   08) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -20,6 +21,7 @@
 import {
   getDefaultPublicModelId,
   getPublicModelById,
+  getPublicModelRegistryBackendState,
   getSelectablePublicModels,
   loadPublicModelRegistry
 } from './public-model-registry.js';
@@ -28,17 +30,46 @@ import {
    03) MODULE STATE
 ============================================================================= */
 const STORAGE_KEY = 'neuroartan.active-model-id';
+const SUPABASE_MODELS_TABLE = 'models';
 
 const ACTIVE_MODEL_RUNTIME = (window.__NEUROARTAN_ACTIVE_MODEL__ ||= {
   initialized: false,
+  backendState: null,
   activeModelId: '',
   activeModel: null,
   subscribers: new Set()
 });
 
 /* =============================================================================
-   04) HELPERS
+   04) BACKEND HELPERS
 ============================================================================= */
+function getSupabaseClient() {
+  if (typeof window === 'undefined') return null;
+  return window.neuroartanSupabase || null;
+}
+
+function hasSupabaseClient() {
+  return !!getSupabaseClient();
+}
+
+function getActiveModelBackendState() {
+  return {
+    supabaseConfigured: hasSupabaseClient(),
+    modelsTable: SUPABASE_MODELS_TABLE,
+    registryBackendState: getPublicModelRegistryBackendState(),
+    migrationStatus: 'transitional_local_active_model_continuity'
+  };
+}
+
+/* =============================================================================
+   05) HELPERS
+============================================================================= */
+/*
+ * Transitional rule:
+ * Local storage below remains tolerated continuity only for the active-model
+ * preference until backend-native model ownership and selection are fully live.
+ * It must not remain the canonical owner of model truth.
+ */
 function normalizeString(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
@@ -65,7 +96,8 @@ function storeActiveModelId(modelId) {
 function buildSnapshot() {
   return {
     activeModelId: ACTIVE_MODEL_RUNTIME.activeModelId,
-    activeModel: ACTIVE_MODEL_RUNTIME.activeModel ? { ...ACTIVE_MODEL_RUNTIME.activeModel } : null
+    activeModel: ACTIVE_MODEL_RUNTIME.activeModel ? { ...ACTIVE_MODEL_RUNTIME.activeModel } : null,
+    backendState: ACTIVE_MODEL_RUNTIME.backendState || getActiveModelBackendState()
   };
 }
 
@@ -116,7 +148,7 @@ function resolveInitialActiveModelId() {
 }
 
 /* =============================================================================
-   05) STORE HELPERS
+   06) STORE HELPERS
 ============================================================================= */
 export function getActiveModelState() {
   return buildSnapshot();
@@ -129,6 +161,7 @@ export function getActiveModelRoutingContext(route = '') {
   return {
     activeModelId: ACTIVE_MODEL_RUNTIME.activeModelId,
     activeModel: activeModel ? { ...activeModel } : null,
+    backendState: ACTIVE_MODEL_RUNTIME.backendState || getActiveModelBackendState(),
     engineLabel: normalizeString(engine?.label || activeModel?.display_name || activeModel?.search_title || ''),
     memoryNamespace: normalizeString(engine?.memory_namespace || ''),
     preferredRoute: normalizeString(engine?.preferred_route || ''),
@@ -184,6 +217,7 @@ export async function activatePublicModel(modelId, { source = 'manual' } = {}) {
     return getActiveModelState();
   }
 
+  ACTIVE_MODEL_RUNTIME.backendState = getActiveModelBackendState();
   ACTIVE_MODEL_RUNTIME.activeModelId = resolvedModel.id;
   ACTIVE_MODEL_RUNTIME.activeModel = resolvedModel;
   storeActiveModelId(resolvedModel.id);
@@ -193,7 +227,7 @@ export async function activatePublicModel(modelId, { source = 'manual' } = {}) {
 }
 
 /* =============================================================================
-   06) INITIALIZATION
+   07) INITIALIZATION
 ============================================================================= */
 async function initActiveModelRuntime() {
   if (ACTIVE_MODEL_RUNTIME.initialized) {
@@ -204,6 +238,7 @@ async function initActiveModelRuntime() {
 
   try {
     await loadPublicModelRegistry();
+    ACTIVE_MODEL_RUNTIME.backendState = getActiveModelBackendState();
     const initialId = resolveInitialActiveModelId();
 
     if (initialId) {
@@ -227,5 +262,5 @@ if (document.readyState === 'loading') {
 }
 
 /* =============================================================================
-   07) END OF FILE
+   08) END OF FILE
 ============================================================================= */

@@ -2,11 +2,12 @@
    00) FILE INDEX
    01) MODULE IMPORTS
    02) MODULE STATE
-   03) DEFAULT ROUTE STATE
-   04) ROUTE HELPERS
-   05) ROUTE STORE
-   06) INITIALIZATION
-   07) END OF FILE
+   03) BACKEND HELPERS
+   04) DEFAULT ROUTE STATE
+   05) ROUTE HELPERS
+   06) ROUTE STORE
+   07) INITIALIZATION
+   08) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -31,14 +32,37 @@ import {
 /* =============================================================================
    02) MODULE STATE
 ============================================================================= */
+const SUPABASE_PROFILES_TABLE = 'profiles';
+
 const RUNTIME = (window.__NEUROARTAN_PROFILE_ROUTER__ ||= {
   initialized: false,
   route: null,
+  backendState: null,
   subscribers: new Set()
 });
 
 /* =============================================================================
-   03) DEFAULT ROUTE STATE
+   03) BACKEND HELPERS
+============================================================================= */
+function getSupabaseClient() {
+  if (typeof window === 'undefined') return null;
+  return window.neuroartanSupabase || null;
+}
+
+function hasSupabaseClient() {
+  return !!getSupabaseClient();
+}
+
+function getProfileRouterBackendState() {
+  return {
+    supabaseConfigured: hasSupabaseClient(),
+    profilesTable: SUPABASE_PROFILES_TABLE,
+    migrationStatus: 'transitional_static_public_route_resolution'
+  };
+}
+
+/* =============================================================================
+   04) DEFAULT ROUTE STATE
 ============================================================================= */
 function createDefaultRouteState() {
   return {
@@ -48,6 +72,7 @@ function createDefaultRouteState() {
     publicRoutePath: '',
     publicRouteUrl: '',
     publicRouteDisplay: '',
+    backendState: RUNTIME.backendState || getProfileRouterBackendState(),
     handleAsPublicRoute: false,
     protectedCollision: false,
     outcome: 'not_candidate',
@@ -56,8 +81,15 @@ function createDefaultRouteState() {
 }
 
 /* =============================================================================
-   04) ROUTE HELPERS
+   05) ROUTE HELPERS
 ============================================================================= */
+/*
+ * Transitional rule:
+ * Public-route resolution below remains tolerated continuity using local policy
+ * and public registry projection behavior until backend-native public profile
+ * routing is fully implemented. This file must not silently treat the static
+ * registry as the canonical owner of public-route truth.
+ */
 function decodePathSegment(segment) {
   try {
     return decodeURIComponent(segment || '');
@@ -151,7 +183,7 @@ function resolvePublicRoute(pathname, policy) {
 }
 
 /* =============================================================================
-   05) ROUTE STORE
+   06) ROUTE STORE
 ============================================================================= */
 function notifySubscribers() {
   RUNTIME.subscribers.forEach((subscriber) => {
@@ -166,6 +198,7 @@ function notifySubscribers() {
 function setRoute(nextRoute) {
   RUNTIME.route = {
     ...createDefaultRouteState(),
+    backendState: RUNTIME.backendState || getProfileRouterBackendState(),
     ...nextRoute
   };
 
@@ -196,6 +229,7 @@ export function subscribePublicRoute(subscriber) {
 export async function refreshPublicRoute(pathname = window.location.pathname) {
   const policy = await loadProfileIdentityPolicy();
   const resolvedRoute = resolvePublicRoute(pathname, policy);
+  RUNTIME.backendState = getProfileRouterBackendState();
 
   if (resolvedRoute.handleAsPublicRoute && resolvedRoute.outcome === 'restricted_username') {
     try {
@@ -219,12 +253,13 @@ export async function refreshPublicRoute(pathname = window.location.pathname) {
 }
 
 /* =============================================================================
-   06) INITIALIZATION
+   07) INITIALIZATION
 ============================================================================= */
 function initProfileRouter() {
   if (RUNTIME.initialized) return;
   RUNTIME.initialized = true;
 
+  RUNTIME.backendState = getProfileRouterBackendState();
   setRoute(resolvePublicRoute(window.location.pathname, getProfileIdentityPolicy()));
   void refreshPublicRoute();
 
@@ -240,5 +275,5 @@ function initProfileRouter() {
 initProfileRouter();
 
 /* =============================================================================
-   07) END OF FILE
+   08) END OF FILE
 ============================================================================= */
