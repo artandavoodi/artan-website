@@ -2,24 +2,28 @@
    00) FILE INDEX
    01) MODULE IMPORTS
    02) MODULE STATE
-   03) FIREBASE HELPERS
-   04) STATE HELPERS
-   05) STATE STORE
-   06) ROUTE RESOLUTION
-   07) INITIALIZATION
-   08) END OF FILE
+   03) BACKEND HELPERS
+   04) FIREBASE CONTINUITY HELPERS
+   05) STATE HELPERS
+   06) STATE STORE
+   07) ROUTE RESOLUTION
+   08) INITIALIZATION
+   09) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
    01) MODULE IMPORTS
 ============================================================================= */
 import {
+  getProfileIdentityBackendState,
+  getSupabaseClient as getProfileIdentitySupabaseClient,
   loadProfileIdentityPolicy,
   normalizeString,
   resolvePublicProfileByUsername
 } from './account-profile-identity.js';
 import {
   getPublicModelByUsername,
+  getPublicModelRegistryBackendState,
   loadPublicModelRegistry
 } from './public-model-registry.js';
 import {
@@ -30,15 +34,39 @@ import {
 /* =============================================================================
    02) MODULE STATE
 ============================================================================= */
+const SUPABASE_PROFILES_TABLE = 'profiles';
+
 const RUNTIME = (window.__NEUROARTAN_PROFILE_STATE__ ||= {
   initialized: false,
   requestId: 0,
   state: null,
+  backendState: null,
   subscribers: new Set()
 });
 
 /* =============================================================================
-   03) FIREBASE HELPERS
+   03) BACKEND HELPERS
+============================================================================= */
+function getSupabaseClient() {
+  return getProfileIdentitySupabaseClient();
+}
+
+function hasSupabaseClient() {
+  return !!getSupabaseClient();
+}
+
+function getProfileStateBackendState() {
+  return {
+    supabaseConfigured: hasSupabaseClient(),
+    profilesTable: SUPABASE_PROFILES_TABLE,
+    profileIdentityBackendState: getProfileIdentityBackendState(),
+    publicModelRegistryBackendState: getPublicModelRegistryBackendState(),
+    migrationStatus: 'transitional_public_profile_resolution_continuity'
+  };
+}
+
+/* =============================================================================
+   04) FIREBASE CONTINUITY HELPERS
 ============================================================================= */
 function hasFirestore() {
   return !!(window.firebase && typeof window.firebase.firestore === 'function');
@@ -81,8 +109,16 @@ async function waitForFirebaseReady(timeoutMs = 1200) {
 }
 
 /* =============================================================================
-   04) STATE HELPERS
+   05) STATE HELPERS
 ============================================================================= */
+/*
+ * Transitional rule:
+ * Firestore-backed public-profile resolution below remains tolerated continuity
+ * only until backend-native public profile resolution is implemented in the
+ * approved backend direction. This file must not silently treat Firebase,
+ * browser-local continuity, or static projection layers as canonical owner of
+ * public profile truth.
+ */
 function buildBaseState(route = getPublicRouteState()) {
   return {
     route,
@@ -93,6 +129,7 @@ function buildBaseState(route = getPublicRouteState()) {
     publicRoutePath: route.publicRoutePath || '',
     publicRouteUrl: route.publicRouteUrl || '',
     publicRouteDisplay: route.publicRouteDisplay || '',
+    backendState: RUNTIME.backendState || getProfileStateBackendState(),
     publicProfile: null,
     model: null,
     creator: null,
@@ -142,6 +179,7 @@ async function buildRegistryResolutionState(route) {
 
   return {
     ...baseState,
+    backendState: RUNTIME.backendState || getProfileStateBackendState(),
     outcome: renderable
       ? 'found_renderable'
       : publicEnabled
@@ -159,7 +197,7 @@ async function buildRegistryResolutionState(route) {
 }
 
 /* =============================================================================
-   05) STATE STORE
+   06) STATE STORE
 ============================================================================= */
 function notifySubscribers() {
   RUNTIME.subscribers.forEach((subscriber) => {
@@ -199,11 +237,12 @@ export function subscribePublicProfileState(subscriber) {
 }
 
 /* =============================================================================
-   06) ROUTE RESOLUTION
+   07) ROUTE RESOLUTION
 ============================================================================= */
 async function resolveStateForRoute(route) {
   const requestId = ++RUNTIME.requestId;
   const baseState = buildBaseState(route);
+  RUNTIME.backendState = getProfileStateBackendState();
   let registryModel = null;
   let registryCreator = null;
 
@@ -285,12 +324,12 @@ async function resolveStateForRoute(route) {
 }
 
 /* =============================================================================
-   07) INITIALIZATION
+   08) INITIALIZATION
 ============================================================================= */
 function initProfileState() {
   if (RUNTIME.initialized) return;
   RUNTIME.initialized = true;
-
+  RUNTIME.backendState = getProfileStateBackendState();
   setState(buildBaseState(getPublicRouteState()));
 
   subscribePublicRoute((route) => {
@@ -301,5 +340,5 @@ function initProfileState() {
 initProfileState();
 
 /* =============================================================================
-   08) END OF FILE
+   09) END OF FILE
 ============================================================================= */
