@@ -11,7 +11,6 @@
 import './home-surface-state.js';
 import './home-dashboard-topbar.js';
 import './home-platform-shell.js';
-import './home-navigation-drawer.js';
 import './home-workspace-panel.js';
 import './home-profile-control-panel.js';
 import './home-search-shell.js';

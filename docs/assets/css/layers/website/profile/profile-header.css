@@ -83,10 +83,10 @@
   align-items:center;
   gap:0.45rem;
   padding:0.34rem 0.72rem;
-  border:1px solid var(--border-soft);
+  border:1px solid color-mix(in srgb, #1d9bf0 30%, transparent);
   border-radius:999px;
-  background:var(--surface-elevated);
-  color:var(--text-color);
+  background:color-mix(in srgb, #1d9bf0 10%, transparent);
+  color:#1d9bf0;
 }
 
 .profile-header__verified-label,

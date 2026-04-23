@@ -167,15 +167,23 @@
 .models-directory-card__verification{
   display:inline-flex;
   align-items:center;
+  gap:0.42rem;
   min-height:1.9rem;
-  padding:0 0.75rem;
-  border:1px solid var(--control-border);
+  padding:0 0.7rem;
+  border:1px solid color-mix(in srgb, #1d9bf0 30%, transparent);
   border-radius:999px;
-  background:var(--control-bg);
-  color:var(--text-secondary-color);
+  background:color-mix(in srgb, #1d9bf0 10%, transparent);
+  color:#1d9bf0;
   font-size:0.72rem;
+  font-weight:600;
   letter-spacing:0.08em;
   text-transform:uppercase;
+}
+
+.models-directory-card__verification-icon{
+  display:block;
+  width:0.9rem;
+  height:0.9rem;
 }
 
 .models-directory-card__handle{

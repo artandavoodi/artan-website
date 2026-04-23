@@ -84,6 +84,18 @@
               <span class="home-platform-shell__nav-icon" aria-hidden="true"><img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/settings.svg" alt=""></span>
               <span class="home-platform-shell__nav-text">Settings</span>
             </button>
+            <button type="button" class="home-platform-shell__nav-item" data-home-platform-destination="messaging" aria-pressed="false" id="home-platform-shell-nav-messaging">
+              <span class="home-platform-shell__nav-icon" aria-hidden="true"><img class="ui-icon-theme-aware" src="/assets/icons/core/communication/messaging/messages.svg" alt=""></span>
+              <span class="home-platform-shell__nav-text">Messaging</span>
+            </button>
+            <button type="button" class="home-platform-shell__nav-item" data-home-platform-destination="notifications" aria-pressed="false" id="home-platform-shell-nav-notifications">
+              <span class="home-platform-shell__nav-icon" aria-hidden="true"><img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/notification.svg" alt=""></span>
+              <span class="home-platform-shell__nav-text">Notifications</span>
+            </button>
+            <button type="button" class="home-platform-shell__nav-item" data-home-platform-destination="more" aria-pressed="false" id="home-platform-shell-nav-more">
+              <span class="home-platform-shell__nav-icon" aria-hidden="true"><img class="ui-icon-theme-aware" src="/assets/icons/core/navigation/unclassified/more.svg" alt=""></span>
+              <span class="home-platform-shell__nav-text">More</span>
+            </button>
           </nav>
         </div>
 
@@ -119,18 +131,30 @@
     </aside>
 
     <!-- ======================================================================
-    07) RIGHT CONTENT SURFACE
+    07) MIDDLE NAVIGATION LAYER
+    ======================================================================= -->
+    <aside class="home-platform-shell__subrail" aria-label="Section-local navigation">
+      <div class="home-platform-shell__subrail-inner">
+        <div class="home-platform-shell__subrail-header">
+          <p class="home-platform-shell__subrail-label" data-home-platform-subrail-label>Home</p>
+          <h2 class="home-platform-shell__subrail-title" data-home-platform-subrail-title>Section navigation</h2>
+        </div>
+
+        <nav class="home-platform-shell__subnav" id="home-platform-shell-subnav" data-home-platform-subnav-root aria-label="Section-local navigation"></nav>
+      </div>
+    </aside>
+
+    <!-- ======================================================================
+    08) RIGHT CONTENT SURFACE
     ======================================================================= -->
     <section class="home-platform-shell__content" aria-label="Platform shell content">
-      <div class="home-platform-shell__content-inner" id="home-platform-shell-content" data-home-platform-content-root>
-        <!-- ==================================================================
-        08) CONTENT SURFACE DEFAULT STATE
-        =================================================================== -->
-        <div class="home-platform-shell__content-state" data-home-platform-content="home">
-          <h2 class="home-platform-shell__content-title">Home</h2>
-          <p class="home-platform-shell__content-copy">Unified platform shell ready. Select a destination from the left rail to continue through one stable navigation and content surface.</p>
-        </div>
+      <div class="home-platform-shell__content-header">
+        <p class="home-platform-shell__content-eyebrow" data-home-platform-content-eyebrow>Home</p>
+        <h2 class="home-platform-shell__content-title" data-home-platform-content-title>Home</h2>
+        <p class="home-platform-shell__content-copy" data-home-platform-content-copy>Unified platform shell ready. Select a destination from the left rail to continue through one stable navigation and content surface.</p>
       </div>
+
+      <div class="home-platform-shell__content-inner" id="home-platform-shell-content" data-home-platform-content-root></div>
     </section>
   </div>
 </section>

@@ -4,6 +4,10 @@ import {
   subscribeActiveModelState
 } from '../system/active-model.js';
 import {
+  createSpeechInputController,
+  hasSpeechInputSupport
+} from '../../../core/02-systems/speech-input.js';
+import {
   getPublicModels,
   loadPublicModelRegistry
 } from '../system/public-model-registry.js';
@@ -31,6 +35,7 @@ const HOME_SEARCH_SHELL_STATE = {
   dataReady: false,
   loadingPromise: null,
   indexedEntries: [],
+  speechController: null,
 };
 
 const HOME_SEARCH_SHELL_INDEX_SOURCES = Object.freeze({
@@ -49,6 +54,7 @@ function getHomeSearchShellNodes() {
     input: document.querySelector('#home-search-shell-input'),
     form: document.querySelector('#home-search-shell-form'),
     close: document.querySelector('#home-search-shell-close'),
+    voiceButton: document.querySelector('#home-search-shell-voice-button'),
     results: document.querySelector('#home-search-shell-results'),
     chips: Array.from(document.querySelectorAll('[data-home-search-chip]')),
   };
@@ -146,6 +152,15 @@ function getSearchScopeLabel(scope = '') {
 function getActiveModelLabel() {
   const activeModel = getActiveModelState().activeModel;
   return activeModel?.engine?.label || activeModel?.display_name || activeModel?.search_title || 'the active model';
+}
+
+function isVerifiedHomeSearchModel(model = {}) {
+  const trust = [
+    model.trust_classification,
+    ...(Array.isArray(model.reliability_signals) ? model.reliability_signals : [])
+  ].join(' ');
+
+  return /verified|governed|self-authored/i.test(trust);
 }
 
 function buildIndexedEntry(entry = {}, {
@@ -272,6 +287,8 @@ function buildModelSearchEntries() {
     publicRoute: normalizeHomeSearchQuery(model.public_profile?.public_route_path || ''),
     activateModelId: normalizeHomeSearchQuery(model.id),
     queryLabel: normalizeHomeSearchQuery(model.engine?.label || model.display_name || model.search_title || ''),
+    verified: isVerifiedHomeSearchModel(model),
+    verificationLabel: isVerifiedHomeSearchModel(model) ? 'Verified' : '',
     keywords: uniqueHomeSearchStrings([
       model.username || '',
       ...(Array.isArray(model.tags) ? model.tags : []),
@@ -385,6 +402,19 @@ async function ensureHomeSearchData() {
    04. SEARCH RENDER HELPERS
    ========================================================= */
 
+function renderVerificationBadge(entry = {}) {
+  if (!entry?.verified) {
+    return '';
+  }
+
+  return `
+    <span class="home-search-shell__result-badge" aria-label="${escapeHomeSearchHtml(entry.verificationLabel || 'Verified')}">
+      <img src="/assets/icons/core/identity/trust/verified.svg" alt="" aria-hidden="true">
+      <span>${escapeHomeSearchHtml(entry.verificationLabel || 'Verified')}</span>
+    </span>
+  `;
+}
+
 function renderResultChips(keywords = []) {
   const chips = (Array.isArray(keywords) ? keywords : [])
     .slice(0, 4)
@@ -475,7 +505,10 @@ function renderQueryHomeSearchResults(query) {
             <span class="home-search-shell__result-route">${escapeHomeSearchHtml(entry.eyebrow)}</span>
             ${entry.kind === 'model' && entry.queryLabel ? `<span class="home-search-shell__result-query">${escapeHomeSearchHtml(entry.queryLabel)}</span>` : ''}
           </div>
-          <h3 class="home-search-shell__result-title">${escapeHomeSearchHtml(entry.title)}</h3>
+          <div class="home-search-shell__result-title-row">
+            <h3 class="home-search-shell__result-title">${escapeHomeSearchHtml(entry.title)}</h3>
+            ${renderVerificationBadge(entry)}
+          </div>
           <p class="home-search-shell__result-body">${escapeHomeSearchHtml(entry.summary || 'Published Neuroartan surface.')}</p>
           ${renderResultChips(entry.keywords)}
           <div class="home-search-shell__result-actions">
@@ -534,6 +567,40 @@ function setHomeSearchValue(value) {
   HOME_SEARCH_SHELL_STATE.query = query;
 }
 
+function syncHomeSearchVoiceState(isListening) {
+  const voiceButton = getHomeSearchShellNodes().voiceButton;
+  if (!(voiceButton instanceof HTMLButtonElement)) {
+    return;
+  }
+
+  voiceButton.setAttribute('aria-pressed', isListening ? 'true' : 'false');
+  voiceButton.setAttribute('aria-label', isListening ? 'Stop voice search' : 'Start voice search');
+}
+
+function ensureHomeSearchSpeechController() {
+  if (HOME_SEARCH_SHELL_STATE.speechController) {
+    return HOME_SEARCH_SHELL_STATE.speechController;
+  }
+
+  HOME_SEARCH_SHELL_STATE.speechController = createSpeechInputController({
+    onStart: () => {
+      syncHomeSearchVoiceState(true);
+    },
+    onResult: ({ transcript }) => {
+      setHomeSearchValue(transcript);
+      renderHomeSearchShell();
+    },
+    onEnd: () => {
+      syncHomeSearchVoiceState(false);
+    },
+    onError: () => {
+      syncHomeSearchVoiceState(false);
+    },
+  });
+
+  return HOME_SEARCH_SHELL_STATE.speechController;
+}
+
 function submitHomeSearchQuery(query, source = 'home-search-shell') {
   const normalizedQuery = normalizeHomeSearchQuery(query);
   if (!normalizedQuery) {
@@ -562,6 +629,9 @@ function openHomeSearchShell() {
   }
 
   HOME_SEARCH_SHELL_STATE.isOpen = true;
+  dispatchHomeSearchEvent('neuroartan:cookie-consent-close-requested', {
+    source: 'home-search-shell',
+  });
   nodes.shell.hidden = false;
   document.documentElement.classList.add('home-search-shell-open');
   document.body.classList.add('home-search-shell-open');
@@ -616,6 +686,7 @@ function bindHomeSearchShell() {
 
     const target = event.target.closest(
       '#home-search-shell-close, ' +
+      '#home-search-shell-voice-button, ' +
       '#home-search-shell [data-home-search-close="true"], ' +
       '#home-search-shell [data-home-search-chip], ' +
       '#home-search-shell [data-home-search-result-action], ' +
@@ -628,6 +699,26 @@ function bindHomeSearchShell() {
 
     if (target.matches('#home-search-shell-close, [data-home-search-close="true"]')) {
       closeHomeSearchShell();
+      return;
+    }
+
+    if (target.matches('#home-search-shell-voice-button')) {
+      event.preventDefault();
+
+      const speechController = ensureHomeSearchSpeechController();
+      if (!speechController.supported) {
+        getHomeSearchShellNodes().input?.focus();
+        return;
+      }
+
+      if (speechController.isListening()) {
+        speechController.stop();
+        return;
+      }
+
+      speechController.start({
+        lang: document.documentElement.lang || 'en',
+      });
       return;
     }
 
@@ -712,6 +803,12 @@ function bootHomeSearchShell() {
   }
 
   HOME_SEARCH_SHELL_STATE.root = root;
+  syncHomeSearchVoiceState(false);
+
+  const voiceButton = getHomeSearchShellNodes().voiceButton;
+  if (voiceButton instanceof HTMLButtonElement && !hasSpeechInputSupport()) {
+    voiceButton.hidden = true;
+  }
 
   if (HOME_SEARCH_SHELL_STATE.isBound) {
     renderHomeSearchShell();

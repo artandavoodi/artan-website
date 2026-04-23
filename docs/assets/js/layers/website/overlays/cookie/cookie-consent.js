@@ -1404,6 +1404,10 @@
 
       openConsent('banner');
     });
+
+    document.addEventListener('neuroartan:cookie-consent-close-requested', () => {
+      closeConsent();
+    });
   }
 
   function bindOverlayCoordination() {

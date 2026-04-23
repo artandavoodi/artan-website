@@ -73,7 +73,6 @@ function renderHomeDashboardTopbar(snapshot) {
   const photo = snapshot?.account?.profile?.photo_url || snapshot?.account?.user?.photoURL || '';
   const hasAvatarImage = !!photo;
   const profileLabel = resolveHomeTopbarProfileLabel(snapshot);
-  const fallback = resolveHomeTopbarProfileFallback(snapshot);
 
   if (nodes.profileLabel) {
     nodes.profileLabel.textContent = signedIn ? profileLabel : 'Profile';
@@ -82,15 +81,15 @@ function renderHomeDashboardTopbar(snapshot) {
   if (nodes.profileTrigger) {
     const label = signedIn ? `Open profile panel for ${profileLabel}` : 'Open profile panel';
     nodes.profileTrigger.setAttribute('aria-label', label);
-    nodes.profileTrigger.setAttribute('data-home-topbar-profile-state', signedIn ? 'account' : 'guest');
+    nodes.profileTrigger.setAttribute('data-home-topbar-profile-state', hasAvatarImage ? 'avatar' : 'icon');
   }
 
   if (nodes.profileAvatarShell) {
-    nodes.profileAvatarShell.hidden = !signedIn;
+    nodes.profileAvatarShell.hidden = !hasAvatarImage;
   }
 
   if (nodes.profileAvatarImage) {
-    if (signedIn && hasAvatarImage) {
+    if (hasAvatarImage) {
       nodes.profileAvatarImage.hidden = false;
       nodes.profileAvatarImage.src = photo;
       nodes.profileAvatarImage.alt = profileLabel;
@@ -102,12 +101,12 @@ function renderHomeDashboardTopbar(snapshot) {
   }
 
   if (nodes.profileAvatarFallback) {
-    nodes.profileAvatarFallback.hidden = !signedIn || hasAvatarImage;
-    nodes.profileAvatarFallback.textContent = fallback;
+    nodes.profileAvatarFallback.hidden = true;
+    nodes.profileAvatarFallback.textContent = resolveHomeTopbarProfileFallback(snapshot);
   }
 
   if (nodes.profileIcon) {
-    nodes.profileIcon.hidden = signedIn;
+    nodes.profileIcon.hidden = hasAvatarImage;
   }
 }
 

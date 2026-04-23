@@ -26,12 +26,12 @@
 .profile-menu__surface{
   width:100%;
   min-height:var(--control-height-lg);
-  padding:0 0 var(--spacing-sm);
+  padding:0 0 0.9rem;
   display:grid;
   grid-template-columns:auto minmax(0, 1fr) auto;
   align-items:center;
   gap:var(--spacing-lg);
-  border-bottom:var(--stroke-soft) solid var(--border-color);
+  border-bottom:1px solid color-mix(in srgb, var(--text-primary-color) 7%, transparent);
   box-sizing:border-box;
   background:transparent;
 }
@@ -95,6 +95,13 @@
 .profile-menu__action{
   min-height:var(--control-height-sm);
   padding-inline:var(--control-padding-x-sm);
+  color:var(--text-secondary-color);
+  opacity:0.72;
+  transition:
+    color 220ms ease,
+    opacity 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease;
 }
 
 .profile-menu__icon-action{
@@ -102,10 +109,27 @@
   height:var(--control-height-sm);
   min-width:var(--control-height-sm);
   min-height:var(--control-height-sm);
+  opacity:0.72;
+  transition:
+    color 220ms ease,
+    opacity 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease;
 }
 
 .profile-menu__action--account{
   min-width:max-content;
+}
+
+.profile-menu__link:hover,
+.profile-menu__link:focus-visible,
+.profile-menu__action:hover,
+.profile-menu__action:focus-visible,
+.profile-menu__icon-action:hover,
+.profile-menu__icon-action:focus-visible{
+  color:var(--text-color);
+  opacity:1;
+  outline:none;
 }
 
 @media (max-width:980px){

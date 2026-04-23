@@ -4,14 +4,15 @@ import { subscribeHomeSurfaceState } from './home-surface-state.js';
 01) MODULE STATE
 02) CONSTANTS
 03) DOM HELPERS
-04) CONTENT SOURCE HELPERS
-05) RENDER HELPERS
-06) RAIL MODE HELPERS
-07) SHELL STATE HELPERS
-08) OPEN / CLOSE HELPERS
-09) EVENT BINDING
-10) BOOT
-11) END OF FILE
+04) CONFIG HELPERS
+05) ASSET HELPERS
+06) CONTENT HELPERS
+07) RAIL MODE HELPERS
+08) SHELL STATE HELPERS
+09) OPEN / CLOSE HELPERS
+10) EVENT BINDING
+11) BOOT
+12) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -20,8 +21,14 @@ import { subscribeHomeSurfaceState } from './home-surface-state.js';
 const HOME_PLATFORM_SHELL_STATE = {
   isBound: false,
   activeDestination: 'home',
+  activeSubdestination: '',
   snapshot: null,
   railMode: 'expanded',
+  config: [],
+  configPromise: null,
+  fragmentCache: new Map(),
+  moduleCache: new Map(),
+  renderToken: 0,
 };
 
 /* =============================================================================
@@ -33,73 +40,22 @@ const HOME_PLATFORM_DESTINATIONS = new Set([
   'workspace',
   'profile',
   'settings',
+  'messaging',
+  'notifications',
+  'more',
   'cookie-settings',
 ]);
 
-const HOME_PLATFORM_COPY = {
-  home: {
-    title: 'Home',
-    copy: 'Unified platform shell ready. Select a destination from the left rail to continue through one stable navigation and content surface.',
-  },
-  continuity: {
-    title: 'Continuity',
-    copy: 'Continuity surfaces, history, and active route traces belong here in one stable shell destination.',
-  },
-  workspace: {
-    title: 'Workspace',
-    copy: 'Current interaction state, workspace actions, and operating context belong here in one stable shell destination.',
-  },
-  profile: {
-    title: 'Profile',
-    copy: 'Identity, subscription, verification, and account-control surfaces belong here in one stable shell destination.',
-  },
-  settings: {
-    title: 'Settings',
-    copy: 'Theme, language, privacy, and identity controls belong here in one stable shell destination.',
-  },
-};
-
+const HOME_PLATFORM_CONFIG_URL = '/assets/data/platform/home-platform-shell.json';
 const HOME_PLATFORM_RAIL_STORAGE_KEY = 'neuroartan.home.platformShell.railMode';
-
-const HOME_PLATFORM_SOURCE_SELECTORS = {
-  workspace: {
-    root: [
-      '#home-workspace-panel .home-workspace-panel__inner',
-      '#home-workspace-panel .home-workspace-panel__dialog',
-      '#home-workspace-panel',
-    ],
-    interactionState: [
-      '#home-workspace-panel [data-home-workspace-section="interaction-state"]',
-      '#home-workspace-panel .home-workspace-panel__section--interaction-state',
-    ],
-    continuityActions: [
-      '#home-workspace-panel [data-home-workspace-section="continuity-actions"]',
-      '#home-workspace-panel .home-workspace-panel__section--continuity-actions',
-    ],
-    publicSurfaces: [
-      '#home-workspace-panel [data-home-workspace-section="public-surfaces"]',
-      '#home-workspace-panel .home-workspace-panel__section--public-surfaces',
-    ],
-  },
-  profile: {
-    root: [
-      '#home-profile-control-panel .home-profile-control-panel__inner',
-      '#home-profile-control-panel .home-profile-control-panel__dialog',
-      '#home-profile-control-panel',
-    ],
-  },
-  settings: {
-    root: [
-      '#home-settings-panel .home-settings-panel__inner',
-      '#home-settings-panel .home-settings-panel__dialog',
-      '#home-settings-panel',
-    ],
-  },
-};
 
 /* =============================================================================
 03) DOM HELPERS
 ============================================================================= */
+function normalizeString(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
 function getHomePlatformShellRoot() {
   return document.querySelector('#home-platform-shell');
 }
@@ -108,12 +64,32 @@ function getHomePlatformShellContent() {
   return document.querySelector('#home-platform-shell-content');
 }
 
-function getHomePlatformShellMenuTrigger() {
-  return document.querySelector('#home-dashboard-menu-trigger');
+function getHomePlatformShellSubnav() {
+  return document.querySelector('#home-platform-shell-subnav');
 }
 
-function getHomePlatformShellCloseTrigger() {
-  return document.querySelector('#home-platform-shell-close');
+function getHomePlatformShellSubrail() {
+  return document.querySelector('#home-platform-shell .home-platform-shell__subrail');
+}
+
+function getHomePlatformShellSubrailLabel() {
+  return document.querySelector('[data-home-platform-subrail-label]');
+}
+
+function getHomePlatformShellSubrailTitle() {
+  return document.querySelector('[data-home-platform-subrail-title]');
+}
+
+function getHomePlatformShellContentEyebrow() {
+  return document.querySelector('[data-home-platform-content-eyebrow]');
+}
+
+function getHomePlatformShellContentTitle() {
+  return document.querySelector('[data-home-platform-content-title]');
+}
+
+function getHomePlatformShellContentCopy() {
+  return document.querySelector('[data-home-platform-content-copy]');
 }
 
 function getHomePlatformShellRailToggleTrigger() {
@@ -126,7 +102,6 @@ function getHomePlatformShellNavItems() {
 
 function getHomePlatformShellChromeRoots() {
   return [
-    document.querySelector('#home-navigation-drawer'),
     document.querySelector('#home-workspace-panel'),
     document.querySelector('#home-profile-control-panel'),
     document.querySelector('#home-settings-panel'),
@@ -153,119 +128,225 @@ function hasSignedInAccount() {
   return !!HOME_PLATFORM_SHELL_STATE.snapshot?.account?.signedIn;
 }
 
+function fetchHomePlatformJson(path) {
+  return fetch(path, {
+    cache: 'no-store',
+    credentials: 'same-origin',
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Failed to load ${path}: HTTP ${response.status}`);
+    }
+
+    return response.json();
+  });
+}
+
+function fetchHomePlatformText(path) {
+  return fetch(path, {
+    cache: 'no-store',
+    credentials: 'same-origin',
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Failed to load ${path}: HTTP ${response.status}`);
+    }
+
+    return response.text();
+  });
+}
+
 /* =============================================================================
-04) CONTENT SOURCE HELPERS
+04) CONFIG HELPERS
 ============================================================================= */
-function getFirstMatchingNode(selectors) {
-  for (const selector of selectors) {
-    const match = document.querySelector(selector);
-    if (match) return match;
+function normalizeHomePlatformSubdestinations(value) {
+  if (!Array.isArray(value)) {
+    return [];
   }
-  return null;
+
+  return value
+    .map((item) => {
+      const id = normalizeString(item?.id);
+      if (!id) return null;
+
+      return {
+        id,
+        label: normalizeString(item?.label || id),
+        detailTitle: normalizeString(item?.detail_title || item?.detailTitle || item?.label || ''),
+        detailCopy: normalizeString(item?.detail_copy || item?.detailCopy || ''),
+        ctaLabel: normalizeString(item?.cta_label || item?.ctaLabel || ''),
+        href: normalizeString(item?.href || ''),
+        action: normalizeString(item?.action || ''),
+        fragment: normalizeString(item?.fragment || ''),
+        stylesheet: normalizeString(item?.stylesheet || ''),
+        module: normalizeString(item?.module || ''),
+      };
+    })
+    .filter(Boolean);
 }
 
-function getWorkspaceSourceNode() {
-  return getFirstMatchingNode(HOME_PLATFORM_SOURCE_SELECTORS.workspace.root);
+function normalizeHomePlatformConfig(raw = {}) {
+  if (!Array.isArray(raw?.destinations)) {
+    return [];
+  }
+
+  return raw.destinations
+    .map((item) => {
+      const id = normalizeString(item?.id);
+      if (!id) return null;
+
+      return {
+        id,
+        eyebrow: normalizeString(item?.eyebrow || item?.label || id),
+        title: normalizeString(item?.title || item?.label || id),
+        description: normalizeString(item?.description || ''),
+        defaultSubdestination: normalizeString(item?.default_subdestination || item?.defaultSubdestination || ''),
+        subdestinations: normalizeHomePlatformSubdestinations(item?.subdestinations),
+      };
+    })
+    .filter(Boolean);
 }
 
-function getProfileSourceNode() {
-  return getFirstMatchingNode(HOME_PLATFORM_SOURCE_SELECTORS.profile.root);
+function getHomePlatformDestinationConfig(destination) {
+  return HOME_PLATFORM_SHELL_STATE.config.find((item) => item.id === destination) || null;
 }
 
-function getSettingsSourceNode() {
-  return getFirstMatchingNode(HOME_PLATFORM_SOURCE_SELECTORS.settings.root);
-}
-
-
-function cloneContentNode(node) {
-  if (!node) return null;
-  return node.cloneNode(true);
-}
-
-function cloneNodeBySelectors(selectors = []) {
-  return cloneContentNode(getFirstMatchingNode(selectors));
-}
-
-function buildCompositeContent(nodes = []) {
-  const validNodes = nodes.filter(Boolean);
-  if (!validNodes.length) {
+function getHomePlatformSubdestinationConfig(destination, subdestination) {
+  const destinationConfig = getHomePlatformDestinationConfig(destination);
+  if (!destinationConfig) {
     return null;
   }
 
-  const wrapper = document.createElement('div');
-  wrapper.className = 'home-platform-shell__content-stack';
-  validNodes.forEach((node) => {
-    wrapper.append(node);
-  });
-  return wrapper;
+  return destinationConfig.subdestinations.find((item) => item.id === subdestination) || null;
 }
 
-function sanitizeClonedContent(node) {
-  if (!node) return null;
+function resolveDefaultSubdestination(destination) {
+  const destinationConfig = getHomePlatformDestinationConfig(destination);
+  if (!destinationConfig) {
+    return '';
+  }
 
-  node.querySelectorAll('[id]').forEach((element) => {
-    element.removeAttribute('id');
-  });
+  if (destinationConfig.defaultSubdestination) {
+    return destinationConfig.defaultSubdestination;
+  }
 
-  node.querySelectorAll('[data-home-workspace-panel-close], [data-home-profile-control-panel-close], [data-home-settings-close]').forEach((element) => {
-    element.remove();
-  });
-
-  return node;
+  return destinationConfig.subdestinations[0]?.id || '';
 }
 
-function buildDefaultState(destination) {
-  const copy = HOME_PLATFORM_COPY[destination] || HOME_PLATFORM_COPY.home;
+async function ensureHomePlatformConfig() {
+  if (HOME_PLATFORM_SHELL_STATE.config.length) {
+    return HOME_PLATFORM_SHELL_STATE.config;
+  }
+
+  if (!HOME_PLATFORM_SHELL_STATE.configPromise) {
+    HOME_PLATFORM_SHELL_STATE.configPromise = fetchHomePlatformJson(HOME_PLATFORM_CONFIG_URL)
+      .then((json) => {
+        HOME_PLATFORM_SHELL_STATE.config = normalizeHomePlatformConfig(json);
+        return HOME_PLATFORM_SHELL_STATE.config;
+      })
+      .catch(() => {
+        HOME_PLATFORM_SHELL_STATE.config = [];
+        return HOME_PLATFORM_SHELL_STATE.config;
+      })
+      .finally(() => {
+        HOME_PLATFORM_SHELL_STATE.configPromise = null;
+      });
+  }
+
+  return HOME_PLATFORM_SHELL_STATE.configPromise;
+}
+
+/* =============================================================================
+05) ASSET HELPERS
+============================================================================= */
+function ensureStylesheetOnce(href) {
+  if (!href) {
+    return null;
+  }
+
+  const resolvedHref = new URL(href, window.location.origin).href;
+  const existing = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find((link) => {
+    const currentHref = link.getAttribute('href') || '';
+
+    try {
+      return new URL(currentHref, window.location.origin).href === resolvedHref;
+    } catch (_error) {
+      return currentHref === href;
+    }
+  });
+
+  if (existing) {
+    return existing;
+  }
+
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  link.setAttribute('data-home-platform-destination-style', href);
+  document.head.appendChild(link);
+  return link;
+}
+
+function loadHomePlatformFragment(path) {
+  if (!path) {
+    return Promise.resolve('');
+  }
+
+  if (!HOME_PLATFORM_SHELL_STATE.fragmentCache.has(path)) {
+    HOME_PLATFORM_SHELL_STATE.fragmentCache.set(path, fetchHomePlatformText(path).catch(() => ''));
+  }
+
+  return HOME_PLATFORM_SHELL_STATE.fragmentCache.get(path);
+}
+
+function loadHomePlatformModule(path) {
+  if (!path) {
+    return Promise.resolve(null);
+  }
+
+  if (!HOME_PLATFORM_SHELL_STATE.moduleCache.has(path)) {
+    HOME_PLATFORM_SHELL_STATE.moduleCache.set(path, import(path).catch(() => null));
+  }
+
+  return HOME_PLATFORM_SHELL_STATE.moduleCache.get(path);
+}
+
+/* =============================================================================
+06) CONTENT HELPERS
+============================================================================= */
+function buildDefaultState({ title = '', copy = '', ctaLabel = '', href = '', action = '' } = {}) {
   const wrapper = document.createElement('div');
   wrapper.className = 'home-platform-shell__content-state';
-  wrapper.setAttribute('data-home-platform-content', destination);
 
-  const title = document.createElement('h2');
-  title.className = 'home-platform-shell__content-title';
-  title.textContent = copy.title;
+  if (title) {
+    const titleNode = document.createElement('h3');
+    titleNode.className = 'home-platform-shell__content-state-title';
+    titleNode.textContent = title;
+    wrapper.append(titleNode);
+  }
 
-  const paragraph = document.createElement('p');
-  paragraph.className = 'home-platform-shell__content-copy';
-  paragraph.textContent = copy.copy;
+  if (copy) {
+    const paragraph = document.createElement('p');
+    paragraph.className = 'home-platform-shell__content-state-copy';
+    paragraph.textContent = copy;
+    wrapper.append(paragraph);
+  }
 
-  wrapper.append(title, paragraph);
+  if (ctaLabel && (href || action)) {
+    const actionNode = href ? document.createElement('a') : document.createElement('button');
+    actionNode.className = 'home-platform-shell__content-state-action';
+
+    if (href && actionNode instanceof HTMLAnchorElement) {
+      actionNode.href = href;
+      actionNode.setAttribute('data-home-platform-detail-href', href);
+    } else if (actionNode instanceof HTMLButtonElement) {
+      actionNode.type = 'button';
+      actionNode.setAttribute('data-home-platform-detail-action', action);
+    }
+
+    actionNode.textContent = ctaLabel;
+    wrapper.append(actionNode);
+  }
+
   return wrapper;
-}
-
-function buildDestinationContent(destination) {
-  if (destination === 'profile') {
-    return sanitizeClonedContent(cloneContentNode(getProfileSourceNode())) || buildDefaultState(destination);
-  }
-
-  if (destination === 'settings') {
-    return sanitizeClonedContent(cloneContentNode(getSettingsSourceNode())) || buildDefaultState(destination);
-  }
-
-  if (destination === 'continuity') {
-    const continuityActions = cloneNodeBySelectors(HOME_PLATFORM_SOURCE_SELECTORS.workspace.continuityActions);
-    const publicSurfaces = cloneNodeBySelectors(HOME_PLATFORM_SOURCE_SELECTORS.workspace.publicSurfaces);
-
-    return sanitizeClonedContent(
-      buildCompositeContent([
-        continuityActions,
-        publicSurfaces,
-      ]) || cloneContentNode(getWorkspaceSourceNode())
-    ) || buildDefaultState(destination);
-  }
-
-  if (destination === 'workspace') {
-    const interactionState = cloneNodeBySelectors(HOME_PLATFORM_SOURCE_SELECTORS.workspace.interactionState);
-    const continuityActions = cloneNodeBySelectors(HOME_PLATFORM_SOURCE_SELECTORS.workspace.continuityActions);
-
-    return sanitizeClonedContent(
-      buildCompositeContent([
-        interactionState,
-        continuityActions,
-      ]) || cloneContentNode(getWorkspaceSourceNode())
-    ) || buildDefaultState(destination);
-  }
-
-  return buildDefaultState(destination);
 }
 
 function normalizeShellActionLabel(label) {
@@ -325,7 +406,7 @@ function handleProfileShellAction(action) {
   }
 
   if (normalized === 'settings') {
-    setHomePlatformDestination('settings');
+    void setHomePlatformDestination('settings');
     return;
   }
 
@@ -339,19 +420,163 @@ function handleProfileShellAction(action) {
   }
 }
 
-/* =============================================================================
-05) RENDER HELPERS
-============================================================================= */
-function renderHomePlatformShellContent(destination) {
+function handleHomePlatformDetailAction(action) {
+  const normalized = normalizeShellActionLabel(action);
+
+  if (normalized === 'cookie-settings') {
+    document.dispatchEvent(new CustomEvent('neuroartan:cookie-consent-open-requested', {
+      detail: {
+        source: 'home-platform-shell',
+        surface: 'platform-shell',
+      },
+    }));
+    closeHomePlatformShell();
+  }
+}
+
+async function renderHomePlatformShellContent(destination, subdestination) {
   const contentRoot = getHomePlatformShellContent();
-  if (!contentRoot) return;
-  contentRoot.setAttribute('data-home-platform-content', destination);
+  const eyebrowNode = getHomePlatformShellContentEyebrow();
+  const titleNode = getHomePlatformShellContentTitle();
+  const copyNode = getHomePlatformShellContentCopy();
   const shellRoot = getHomePlatformShellRoot();
+  const destinationConfig = getHomePlatformDestinationConfig(destination);
+  const subdestinationConfig = getHomePlatformSubdestinationConfig(destination, subdestination);
+  const renderToken = ++HOME_PLATFORM_SHELL_STATE.renderToken;
+
+  if (!contentRoot || !destinationConfig) {
+    return;
+  }
+
   if (shellRoot) {
     shellRoot.setAttribute('data-home-platform-destination', destination);
+    shellRoot.setAttribute('data-home-platform-subdestination', subdestination || '');
   }
+
+  if (eyebrowNode) {
+    eyebrowNode.textContent = destinationConfig.eyebrow || destinationConfig.title;
+  }
+
+  if (titleNode) {
+    titleNode.textContent = subdestinationConfig?.detailTitle || destinationConfig.title;
+  }
+
+  if (copyNode) {
+    copyNode.textContent = subdestinationConfig?.detailCopy || destinationConfig.description || '';
+  }
+
   contentRoot.innerHTML = '';
-  contentRoot.append(buildDestinationContent(destination));
+
+  if (!subdestinationConfig?.fragment) {
+    contentRoot.append(buildDefaultState({
+      title: subdestinationConfig?.detailTitle || destinationConfig.title || 'Home',
+      copy: subdestinationConfig?.detailCopy || destinationConfig.description || '',
+      ctaLabel: subdestinationConfig?.ctaLabel || '',
+      href: subdestinationConfig?.href || '',
+      action: subdestinationConfig?.action || '',
+    }));
+    return;
+  }
+
+  if (subdestinationConfig.stylesheet) {
+    ensureStylesheetOnce(subdestinationConfig.stylesheet);
+  }
+
+  try {
+    const [fragmentHtml, moduleNamespace] = await Promise.all([
+      loadHomePlatformFragment(subdestinationConfig.fragment),
+      loadHomePlatformModule(subdestinationConfig.module),
+    ]);
+
+    if (renderToken !== HOME_PLATFORM_SHELL_STATE.renderToken) {
+      return;
+    }
+
+    if (!fragmentHtml) {
+      throw new Error('Missing destination fragment.');
+    }
+
+    contentRoot.innerHTML = fragmentHtml;
+
+    const mountedRoot = contentRoot.querySelector('[data-home-platform-destination-root]')
+      || contentRoot.firstElementChild
+      || contentRoot;
+
+    if (mountedRoot instanceof Element) {
+      mountedRoot.setAttribute('data-home-platform-content', destination);
+      mountedRoot.setAttribute('data-home-platform-content-id', subdestination || destination);
+    }
+
+    if (moduleNamespace?.mountHomePlatformDestination && mountedRoot instanceof Element) {
+      await moduleNamespace.mountHomePlatformDestination(mountedRoot, {
+        destination,
+        subdestination,
+        destinationConfig,
+        subdestinationConfig,
+        snapshot: HOME_PLATFORM_SHELL_STATE.snapshot,
+        closeShell: closeHomePlatformShell,
+        requestMicrophoneInteraction,
+        setDestination: setHomePlatformDestination,
+        setSubdestination: setHomePlatformSubdestination,
+      });
+    }
+  } catch (_error) {
+    if (renderToken !== HOME_PLATFORM_SHELL_STATE.renderToken) {
+      return;
+    }
+
+    contentRoot.innerHTML = '';
+    contentRoot.append(buildDefaultState({
+      title: subdestinationConfig?.detailTitle || destinationConfig.title || 'Home',
+      copy: subdestinationConfig?.detailCopy || destinationConfig.description || '',
+      ctaLabel: subdestinationConfig?.ctaLabel || '',
+      href: subdestinationConfig?.href || '',
+      action: subdestinationConfig?.action || '',
+    }));
+  }
+}
+
+function renderHomePlatformShellSubnav(destination, subdestination) {
+  const subrail = getHomePlatformShellSubrail();
+  const subnavRoot = getHomePlatformShellSubnav();
+  const labelNode = getHomePlatformShellSubrailLabel();
+  const titleNode = getHomePlatformShellSubrailTitle();
+  const destinationConfig = getHomePlatformDestinationConfig(destination);
+  const items = destinationConfig?.subdestinations || [];
+
+  if (!subrail || !subnavRoot || !destinationConfig) {
+    return;
+  }
+
+  const hasSubnav = items.length > 1;
+  subrail.hidden = !hasSubnav;
+  subrail.setAttribute('aria-hidden', hasSubnav ? 'false' : 'true');
+
+  if (labelNode) {
+    labelNode.textContent = destinationConfig.eyebrow || destinationConfig.title;
+  }
+
+  if (titleNode) {
+    titleNode.textContent = hasSubnav ? 'Section navigation' : destinationConfig.title;
+  }
+
+  subnavRoot.innerHTML = '';
+
+  if (!hasSubnav) {
+    return;
+  }
+
+  items.forEach((item) => {
+    const button = document.createElement('button');
+    const isActive = item.id === subdestination;
+    button.type = 'button';
+    button.className = 'home-platform-shell__subnav-item';
+    button.textContent = item.label;
+    button.setAttribute('data-home-platform-subdestination', item.id);
+    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    button.classList.toggle('is-active', isActive);
+    subnavRoot.append(button);
+  });
 }
 
 function syncHomePlatformShellNav(destination) {
@@ -365,7 +590,7 @@ function syncHomePlatformShellNav(destination) {
 }
 
 /* =============================================================================
-06) RAIL MODE HELPERS
+07) RAIL MODE HELPERS
 ============================================================================= */
 function normalizeHomePlatformRailMode(value) {
   return value === 'collapsed' ? 'collapsed' : 'expanded';
@@ -422,9 +647,9 @@ function toggleHomePlatformRailMode() {
 }
 
 /* =============================================================================
-07) SHELL STATE HELPERS
+08) SHELL STATE HELPERS
 ============================================================================= */
-function setHomePlatformDestination(destination) {
+async function setHomePlatformDestination(destination, subdestination = '') {
   if (!HOME_PLATFORM_DESTINATIONS.has(destination)) {
     return;
   }
@@ -439,19 +664,50 @@ function setHomePlatformDestination(destination) {
     return;
   }
 
+  await ensureHomePlatformConfig();
+
+  const destinationConfig = getHomePlatformDestinationConfig(destination);
+  if (!destinationConfig) {
+    return;
+  }
+
+  const nextSubdestination = getHomePlatformSubdestinationConfig(destination, subdestination)
+    ? subdestination
+    : resolveDefaultSubdestination(destination);
+
   HOME_PLATFORM_SHELL_STATE.activeDestination = destination;
+  HOME_PLATFORM_SHELL_STATE.activeSubdestination = nextSubdestination;
+
   syncHomePlatformShellNav(destination);
-  renderHomePlatformShellContent(destination);
+  renderHomePlatformShellSubnav(destination, nextSubdestination);
+  await renderHomePlatformShellContent(destination, nextSubdestination);
 
   document.dispatchEvent(new CustomEvent('home:platform-shell-destination-changed', {
     detail: {
       destination,
+      subdestination: nextSubdestination,
     },
   }));
 }
 
+async function setHomePlatformSubdestination(subdestination) {
+  const destination = HOME_PLATFORM_SHELL_STATE.activeDestination;
+  const destinationConfig = getHomePlatformDestinationConfig(destination);
+  if (!destinationConfig) {
+    return;
+  }
+
+  const nextSubdestination = getHomePlatformSubdestinationConfig(destination, subdestination)
+    ? subdestination
+    : resolveDefaultSubdestination(destination);
+
+  HOME_PLATFORM_SHELL_STATE.activeSubdestination = nextSubdestination;
+  renderHomePlatformShellSubnav(destination, nextSubdestination);
+  await renderHomePlatformShellContent(destination, nextSubdestination);
+}
+
 /* =============================================================================
-08) OPEN / CLOSE HELPERS
+09) OPEN / CLOSE HELPERS
 ============================================================================= */
 function closeConflictingHomeChrome() {
   getHomePlatformShellChromeRoots().forEach(hideRoot);
@@ -462,17 +718,24 @@ function openHomePlatformShell(destination = HOME_PLATFORM_SHELL_STATE.activeDes
   if (!root) return;
 
   closeConflictingHomeChrome();
+  document.dispatchEvent(new CustomEvent('neuroartan:cookie-consent-close-requested', {
+    detail: {
+      source: 'home-platform-shell',
+    },
+  }));
   root.hidden = false;
   root.setAttribute('aria-hidden', 'false');
   document.body.classList.add('home-platform-shell-open');
   syncHomePlatformRailMode(HOME_PLATFORM_SHELL_STATE.railMode);
-  setHomePlatformDestination(destination);
 
-  document.dispatchEvent(new CustomEvent('home:platform-shell-opened', {
-    detail: {
-      destination: HOME_PLATFORM_SHELL_STATE.activeDestination,
-    },
-  }));
+  void setHomePlatformDestination(destination).then(() => {
+    document.dispatchEvent(new CustomEvent('home:platform-shell-opened', {
+      detail: {
+        destination: HOME_PLATFORM_SHELL_STATE.activeDestination,
+        subdestination: HOME_PLATFORM_SHELL_STATE.activeSubdestination,
+      },
+    }));
+  });
 }
 
 function closeHomePlatformShell() {
@@ -483,6 +746,7 @@ function closeHomePlatformShell() {
   root.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('home-platform-shell-open');
   root.removeAttribute('data-home-platform-destination');
+  root.removeAttribute('data-home-platform-subdestination');
   syncHomePlatformRailMode(HOME_PLATFORM_SHELL_STATE.railMode);
   document.dispatchEvent(new CustomEvent('neuroartan:home-topbar-reset-triggers'));
   document.dispatchEvent(new CustomEvent('home:platform-shell-closed'));
@@ -498,7 +762,7 @@ function toggleHomePlatformShell(destination = 'home') {
   }
 
   if (destination !== HOME_PLATFORM_SHELL_STATE.activeDestination) {
-    setHomePlatformDestination(destination);
+    void setHomePlatformDestination(destination);
     return;
   }
 
@@ -506,7 +770,7 @@ function toggleHomePlatformShell(destination = 'home') {
 }
 
 /* =============================================================================
-09) EVENT BINDING
+10) EVENT BINDING
 ============================================================================= */
 function bindHomePlatformShellEvents() {
   if (HOME_PLATFORM_SHELL_STATE.isBound) return;
@@ -535,11 +799,36 @@ function bindHomePlatformShellEvents() {
       return;
     }
 
-    const navTrigger = event.target.closest('[data-home-platform-destination]');
+    const navTrigger = event.target.closest(
+      '#home-platform-shell .home-platform-shell__nav-item[data-home-platform-destination]'
+    );
     if (navTrigger) {
       const destination = navTrigger.getAttribute('data-home-platform-destination') || 'home';
       event.preventDefault();
-      setHomePlatformDestination(destination);
+      void setHomePlatformDestination(destination);
+      return;
+    }
+
+    const subnavTrigger = event.target.closest(
+      '#home-platform-shell-subnav .home-platform-shell__subnav-item[data-home-platform-subdestination]'
+    );
+    if (subnavTrigger) {
+      const subdestination = subnavTrigger.getAttribute('data-home-platform-subdestination') || '';
+      event.preventDefault();
+      void setHomePlatformSubdestination(subdestination);
+      return;
+    }
+
+    const detailLink = event.target.closest('[data-home-platform-detail-href]');
+    if (detailLink instanceof HTMLAnchorElement) {
+      closeHomePlatformShell();
+      return;
+    }
+
+    const detailAction = event.target.closest('[data-home-platform-detail-action]');
+    if (detailAction) {
+      event.preventDefault();
+      handleHomePlatformDetailAction(detailAction.getAttribute('data-home-platform-detail-action') || '');
       return;
     }
 
@@ -560,7 +849,6 @@ function bindHomePlatformShellEvents() {
         const action = shellActionTrigger.getAttribute('data-home-profile-action') || shellActionTrigger.textContent || '';
         event.preventDefault();
         handleProfileShellAction(action);
-        return;
       }
     }
   }, true);
@@ -582,19 +870,39 @@ function bindHomePlatformShellEvents() {
 
   subscribeHomeSurfaceState((snapshot) => {
     HOME_PLATFORM_SHELL_STATE.snapshot = snapshot;
+
+    const root = getHomePlatformShellRoot();
+    if (!root || root.hidden) {
+      return;
+    }
+
+    void renderHomePlatformShellContent(
+      HOME_PLATFORM_SHELL_STATE.activeDestination,
+      HOME_PLATFORM_SHELL_STATE.activeSubdestination
+    );
   });
 }
 
 /* =============================================================================
-10) BOOT
+11) BOOT
 ============================================================================= */
 function bootHomePlatformShell() {
   if (!getHomePlatformShellRoot()) return;
   bindHomePlatformShellEvents();
   HOME_PLATFORM_SHELL_STATE.railMode = loadHomePlatformRailMode();
   syncHomePlatformRailMode(HOME_PLATFORM_SHELL_STATE.railMode);
-  syncHomePlatformShellNav(HOME_PLATFORM_SHELL_STATE.activeDestination);
-  renderHomePlatformShellContent(HOME_PLATFORM_SHELL_STATE.activeDestination);
+
+  void ensureHomePlatformConfig().then(() => {
+    syncHomePlatformShellNav(HOME_PLATFORM_SHELL_STATE.activeDestination);
+    renderHomePlatformShellSubnav(
+      HOME_PLATFORM_SHELL_STATE.activeDestination,
+      HOME_PLATFORM_SHELL_STATE.activeSubdestination || resolveDefaultSubdestination(HOME_PLATFORM_SHELL_STATE.activeDestination)
+    );
+    void renderHomePlatformShellContent(
+      HOME_PLATFORM_SHELL_STATE.activeDestination,
+      HOME_PLATFORM_SHELL_STATE.activeSubdestination || resolveDefaultSubdestination(HOME_PLATFORM_SHELL_STATE.activeDestination)
+    );
+  });
 }
 
 document.addEventListener('fragment:mounted', (event) => {
@@ -613,5 +921,5 @@ if (document.readyState === 'loading') {
 }
 
 /* =============================================================================
-11) END OF FILE
+12) END OF FILE
 ============================================================================= */

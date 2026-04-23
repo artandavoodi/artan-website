@@ -256,11 +256,11 @@
   height:1.12rem;
 }
 
-.home-dashboard-topbar__action--profile[data-home-topbar-profile-state="guest"] .home-dashboard-topbar__profile-avatar{
+.home-dashboard-topbar__action--profile[data-home-topbar-profile-state="icon"] .home-dashboard-topbar__profile-avatar{
   display:none;
 }
 
-.home-dashboard-topbar__action--profile[data-home-topbar-profile-state="account"] .home-dashboard-topbar__icon--profile{
+.home-dashboard-topbar__action--profile[data-home-topbar-profile-state="avatar"] .home-dashboard-topbar__icon--profile{
   display:none;
 }
 

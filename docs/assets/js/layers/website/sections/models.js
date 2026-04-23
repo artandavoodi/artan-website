@@ -291,6 +291,18 @@ function renderModelCard(model = {}) {
   const interactionMode = resolveInteractionMode(model);
   const trustLabel = resolveTrustLabel(model);
   const verificationLabel = resolveVerificationLabel(model);
+  const verificationMarkup = isVerifiedModel(model)
+    ? `
+      <span class="models-directory-card__verification" aria-label="${escapeHtml(verificationLabel)} model">
+        <img
+          class="models-directory-card__verification-icon ui-icon-theme-aware"
+          src="/assets/icons/core/identity/trust/verified.svg"
+          alt=""
+          aria-hidden="true">
+        <span>${escapeHtml(verificationLabel)}</span>
+      </span>
+    `
+    : '';
   const active = MODELS_PAGE_STATE.activeModelId === model.id;
 
   return `
@@ -303,7 +315,7 @@ function renderModelCard(model = {}) {
           <div class="models-directory-card__identity-copy">
             <div class="models-directory-card__title-row">
               <h2 class="catalog-card__title">${escapeHtml(model.display_name || model.search_title || 'Continuity Model')}</h2>
-              <span class="models-directory-card__verification">${escapeHtml(verificationLabel)}</span>
+              ${verificationMarkup}
             </div>
             <p class="models-directory-card__handle">@${escapeHtml(model.username || 'model')}</p>
           </div>

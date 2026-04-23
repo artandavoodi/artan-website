@@ -70,6 +70,10 @@
     return value instanceof Element;
   }
 
+  function normalizeString(value) {
+    return typeof value === 'string' ? value.trim() : '';
+  }
+
   /* =============================================================================
      05) MENU QUERIES
   ============================================================================= */
@@ -119,6 +123,18 @@
       : null;
   }
 
+  function getAccountAvatarShell(menu = getMenu()) {
+    return menu ? q('[data-institutional-menu-account-avatar-shell]', menu) : null;
+  }
+
+  function getAccountAvatarImage(menu = getMenu()) {
+    return menu ? q('[data-institutional-menu-account-avatar]', menu) : null;
+  }
+
+  function getAccountAvatarIcon(menu = getMenu()) {
+    return menu ? q('[data-institutional-menu-account-icon]', menu) : null;
+  }
+
   function getSearchPanel(menu = getMenu()) {
     return menu ? q('#institutional-menu-panel-search', menu) : null;
   }
@@ -163,6 +179,64 @@
   function hasInstitutionalMenuDom() {
     const menu = getMenu();
     return !!(menu && getPanelContainer(menu) && getTriggers(menu).length && getPanels(menu).length);
+  }
+
+  function normalizeMenuAccountLabel(profile, user) {
+    return normalizeString(
+      profile?.display_name
+      || user?.displayName
+      || profile?.email
+      || user?.email
+      || 'Account'
+    );
+  }
+
+  function syncInstitutionalMenuAccountState({ user = null, profile = null } = {}) {
+    const menu = getMenu();
+    if (!menu) return;
+
+    const trigger = getAccountDrawerTrigger(menu);
+    const avatarShell = getAccountAvatarShell(menu);
+    const avatarImage = getAccountAvatarImage(menu);
+    const accountIcon = getAccountAvatarIcon(menu);
+    let liveUser = user;
+
+    if (!liveUser && window.firebase && typeof window.firebase.auth === 'function') {
+      try {
+        liveUser = window.firebase.auth().currentUser || null;
+      } catch (_error) {
+        liveUser = null;
+      }
+    }
+
+    const photo = normalizeString(profile?.photo_url || liveUser?.photoURL || '');
+    const hasAvatarImage = !!photo;
+    const accountLabel = normalizeMenuAccountLabel(profile, liveUser);
+
+    if (trigger) {
+      trigger.setAttribute('data-institutional-menu-account-state', hasAvatarImage ? 'avatar' : 'icon');
+      trigger.setAttribute('aria-label', hasAvatarImage ? `Open account for ${accountLabel}` : 'Open account');
+    }
+
+    if (avatarShell) {
+      avatarShell.hidden = !hasAvatarImage;
+    }
+
+    if (avatarImage) {
+      if (hasAvatarImage) {
+        avatarImage.hidden = false;
+        avatarImage.src = photo;
+        avatarImage.alt = accountLabel;
+      } else {
+        avatarImage.hidden = true;
+        avatarImage.removeAttribute('src');
+        avatarImage.alt = '';
+      }
+    }
+
+    if (accountIcon) {
+      accountIcon.hidden = hasAvatarImage;
+    }
   }
 
   /* =============================================================================
@@ -1019,6 +1093,17 @@
       menuBound = false;
       initInstitutionalMenu();
     });
+
+    document.addEventListener('account:profile-state-changed', (event) => {
+      syncInstitutionalMenuAccountState({
+        user: event?.detail?.user || null,
+        profile: event?.detail?.profile || null,
+      });
+    });
+
+    document.addEventListener('account:profile-signed-out', () => {
+      syncInstitutionalMenuAccountState();
+    });
   }
 
   /* =============================================================================
@@ -1029,6 +1114,7 @@
     if (menuBound) return;
 
     menuBound = true;
+    syncInstitutionalMenuAccountState();
     bindSecondaryToggle();
     bindRibbon();
     bindCountrySelector();
