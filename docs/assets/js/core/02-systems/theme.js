@@ -248,6 +248,14 @@ function bindThemeEvents() {
   document.addEventListener('neuroartan:footer-mounted', () => {
     initThemeSystem(document);
   });
+
+  document.addEventListener('neuroartan:theme-change-requested', (event) => {
+    const requestedTheme = String(event?.detail?.theme || '').trim().toLowerCase();
+    if (!requestedTheme) return;
+
+    applyTheme(requestedTheme);
+    getThemeToggles(document).forEach(syncToggleNode);
+  });
 }
 
 /* =============================================================================

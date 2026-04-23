@@ -71,6 +71,18 @@ function setTextContent(nodes, value) {
   });
 }
 
+function setPressedState(nodes, activeValue) {
+  nodes.forEach((node) => {
+    if (!(node instanceof HTMLElement)) {
+      return;
+    }
+
+    const optionValue = String(node.getAttribute('data-theme-option') || '').trim().toLowerCase();
+    const isActive = optionValue === String(activeValue || '').trim().toLowerCase();
+    node.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+}
+
 /* =========================================================
    03. PANEL STATE HELPERS
    ========================================================= */
@@ -133,6 +145,7 @@ function renderHomeSettingsPanel(snapshot) {
   setTextContent(nodes.languageValues, resolveLanguageLabel(snapshot?.locale?.language));
   setTextContent(nodes.countryValues, snapshot?.locale?.countryLabel || 'United States');
   setTextContent(nodes.routeValues, buildPublicProfileDisplay(username));
+  setPressedState(Array.from(document.querySelectorAll('.home-settings-panel__theme-option')), snapshot?.theme || 'color');
 }
 
 /* =========================================================
@@ -141,6 +154,19 @@ function renderHomeSettingsPanel(snapshot) {
 
 function normalizeHomeSettingsLabel(label) {
   return typeof label === 'string' ? label.trim().toLowerCase() : '';
+}
+
+function handleHomeSettingsThemeAction(themeValue, context = 'source-panel') {
+  const normalized = String(themeValue || '').trim().toLowerCase();
+  if (!normalized) {
+    return;
+  }
+
+  dispatchHomeSettingsPanelEvent('neuroartan:theme-change-requested', {
+    theme: normalized,
+    source: 'home-settings-panel',
+    context,
+  });
 }
 
 function handleHomeSettingsPanelAction(action, context = 'source-panel') {
@@ -211,7 +237,8 @@ function bindHomeSettingsPanel() {
     const target = event.target.closest(
       '#home-settings-panel-close, ' +
       '[data-home-settings-close], ' +
-      '.home-settings-panel__item'
+      '.home-settings-panel__item, ' +
+      '.home-settings-panel__theme-option'
     );
 
     if (!target) {
@@ -231,6 +258,14 @@ function bindHomeSettingsPanel() {
       dispatchHomeSettingsPanelEvent('home:platform-shell-close-request', {
         source: 'home-settings-panel',
       });
+      return;
+    }
+
+    if (target.matches('.home-settings-panel__theme-option')) {
+      handleHomeSettingsThemeAction(
+        target.getAttribute('data-theme-option') || '',
+        context
+      );
       return;
     }
 
