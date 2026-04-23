@@ -1,0 +1,64 @@
+<!-- =============================================================================
+     HOME NAVIGATION DRAWER FRAGMENT
+     Purpose: unified platform navigation drawer for the home layer.
+     Notes:
+     - distinct from institutional menu ownership
+     - opened from the home top bar menu trigger
+     - contains primary platform navigation and secondary linked items
+============================================================================= -->
+
+<aside class="home-navigation-drawer" id="home-navigation-drawer" aria-label="Home navigation drawer" hidden>
+  <div class="home-navigation-drawer__inner">
+    <div class="home-navigation-drawer__header">
+      <div class="home-navigation-drawer__heading-group">
+        <p class="home-navigation-drawer__eyebrow">Menu</p>
+        <h2 class="home-navigation-drawer__title">Platform navigation and linked access</h2>
+      </div>
+
+      <button
+        class="home-navigation-drawer__close global-close-button"
+        id="home-navigation-drawer-close"
+        data-home-navigation-drawer-close
+        type="button"
+        aria-label="Close navigation drawer">
+        <span class="global-close-button__line global-close-button__line--first" aria-hidden="true"></span>
+        <span class="global-close-button__line global-close-button__line--second" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <section class="home-navigation-drawer__section" aria-label="Primary navigation">
+      <p class="home-navigation-drawer__section-title">Primary Navigation</p>
+      <div class="home-navigation-drawer__stack">
+        <a class="home-navigation-drawer__stack-item home-navigation-drawer__stack-item--link" href="/" aria-current="page" id="home-navigation-drawer-link-home">
+          <span class="home-navigation-drawer__item-label">Home</span>
+        </a>
+        <a class="home-navigation-drawer__stack-item home-navigation-drawer__stack-item--link" href="/pages/continuity-history/index.html" id="home-navigation-drawer-link-continuity">
+          <span class="home-navigation-drawer__item-icon" aria-hidden="true"><img class="ui-icon-theme-aware" src="/assets/icons/core/cognition/unclassified/continuity.svg" alt=""></span>
+          <span class="home-navigation-drawer__item-label">Continuity</span>
+        </a>
+        <button class="home-navigation-drawer__stack-item" data-home-navigation-drawer-action="workspace" type="button" id="home-navigation-drawer-action-workspace">
+          <span class="home-navigation-drawer__item-label">Workspace</span>
+        </button>
+        <button class="home-navigation-drawer__stack-item" data-home-navigation-drawer-action="profile" type="button" id="home-navigation-drawer-action-profile">
+          <span class="home-navigation-drawer__item-icon" aria-hidden="true"><img class="ui-icon-theme-aware" src="/assets/icons/core/identity/unclassified/profile.svg" alt=""></span>
+          <span class="home-navigation-drawer__item-label">Profile</span>
+        </button>
+        <button class="home-navigation-drawer__stack-item" data-home-navigation-drawer-action="settings" type="button" id="home-navigation-drawer-action-settings">
+          <span class="home-navigation-drawer__item-icon" aria-hidden="true"><img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/settings.svg" alt=""></span>
+          <span class="home-navigation-drawer__item-label">Settings</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="home-navigation-drawer__section" aria-label="Secondary linked items">
+      <p class="home-navigation-drawer__section-title">Secondary Linked Items</p>
+      <div class="home-navigation-drawer__stack">
+        <a class="home-navigation-drawer__stack-item home-navigation-drawer__stack-item--link" href="/pages/about/" id="home-navigation-drawer-link-about">About</a>
+        <a class="home-navigation-drawer__stack-item home-navigation-drawer__stack-item--link" href="/pages/careers/index.html" id="home-navigation-drawer-link-careers">Careers</a>
+        <a class="home-navigation-drawer__stack-item home-navigation-drawer__stack-item--link" href="/pages/legal/privacy/index.html" id="home-navigation-drawer-link-privacy">Privacy Policy</a>
+        <a class="home-navigation-drawer__stack-item home-navigation-drawer__stack-item--link" href="/pages/legal/terms/index.html" id="home-navigation-drawer-link-terms">Terms of Use</a>
+        <button class="home-navigation-drawer__stack-item" data-home-navigation-drawer-action="cookie-settings" type="button" id="home-navigation-drawer-action-cookie-settings">Cookie Settings</button>
+      </div>
+    </section>
+  </div>
+</aside>

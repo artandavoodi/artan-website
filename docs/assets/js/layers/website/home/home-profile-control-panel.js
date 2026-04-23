@@ -4,7 +4,7 @@ import {
 } from '../system/account-profile-identity.js';
 import {
   getPublicModels,
-  loadPublicModelRegistry
+  loadPublicModelRegistry,
 } from '../system/public-model-registry.js';
 import { subscribeHomeSurfaceState } from './home-surface-state.js';
 
@@ -22,7 +22,7 @@ import { subscribeHomeSurfaceState } from './home-surface-state.js';
    01. MODULE STATE
    ========================================================= */
 
-const HOME_PANEL_RIGHT_STATE = {
+const HOME_PROFILE_CONTROL_PANEL_STATE = {
   isBound: false,
   isOpen: false,
   activeIntent: null,
@@ -34,12 +34,12 @@ const HOME_PANEL_RIGHT_STATE = {
    02. DOM HELPERS
    ========================================================= */
 
-function getHomePanelRightNodes() {
+function getHomeProfileControlPanelNodes() {
   return {
-    panel: document.querySelector('#home-panel-right'),
-    closeButton: document.querySelector('#home-panel-right-close'),
-    title: document.querySelector('#home-panel-right .home-panel-right__title'),
-    items: Array.from(document.querySelectorAll('#home-panel-right .home-panel-right__item')),
+    panel: document.querySelector('#home-profile-control-panel'),
+    closeButton: document.querySelector('#home-profile-control-panel-close'),
+    title: document.querySelector('#home-profile-control-panel .home-profile-control-panel__title'),
+    items: Array.from(document.querySelectorAll('#home-profile-control-panel .home-profile-control-panel__item')),
     avatarImage: document.querySelector('[data-home-profile-avatar]'),
     avatarFallback: document.querySelector('[data-home-profile-avatar-fallback]'),
     name: document.querySelector('[data-home-profile-name]'),
@@ -55,87 +55,92 @@ function getHomePanelRightNodes() {
   };
 }
 
-function dispatchHomePanelRightEvent(name, detail = {}) {
+function dispatchHomeProfileControlPanelEvent(name, detail = {}) {
   document.dispatchEvent(new CustomEvent(name, { detail }));
 }
 
-function getLivePanelRightRoot() {
-  return document.querySelector('#home-panel-right');
+function getLiveHomeProfileControlPanelRoot() {
+  return document.querySelector('#home-profile-control-panel');
 }
 
 /* =========================================================
    03. PANEL STATE HELPERS
    ========================================================= */
 
-function getHomePanelRightTitleForIntent(intent) {
+function getHomeProfileControlPanelTitleForIntent(intent) {
   switch (intent) {
     case 'create-profile':
-      return 'Create private profile and account identity';
+      return 'Create private profile, subscription, and account identity';
     default:
-      return 'Profile, plan, and account control';
+      return 'Profile, subscription, trust, and account control';
   }
 }
 
-function syncHomePanelRightIntent(intent) {
-  const nodes = getHomePanelRightNodes();
-  HOME_PANEL_RIGHT_STATE.activeIntent = intent || null;
+function syncHomeProfileControlPanelIntent(intent) {
+  const nodes = getHomeProfileControlPanelNodes();
+  HOME_PROFILE_CONTROL_PANEL_STATE.activeIntent = intent || null;
 
   if (nodes.title) {
-    nodes.title.textContent = getHomePanelRightTitleForIntent(HOME_PANEL_RIGHT_STATE.activeIntent);
+    nodes.title.textContent = getHomeProfileControlPanelTitleForIntent(
+      HOME_PROFILE_CONTROL_PANEL_STATE.activeIntent
+    );
   }
 
   if (nodes.panel) {
-    nodes.panel.dataset.panelIntent = HOME_PANEL_RIGHT_STATE.activeIntent || 'default';
+    nodes.panel.dataset.panelIntent = HOME_PROFILE_CONTROL_PANEL_STATE.activeIntent || 'default';
   }
 }
 
-function openHomePanelRight(intent = null) {
-  const nodes = getHomePanelRightNodes();
+function openHomeProfileControlPanel(intent = null) {
+  const nodes = getHomeProfileControlPanelNodes();
 
   if (!nodes.panel) {
     return;
   }
 
-  HOME_PANEL_RIGHT_STATE.isOpen = true;
+  dispatchHomeProfileControlPanelEvent('home:platform-shell-close-request', {
+    source: 'home-profile-control-panel',
+  });
+  HOME_PROFILE_CONTROL_PANEL_STATE.isOpen = true;
   nodes.panel.hidden = false;
-  document.documentElement.classList.add('home-panel-right-open');
-  document.body.classList.add('home-panel-right-open');
-  syncHomePanelRightIntent(intent);
+  document.documentElement.classList.add('home-profile-control-panel-open');
+  document.body.classList.add('home-profile-control-panel-open');
+  syncHomeProfileControlPanelIntent(intent);
 }
 
-function closeHomePanelRight() {
-  const nodes = getHomePanelRightNodes();
+function closeHomeProfileControlPanel() {
+  const nodes = getHomeProfileControlPanelNodes();
 
   if (!nodes.panel) {
     return;
   }
 
-  HOME_PANEL_RIGHT_STATE.isOpen = false;
+  HOME_PROFILE_CONTROL_PANEL_STATE.isOpen = false;
   nodes.panel.hidden = true;
-  document.documentElement.classList.remove('home-panel-right-open');
-  document.body.classList.remove('home-panel-right-open');
-  syncHomePanelRightIntent(null);
-  dispatchHomePanelRightEvent('neuroartan:home-topbar-reset-triggers');
+  document.documentElement.classList.remove('home-profile-control-panel-open');
+  document.body.classList.remove('home-profile-control-panel-open');
+  syncHomeProfileControlPanelIntent(null);
+  dispatchHomeProfileControlPanelEvent('neuroartan:home-topbar-reset-triggers');
 }
 
-function resolveHomePanelRightName(snapshot) {
+function resolveHomeProfileControlPanelName(snapshot) {
   return (
-    snapshot?.account?.profile?.display_name
-    || snapshot?.account?.user?.displayName
-    || snapshot?.account?.profile?.email
-    || snapshot?.account?.user?.email
-    || 'Sign in to Neuroartan'
+    snapshot?.account?.profile?.display_name ||
+    snapshot?.account?.user?.displayName ||
+    snapshot?.account?.profile?.email ||
+    snapshot?.account?.user?.email ||
+    'Sign in to Neuroartan'
   );
 }
 
-function resolveHomePanelRightUsername(snapshot) {
+function resolveHomeProfileControlPanelUsername(snapshot) {
   const username = snapshot?.account?.profile?.username || '';
   return username ? `@${username}` : '@username';
 }
 
-function resolveHomePanelRightMeta(snapshot) {
+function resolveHomeProfileControlPanelMeta(snapshot) {
   if (!snapshot?.account?.signedIn) {
-    return 'Authenticate to activate identity, verification, and owned-model control from one account surface.';
+    return 'Authenticate to activate identity, verification, owned-model control, and subscription clarity from one account surface.';
   }
 
   if (snapshot?.account?.profileComplete === false) {
@@ -145,7 +150,7 @@ function resolveHomePanelRightMeta(snapshot) {
   return 'Private profile anchored for account identity, subscription clarity, verification posture, and platform control.';
 }
 
-function resolveHomePanelRightRoute(snapshot) {
+function resolveHomeProfileControlPanelRoute(snapshot) {
   const username = snapshot?.account?.profile?.username || '';
   return {
     display: buildPublicProfileDisplay(username),
@@ -154,7 +159,7 @@ function resolveHomePanelRightRoute(snapshot) {
   };
 }
 
-function resolveHomePanelRightRouteStatus(snapshot, username) {
+function resolveHomeProfileControlPanelRouteStatus(snapshot, username) {
   if (!snapshot?.account?.signedIn) {
     return 'Create a private profile to activate a canonical company-domain route.';
   }
@@ -178,7 +183,7 @@ function capitalizeWords(value) {
     .join(' ');
 }
 
-function resolveHomePanelRightPlan(snapshot) {
+function resolveHomeProfileControlPanelPlan(snapshot) {
   const explicitPlan = snapshot?.account?.profile?.subscription_plan || '';
 
   if (explicitPlan) {
@@ -192,7 +197,7 @@ function resolveHomePanelRightPlan(snapshot) {
   return 'Plan Pending';
 }
 
-function resolveHomePanelRightVerification(snapshot) {
+function resolveHomeProfileControlPanelVerification(snapshot) {
   if (!snapshot?.account?.signedIn) {
     return 'Unverified';
   }
@@ -208,7 +213,7 @@ function resolveHomePanelRightVerification(snapshot) {
   return 'Verification Pending';
 }
 
-function resolveHomePanelRightState(snapshot) {
+function resolveHomeProfileControlPanelState(snapshot) {
   if (!snapshot?.account?.signedIn) {
     return 'Private';
   }
@@ -216,7 +221,7 @@ function resolveHomePanelRightState(snapshot) {
   return snapshot?.account?.profile?.public_profile_enabled ? 'Public' : 'Private';
 }
 
-function resolveHomePanelRightModelCount(snapshot) {
+function resolveHomeProfileControlPanelModelCount(snapshot) {
   const username = (snapshot?.account?.profile?.username || '').trim().toLowerCase();
   if (!username) {
     return '0';
@@ -231,13 +236,13 @@ function resolveHomePanelRightModelCount(snapshot) {
   return String(total);
 }
 
-function renderHomePanelRight(snapshot) {
-  HOME_PANEL_RIGHT_STATE.snapshot = snapshot;
+function renderHomeProfileControlPanel(snapshot) {
+  HOME_PROFILE_CONTROL_PANEL_STATE.snapshot = snapshot;
 
-  const nodes = getHomePanelRightNodes();
+  const nodes = getHomeProfileControlPanelNodes();
   const signedIn = !!snapshot?.account?.signedIn;
-  const route = resolveHomePanelRightRoute(snapshot);
-  const name = resolveHomePanelRightName(snapshot);
+  const route = resolveHomeProfileControlPanelRoute(snapshot);
+  const name = resolveHomeProfileControlPanelName(snapshot);
   const photo = snapshot?.account?.profile?.photo_url || snapshot?.account?.user?.photoURL || '';
   const fallback = (name.charAt(0) || 'N').toUpperCase();
 
@@ -246,15 +251,15 @@ function renderHomePanelRight(snapshot) {
   }
 
   if (nodes.username) {
-    nodes.username.textContent = resolveHomePanelRightUsername(snapshot);
+    nodes.username.textContent = resolveHomeProfileControlPanelUsername(snapshot);
   }
 
   if (nodes.plan) {
-    nodes.plan.textContent = resolveHomePanelRightPlan(snapshot);
+    nodes.plan.textContent = resolveHomeProfileControlPanelPlan(snapshot);
   }
 
   if (nodes.meta) {
-    nodes.meta.textContent = resolveHomePanelRightMeta(snapshot);
+    nodes.meta.textContent = resolveHomeProfileControlPanelMeta(snapshot);
   }
 
   if (nodes.route) {
@@ -263,19 +268,19 @@ function renderHomePanelRight(snapshot) {
   }
 
   if (nodes.routeStatus) {
-    nodes.routeStatus.textContent = resolveHomePanelRightRouteStatus(snapshot, route.username);
+    nodes.routeStatus.textContent = resolveHomeProfileControlPanelRouteStatus(snapshot, route.username);
   }
 
   if (nodes.verification) {
-    nodes.verification.textContent = resolveHomePanelRightVerification(snapshot);
+    nodes.verification.textContent = resolveHomeProfileControlPanelVerification(snapshot);
   }
 
   if (nodes.modelCount) {
-    nodes.modelCount.textContent = resolveHomePanelRightModelCount(snapshot);
+    nodes.modelCount.textContent = resolveHomeProfileControlPanelModelCount(snapshot);
   }
 
   if (nodes.state) {
-    nodes.state.textContent = resolveHomePanelRightState(snapshot);
+    nodes.state.textContent = resolveHomeProfileControlPanelState(snapshot);
   }
 
   if (nodes.avatarImage) {
@@ -304,23 +309,23 @@ function renderHomePanelRight(snapshot) {
    04. ACTION HELPERS
    ========================================================= */
 
-function normalizeHomePanelRightLabel(label) {
+function normalizeHomeProfileControlPanelLabel(label) {
   return typeof label === 'string' ? label.trim().toLowerCase() : '';
 }
 
-function handleHomePanelRightAction(action) {
-  const normalized = normalizeHomePanelRightLabel(action);
+function handleHomeProfileControlPanelAction(action) {
+  const normalized = normalizeHomeProfileControlPanelLabel(action);
 
   if (normalized === 'account-identity' || normalized === 'verification' || normalized === 'linked-accounts') {
-    if (HOME_PANEL_RIGHT_STATE.snapshot?.account?.signedIn) {
+    if (HOME_PROFILE_CONTROL_PANEL_STATE.snapshot?.account?.signedIn) {
       window.location.href = '/profile.html';
       return;
     }
 
-    dispatchHomePanelRightEvent('account:entry-request', {
-      source: 'home-panel-right',
+    dispatchHomeProfileControlPanelEvent('account:entry-request', {
+      source: 'home-profile-control-panel',
     });
-    closeHomePanelRight();
+    closeHomeProfileControlPanel();
     return;
   }
 
@@ -340,24 +345,25 @@ function handleHomePanelRightAction(action) {
   }
 
   if (normalized === 'settings') {
-    dispatchHomePanelRightEvent('neuroartan:home-settings-panel-open-requested', {
-      source: 'home-panel-right',
+    dispatchHomeProfileControlPanelEvent('home:platform-shell-open-request', {
+      destination: 'settings',
+      source: 'home-profile-control-panel',
     });
-    closeHomePanelRight();
+    closeHomeProfileControlPanel();
     return;
   }
 
   if (normalized === 'sign-out') {
-    dispatchHomePanelRightEvent('account:sign-out-request', {
-      source: 'home-panel-right',
+    dispatchHomeProfileControlPanelEvent('account:sign-out-request', {
+      source: 'home-profile-control-panel',
     });
-    closeHomePanelRight();
+    closeHomeProfileControlPanel();
     return;
   }
 
-  dispatchHomePanelRightEvent('neuroartan:home-panel-right-item-selected', {
+  dispatchHomeProfileControlPanelEvent('neuroartan:home-profile-control-panel-item-selected', {
     label: action?.trim() || '',
-    intent: HOME_PANEL_RIGHT_STATE.activeIntent,
+    intent: HOME_PROFILE_CONTROL_PANEL_STATE.activeIntent,
   });
 }
 
@@ -365,51 +371,56 @@ function handleHomePanelRightAction(action) {
    05. EVENT BINDING
    ========================================================= */
 
-function bindHomePanelRight() {
+function bindHomeProfileControlPanel() {
   void loadPublicModelRegistry().then(() => {
-    renderHomePanelRight(HOME_PANEL_RIGHT_STATE.snapshot || {});
+    renderHomeProfileControlPanel(HOME_PROFILE_CONTROL_PANEL_STATE.snapshot || {});
   });
 
-  subscribeHomeSurfaceState(renderHomePanelRight);
+  subscribeHomeSurfaceState(renderHomeProfileControlPanel);
 
   document.addEventListener('click', (event) => {
-    const root = getLivePanelRightRoot();
+    const root = getLiveHomeProfileControlPanelRoot();
     if (!root) return;
 
     const target = event.target.closest(
-      '#home-panel-right-close, ' +
-      '#home-panel-right .home-panel-right__item'
+      '#home-profile-control-panel-close, ' +
+      '#home-profile-control-panel [data-home-profile-control-panel-close], ' +
+      '#home-profile-control-panel .home-profile-control-panel__item'
     );
 
     if (!target || !root.contains(target)) {
       return;
     }
 
-    if (target.matches('#home-panel-right-close')) {
-      closeHomePanelRight();
+    if (target.matches('#home-profile-control-panel-close, [data-home-profile-control-panel-close]')) {
+      closeHomeProfileControlPanel();
       return;
     }
 
-    if (target.matches('.home-panel-right__item')) {
-      handleHomePanelRightAction(
-        target.getAttribute('data-home-profile-action')
-        || target.textContent
-        || ''
+    if (target.matches('.home-profile-control-panel__item')) {
+      handleHomeProfileControlPanelAction(
+        target.getAttribute('data-home-profile-action') ||
+        target.textContent ||
+        ''
       );
     }
   });
 
-  document.addEventListener('neuroartan:home-panel-right-open-requested', (event) => {
-    openHomePanelRight(event?.detail?.intent || null);
+  document.addEventListener('neuroartan:home-profile-control-panel-open-requested', (event) => {
+    openHomeProfileControlPanel(event?.detail?.intent || null);
   });
 
-  document.addEventListener('neuroartan:home-panel-right-close-requested', () => {
-    closeHomePanelRight();
+  document.addEventListener('neuroartan:home-profile-control-panel-close-requested', () => {
+    closeHomeProfileControlPanel();
+  });
+
+  document.addEventListener('home:platform-shell-open-request', () => {
+    closeHomeProfileControlPanel();
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && HOME_PANEL_RIGHT_STATE.isOpen) {
-      closeHomePanelRight();
+    if (event.key === 'Escape' && HOME_PROFILE_CONTROL_PANEL_STATE.isOpen) {
+      closeHomeProfileControlPanel();
     }
   });
 }
@@ -418,34 +429,34 @@ function bindHomePanelRight() {
    06. MODULE BOOT
    ========================================================= */
 
-function bootHomePanelRight() {
-  const root = getLivePanelRightRoot();
+function bootHomeProfileControlPanel() {
+  const root = getLiveHomeProfileControlPanelRoot();
   if (!root) {
     return;
   }
 
-  HOME_PANEL_RIGHT_STATE.root = root;
+  HOME_PROFILE_CONTROL_PANEL_STATE.root = root;
 
-  if (HOME_PANEL_RIGHT_STATE.isBound) {
-    renderHomePanelRight(HOME_PANEL_RIGHT_STATE.snapshot || {});
+  if (HOME_PROFILE_CONTROL_PANEL_STATE.isBound) {
+    renderHomeProfileControlPanel(HOME_PROFILE_CONTROL_PANEL_STATE.snapshot || {});
     return;
   }
 
-  HOME_PANEL_RIGHT_STATE.isBound = true;
-  bindHomePanelRight();
+  HOME_PROFILE_CONTROL_PANEL_STATE.isBound = true;
+  bindHomeProfileControlPanel();
 }
 
 document.addEventListener('fragment:mounted', (event) => {
-  if (event?.detail?.name !== 'home-panel-right') return;
-  bootHomePanelRight();
+  if (event?.detail?.name !== 'home-profile-control-panel') return;
+  bootHomeProfileControlPanel();
 });
 
 document.addEventListener('neuroartan:runtime-ready', () => {
-  bootHomePanelRight();
+  bootHomeProfileControlPanel();
 });
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bootHomePanelRight, { once: true });
+  document.addEventListener('DOMContentLoaded', bootHomeProfileControlPanel, { once: true });
 } else {
-  bootHomePanelRight();
+  bootHomeProfileControlPanel();
 }

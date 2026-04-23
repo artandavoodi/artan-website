@@ -73,6 +73,14 @@ const FRAGMENT_PATHS = {
   'home-featured-functions': assetPath('/assets/fragments/layers/website/sections/home-featured-functions.html'),
   'scroll-to-top': assetPath('/assets/fragments/core/scroll-to-top/scroll-to-top.html'),
   'footer': assetPath('/assets/fragments/layers/website/footer/footer.html'),
+  'home-platform-shell': assetPath('/assets/fragments/layers/website/home/home-platform-shell.html'),
+  'home-navigation-drawer': assetPath('/assets/fragments/layers/website/home/home-navigation-drawer.html'),
+  'home-workspace-panel': assetPath('/assets/fragments/layers/website/home/home-workspace-panel.html'),
+  'home-profile-control-panel': assetPath('/assets/fragments/layers/website/home/home-profile-control-panel.html'),
+  'home-dashboard-topbar': assetPath('/assets/fragments/layers/website/home/home-dashboard-topbar.html'),
+  'home-search-shell': assetPath('/assets/fragments/layers/website/home/home-search-shell.html'),
+  'home-settings-panel': assetPath('/assets/fragments/layers/website/home/home-settings-panel.html'),
+  'home-footer': assetPath('/assets/fragments/layers/website/home/home-footer.html'),
   'brain-activity': assetPath('/assets/fragments/layers/website/system/brain-activity.html'),
   'system-node': assetPath('/assets/fragments/layers/website/system/system-node.html')
 };

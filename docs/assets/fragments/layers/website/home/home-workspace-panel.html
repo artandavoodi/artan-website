@@ -1,0 +1,66 @@
+<!-- =============================================================================
+     HOME WORKSPACE PANEL FRAGMENT
+     Purpose: workspace and continuity panel for current interaction state,
+     continuity actions, and linked public surfaces.
+     Notes:
+     - distinct from the unified platform shell navigation rail
+     - intended as a workspace-only content source for the home layer
+============================================================================= -->
+
+<aside class="home-workspace-panel" id="home-workspace-panel" aria-label="Home workspace panel" hidden>
+  <div class="home-workspace-panel__inner">
+    <div class="home-workspace-panel__header">
+      <div class="home-workspace-panel__heading-group">
+        <p class="home-workspace-panel__eyebrow">Workspace</p>
+        <h2 class="home-workspace-panel__title">Continuity workspace and current interaction</h2>
+      </div>
+
+      <button
+        class="home-workspace-panel__close global-close-button"
+        id="home-workspace-panel-close"
+        type="button"
+        aria-label="Close workspace panel">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <section class="home-workspace-panel__section home-workspace-panel__section--interaction-state" data-home-workspace-section="interaction-state" aria-label="Current interaction">
+      <p class="home-workspace-panel__section-title">Current interaction</p>
+      <article class="home-workspace-panel__summary-card" aria-live="polite">
+        <div class="home-workspace-panel__summary-row">
+          <span class="home-workspace-panel__summary-label">Voice mode</span>
+          <span class="home-workspace-panel__summary-value" data-home-workspace-mode>Idle</span>
+        </div>
+        <div class="home-workspace-panel__summary-row">
+          <span class="home-workspace-panel__summary-label">Last route</span>
+          <span class="home-workspace-panel__summary-value" data-home-workspace-route>Awaiting a query</span>
+        </div>
+        <p class="home-workspace-panel__summary-body" data-home-workspace-query>
+          Ask a question by voice or search to create a continuity trace across the homepage surface.
+        </p>
+        <p class="home-workspace-panel__summary-body home-workspace-panel__summary-body--secondary" data-home-workspace-response>
+          Responses and route classification will appear here after your first interaction.
+        </p>
+      </article>
+    </section>
+
+    <section class="home-workspace-panel__section home-workspace-panel__section--continuity-actions" data-home-workspace-section="continuity-actions" aria-label="Continuity actions">
+      <p class="home-workspace-panel__section-title">Continuity actions</p>
+      <div class="home-workspace-panel__stack">
+        <button class="home-workspace-panel__item" data-home-workspace-action="voice" type="button">Continue by voice</button>
+        <button class="home-workspace-panel__item" data-home-workspace-action="history" type="button">Open continuity history</button>
+        <button class="home-workspace-panel__item" data-home-workspace-action="knowledge" type="button">Open knowledge surface</button>
+      </div>
+    </section>
+
+    <section class="home-workspace-panel__section home-workspace-panel__section--public-surfaces" data-home-workspace-section="public-surfaces" aria-label="Public surfaces">
+      <p class="home-workspace-panel__section-title">Public surfaces</p>
+      <div class="home-workspace-panel__stack">
+        <a class="home-workspace-panel__item home-workspace-panel__item--link" href="/pages/about/">Product direction</a>
+        <a class="home-workspace-panel__item home-workspace-panel__item--link" href="/pages/continuity-history/index.html">Continuity history</a>
+        <a class="home-workspace-panel__item home-workspace-panel__item--link" href="/pages/knowledge-research/index.html">Knowledge and research</a>
+      </div>
+    </section>
+  </div>
+</aside>

@@ -25,12 +25,13 @@
      11I) PROFILE SHELL MOUNT
      11J) HOME SHELL
      11K) HOME DASHBOARD TOPBAR MOUNT
-     11L) HOME SIDEBAR MOUNT
-     11M) HOME PANEL LEFT MOUNT
-     11N) HOME PANEL RIGHT MOUNT
-     11O) HOME SEARCH SHELL MOUNT
-     11P) HOME SETTINGS PANEL MOUNT
-     11Q) HOME FOOTER MOUNT
+     11L) HOME PLATFORM SHELL MOUNT
+     11M) HOME NAVIGATION DRAWER MOUNT
+     11N) HOME WORKSPACE PANEL MOUNT
+     11O) HOME PROFILE CONTROL PANEL MOUNT
+     11P) HOME SEARCH SHELL MOUNT
+     11Q) HOME SETTINGS PANEL MOUNT
+     11R) HOME FOOTER MOUNT
      12) COUNTRY OVERLAY MOUNT
      12A) COOKIE CONSENT MOUNT
      13) HOME HERO SHADER SYSTEM
@@ -326,31 +327,39 @@
   <div class="home-shell__topbar" id="home-dashboard-topbar-mount" data-include="home-dashboard-topbar"></div>
 
   <!-- =============================================================================
-       11L) HOME SIDEBAR MOUNT
+       11L) HOME PLATFORM SHELL MOUNT
+  ============================================================================= -->
+  <div
+    class="home-shell__overlay-mount home-shell__overlay-mount--platform"
+    id="home-platform-shell-mount"
+    data-include="home-platform-shell"></div>
+
+  <!-- =============================================================================
+       11M) HOME NAVIGATION DRAWER MOUNT
   ============================================================================= -->
   <div
     class="home-shell__panel-mount home-shell__panel-mount--sidebar"
-    id="home-sidebar-mount"
-    data-include="home-sidebar"></div>
+    id="home-navigation-drawer-mount"
+    data-include="home-navigation-drawer"></div>
 
   <!-- =============================================================================
-       11M) HOME PANEL LEFT MOUNT
+       11N) HOME WORKSPACE PANEL MOUNT
   ============================================================================= -->
   <div
     class="home-shell__panel-mount home-shell__panel-mount--workspace"
-    id="home-panel-left-mount"
-    data-include="home-panel-left"></div>
+    id="home-workspace-panel-mount"
+    data-include="home-workspace-panel"></div>
 
   <!-- =============================================================================
-       11N) HOME PANEL RIGHT MOUNT
+       11O) HOME PROFILE CONTROL PANEL MOUNT
   ============================================================================= -->
   <div
     class="home-shell__panel-mount home-shell__panel-mount--profile"
-    id="home-panel-right-mount"
-    data-include="home-panel-right"></div>
+    id="home-profile-control-panel-mount"
+    data-include="home-profile-control-panel"></div>
 
   <!-- =============================================================================
-       11O) HOME SEARCH SHELL MOUNT
+       11P) HOME SEARCH SHELL MOUNT
   ============================================================================= -->
   <div
     class="home-shell__overlay-mount home-shell__overlay-mount--search"
@@ -358,7 +367,7 @@
     data-include="home-search-shell"></div>
 
   <!-- =============================================================================
-       11P) HOME SETTINGS PANEL MOUNT
+       11Q) HOME SETTINGS PANEL MOUNT
   ============================================================================= -->
   <div
     class="home-shell__overlay-mount home-shell__overlay-mount--settings"
@@ -366,7 +375,7 @@
     data-include="home-settings-panel"></div>
 
   <!-- =============================================================================
-       11Q) HOME FOOTER MOUNT
+       11R) HOME FOOTER MOUNT
   ============================================================================= -->
   <hr class="footer-separator home-shell__footer-separator" aria-hidden="true">
   <div class="home-shell__footer" id="home-footer-mount" data-include="home-footer"></div>

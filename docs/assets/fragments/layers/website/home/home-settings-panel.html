@@ -1,10 +1,10 @@
 <!-- =============================================================================
      HOME SETTINGS PANEL FRAGMENT
-     Purpose: modular settings surface for the home/dashboard layer.
+     Purpose: unified settings surface for the home layer and platform shell.
      Notes:
-     - distinct from global overlays
-     - acts as a local settings hub for dashboard/home surfaces
-     - delegates language/privacy to existing global systems
+     - acts as the canonical settings content source
+     - supports both standalone source-panel use and unified shell rendering
+     - delegates language, country, and privacy to existing global systems
 ============================================================================= -->
 
 <aside class="home-settings-panel" id="home-settings-panel" aria-label="Home settings panel" hidden>
@@ -12,12 +12,13 @@
     <div class="home-settings-panel__header">
       <div class="home-settings-panel__heading-group">
         <p class="home-settings-panel__eyebrow">Settings</p>
-        <h2 class="home-settings-panel__title">Theme, language, and route controls</h2>
+        <h2 class="home-settings-panel__title">Theme, language, privacy, and identity controls</h2>
       </div>
 
       <button
         class="home-settings-panel__close global-close-button"
         id="home-settings-panel-close"
+        data-home-settings-close
         type="button"
         aria-label="Close settings panel">
         <span aria-hidden="true"></span>
@@ -33,12 +34,12 @@
         <button class="home-settings-panel__theme-option" data-theme-option="light" type="button">Light</button>
       </div>
       <p class="home-settings-panel__context" data-home-settings-theme-summary>
-        Color mode keeps the cinematic homepage atmosphere active.
+        Color mode keeps the cinematic homepage atmosphere active. Dark and Light preserve the same system with calmer visual conditions.
       </p>
     </section>
 
     <section class="home-settings-panel__section" aria-label="Language and privacy settings">
-      <p class="home-settings-panel__section-title">Language and privacy</p>
+      <p class="home-settings-panel__section-title">Language, region, and privacy</p>
       <div class="home-settings-panel__stack">
         <button class="home-settings-panel__item" data-home-settings-action="language" type="button">
           <span>Language</span>
@@ -50,17 +51,17 @@
         </button>
         <button class="home-settings-panel__item" data-home-settings-action="privacy" type="button">
           <span>Privacy</span>
-          <span class="home-settings-panel__item-value">Cookie and boundary controls</span>
+          <span class="home-settings-panel__item-value">Cookie settings and privacy controls</span>
         </button>
       </div>
     </section>
 
     <section class="home-settings-panel__section" aria-label="Profile and route settings">
-      <p class="home-settings-panel__section-title">Profile and route</p>
+      <p class="home-settings-panel__section-title">Identity and route</p>
       <div class="home-settings-panel__stack">
         <button class="home-settings-panel__item" data-home-settings-action="profile" type="button">
           <span>Private profile</span>
-          <span class="home-settings-panel__item-value">Open private surface</span>
+          <span class="home-settings-panel__item-value">Open private profile surface</span>
         </button>
         <button class="home-settings-panel__item" data-home-settings-action="public-route" type="button">
           <span>Public route</span>

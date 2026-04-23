@@ -1,0 +1,118 @@
+<!-- =============================================================================
+00) FILE INDEX
+01) HOME PLATFORM SHELL
+02) SHELL CLOSE CONTROL
+03) SHELL MAIN GRID
+04) LEFT NAVIGATION RAIL
+05) PRIMARY NAVIGATION
+06) SECONDARY LINKED ITEMS
+07) RIGHT CONTENT SURFACE
+08) CONTENT SURFACE DEFAULT STATE
+09) END OF FILE
+============================================================================= -->
+
+<!-- =============================================================================
+01) HOME PLATFORM SHELL
+============================================================================= -->
+<section
+  class="home-platform-shell"
+  id="home-platform-shell"
+  hidden
+  aria-hidden="true"
+  aria-label="Platform shell"
+>
+  <!-- ========================================================================
+  02) SHELL CLOSE CONTROL
+  ========================================================================= -->
+  <div class="home-platform-shell__chrome">
+    <button
+      type="button"
+      class="global-close-button home-platform-shell__close"
+      id="home-platform-shell-close"
+      aria-label="Close platform shell"
+      data-home-platform-shell-close
+    >
+      <span class="global-close-button__line global-close-button__line--first" aria-hidden="true"></span>
+      <span class="global-close-button__line global-close-button__line--second" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <!-- ========================================================================
+  03) SHELL MAIN GRID
+  ========================================================================= -->
+  <div class="home-platform-shell__main">
+    <!-- ======================================================================
+    04) LEFT NAVIGATION RAIL
+    ======================================================================= -->
+    <aside class="home-platform-shell__rail" aria-label="Platform navigation">
+      <div class="home-platform-shell__rail-inner">
+        <!-- ================================================================
+        05) PRIMARY NAVIGATION
+        ================================================================= -->
+        <div class="home-platform-shell__group">
+          <p class="home-platform-shell__group-label">Primary Navigation</p>
+          <nav class="home-platform-shell__nav" aria-label="Primary platform navigation">
+            <button type="button" class="home-platform-shell__nav-item is-active" data-home-platform-destination="home" aria-pressed="true" id="home-platform-shell-nav-home">
+              <span class="home-platform-shell__nav-text">Home</span>
+            </button>
+            <button type="button" class="home-platform-shell__nav-item" data-home-platform-destination="continuity" aria-pressed="false" id="home-platform-shell-nav-continuity">
+              <span class="home-platform-shell__nav-text">Continuity</span>
+            </button>
+            <button type="button" class="home-platform-shell__nav-item" data-home-platform-destination="workspace" aria-pressed="false" id="home-platform-shell-nav-workspace">
+              <span class="home-platform-shell__nav-text">Workspace</span>
+            </button>
+            <button type="button" class="home-platform-shell__nav-item" data-home-platform-destination="profile" aria-pressed="false" id="home-platform-shell-nav-profile">
+              <span class="home-platform-shell__nav-text">Profile</span>
+            </button>
+            <button type="button" class="home-platform-shell__nav-item" data-home-platform-destination="settings" aria-pressed="false" id="home-platform-shell-nav-settings">
+              <span class="home-platform-shell__nav-text">Settings</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- ================================================================
+        06) SECONDARY LINKED ITEMS
+        ================================================================= -->
+        <div class="home-platform-shell__group">
+          <p class="home-platform-shell__group-label">Secondary Linked Items</p>
+          <nav class="home-platform-shell__nav" aria-label="Secondary linked items">
+            <a class="home-platform-shell__nav-item home-platform-shell__nav-item--link" href="/pages/about/" id="home-platform-shell-link-about">
+              <span class="home-platform-shell__nav-text">About</span>
+            </a>
+            <a class="home-platform-shell__nav-item home-platform-shell__nav-item--link" href="/pages/careers/" id="home-platform-shell-link-careers">
+              <span class="home-platform-shell__nav-text">Careers</span>
+            </a>
+            <a class="home-platform-shell__nav-item home-platform-shell__nav-item--link" href="/pages/privacy/" id="home-platform-shell-link-privacy">
+              <span class="home-platform-shell__nav-text">Privacy Policy</span>
+            </a>
+            <a class="home-platform-shell__nav-item home-platform-shell__nav-item--link" href="/pages/terms/" id="home-platform-shell-link-terms">
+              <span class="home-platform-shell__nav-text">Terms of Use</span>
+            </a>
+            <button type="button" class="home-platform-shell__nav-item" data-home-platform-destination="cookie-settings" aria-pressed="false" id="home-platform-shell-nav-cookie-settings">
+              <span class="home-platform-shell__nav-text">Cookie Settings</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ======================================================================
+    07) RIGHT CONTENT SURFACE
+    ======================================================================= -->
+    <section class="home-platform-shell__content" aria-label="Platform shell content">
+      <div class="home-platform-shell__content-inner" id="home-platform-shell-content" data-home-platform-content-root>
+        <!-- ==================================================================
+        08) CONTENT SURFACE DEFAULT STATE
+        =================================================================== -->
+        <div class="home-platform-shell__content-state" data-home-platform-content="home">
+          <h2 class="home-platform-shell__content-title">Home</h2>
+          <p class="home-platform-shell__content-copy">Unified platform shell ready. Select a destination from the left rail to continue through one stable navigation and content surface.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- =============================================================================
+09) END OF FILE
+============================================================================= -->

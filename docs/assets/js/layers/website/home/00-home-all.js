@@ -10,9 +10,10 @@
 
 import './home-surface-state.js';
 import './home-dashboard-topbar.js';
-import './home-sidebar.js';
-import './home-panel-left.js';
-import './home-panel-right.js';
+import './home-platform-shell.js';
+import './home-navigation-drawer.js';
+import './home-workspace-panel.js';
+import './home-profile-control-panel.js';
 import './home-search-shell.js';
 import './home-settings-panel.js';
 import './home-footer.js';

@@ -1,0 +1,84 @@
+<!-- =============================================================================
+     HOME PROFILE CONTROL PANEL FRAGMENT
+     Purpose: profile-avatar, identity, subscription, trust, and account-control
+     surface for the home layer.
+     Notes:
+     - distinct from the workspace panel and unified platform shell rail
+     - intended as the account-control content source for the home layer
+============================================================================= -->
+
+<aside class="home-profile-control-panel" id="home-profile-control-panel" aria-label="Home profile control panel" hidden>
+  <div class="home-profile-control-panel__inner">
+    <div class="home-profile-control-panel__header">
+      <div class="home-profile-control-panel__heading-group">
+        <p class="home-profile-control-panel__eyebrow">Profile Avatar</p>
+        <h2 class="home-profile-control-panel__title">Profile, subscription, trust, and account control</h2>
+      </div>
+      <button
+        class="home-profile-control-panel__close global-close-button"
+        id="home-profile-control-panel-close"
+        data-home-profile-control-panel-close
+        type="button"
+        aria-label="Close profile control panel">
+        <span class="global-close-button__line global-close-button__line--first" aria-hidden="true"></span>
+        <span class="global-close-button__line global-close-button__line--second" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <section class="home-profile-control-panel__section home-profile-control-panel__section--overview" data-home-profile-control-section="overview" aria-label="Profile overview">
+      <p class="home-profile-control-panel__section-title">Profile Overview</p>
+      <div class="home-profile-control-panel__identity-card">
+        <div class="home-profile-control-panel__avatar" aria-hidden="true">
+          <img class="home-profile-control-panel__avatar-image" data-home-profile-avatar alt="" hidden>
+          <span class="home-profile-control-panel__avatar-fallback" data-home-profile-avatar-fallback>N</span>
+        </div>
+        <div class="home-profile-control-panel__identity-copy">
+          <p class="home-profile-control-panel__name" data-home-profile-name>Sign in to Neuroartan</p>
+          <p class="home-profile-control-panel__username" data-home-profile-username>@username</p>
+          <p class="home-profile-control-panel__plan" data-home-profile-plan>Plan pending</p>
+          <p class="home-profile-control-panel__meta" data-home-profile-meta>Private identity surface</p>
+          <a class="home-profile-control-panel__route-link" data-home-profile-route href="/profile.html">neuroartan.com/username</a>
+        </div>
+      </div>
+
+      <div class="home-profile-control-panel__status-grid" aria-label="Quick status">
+        <article class="home-profile-control-panel__status-card">
+          <p class="home-profile-control-panel__status-label">Verification</p>
+          <p class="home-profile-control-panel__status-value" data-home-profile-verification>Unverified</p>
+        </article>
+        <article class="home-profile-control-panel__status-card">
+          <p class="home-profile-control-panel__status-label">Models</p>
+          <p class="home-profile-control-panel__status-value" data-home-profile-model-count>0</p>
+        </article>
+        <article class="home-profile-control-panel__status-card">
+          <p class="home-profile-control-panel__status-label">State</p>
+          <p class="home-profile-control-panel__status-value" data-home-profile-state>Private</p>
+        </article>
+      </div>
+
+      <p class="home-profile-control-panel__route-status" data-home-profile-route-status>
+        Canonical public route becomes available once username and visibility are ready.
+      </p>
+    </section>
+
+    <section class="home-profile-control-panel__section home-profile-control-panel__section--account-control" data-home-profile-control-section="account-control" aria-label="Profile control">
+      <p class="home-profile-control-panel__section-title">Profile Control</p>
+      <div class="home-profile-control-panel__stack">
+        <button class="home-profile-control-panel__item" data-home-profile-action="account-identity" type="button">Account Identity</button>
+        <button class="home-profile-control-panel__item" data-home-profile-action="subscription-plan" type="button">Subscription &amp; Plan</button>
+        <button class="home-profile-control-panel__item" data-home-profile-action="my-models" type="button">My Models</button>
+        <button class="home-profile-control-panel__item" data-home-profile-action="verification" type="button">Verification</button>
+        <button class="home-profile-control-panel__item" data-home-profile-action="linked-accounts" type="button">Linked Accounts</button>
+      </div>
+    </section>
+
+    <section class="home-profile-control-panel__section home-profile-control-panel__section--shortcuts" data-home-profile-control-section="shortcuts" aria-label="Shortcuts">
+      <p class="home-profile-control-panel__section-title">Shortcuts</p>
+      <div class="home-profile-control-panel__stack">
+        <button class="home-profile-control-panel__item" data-home-profile-action="dashboard" type="button">Dashboard</button>
+        <button class="home-profile-control-panel__item" data-home-profile-action="settings" type="button">Settings</button>
+        <button class="home-profile-control-panel__item" data-home-profile-action="sign-out" type="button">Sign out</button>
+      </div>
+    </section>
+  </div>
+</aside>

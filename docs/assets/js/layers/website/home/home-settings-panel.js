@@ -33,11 +33,11 @@ function getHomeSettingsPanelNodes() {
   return {
     panel: document.querySelector('#home-settings-panel'),
     closeButton: document.querySelector('#home-settings-panel-close'),
-    items: Array.from(document.querySelectorAll('#home-settings-panel .home-settings-panel__item')),
-    languageValue: document.querySelector('[data-home-settings-language-value]'),
-    countryValue: document.querySelector('[data-home-settings-country-value]'),
-    routeValue: document.querySelector('[data-home-settings-route-value]'),
-    themeSummary: document.querySelector('[data-home-settings-theme-summary]'),
+    items: Array.from(document.querySelectorAll('.home-settings-panel__item')),
+    languageValues: Array.from(document.querySelectorAll('[data-home-settings-language-value]')),
+    countryValues: Array.from(document.querySelectorAll('[data-home-settings-country-value]')),
+    routeValues: Array.from(document.querySelectorAll('[data-home-settings-route-value]')),
+    themeSummaries: Array.from(document.querySelectorAll('[data-home-settings-theme-summary]')),
   };
 }
 
@@ -47,6 +47,28 @@ function dispatchHomeSettingsPanelEvent(name, detail = {}) {
 
 function getLiveSettingsPanelRoot() {
   return document.querySelector('#home-settings-panel');
+}
+
+function getHomeSettingsInteractiveRoot(target) {
+  if (!(target instanceof Element)) {
+    return null;
+  }
+
+  return target.closest(
+    '#home-settings-panel, ' +
+    '#home-platform-shell [data-home-platform-content="settings"], ' +
+    '#home-platform-shell .home-settings-panel, ' +
+    '#home-platform-shell .home-settings-panel__dialog, ' +
+    '#home-platform-shell .home-settings-panel__inner'
+  );
+}
+
+function setTextContent(nodes, value) {
+  nodes.forEach((node) => {
+    if (node) {
+      node.textContent = value;
+    }
+  });
 }
 
 /* =========================================================
@@ -107,21 +129,10 @@ function renderHomeSettingsPanel(snapshot) {
   const nodes = getHomeSettingsPanelNodes();
   const username = snapshot?.account?.profile?.username || '';
 
-  if (nodes.themeSummary) {
-    nodes.themeSummary.textContent = resolveThemeSummary(snapshot?.theme);
-  }
-
-  if (nodes.languageValue) {
-    nodes.languageValue.textContent = resolveLanguageLabel(snapshot?.locale?.language);
-  }
-
-  if (nodes.countryValue) {
-    nodes.countryValue.textContent = snapshot?.locale?.countryLabel || 'United States';
-  }
-
-  if (nodes.routeValue) {
-    nodes.routeValue.textContent = buildPublicProfileDisplay(username);
-  }
+  setTextContent(nodes.themeSummaries, resolveThemeSummary(snapshot?.theme));
+  setTextContent(nodes.languageValues, resolveLanguageLabel(snapshot?.locale?.language));
+  setTextContent(nodes.countryValues, snapshot?.locale?.countryLabel || 'United States');
+  setTextContent(nodes.routeValues, buildPublicProfileDisplay(username));
 }
 
 /* =========================================================
@@ -132,12 +143,13 @@ function normalizeHomeSettingsLabel(label) {
   return typeof label === 'string' ? label.trim().toLowerCase() : '';
 }
 
-function handleHomeSettingsPanelAction(action) {
+function handleHomeSettingsPanelAction(action, context = 'source-panel') {
   const normalized = normalizeHomeSettingsLabel(action);
 
   if (normalized === 'language' || normalized === 'country') {
     dispatchHomeSettingsPanelEvent('neuroartan:country-overlay-open-requested', {
       source: 'home-settings-panel',
+      context,
     });
     return;
   }
@@ -146,6 +158,7 @@ function handleHomeSettingsPanelAction(action) {
     dispatchHomeSettingsPanelEvent('neuroartan:cookie-consent-open-requested', {
       source: 'home-settings-panel',
       surface: 'settings',
+      context,
     });
     return;
   }
@@ -158,8 +171,12 @@ function handleHomeSettingsPanelAction(action) {
 
     dispatchHomeSettingsPanelEvent('account:entry-request', {
       source: 'home-settings-panel',
+      context,
     });
-    closeHomeSettingsPanel();
+
+    if (context === 'source-panel') {
+      closeHomeSettingsPanel();
+    }
     return;
   }
 
@@ -172,6 +189,7 @@ function handleHomeSettingsPanelAction(action) {
 
   dispatchHomeSettingsPanelEvent('neuroartan:home-settings-panel-item-selected', {
     label: action?.trim() || '',
+    context,
   });
 }
 
@@ -183,28 +201,45 @@ function bindHomeSettingsPanel() {
   subscribeHomeSurfaceState(renderHomeSettingsPanel);
 
   document.addEventListener('click', (event) => {
-    const root = getLiveSettingsPanelRoot();
-    if (!root) return;
+    const sourceRoot = getLiveSettingsPanelRoot();
+    const interactiveRoot = getHomeSettingsInteractiveRoot(event.target);
+
+    if (!sourceRoot && !interactiveRoot) {
+      return;
+    }
 
     const target = event.target.closest(
       '#home-settings-panel-close, ' +
-      '#home-settings-panel .home-settings-panel__item'
+      '[data-home-settings-close], ' +
+      '.home-settings-panel__item'
     );
 
-    if (!target || !root.contains(target)) {
+    if (!target) {
       return;
     }
+
+    const context = interactiveRoot && interactiveRoot.id !== 'home-settings-panel'
+      ? 'platform-shell'
+      : 'source-panel';
 
     if (target.matches('#home-settings-panel-close')) {
       closeHomeSettingsPanel();
       return;
     }
 
+    if (target.matches('[data-home-settings-close]')) {
+      dispatchHomeSettingsPanelEvent('home:platform-shell-close-request', {
+        source: 'home-settings-panel',
+      });
+      return;
+    }
+
     if (target.matches('.home-settings-panel__item')) {
       handleHomeSettingsPanelAction(
-        target.getAttribute('data-home-settings-action')
-        || target.textContent
-        || ''
+        target.getAttribute('data-home-settings-action') ||
+        target.textContent ||
+        '',
+        context
       );
     }
   });

@@ -27,7 +27,7 @@ const HOME_DASHBOARD_TOPBAR_STATE = {
 function getHomeDashboardTopbarNodes() {
   return {
     root: document.querySelector('#home-dashboard-topbar'),
-    sidebarTrigger: document.querySelector('#home-dashboard-sidebar-trigger'),
+    menuTrigger: document.querySelector('#home-dashboard-menu-trigger'),
     searchTrigger: document.querySelector('#home-dashboard-search-trigger'),
     profileTrigger: document.querySelector('#home-dashboard-profile-trigger'),
     profileLabel: document.querySelector('[data-home-topbar-profile-label]'),
@@ -35,10 +35,7 @@ function getHomeDashboardTopbarNodes() {
     profileAvatarImage: document.querySelector('[data-home-topbar-profile-avatar]'),
     profileAvatarFallback: document.querySelector('[data-home-topbar-profile-avatar-fallback]'),
     profileIcon: document.querySelector('[data-home-topbar-profile-icon]'),
-    sidebarPanel: document.querySelector('#home-sidebar'),
     searchPanel: document.querySelector('#home-search-shell'),
-    profilePanel: document.querySelector('#home-panel-right'),
-    profileMount: document.querySelector('#home-panel-right-mount'),
     searchMount: document.querySelector('#home-search-shell-mount'),
   };
 }
@@ -130,17 +127,16 @@ function isTopbarTargetOpen(panel) {
   return Boolean(panel && !panel.hidden);
 }
 
-function toggleHomeSidebar(nodes) {
-  if (isTopbarTargetOpen(nodes.sidebarPanel)) {
-    dispatchHomeTopbarEvent('neuroartan:home-sidebar-close-requested', {
-      source: 'home-dashboard-topbar',
-    });
-    setTriggerExpanded(nodes.sidebarTrigger, false);
-    return;
-  }
+function syncTopbarExpandedState({ menu = false, search = false, profile = false } = {}) {
+  const nodes = getHomeDashboardTopbarNodes();
+  setTriggerExpanded(nodes.menuTrigger, menu);
+  setTriggerExpanded(nodes.searchTrigger, search);
+  setTriggerExpanded(nodes.profileTrigger, profile);
+}
 
-  setTriggerExpanded(nodes.sidebarTrigger, true);
-  dispatchHomeTopbarEvent('neuroartan:home-sidebar-open-requested', {
+function openHomePlatformShellDestination(destination) {
+  dispatchHomeTopbarEvent('home:platform-shell-open-request', {
+    destination,
     source: 'home-dashboard-topbar',
   });
 }
@@ -150,34 +146,24 @@ function openHomeSearchShell(nodes) {
     dispatchHomeTopbarEvent('neuroartan:home-search-shell-close-requested', {
       source: 'home-dashboard-topbar',
     });
-    setTriggerExpanded(nodes.searchTrigger, false);
+    syncTopbarExpandedState();
     return;
   }
 
-  setTriggerExpanded(nodes.searchTrigger, true);
+  dispatchHomeTopbarEvent('home:platform-shell-close-request', {
+    source: 'home-dashboard-topbar',
+  });
+
+  syncTopbarExpandedState({ search: true });
+
   dispatchHomeTopbarEvent('neuroartan:home-search-shell-open-requested', {
     source: 'home-dashboard-topbar',
     mountAvailable: Boolean(nodes.searchMount),
   });
 }
 
-function openHomeProfilePanel(nodes) {
-  if (isTopbarTargetOpen(nodes.profilePanel)) {
-    dispatchHomeTopbarEvent('neuroartan:home-panel-right-close-requested', {
-      source: 'home-dashboard-topbar',
-    });
-    setTriggerExpanded(nodes.profileTrigger, false);
-    return;
-  }
-
-  dispatchHomeTopbarEvent('neuroartan:home-settings-panel-close-requested', {
-    source: 'home-dashboard-topbar',
-  });
-  setTriggerExpanded(nodes.profileTrigger, true);
-  dispatchHomeTopbarEvent('neuroartan:home-panel-right-open-requested', {
-    source: 'home-dashboard-topbar',
-    mountAvailable: Boolean(nodes.profileMount),
-  });
+function openHomeProfileControlSurface() {
+  openHomePlatformShellDestination('profile');
 }
 
 /* =========================================================
@@ -192,7 +178,7 @@ function bindHomeDashboardTopbar() {
     if (!root) return;
 
     const trigger = event.target.closest(
-      '#home-dashboard-sidebar-trigger, ' +
+      '#home-dashboard-menu-trigger, ' +
       '#home-dashboard-search-trigger, ' +
       '#home-dashboard-profile-trigger'
     );
@@ -203,8 +189,8 @@ function bindHomeDashboardTopbar() {
 
     const nodes = getHomeDashboardTopbarNodes();
 
-    if (trigger.matches('#home-dashboard-sidebar-trigger')) {
-      toggleHomeSidebar(nodes);
+    if (trigger.matches('#home-dashboard-menu-trigger')) {
+      openHomePlatformShellDestination('home');
       return;
     }
 
@@ -214,15 +200,27 @@ function bindHomeDashboardTopbar() {
     }
 
     if (trigger.matches('#home-dashboard-profile-trigger')) {
-      openHomeProfilePanel(nodes);
+      openHomeProfileControlSurface();
+      return;
     }
   });
 
   document.addEventListener('neuroartan:home-topbar-reset-triggers', () => {
-    const liveNodes = getHomeDashboardTopbarNodes();
-    setTriggerExpanded(liveNodes.sidebarTrigger, false);
-    setTriggerExpanded(liveNodes.searchTrigger, false);
-    setTriggerExpanded(liveNodes.profileTrigger, false);
+    syncTopbarExpandedState();
+  });
+
+  document.addEventListener('home:platform-shell-opened', (event) => {
+    const destination = String(event?.detail?.destination || 'home').trim().toLowerCase();
+
+    syncTopbarExpandedState({
+      menu: destination === 'home',
+      search: false,
+      profile: destination === 'profile',
+    });
+  });
+
+  document.addEventListener('home:platform-shell-closed', () => {
+    syncTopbarExpandedState();
   });
 }
 

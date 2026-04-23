@@ -20,10 +20,10 @@
       <nav class="home-dashboard-topbar__nav" aria-label="Platform navigation">
         <button
           class="home-dashboard-topbar__action home-dashboard-topbar__action--nav"
-          id="home-dashboard-sidebar-trigger"
+          id="home-dashboard-menu-trigger"
           type="button"
           aria-label="Open platform navigation"
-          aria-controls="home-sidebar"
+          aria-controls="home-platform-shell"
           aria-expanded="false">
           <span class="home-dashboard-topbar__icon" aria-hidden="true">
             <img class="ui-icon-theme-aware" src="/assets/icons/core/navigation/unclassified/menu.svg" alt="">
@@ -44,15 +44,15 @@
           <span class="home-dashboard-topbar__label">Search</span>
         </button>
 
-        <a class="home-dashboard-topbar__action home-dashboard-topbar__action--link" href="/pages/models/index.html">
+        <a class="home-dashboard-topbar__action home-dashboard-topbar__action--link" id="home-dashboard-models-link" href="/pages/models/index.html" aria-label="Open models directory">
           <span class="home-dashboard-topbar__label">Models</span>
         </a>
 
-        <a class="home-dashboard-topbar__action home-dashboard-topbar__action--link" href="/pages/feed/index.html">
+        <a class="home-dashboard-topbar__action home-dashboard-topbar__action--link" id="home-dashboard-feed-link" href="/pages/feed/index.html" aria-label="Open public feed">
           <span class="home-dashboard-topbar__label">Feed</span>
         </a>
 
-        <a class="home-dashboard-topbar__action home-dashboard-topbar__action--link" href="/pages/dashboard/index.html">
+        <a class="home-dashboard-topbar__action home-dashboard-topbar__action--link" id="home-dashboard-dashboard-link" href="/pages/dashboard/index.html" aria-label="Open dashboard">
           <span class="home-dashboard-topbar__label">Dashboard</span>
         </a>
       </nav>
@@ -63,7 +63,7 @@
           id="home-dashboard-profile-trigger"
           type="button"
           aria-label="Open profile control"
-          aria-controls="home-panel-right"
+          aria-controls="home-platform-shell"
           aria-expanded="false">
           <span class="home-dashboard-topbar__profile-avatar" data-home-topbar-profile-avatar-shell aria-hidden="true" hidden>
             <img class="home-dashboard-topbar__profile-avatar-image" data-home-topbar-profile-avatar alt="" hidden>
