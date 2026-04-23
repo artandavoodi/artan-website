@@ -16,6 +16,8 @@ import './home-profile-control-panel.js';
 import './home-search-shell.js';
 import './home-settings-panel.js';
 import './home-footer.js';
+import './home-interaction-panel.js';
+import './home-interaction-panel-state.js';
 
 /* =========================================================
    02. END OF FILE

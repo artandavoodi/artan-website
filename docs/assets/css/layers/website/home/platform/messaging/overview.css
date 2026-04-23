@@ -1,0 +1,103 @@
+.home-platform-destination--messaging-overview{
+  width:100%;
+}
+
+.home-platform-messaging{
+  display:grid;
+  gap:1rem;
+}
+
+.home-platform-messaging__grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:1rem;
+}
+
+.home-platform-messaging__card{
+  display:grid;
+  gap:0.7rem;
+  padding:1rem 1.05rem;
+  border:1px solid var(--home-panel-card-border);
+  background:var(--home-panel-card-surface);
+}
+
+.home-platform-messaging__eyebrow,
+.home-platform-messaging__title,
+.home-platform-messaging__copy,
+.home-platform-messaging__item,
+.home-platform-messaging__state{
+  margin:0;
+}
+
+.home-platform-messaging__eyebrow{
+  color:color-mix(in srgb, var(--text-secondary-color) 84%, transparent);
+  font-size:0.72rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.home-platform-messaging__title{
+  color:var(--text-primary-color);
+  font-size:1rem;
+  font-weight:500;
+  line-height:1.35;
+}
+
+.home-platform-messaging__copy,
+.home-platform-messaging__item{
+  color:color-mix(in srgb, var(--text-primary-color) 72%, transparent);
+  font-size:0.84rem;
+  line-height:1.6;
+}
+
+.home-platform-messaging__list{
+  display:grid;
+  gap:0.45rem;
+  padding:0;
+  list-style:none;
+}
+
+.home-platform-messaging__actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.65rem;
+}
+
+.home-platform-messaging__action{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:2.5rem;
+  padding:0 0.95rem;
+  border:1px solid var(--control-border);
+  border-radius:999px;
+  background:transparent;
+  color:var(--text-secondary-color);
+  text-decoration:none;
+  font-size:0.76rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  transition:color 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.home-platform-messaging__action:hover,
+.home-platform-messaging__action:focus-visible{
+  color:var(--text-primary-color);
+  border-color:var(--control-border-strong);
+  background:var(--control-bg);
+  outline:none;
+}
+
+.home-platform-messaging__state{
+  color:var(--text-primary-color);
+  font-size:0.88rem;
+  line-height:1.5;
+}
+
+@media (max-width: 980px){
+  .home-platform-messaging__grid{
+    grid-template-columns:1fr;
+  }
+}

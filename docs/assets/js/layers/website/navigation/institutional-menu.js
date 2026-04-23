@@ -210,7 +210,8 @@
     }
 
     const photo = normalizeString(profile?.photo_url || liveUser?.photoURL || '');
-    const hasAvatarImage = !!photo;
+    const hasSignedInAccount = Boolean(profile || liveUser);
+    const hasAvatarImage = hasSignedInAccount && !!photo;
     const accountLabel = normalizeMenuAccountLabel(profile, liveUser);
 
     if (trigger) {
@@ -540,11 +541,9 @@
 
     let activePanelKey = null;
     let closeTimer = null;
-    let recognition = null;
     let isListening = false;
     const searchLinksHost = getSearchLinksHost(menu);
-
-    const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    let speechControllerPromise = null;
 
     function normalizeSearchValue(value) {
       return String(value || '')
@@ -764,9 +763,13 @@
     }
 
     function stopRecognitionIfNeeded() {
-      if (recognition && isListening) {
-        recognition.stop();
-      }
+      if (!speechControllerPromise) return;
+
+      void speechControllerPromise.then((controller) => {
+        if (controller?.isListening?.()) {
+          controller.stop();
+        }
+      });
     }
 
     function closePanels() {
@@ -840,47 +843,41 @@
       openPanel(panelKey);
     }
 
-    function ensureRecognition() {
-      if (!SpeechRecognitionCtor) return null;
-      if (recognition) return recognition;
+    function ensureSpeechController() {
+      if (speechControllerPromise) {
+        return speechControllerPromise;
+      }
 
-      recognition = new SpeechRecognitionCtor();
-      recognition.continuous = false;
-      recognition.interimResults = true;
-      recognition.maxAlternatives = 1;
+      speechControllerPromise = import('/assets/js/core/02-systems/speech-input.js')
+        .then(({ createSpeechInputController }) => createSpeechInputController({
+          onStart: () => {
+            isListening = true;
+            syncMicState();
+            clearCloseTimer();
+          },
+          onResult: ({ transcript }) => {
+            if (!searchInput) return;
 
-      recognition.addEventListener('start', () => {
-        isListening = true;
-        syncMicState();
-        clearCloseTimer();
-      });
+            searchInput.value = transcript;
+            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+            renderSearchResults(searchInput.value || '');
+          },
+          onEnd: () => {
+            isListening = false;
+            syncMicState();
 
-      recognition.addEventListener('result', (event) => {
-        if (!searchInput) return;
-        const transcript = Array.from(event.results)
-          .map((result) => result[0]?.transcript || '')
-          .join('')
-          .trim();
+            if (activePanelKey === 'search' && searchInput) {
+              window.requestAnimationFrame(() => searchInput.focus());
+            }
+          },
+          onError: () => {
+            isListening = false;
+            syncMicState();
+          },
+        }))
+        .catch(() => null);
 
-        searchInput.value = transcript;
-        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-        renderSearchResults(searchInput.value || '');
-      });
-
-      recognition.addEventListener('end', () => {
-        isListening = false;
-        syncMicState();
-        if (activePanelKey === 'search' && searchInput) {
-          window.requestAnimationFrame(() => searchInput.focus());
-        }
-      });
-
-      recognition.addEventListener('error', () => {
-        isListening = false;
-        syncMicState();
-      });
-
-      return recognition;
+      return speechControllerPromise;
     }
 
     if (searchInput && searchInput.dataset.searchResultsBound !== 'true') {
@@ -952,7 +949,7 @@
       micButton.dataset.micBound = 'true';
       syncMicState();
 
-      micButton.addEventListener('click', (event) => {
+      micButton.addEventListener('click', async (event) => {
         event.preventDefault();
         event.stopPropagation();
         clearCloseTimer();
@@ -961,21 +958,21 @@
           openPanel('search');
         }
 
-        if (!SpeechRecognitionCtor) {
+        const speechController = await ensureSpeechController();
+
+        if (!speechController?.supported) {
           if (searchInput) searchInput.focus();
           return;
         }
 
-        const speech = ensureRecognition();
-        if (!speech) return;
-
-        if (isListening) {
-          speech.stop();
+        if (speechController.isListening()) {
+          speechController.stop();
           return;
         }
 
-        speech.lang = document.documentElement.lang || 'en';
-        speech.start();
+        speechController.start({
+          lang: document.documentElement.lang || 'en',
+        });
       });
     }
 

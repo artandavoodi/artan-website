@@ -51,7 +51,28 @@ body.light-mode .home-shell{
 }
 
 /* =============================================================================
-   02) TOPBAR AND FOOTER CHROME
+   02) SHELL OPEN STATES
+============================================================================= */
+body.home-page.home-platform-shell-open #stage-intro,
+body.home-page.home-search-shell-open #stage-intro{
+  opacity:0 !important;
+  visibility:hidden;
+  pointer-events:none !important;
+}
+
+body.home-page.home-platform-shell-open #home-footer-mount,
+body.home-page.home-platform-shell-open .home-shell__footer,
+body.home-page.home-platform-shell-open .home-shell__footer-separator,
+body.home-page.home-search-shell-open #home-footer-mount,
+body.home-page.home-search-shell-open .home-shell__footer,
+body.home-page.home-search-shell-open .home-shell__footer-separator{
+  opacity:0 !important;
+  visibility:hidden;
+  pointer-events:none !important;
+}
+
+/* =============================================================================
+   03) TOPBAR AND FOOTER CHROME
 ============================================================================= */
 .home-shell__topbar,
 .home-shell__footer{
@@ -89,7 +110,7 @@ body.light-mode .home-shell{
 }
 
 /* =============================================================================
-   03) PANEL MOUNTS
+   04) PANEL MOUNTS
 ============================================================================= */
 .home-shell__panel-mount,
 .home-shell__overlay-mount{
@@ -103,7 +124,7 @@ body.light-mode .home-shell{
 }
 
 /* =============================================================================
-   04) SHARED PANEL SURFACES
+   05) SHARED PANEL SURFACES
 ============================================================================= */
 .home-navigation-drawer__inner,
 .home-workspace-panel__inner,
@@ -139,7 +160,7 @@ body.light-mode .home-shell{
 }
 
 /* =============================================================================
-   05) SHARED PANEL TYPOGRAPHY AND ACTIONS
+   06) SHARED PANEL TYPOGRAPHY AND ACTIONS
 ============================================================================= */
 .home-navigation-drawer__eyebrow,
 .home-workspace-panel__eyebrow,
@@ -239,7 +260,7 @@ body.light-mode .home-shell{
 }
 
 /* =============================================================================
-   06) RESPONSIVE REFINEMENTS
+   07) RESPONSIVE REFINEMENTS
 ============================================================================= */
 @media (max-width: 760px){
   .home-shell{

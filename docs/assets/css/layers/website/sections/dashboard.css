@@ -2,8 +2,9 @@
    00) FILE INDEX
    01) MODULE IDENTITY
    02) SUMMARY GRID
-   03) DETAIL GRID
-   04) RESPONSIVE
+   03) GROUPS
+   04) DETAIL GRID
+   05) RESPONSIVE
 ============================================================================= */
 
 /* =============================================================================
@@ -16,7 +17,7 @@
 ============================================================================= */
 .dashboard-summary-grid{
   display:grid;
-  grid-template-columns:repeat(3, minmax(0, 1fr));
+  grid-template-columns:repeat(4, minmax(0, 1fr));
   gap:1rem;
 }
 
@@ -34,28 +35,65 @@
 }
 
 /* =============================================================================
-   03) DETAIL GRID
+   03) GROUPS
+============================================================================= */
+.dashboard-groups{
+  display:grid;
+  gap:1.4rem;
+}
+
+.dashboard-section-group{
+  display:grid;
+  gap:0.9rem;
+}
+
+.dashboard-section-group__header{
+  display:grid;
+  gap:0.28rem;
+}
+
+.dashboard-section-group__eyebrow,
+.dashboard-section-group__title{
+  margin:0;
+}
+
+.dashboard-section-group__eyebrow{
+  color:var(--text-secondary-color);
+  font-size:0.74rem;
+  font-weight:500;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+}
+
+.dashboard-section-group__title{
+  color:var(--text-primary-color);
+  font-size:1.02rem;
+  font-weight:500;
+}
+
+/* =============================================================================
+   04) DETAIL GRID
 ============================================================================= */
 .dashboard-detail-grid{
   grid-template-columns:repeat(2, minmax(0, 1fr));
 }
 
-.dashboard-detail-grid .catalog-panel--primary,
-.dashboard-detail-grid .catalog-panel--wide{
-  grid-column:span 2;
+.dashboard-section-card{
+  min-height:100%;
 }
 
 /* =============================================================================
-   04) RESPONSIVE
+   05) RESPONSIVE
 ============================================================================= */
+@media (max-width: 1180px){
+  .dashboard-summary-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 980px){
   .dashboard-summary-grid,
   .dashboard-detail-grid{
     grid-template-columns:1fr;
-  }
-
-  .dashboard-detail-grid .catalog-panel--primary,
-  .dashboard-detail-grid .catalog-panel--wide{
-    grid-column:span 1;
   }
 }

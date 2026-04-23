@@ -124,10 +124,10 @@ function dispatchHomeStageMode(mode) {
   );
 }
 
-function dispatchHomeStageResponse(response) {
+function dispatchHomeStageResponse(response, queryId = null) {
   document.dispatchEvent(
     new CustomEvent('neuroartan:home-stage-voice-response', {
-      detail: { response },
+      detail: { response, queryId },
     })
   );
 }
@@ -313,6 +313,10 @@ function handleHomeStageQuerySubmitted(event) {
   dispatchHomeStageMode('thinking');
 
   window.setTimeout(() => {
+    if (queryId !== HOME_STAGE_QUERY_ENGINE_STATE.activeQueryId) {
+      return;
+    }
+
     const result = resolveHomeStageQuery(query, queryId);
 
     if (result.route === 'empty') {
@@ -330,7 +334,7 @@ function handleHomeStageQuerySubmitted(event) {
     });
 
     dispatchHomeStageMode('responding');
-    dispatchHomeStageResponse(result.response || '');
+    dispatchHomeStageResponse(result.response || '', queryId);
     HOME_STAGE_QUERY_ENGINE_STATE.isBusy = false;
   }, 420);
 }
@@ -344,6 +348,11 @@ function bindHomeStageQueryEngineEvents() {
     'neuroartan:home-stage-voice-query-submitted',
     handleHomeStageQuerySubmitted
   );
+
+  document.addEventListener('neuroartan:home-stage-reset-requested', () => {
+    HOME_STAGE_QUERY_ENGINE_STATE.isBusy = false;
+    HOME_STAGE_QUERY_ENGINE_STATE.activeQueryId += 1;
+  });
 }
 
 /* =========================================================

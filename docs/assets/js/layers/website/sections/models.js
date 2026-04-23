@@ -145,6 +145,19 @@ function resolveInteractionMode(model = {}) {
   return model?.permissions?.interaction || model.interaction_entry || 'Text';
 }
 
+function resolveModelTypeLabel(model = {}) {
+  switch (normalizeString(model.model_type).toLowerCase()) {
+    case 'human-profile':
+      return 'Human profile';
+    case 'institution-model':
+      return 'Institution model';
+    case 'system-model':
+      return 'System model';
+    default:
+      return 'Continuity model';
+  }
+}
+
 function resolveTrustLabel(model = {}) {
   return normalizeString(model.trust_classification || model.model_maturity || model.training_state || 'Governed surface');
 }
@@ -289,6 +302,7 @@ function renderModelCard(model = {}) {
   const stateLabel = resolveModelState(model);
   const creatorLabel = resolveCreatorLabel(model);
   const interactionMode = resolveInteractionMode(model);
+  const modelTypeLabel = resolveModelTypeLabel(model);
   const trustLabel = resolveTrustLabel(model);
   const verificationLabel = resolveVerificationLabel(model);
   const verificationMarkup = isVerifiedModel(model)
@@ -331,6 +345,8 @@ function renderModelCard(model = {}) {
         </div>
 
         <div class="models-directory-card__meta">
+          <p class="models-directory-card__meta-row"><strong>Type</strong><span>${escapeHtml(modelTypeLabel)}</span></p>
+          <p class="models-directory-card__meta-row"><strong>Training</strong><span>${escapeHtml(model.training_state || model.model_maturity || 'Pending')}</span></p>
           <p class="models-directory-card__meta-row"><strong>Joined</strong><span>${escapeHtml(model.joined_year || 'Pending')}</span></p>
           <p class="models-directory-card__meta-row"><strong>Availability</strong><span>${escapeHtml(model.availability || 'Pending')}</span></p>
           <p class="models-directory-card__meta-row"><strong>Interaction</strong><span>${escapeHtml(model.interaction_entry || interactionMode)}</span></p>

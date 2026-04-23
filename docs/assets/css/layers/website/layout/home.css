@@ -1034,28 +1034,6 @@ body.home-page.intro-reveal .enter-button{
   transition:opacity 0.65s ease, transform 0.85s var(--intro-ease);
 }
 
-/* =============================================================================
-   18) HOME SHELL OPEN STATES
-============================================================================= */
-body.home-page.home-platform-shell-open #stage-intro,
-body.home-page.home-search-shell-open #stage-copy,
-body.home-page.home-search-shell-open #stage-actions{
-  opacity:0 !important;
-  visibility:hidden;
-  pointer-events:none !important;
-}
-
-body.home-page.home-platform-shell-open #home-footer-mount,
-body.home-page.home-platform-shell-open .home-shell__footer,
-body.home-page.home-platform-shell-open .home-shell__footer-separator,
-body.home-page.home-search-shell-open #home-footer-mount,
-body.home-page.home-search-shell-open .home-shell__footer,
-body.home-page.home-search-shell-open .home-shell__footer-separator{
-  opacity:0 !important;
-  visibility:hidden;
-  pointer-events:none !important;
-}
-
 .site-logo.intro-logo{
   position:fixed;
   left:50%;

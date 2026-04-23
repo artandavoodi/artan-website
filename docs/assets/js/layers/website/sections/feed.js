@@ -5,10 +5,11 @@
    03) STATE
    04) HELPERS
    05) DISCOVERY HELPERS
-   06) RENDER HELPERS
-   07) EVENTS
-   08) INITIALIZATION
-   09) END OF FILE
+   06) STREAM HELPERS
+   07) RENDER HELPERS
+   08) EVENTS
+   09) INITIALIZATION
+   10) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -22,6 +23,11 @@ import {
   renderMetricMarkup,
   setQueryParam
 } from './catalog-runtime.js';
+import {
+  activatePublicModel,
+  getActiveModelState,
+  subscribeActiveModelState
+} from '../system/active-model.js';
 import {
   getPublicModels,
   loadPublicModelRegistry
@@ -38,7 +44,8 @@ const FEED_SECTION_URL = '/assets/data/sections/feed.json';
 const FEED_PAGE_STATE = {
   config: null,
   root: null,
-  isBound: false
+  isBound: false,
+  interactions: Object.create(null),
 };
 
 /* =============================================================================
@@ -62,7 +69,9 @@ function getFeedTab() {
 function getFeedSort() {
   const requested = normalizeString(readQueryParam('sort')).toLowerCase();
   const allowed = new Set((FEED_PAGE_STATE.config?.sort_options || []).map((option) => normalizeString(option.id).toLowerCase()));
-  return allowed.has(requested) ? requested : normalizeString(FEED_PAGE_STATE.config?.sort_options?.[0]?.id || 'latest').toLowerCase();
+  return allowed.has(requested)
+    ? requested
+    : normalizeString(FEED_PAGE_STATE.config?.sort_options?.[0]?.id || 'latest').toLowerCase();
 }
 
 function getFeedPosts() {
@@ -74,6 +83,7 @@ function isVerifiedEntity(model = {}) {
     model.trust_classification,
     ...(Array.isArray(model.reliability_signals) ? model.reliability_signals : [])
   ].join(' ');
+
   return /verified|governed|self-authored/i.test(trust);
 }
 
@@ -83,6 +93,36 @@ function getCurrentUser() {
   } catch (_) {
     return null;
   }
+}
+
+function resolveFeedEntityType(model = {}) {
+  switch (normalizeString(model.model_type).toLowerCase()) {
+    case 'human-profile':
+      return 'Profile';
+    case 'institution-model':
+      return 'Institution';
+    case 'system-model':
+      return 'Model';
+    default:
+      return 'Entity';
+  }
+}
+
+function resolveFeedAvatar(model = {}) {
+  return normalizeString(model?.public_profile?.public_avatar_url || '');
+}
+
+function getFeedInteractionState(postId = '') {
+  if (!FEED_PAGE_STATE.interactions[postId]) {
+    FEED_PAGE_STATE.interactions[postId] = {
+      reply: false,
+      repost: false,
+      like: false,
+      save: false,
+    };
+  }
+
+  return FEED_PAGE_STATE.interactions[postId];
 }
 
 /* =============================================================================
@@ -125,7 +165,65 @@ function getTrendingThoughts() {
 }
 
 /* =============================================================================
-   06) RENDER HELPERS
+   06) STREAM HELPERS
+============================================================================= */
+function buildDerivedFeedPosts() {
+  const featuredIds = new Set(FEED_PAGE_STATE.config?.featured_model_ids || []);
+  const activeTab = getFeedTab();
+  const sort = getFeedSort();
+
+  let posts = getPublicModels()
+    .filter((model) => model?.directory_visibility !== false)
+    .map((model) => ({
+      id: model.id,
+      modelId: model.id,
+      entityType: resolveFeedEntityType(model),
+      entityLabel: model.display_name || model.search_title || 'Entity',
+      username: normalizeString(model?.public_profile?.public_username || model.username),
+      avatar: resolveFeedAvatar(model),
+      verified: isVerifiedEntity(model),
+      content: model?.public_profile?.public_summary || model.description || '',
+      metadata: [
+        model.training_state || model.model_maturity || '',
+        model.availability || '',
+        model.joined_year ? `Joined ${model.joined_year}` : ''
+      ].filter(Boolean),
+      tags: (Array.isArray(model.tags) ? model.tags : []).slice(0, 3),
+      href: model.page_route || '/pages/profiles/index.html',
+      publicRoute: model?.public_profile?.public_route_path || '',
+      featured: featuredIds.has(model.id),
+    }));
+
+  if (activeTab === 'models') {
+    posts = posts.filter((post) => post.entityType !== 'Profile');
+  } else if (activeTab === 'profiles') {
+    posts = posts.filter((post) => post.entityType === 'Profile');
+  } else if (activeTab === 'following' || activeTab === 'my-posts') {
+    posts = [];
+  } else if (activeTab === 'for-you') {
+    posts = posts.sort((left, right) => Number(right.featured) - Number(left.featured));
+  }
+
+  if (sort === 'verified') {
+    posts = posts.sort((left, right) => Number(right.verified) - Number(left.verified));
+  } else if (sort === 'models') {
+    posts = posts.sort((left, right) => left.entityType.localeCompare(right.entityType));
+  }
+
+  return posts.slice(0, 8);
+}
+
+function getRenderableFeedPosts() {
+  const configuredPosts = getFeedPosts();
+  if (configuredPosts.length) {
+    return configuredPosts;
+  }
+
+  return buildDerivedFeedPosts();
+}
+
+/* =============================================================================
+   07) RENDER HELPERS
 ============================================================================= */
 function renderFeedTabs() {
   const activeTab = getFeedTab();
@@ -151,12 +249,61 @@ function renderDiscoverySection(title, values, formatter) {
   `;
 }
 
+function renderFeedPost(post = {}) {
+  const interactionState = getFeedInteractionState(post.id);
+  const activeModelId = getActiveModelState().activeModelId;
+  const avatar = normalizeString(post.avatar);
+  const handle = normalizeString(post.username) ? `@${normalizeString(post.username)}` : normalizeString(post.publicRoute || post.href || '');
+
+  return `
+    <article class="feed-post">
+      <div class="feed-post__identity">
+        <div class="feed-post__avatar" aria-hidden="true">
+          ${avatar
+            ? `<img class="feed-post__avatar-image" src="${escapeHtml(avatar)}" alt="">`
+            : `<span class="feed-post__avatar-fallback">${escapeHtml((post.entityLabel || 'N').charAt(0).toUpperCase())}</span>`}
+        </div>
+
+        <div class="feed-post__identity-copy">
+          <div class="feed-post__identity-row">
+            <h2 class="feed-post__entity">${escapeHtml(post.entityLabel || 'Entity')}</h2>
+            ${post.verified ? `
+              <span class="feed-post__badge" aria-label="Verified entity">
+                <img class="feed-post__badge-icon ui-icon-theme-aware" src="/assets/icons/core/identity/trust/verified.svg" alt="" aria-hidden="true">
+                <span>Verified</span>
+              </span>
+            ` : ''}
+            <span class="feed-post__type">${escapeHtml(post.entityType || 'Entity')}</span>
+          </div>
+          <p class="feed-post__handle">${escapeHtml(handle)}</p>
+        </div>
+      </div>
+
+      <p class="feed-post__copy">${escapeHtml(post.content || '')}</p>
+
+      <div class="feed-post__metadata">
+        ${(Array.isArray(post.metadata) ? post.metadata : []).map((item) => `<span class="feed-post__meta-chip">${escapeHtml(item)}</span>`).join('')}
+        ${(Array.isArray(post.tags) ? post.tags : []).map((item) => `<span class="feed-post__meta-chip">${escapeHtml(item)}</span>`).join('')}
+      </div>
+
+      <div class="feed-post__actions">
+        <button class="feed-post__action" type="button" data-feed-post-action="reply" data-feed-post-id="${escapeHtml(post.id)}" aria-pressed="${interactionState.reply ? 'true' : 'false'}">Reply</button>
+        <button class="feed-post__action" type="button" data-feed-post-action="repost" data-feed-post-id="${escapeHtml(post.id)}" aria-pressed="${interactionState.repost ? 'true' : 'false'}">Repost</button>
+        <button class="feed-post__action" type="button" data-feed-post-action="like" data-feed-post-id="${escapeHtml(post.id)}" aria-pressed="${interactionState.like ? 'true' : 'false'}">Like</button>
+        <button class="feed-post__action" type="button" data-feed-post-action="save" data-feed-post-id="${escapeHtml(post.id)}" aria-pressed="${interactionState.save ? 'true' : 'false'}">Save</button>
+        <a class="feed-post__action feed-post__action--link" href="${escapeHtml(post.publicRoute || post.href || '/pages/profiles/index.html')}">View</a>
+        ${post.modelId ? `<button class="feed-post__action feed-post__action--primary" type="button" data-feed-post-model="${escapeHtml(post.modelId)}">${post.modelId === activeModelId ? 'Active on Homepage' : 'Interact'}</button>` : ''}
+      </div>
+    </article>
+  `;
+}
+
 function renderFeedPage() {
   if (!FEED_PAGE_STATE.root || !FEED_PAGE_STATE.config) {
     return;
   }
 
-  const posts = getFeedPosts();
+  const posts = getRenderableFeedPosts();
   const currentUser = getCurrentUser();
   const sort = getFeedSort();
   const activeTab = getFeedTab();
@@ -216,13 +363,7 @@ function renderFeedPage() {
             </div>
 
             <div class="feed-stream">
-              ${posts.length ? posts.map((post) => `
-                <article class="feed-post">
-                  <p class="feed-post__eyebrow">${escapeHtml(post.entity || 'Entity')}</p>
-                  <h2 class="feed-post__title">${escapeHtml(post.title || 'Feed post')}</h2>
-                  <p class="feed-post__copy">${escapeHtml(post.body || '')}</p>
-                </article>
-              `).join('') : `
+              ${posts.length ? posts.map((post) => renderFeedPost(post)).join('') : `
                 <div class="catalog-empty-state">
                   <h2 class="catalog-empty-state__title">${escapeHtml(FEED_PAGE_STATE.config.empty_state?.title || 'No public posts yet')}</h2>
                   <p class="catalog-empty-state__copy">${escapeHtml(FEED_PAGE_STATE.config.empty_state?.copy || '')}</p>
@@ -271,7 +412,7 @@ function renderFeedPage() {
 }
 
 /* =============================================================================
-   07) EVENTS
+   08) EVENTS
 ============================================================================= */
 function bindFeedEvents() {
   if (FEED_PAGE_STATE.isBound) {
@@ -279,6 +420,10 @@ function bindFeedEvents() {
   }
 
   FEED_PAGE_STATE.isBound = true;
+
+  subscribeActiveModelState(() => {
+    renderFeedPage();
+  });
 
   document.addEventListener('click', (event) => {
     if (!FEED_PAGE_STATE.root) return;
@@ -301,6 +446,35 @@ function bindFeedEvents() {
           }
         }));
       }
+
+      return;
+    }
+
+    const postAction = event.target.closest('[data-feed-post-action]');
+    if (postAction instanceof HTMLButtonElement && FEED_PAGE_STATE.root.contains(postAction)) {
+      const postId = normalizeString(postAction.getAttribute('data-feed-post-id'));
+      const action = normalizeString(postAction.getAttribute('data-feed-post-action')).toLowerCase();
+
+      if (!postId || !action) {
+        return;
+      }
+
+      const state = getFeedInteractionState(postId);
+      state[action] = !state[action];
+      renderFeedPage();
+      return;
+    }
+
+    const interactAction = event.target.closest('[data-feed-post-model]');
+    if (interactAction instanceof HTMLButtonElement && FEED_PAGE_STATE.root.contains(interactAction)) {
+      const modelId = normalizeString(interactAction.getAttribute('data-feed-post-model'));
+      if (!modelId) {
+        return;
+      }
+
+      void activatePublicModel(modelId, { source: 'feed-page' }).then(() => {
+        renderFeedPage();
+      });
     }
   });
 
@@ -319,7 +493,7 @@ function bindFeedEvents() {
 }
 
 /* =============================================================================
-   08) INITIALIZATION
+   09) INITIALIZATION
 ============================================================================= */
 async function initFeedPage() {
   if (!isFeedPage()) {
@@ -344,5 +518,5 @@ async function initFeedPage() {
 void initFeedPage();
 
 /* =============================================================================
-   09) END OF FILE
+   10) END OF FILE
 ============================================================================= */

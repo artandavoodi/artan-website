@@ -6,6 +6,7 @@
   "sections": [
     {
       "id": "model-control-center",
+      "group": "management",
       "title": "Model Control Center",
       "summary": "Anchor the current active model, interaction route, and readiness posture from one owner-facing control surface.",
       "items": [
@@ -16,6 +17,7 @@
     },
     {
       "id": "reflection-thought-capture",
+      "group": "intelligence",
       "title": "Reflection & Thought Capture",
       "summary": "Preserve structured thought capture as an owner tool rather than a generic notes surface.",
       "items": [
@@ -26,6 +28,7 @@
     },
     {
       "id": "analytics-pattern-intelligence",
+      "group": "intelligence",
       "title": "Analytics & Pattern Intelligence",
       "summary": "Treat model analytics as an interpretive intelligence layer, not a decorative metrics board.",
       "items": [
@@ -36,6 +39,7 @@
     },
     {
       "id": "knowledge-graph",
+      "group": "intelligence",
       "title": "Knowledge Graph",
       "summary": "Prepare the graph-linked continuity layer that connects sources, patterns, entities, and longitudinal records.",
       "items": [
@@ -46,6 +50,7 @@
     },
     {
       "id": "training-status",
+      "group": "management",
       "title": "Training Status",
       "summary": "Keep training orchestration visible across voice, response-style, thought-pattern, and public-readiness preparation.",
       "items": [
@@ -57,6 +62,7 @@
     },
     {
       "id": "source-linked-accounts",
+      "group": "governance",
       "title": "Source & Linked Accounts",
       "summary": "Keep external-account authorization, source provenance, and identity proof in one governed section.",
       "items": [
@@ -68,6 +74,7 @@
     },
     {
       "id": "runtime-health",
+      "group": "overview",
       "title": "Runtime / Health / System Status",
       "summary": "Maintain a clean system-governance surface for runtime status, route integrity, and operational readiness.",
       "items": [
@@ -79,6 +86,7 @@
     },
     {
       "id": "private-archive-history",
+      "group": "continuity",
       "title": "Private Archive / History",
       "summary": "Preserve private archive review separately from the public continuity-history surface.",
       "items": [
@@ -90,6 +98,7 @@
     },
     {
       "id": "settings-shortcuts",
+      "group": "utility",
       "title": "Settings Shortcuts",
       "summary": "Keep settings access short and subordinate to the dashboard’s primary intelligence role.",
       "items": [

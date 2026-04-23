@@ -88,6 +88,7 @@ function getFragmentPaths() {
     'products-index-shell': assetPath('/assets/fragments/layers/website/sections/products/products-index-shell.html'),
     'footer': assetPath('/assets/fragments/layers/website/footer/footer.html'),
     'home-dashboard-topbar': assetPath('/assets/fragments/layers/website/home/home-dashboard-topbar.html'),
+    'home-interaction-panel': assetPath('/assets/fragments/layers/website/home/home-interaction-panel.html'),
     'home-platform-shell': assetPath('/assets/fragments/layers/website/home/home-platform-shell.html'),
     'home-navigation-drawer': assetPath('/assets/fragments/layers/website/home/home-navigation-drawer.html'),
     'home-workspace-panel': assetPath('/assets/fragments/layers/website/home/home-workspace-panel.html'),

@@ -271,6 +271,33 @@
   filter:var(--icon-image-filter);
 }
 
+.home-platform-shell__nav-indicator{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:1.15rem;
+  min-height:1.15rem;
+  margin-left:auto;
+  padding:0 0.32rem;
+  border-radius:999px;
+  background:color-mix(in srgb, var(--text-primary-color) 16%, transparent);
+  color:var(--text-primary-color);
+  font-size:0.64rem;
+  font-weight:600;
+  line-height:1;
+  letter-spacing:0.04em;
+}
+
+.home-platform-shell__nav-indicator[data-home-platform-nav-indicator-state="new"]{
+  background:color-mix(in srgb, #1d9bf0 16%, transparent);
+  color:#1d9bf0;
+}
+
+.home-platform-shell__nav-indicator[data-home-platform-nav-indicator-state="high"]{
+  background:color-mix(in srgb, #ff7043 18%, transparent);
+  color:#ff7043;
+}
+
 .home-platform-shell__nav-item:hover,
 .home-platform-shell__nav-item:focus-visible,
 .home-platform-shell__nav-item[aria-pressed="true"],

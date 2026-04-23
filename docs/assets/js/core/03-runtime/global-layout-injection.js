@@ -78,6 +78,7 @@ const FRAGMENT_PATHS = {
   'home-workspace-panel': assetPath('/assets/fragments/layers/website/home/home-workspace-panel.html'),
   'home-profile-control-panel': assetPath('/assets/fragments/layers/website/home/home-profile-control-panel.html'),
   'home-dashboard-topbar': assetPath('/assets/fragments/layers/website/home/home-dashboard-topbar.html'),
+  'home-interaction-panel': assetPath('/assets/fragments/layers/website/home/home-interaction-panel.html'),
   'home-search-shell': assetPath('/assets/fragments/layers/website/home/home-search-shell.html'),
   'home-settings-panel': assetPath('/assets/fragments/layers/website/home/home-settings-panel.html'),
   'home-footer': assetPath('/assets/fragments/layers/website/home/home-footer.html'),

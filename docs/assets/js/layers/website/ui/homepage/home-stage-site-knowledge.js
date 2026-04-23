@@ -59,10 +59,10 @@ function dispatchHomeStageMode(mode) {
   );
 }
 
-function dispatchHomeStageResponse(response) {
+function dispatchHomeStageResponse(response, queryId = null) {
   document.dispatchEvent(
     new CustomEvent('neuroartan:home-stage-voice-response', {
-      detail: { response },
+      detail: { response, queryId },
     })
   );
 }
@@ -278,7 +278,7 @@ async function handleHomeStageSiteKnowledgeRequested(event) {
   const response = buildHomeStageSiteKnowledgeResponse(match);
 
   dispatchHomeStageMode('responding');
-  dispatchHomeStageResponse(formatActiveModelResponse('site-knowledge', response));
+  dispatchHomeStageResponse(formatActiveModelResponse('site-knowledge', response), queryId);
   dispatchHomeStageRoutingResolved({
     query,
     queryId,

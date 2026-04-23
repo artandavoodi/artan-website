@@ -71,7 +71,7 @@ function renderHomeDashboardTopbar(snapshot) {
   const nodes = getHomeDashboardTopbarNodes();
   const signedIn = !!snapshot?.account?.signedIn;
   const photo = snapshot?.account?.profile?.photo_url || snapshot?.account?.user?.photoURL || '';
-  const hasAvatarImage = !!photo;
+  const hasAvatarImage = signedIn && !!photo;
   const profileLabel = resolveHomeTopbarProfileLabel(snapshot);
 
   if (nodes.profileLabel) {

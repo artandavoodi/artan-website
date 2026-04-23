@@ -96,8 +96,16 @@ function getHomePlatformShellRailToggleTrigger() {
   return document.querySelector('#home-platform-shell-rail-toggle');
 }
 
+function getHomePlatformShellRailToggleIcon() {
+  return document.querySelector('[data-home-platform-rail-toggle-icon]');
+}
+
 function getHomePlatformShellNavItems() {
   return Array.from(document.querySelectorAll('[data-home-platform-destination]'));
+}
+
+function getHomePlatformShellIndicatorNodes() {
+  return Array.from(document.querySelectorAll('[data-home-platform-nav-indicator]'));
 }
 
 function getHomePlatformShellChromeRoots() {
@@ -627,6 +635,68 @@ function syncHomePlatformRailMode(mode = HOME_PLATFORM_SHELL_STATE.railMode) {
     toggle.setAttribute('aria-pressed', isExpanded ? 'true' : 'false');
     toggle.setAttribute('aria-label', isExpanded ? 'Collapse navigation rail' : 'Expand navigation rail');
   }
+
+  const toggleIcon = getHomePlatformShellRailToggleIcon();
+  if (toggleIcon instanceof HTMLImageElement) {
+    const expandedIcon = normalizeString(toggleIcon.getAttribute('data-home-platform-rail-icon-expanded'));
+    const collapsedIcon = normalizeString(toggleIcon.getAttribute('data-home-platform-rail-icon-collapsed'));
+    const nextIcon = normalized === 'expanded' ? expandedIcon : collapsedIcon;
+
+    if (nextIcon) {
+      toggleIcon.src = nextIcon;
+    }
+  }
+}
+
+function normalizeHomePlatformIndicatorState(value) {
+  if (value === 'high') {
+    return 'high';
+  }
+
+  if (value === 'new') {
+    return 'new';
+  }
+
+  return 'idle';
+}
+
+function resolveHomePlatformIndicatorState(entry = {}) {
+  const declaredState = normalizeHomePlatformIndicatorState(normalizeString(entry?.state || ''));
+  if (declaredState !== 'idle') {
+    return declaredState;
+  }
+
+  const unreadCount = Number(entry?.unreadCount || 0);
+
+  if (Number.isFinite(unreadCount) && unreadCount > 9) {
+    return 'high';
+  }
+
+  if (Number.isFinite(unreadCount) && unreadCount > 0) {
+    return 'new';
+  }
+
+  return 'idle';
+}
+
+function syncHomePlatformCommunicationIndicators(snapshot = HOME_PLATFORM_SHELL_STATE.snapshot) {
+  const communication = snapshot?.communication || {};
+  const entries = {
+    messaging: communication.messaging || {},
+    notifications: communication.notifications || {},
+  };
+
+  getHomePlatformShellIndicatorNodes().forEach((node) => {
+    const key = normalizeString(node.getAttribute('data-home-platform-nav-indicator'));
+    const entry = entries[key] || {};
+    const state = resolveHomePlatformIndicatorState(entry);
+    const unreadCount = Number(entry?.unreadCount || 0);
+    const showCount = Number.isFinite(unreadCount) && unreadCount > 0;
+
+    node.setAttribute('data-home-platform-nav-indicator-state', state);
+    node.hidden = state === 'idle';
+    node.textContent = showCount ? String(Math.min(unreadCount, 99)) : 'New';
+  });
 }
 
 function setHomePlatformRailMode(mode) {
@@ -870,6 +940,7 @@ function bindHomePlatformShellEvents() {
 
   subscribeHomeSurfaceState((snapshot) => {
     HOME_PLATFORM_SHELL_STATE.snapshot = snapshot;
+    syncHomePlatformCommunicationIndicators(snapshot);
 
     const root = getHomePlatformShellRoot();
     if (!root || root.hidden) {
@@ -891,6 +962,7 @@ function bootHomePlatformShell() {
   bindHomePlatformShellEvents();
   HOME_PLATFORM_SHELL_STATE.railMode = loadHomePlatformRailMode();
   syncHomePlatformRailMode(HOME_PLATFORM_SHELL_STATE.railMode);
+  syncHomePlatformCommunicationIndicators(HOME_PLATFORM_SHELL_STATE.snapshot);
 
   void ensureHomePlatformConfig().then(() => {
     syncHomePlatformShellNav(HOME_PLATFORM_SHELL_STATE.activeDestination);

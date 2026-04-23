@@ -32,6 +32,7 @@ const HOME_STAGE_VOICE_STATE = {
   permissionsSupported: false,
   submittedQuery: '',
   route: '',
+  activeQueryId: 0,
   baseEssenceLabel: '',
 };
 
@@ -199,7 +200,11 @@ function syncHomeStageVoiceDom() {
   if (nodes.interactionShell) {
     nodes.interactionShell.dataset.voiceMode = HOME_STAGE_VOICE_STATE.mode;
     nodes.interactionShell.dataset.voiceActive = HOME_STAGE_VOICE_STATE.isActive ? 'true' : 'false';
-    nodes.interactionShell.hidden = false;
+    nodes.interactionShell.hidden = !(
+      HOME_STAGE_VOICE_STATE.isActive ||
+      getHomeStageVisibleTranscript() ||
+      HOME_STAGE_VOICE_STATE.response
+    );
   }
 
   if (nodes.essence) {
@@ -289,6 +294,19 @@ function dispatchHomeStageVoiceQuerySubmitted(query) {
       },
     })
   );
+}
+
+function resetHomeStageVoiceSurface() {
+  HOME_STAGE_VOICE_STATE.submittedQuery = '';
+  HOME_STAGE_VOICE_STATE.route = '';
+  HOME_STAGE_VOICE_STATE.activeQueryId += 1;
+  clearHomeStageVoiceTexts();
+  setHomeStageVoiceMode('idle');
+  dispatchHomeStageTranscript('');
+  dispatchHomeStageResponse('');
+  dispatchHomeStageVoiceMode('idle');
+  dispatchHomeStageVoiceDeactivated();
+  syncHomeStageVoiceDom();
 }
 
 /* =========================================================
@@ -556,6 +574,7 @@ function bindHomeStageVoiceSurface() {
 function bindHomeStageVoiceEvents() {
   document.addEventListener('neuroartan:home-stage-query-routing', (event) => {
     HOME_STAGE_VOICE_STATE.route = String(event?.detail?.route || '').trim().toLowerCase();
+    HOME_STAGE_VOICE_STATE.activeQueryId = Number(event?.detail?.queryId || HOME_STAGE_VOICE_STATE.activeQueryId || 0);
     syncHomeStageVoiceDom();
   });
 
@@ -566,6 +585,11 @@ function bindHomeStageVoiceEvents() {
   });
 
   document.addEventListener('neuroartan:home-stage-voice-response', (event) => {
+    const nextQueryId = Number(event?.detail?.queryId || 0);
+    if (nextQueryId && nextQueryId < HOME_STAGE_VOICE_STATE.activeQueryId) {
+      return;
+    }
+
     const nextResponse = event?.detail?.response ?? '';
     setHomeStageResponse(nextResponse);
 
@@ -593,6 +617,20 @@ function bindHomeStageVoiceEvents() {
 
     setHomeStageVoiceMode(nextMode.trim());
     syncHomeStageVoiceDom();
+  });
+
+  document.addEventListener('neuroartan:home-stage-reset-requested', () => {
+    if (HOME_STAGE_VOICE_STATE.recognition) {
+      HOME_STAGE_VOICE_STATE.isStopping = true;
+
+      try {
+        HOME_STAGE_VOICE_STATE.recognition.stop();
+      } catch (_) {
+        HOME_STAGE_VOICE_STATE.isStopping = false;
+      }
+    }
+
+    resetHomeStageVoiceSurface();
   });
 }
 

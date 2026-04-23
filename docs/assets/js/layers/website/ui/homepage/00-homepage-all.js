@@ -27,7 +27,6 @@ import './about.js';
 import './home-stage-voice.js';
 import './home-stage-motion.js';
 import './home-stage-runtime.js';
-import './home-stage-response.js';
 import './home-stage-core-effect.js';
 import './home-stage-query-engine.js';
 import './home-stage-site-knowledge.js';

@@ -153,7 +153,10 @@
           "id": "overview",
           "label": "Overview",
           "detail_title": "Messaging",
-          "detail_copy": "Messaging and continuity-linked conversations will land here as the platform communication layer."
+          "detail_copy": "Messaging and continuity-linked conversations will land here as the platform communication layer.",
+          "fragment": "/assets/fragments/layers/website/home/platform/messaging/overview.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/messaging/overview.css",
+          "module": "/assets/js/layers/website/home/platform/messaging/overview.js"
         }
       ]
     },
@@ -168,7 +171,10 @@
           "id": "overview",
           "label": "Overview",
           "detail_title": "Notifications",
-          "detail_copy": "Verification changes, activity alerts, and platform notifications will resolve here."
+          "detail_copy": "Verification changes, activity alerts, and platform notifications will resolve here.",
+          "fragment": "/assets/fragments/layers/website/home/platform/notifications/overview.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/notifications/overview.css",
+          "module": "/assets/js/layers/website/home/platform/notifications/overview.js"
         }
       ]
     },
@@ -177,7 +183,18 @@
       "eyebrow": "More",
       "title": "More",
       "description": "Institutional and supporting surfaces remain available from the secondary linked items without duplicating the deeper shell architecture.",
-      "default_subdestination": ""
+      "default_subdestination": "overview",
+      "subdestinations": [
+        {
+          "id": "overview",
+          "label": "Overview",
+          "detail_title": "More",
+          "detail_copy": "Institutional, legal, and support surfaces remain grouped here without overloading the primary product navigation.",
+          "fragment": "/assets/fragments/layers/website/home/platform/more/overview.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/more/overview.css",
+          "module": "/assets/js/layers/website/home/platform/more/overview.js"
+        }
+      ]
     }
   ]
 }

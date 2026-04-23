@@ -478,6 +478,10 @@
     return document.body.classList.contains(OPEN_CLASS);
   }
 
+  function isConsentClosing() {
+    return document.body.classList.contains(CLOSING_CLASS);
+  }
+
   function isLanguageSurfaceOpen() {
     return getCurrentSurface() === 'language';
   }
@@ -1010,6 +1014,7 @@
   function closeConsent() {
     const overlay = getOverlay();
     if (!overlay) return;
+    if (!isConsentOpen() && !isConsentClosing()) return;
 
     clearCloseTimer();
     document.body.classList.remove(OPEN_CLASS);

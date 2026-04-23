@@ -394,11 +394,13 @@
   display:flex;
   flex-wrap:wrap;
   gap:0.55rem;
+  align-items:center;
+  justify-content:center;
 }
 
 .home-search-shell__result-footer{
   display:flex;
-  justify-content:flex-start;
+  justify-content:center;
 }
 
 .home-search-shell__result-action,
@@ -440,6 +442,7 @@
 
 .home-search-shell__result-actions > *{
   flex:0 0 auto;
+  min-width:10.5rem;
 }
 
 /* =============================================================================
@@ -481,5 +484,10 @@ body:not(.light-mode) .home-search-shell__input-row{
 
   .home-search-shell__input{
     font-size:1.2rem;
+  }
+
+  .home-search-shell__result-actions > *{
+    width:100%;
+    min-width:0;
   }
 }
