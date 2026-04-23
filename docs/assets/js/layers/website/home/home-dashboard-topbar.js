@@ -29,6 +29,7 @@ function getHomeDashboardTopbarNodes() {
     root: document.querySelector('#home-dashboard-topbar'),
     menuTrigger: document.querySelector('#home-dashboard-menu-trigger'),
     searchTrigger: document.querySelector('#home-dashboard-search-trigger'),
+    routeTriggers: Array.from(document.querySelectorAll('[data-home-topbar-route]')),
     profileTrigger: document.querySelector('#home-dashboard-profile-trigger'),
     profileLabel: document.querySelector('[data-home-topbar-profile-label]'),
     profileAvatarShell: document.querySelector('[data-home-topbar-profile-avatar-shell]'),
@@ -119,6 +120,22 @@ function setTriggerExpanded(trigger, expanded) {
   trigger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
 }
 
+function syncTopbarCurrentRoute(routeTriggers = []) {
+  const currentPath = window.location.pathname;
+
+  routeTriggers.forEach((trigger) => {
+    const targetPath = String(trigger.getAttribute('data-home-topbar-route') || '').trim();
+    const isCurrent = targetPath && targetPath === currentPath;
+
+    if (isCurrent) {
+      trigger.setAttribute('aria-current', 'page');
+      return;
+    }
+
+    trigger.removeAttribute('aria-current');
+  });
+}
+
 function dispatchHomeTopbarEvent(name, detail = {}) {
   document.dispatchEvent(new CustomEvent(name, { detail }));
 }
@@ -170,6 +187,15 @@ function openHomeProfileControlSurface() {
   openHomePlatformShellDestination('profile');
 }
 
+function openHomeTopbarRoute(trigger) {
+  if (!(trigger instanceof HTMLElement)) return;
+
+  const route = String(trigger.getAttribute('data-home-topbar-route') || '').trim();
+  if (!route) return;
+
+  window.location.href = route;
+}
+
 /* =========================================================
    05. EVENT BINDING
    ========================================================= */
@@ -184,7 +210,8 @@ function bindHomeDashboardTopbar() {
     const trigger = event.target.closest(
       '#home-dashboard-menu-trigger, ' +
       '#home-dashboard-search-trigger, ' +
-      '#home-dashboard-profile-trigger'
+      '#home-dashboard-profile-trigger, ' +
+      '[data-home-topbar-route]'
     );
 
     if (!trigger || !root.contains(trigger)) {
@@ -202,6 +229,9 @@ function bindHomeDashboardTopbar() {
       openHomeProfileControlSurface();
       return;
     }
+
+    event.preventDefault();
+    openHomeTopbarRoute(trigger);
   });
 
   document.addEventListener('neuroartan:home-topbar-reset-triggers', () => {
@@ -234,6 +264,7 @@ function bootHomeDashboardTopbar() {
   }
 
   HOME_DASHBOARD_TOPBAR_STATE.root = root;
+  syncTopbarCurrentRoute(getHomeDashboardTopbarNodes().routeTriggers);
 
   if (HOME_DASHBOARD_TOPBAR_STATE.isBound) {
     renderHomeDashboardTopbar(HOME_DASHBOARD_TOPBAR_STATE.snapshot || {});
