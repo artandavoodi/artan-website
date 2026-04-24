@@ -167,6 +167,20 @@ function normalizeToggle(toggle) {
 /* =============================================================================
    05) HOMEPAGE TOGGLE ATTRIBUTE BRIDGE
 ============================================================================= */
+function setHomepageThemeToggleAttribute(key, checked) {
+  const attributeName = HOMEPAGE_THEME_TOGGLE_ATTRIBUTE_MAP[key];
+  if (!attributeName) return;
+
+  const attributeValue = checked ? 'true' : 'false';
+  const kebabAttribute = `data-${attributeName.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)}`;
+
+  document.documentElement.dataset[attributeName] = attributeValue;
+
+  if (document.body) {
+    document.body.setAttribute(kebabAttribute, attributeValue);
+  }
+}
+
 function syncHomepageThemeToggleAttribute(toggle, checked) {
   if (!isToggleRoot(toggle)) return;
   if (toggle.getAttribute('data-toggle-scope') !== 'homepage-theme') return;
@@ -175,27 +189,44 @@ function syncHomepageThemeToggleAttribute(toggle, checked) {
   const attributeName = HOMEPAGE_THEME_TOGGLE_ATTRIBUTE_MAP[key];
   if (!attributeName) return;
 
-  const attributeValue = checked ? 'true' : 'false';
-  const kebabAttribute = `data-${attributeName.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)}`;
-
-  document.documentElement.dataset[attributeName] = attributeValue;
-  document.body?.setAttribute(kebabAttribute, attributeValue);
+  setHomepageThemeToggleAttribute(key, checked);
 }
 
 function syncHomepageThemeToggleAttributesFromStorage() {
   const storedState = readStoredToggleState();
+  const restored = {};
 
-  Object.entries(HOMEPAGE_THEME_TOGGLE_ATTRIBUTE_MAP).forEach(([key, attributeName]) => {
+  Object.keys(HOMEPAGE_THEME_TOGGLE_ATTRIBUTE_MAP).forEach((key) => {
     const storageId = `homepage-theme:${key}`;
-    if (!(storageId in storedState)) return;
+    const checked = storageId in storedState ? Boolean(storedState[storageId]) : false;
 
-    const checked = Boolean(storedState[storageId]);
-    const attributeValue = checked ? 'true' : 'false';
-    const kebabAttribute = `data-${attributeName.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)}`;
-
-    document.documentElement.dataset[attributeName] = attributeValue;
-    document.body?.setAttribute(kebabAttribute, attributeValue);
+    restored[key] = checked;
+    setHomepageThemeToggleAttribute(key, checked);
   });
+
+  document.dispatchEvent(new CustomEvent('neuroartan:homepage-theme-toggles-restored', {
+    detail: {
+      source: 'core-toggle-storage',
+      restored
+    }
+  }));
+
+  window.dispatchEvent(new CustomEvent('neuroartan:homepage-theme-toggles-restored', {
+    detail: {
+      source: 'core-toggle-storage',
+      restored
+    }
+  }));
+}
+
+function syncHomepageThemeToggleAttributesWhenBodyReady() {
+  syncHomepageThemeToggleAttributesFromStorage();
+
+  if (document.body) return;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    syncHomepageThemeToggleAttributesFromStorage();
+  }, { once: true });
 }
 
 /* =============================================================================
@@ -294,7 +325,7 @@ function bindToggleInteraction(root = document) {
    08) TOGGLE INITIALIZATION
 ============================================================================= */
 function initTogglePrimitive(root = document) {
-  syncHomepageThemeToggleAttributesFromStorage();
+  syncHomepageThemeToggleAttributesWhenBodyReady();
   getNormalizedToggles(root).forEach(normalizeToggle);
   bindToggleInteraction(document);
   bindDynamicToggleObserver();
@@ -340,8 +371,10 @@ window.NeuroartanToggle = Object.freeze({
   readStoredToggleState,
   writeStoredToggleState,
   getStoredToggleValue,
+  setHomepageThemeToggleAttribute,
   syncHomepageThemeToggleAttribute,
   syncHomepageThemeToggleAttributesFromStorage,
+  syncHomepageThemeToggleAttributesWhenBodyReady,
   getNormalizedToggles,
   isToggleRoot,
   getToggleTrack,
@@ -356,6 +389,8 @@ window.NeuroartanToggle = Object.freeze({
   normalizeNodeToggles,
   bindDynamicToggleObserver
 });
+
+syncHomepageThemeToggleAttributesFromStorage();
 
 /* =============================================================================
    11) AUTO-BOOTSTRAP

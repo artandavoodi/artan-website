@@ -2,7 +2,7 @@
    00) FILE INDEX
    01) MODULE IDENTITY
    02) ENTER GATE
-   03) THEME / TOGGLE HELPERS
+   03) TOGGLE HELPERS
    04) HOME MATTE STATE AUTHORITY
    05) END OF FILE
 ============================================================================= */
@@ -16,37 +16,8 @@
   ============================================================================= */
   window.__artanRunAfterEnter(() => {
     /* =============================================================================
-       03) THEME / TOGGLE HELPERS
+       03) TOGGLE HELPERS
     ============================================================================= */
-    const normalizeThemeValue = (value) => {
-      const normalized = String(value || '').trim().toLowerCase();
-
-      if (normalized === 'color') return 'custom';
-      if (normalized === 'factory') return 'company';
-      if (normalized === 'default') return 'company';
-      if (normalized === 'company-default') return 'company';
-      if (normalized === 'company' || normalized === 'system' || normalized === 'custom' || normalized === 'dark' || normalized === 'light') {
-        return normalized;
-      }
-
-      return '';
-    };
-
-    const readActiveTheme = () => {
-      const html = document.documentElement;
-      const candidates = [
-        window.NeuroartanTheme?.getCurrentTheme?.(),
-        html?.getAttribute('data-theme'),
-      ];
-
-      for (const candidate of candidates) {
-        const normalized = normalizeThemeValue(candidate);
-        if (normalized) return normalized;
-      }
-
-      return 'system';
-    };
-
     const readMatteToggleActive = () => {
       const html = document.documentElement;
       const body = document.body;
@@ -56,14 +27,14 @@
     };
 
     const shouldUseMatteLayer = () => {
-      const activeTheme = readActiveTheme();
-      return activeTheme === 'company' || (activeTheme === 'custom' && readMatteToggleActive());
+      return readMatteToggleActive();
     };
 
     /* =============================================================================
        04) HOME MATTE STATE AUTHORITY
-       Baseline matte map:
-       - homepage default: matte-blur
+       Toggle-driven matte map:
+       - disabled: no matte state class
+       - enabled homepage default: matte-blur
        - Home Essence and the deeper homepage runway stay matte-solid
        - the matte begins transitioning only near Closing
        - closing / footer zone: matte-solid-softedge
@@ -88,6 +59,12 @@
       activeState = name;
     };
 
+    const disableMatteState = () => {
+      if (!activeState) return;
+      clearMatteStates();
+      activeState = '';
+    };
+
     const getSectionRange = (section) => {
       if (!section) return null;
       const y = window.scrollY || window.pageYOffset || 0;
@@ -104,7 +81,7 @@
       const y = window.scrollY || window.pageYOffset || 0;
 
       if (!shouldUseMatteLayer()) {
-        setMatteState('matte-solid');
+        disableMatteState();
         return;
       }
 
@@ -144,7 +121,6 @@
       });
     };
 
-    setMatteState('matte-blur');
     update();
     window.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate, { passive: true });
@@ -155,7 +131,9 @@
     document.addEventListener('neuroartan:theme-changed', requestUpdate);
     document.addEventListener('neuroartan:toggle-changed', requestUpdate);
     document.addEventListener('neuroartan:homepage-theme-control-changed', requestUpdate);
+    document.addEventListener('neuroartan:homepage-theme-toggles-restored', requestUpdate);
     window.addEventListener('themechange', requestUpdate);
+    document.addEventListener('DOMContentLoaded', requestUpdate, { once: true });
   });
 })();
 

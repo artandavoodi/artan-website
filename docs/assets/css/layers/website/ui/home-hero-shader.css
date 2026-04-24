@@ -38,12 +38,14 @@
 #home-hero-shader{
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
   overflow: hidden;
   pointer-events: none;
   opacity: var(--home-hero-shader-opacity);
+  visibility: hidden;
+  transition: opacity var(--home-hero-shader-transition), visibility var(--home-hero-shader-transition);
   isolation: isolate;
 }
 
@@ -78,6 +80,8 @@
   transform: translateZ(0) scale(1.02);
   filter: blur(var(--home-hero-shader-canvas-softness));
   opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--home-hero-shader-transition), visibility var(--home-hero-shader-transition);
 }
 
 /* =============================================================================
@@ -90,6 +94,7 @@
   pointer-events: none;
   visibility: hidden;
   opacity: var(--home-hero-shader-veil-opacity);
+  transition: opacity var(--home-hero-shader-transition), visibility var(--home-hero-shader-transition);
   backdrop-filter: blur(var(--home-hero-shader-veil-blur));
   -webkit-backdrop-filter: blur(var(--home-hero-shader-veil-blur));
 }
@@ -105,7 +110,8 @@
   backdrop-filter: blur(var(--home-hero-shader-matte-blur));
   -webkit-backdrop-filter: blur(var(--home-hero-shader-matte-blur));
   opacity: 0;
-  transition: opacity var(--home-hero-shader-transition);
+  visibility: hidden;
+  transition: opacity var(--home-hero-shader-transition), visibility var(--home-hero-shader-transition);
 }
 
 html[data-theme-effective="light"] .home-hero-shader-matte{
@@ -133,12 +139,6 @@ html[data-theme-effective="dark"] .home-hero-shader-matte{
   display: none;
 }
 
-body.site-entered .home-hero-shader,
-body.hero-stage-hidden .home-hero-shader{
-  opacity: 0;
-  transition: opacity var(--home-hero-shader-transition);
-}
-
 .home-hero-shader,
 .home-hero-shader-canvas,
 .home-hero-shader-veil,
@@ -147,28 +147,48 @@ body.hero-stage-hidden .home-hero-shader{
   visibility: hidden;
 }
 
-html[data-theme="company"] .home-hero-shader,
-html[data-theme="custom"][data-homepage-theme-hero-shader="true"] .home-hero-shader{
+html[data-homepage-theme-hero-shader="false"] #home-hero-shader,
+html[data-homepage-theme-hero-shader="false"] .home-hero-shader,
+html[data-homepage-theme-hero-shader="false"] #home-hero-shader .home-hero-shader-canvas,
+html[data-homepage-theme-hero-shader="false"] .home-hero-shader .home-hero-shader-canvas,
+html[data-homepage-theme-hero-shader="false"] #home-hero-shader .home-hero-shader-veil,
+html[data-homepage-theme-hero-shader="false"] .home-hero-shader .home-hero-shader-veil,
+html[data-homepage-theme-hero-shader="false"] #home-hero-shader .home-hero-shader-matte,
+html[data-homepage-theme-hero-shader="false"] .home-hero-shader .home-hero-shader-matte{
+  opacity: 0;
+  visibility: hidden;
+}
+
+html[data-homepage-theme-hero-shader="true"] #home-hero-shader,
+html[data-homepage-theme-hero-shader="true"] .home-hero-shader{
   opacity: 1;
   visibility: visible;
 }
 
-html[data-theme="company"] .home-hero-shader .home-hero-shader-canvas,
-html[data-theme="custom"][data-homepage-theme-hero-shader="true"] .home-hero-shader .home-hero-shader-canvas{
+html[data-homepage-theme-hero-shader="true"] #home-hero-shader .home-hero-shader-canvas,
+html[data-homepage-theme-hero-shader="true"] .home-hero-shader .home-hero-shader-canvas{
   opacity: 0.96;
   visibility: visible;
 }
 
-html[data-theme="company"] .home-hero-shader .home-hero-shader-veil,
-html[data-theme="custom"][data-homepage-theme-hero-shader="true"] .home-hero-shader .home-hero-shader-veil{
+html[data-homepage-theme-hero-shader="true"] #home-hero-shader .home-hero-shader-veil,
+html[data-homepage-theme-hero-shader="true"] .home-hero-shader .home-hero-shader-veil{
   opacity: var(--home-hero-shader-veil-opacity);
   visibility: visible;
 }
 
-html[data-theme="company"] .home-hero-shader .home-hero-shader-matte,
-html[data-theme="custom"][data-homepage-theme-hero-shader="true"][data-homepage-theme-matte-atmosphere="true"] .home-hero-shader .home-hero-shader-matte{
+html[data-homepage-theme-hero-shader="true"][data-homepage-theme-matte-atmosphere="true"] #home-hero-shader .home-hero-shader-matte,
+html[data-homepage-theme-hero-shader="true"][data-homepage-theme-matte-atmosphere="true"] .home-hero-shader .home-hero-shader-matte{
   opacity: calc(var(--home-hero-shader-matte-opacity) + 0.06);
   visibility: visible;
+}
+
+html[data-homepage-theme-matte-atmosphere="false"] #home-hero-shader .home-hero-shader-matte,
+html[data-homepage-theme-matte-atmosphere="false"] .home-hero-shader .home-hero-shader-matte,
+html[data-homepage-theme-hero-shader="false"] #home-hero-shader .home-hero-shader-matte,
+html[data-homepage-theme-hero-shader="false"] .home-hero-shader .home-hero-shader-matte{
+  opacity: 0;
+  visibility: hidden;
 }
 
 /* =============================================================================

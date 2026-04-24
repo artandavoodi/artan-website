@@ -246,8 +246,7 @@
   }
 
   function shouldUseHomeHeroShader() {
-    const activeTheme = readHomeHeroShaderTheme();
-    return activeTheme === 'company' || (activeTheme === 'custom' && readHomeHeroShaderToggleActive());
+    return readHomeHeroShaderToggleActive();
   }
 
   /* =============================================================================
@@ -341,6 +340,7 @@
       document.addEventListener('neuroartan:theme-changed', this.boundThemeSync);
       document.addEventListener('neuroartan:toggle-changed', this.boundThemeSync);
       document.addEventListener('neuroartan:homepage-theme-control-changed', this.boundThemeSync);
+      document.addEventListener('neuroartan:homepage-theme-toggles-restored', this.boundThemeSync);
       document.addEventListener('themechange', this.boundThemeSync);
       window.addEventListener('focus', this.boundThemeSync, { passive: true });
     }
@@ -386,6 +386,7 @@
         document.removeEventListener('neuroartan:theme-changed', this.boundThemeSync);
         document.removeEventListener('neuroartan:toggle-changed', this.boundThemeSync);
         document.removeEventListener('neuroartan:homepage-theme-control-changed', this.boundThemeSync);
+        document.removeEventListener('neuroartan:homepage-theme-toggles-restored', this.boundThemeSync);
         document.removeEventListener('themechange', this.boundThemeSync);
         window.removeEventListener('focus', this.boundThemeSync);
       }
@@ -460,6 +461,7 @@
     document.addEventListener('fragment:mounted', initHomeHeroShader);
     document.addEventListener('neuroartan:runtime-ready', initHomeHeroShader);
     document.addEventListener('neuroartan:language-applied', initHomeHeroShader);
+    document.addEventListener('neuroartan:homepage-theme-toggles-restored', initHomeHeroShader);
     window.addEventListener('load', initHomeHeroShader, { once: true });
   }
 
