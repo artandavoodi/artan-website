@@ -29,15 +29,11 @@
   --cookie-consent-learning-copy-gap: 0.28rem;
 }
 
-:root.light-mode,
-html.light-mode,
-body.light-mode{
+html[data-theme-effective="light"]{
   --cookie-learning-overlay-back-icon-filter: var(--icon-image-filter, none);
 }
 
-:root.dark-mode,
-html.dark-mode,
-body.dark-mode{
+html[data-theme-effective="dark"]{
   --cookie-learning-overlay-back-icon-filter: var(--icon-image-filter, none);
 }
 

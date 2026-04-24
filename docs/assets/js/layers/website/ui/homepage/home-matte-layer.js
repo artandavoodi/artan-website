@@ -2,8 +2,9 @@
    00) FILE INDEX
    01) MODULE IDENTITY
    02) ENTER GATE
-   03) HOME MATTE STATE AUTHORITY
-   04) END OF FILE
+   03) THEME HELPERS
+   04) HOME MATTE STATE AUTHORITY
+   05) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -15,7 +16,36 @@
   ============================================================================= */
   window.__artanRunAfterEnter(() => {
     /* =============================================================================
-       03) HOME MATTE STATE AUTHORITY
+       03) THEME HELPERS
+    ============================================================================= */
+    const normalizeThemeValue = (value) => {
+      const normalized = String(value || '').trim().toLowerCase();
+
+      if (normalized === 'color') return 'custom';
+      if (normalized === 'system' || normalized === 'custom' || normalized === 'dark' || normalized === 'light') {
+        return normalized;
+      }
+
+      return '';
+    };
+
+    const readActiveTheme = () => {
+      const html = document.documentElement;
+      const candidates = [
+        window.NeuroartanTheme?.getCurrentTheme?.(),
+        html?.getAttribute('data-theme'),
+      ];
+
+      for (const candidate of candidates) {
+        const normalized = normalizeThemeValue(candidate);
+        if (normalized) return normalized;
+      }
+
+      return 'system';
+    };
+
+    /* =============================================================================
+       04) HOME MATTE STATE AUTHORITY
        Baseline matte map:
        - homepage default: matte-blur
        - Home Essence and the deeper homepage runway stay matte-solid
@@ -56,6 +86,13 @@
 
     const update = () => {
       const y = window.scrollY || window.pageYOffset || 0;
+      const activeTheme = readActiveTheme();
+
+      if (activeTheme === 'system' || activeTheme === 'light' || activeTheme === 'dark') {
+        setMatteState('matte-solid');
+        return;
+      }
+
       const essenceRange = getSectionRange(essenceSection);
       const closingRange = getSectionRange(closingSection);
       const viewportH = window.innerHeight || 0;
@@ -81,7 +118,7 @@
         return;
       }
 
-      setMatteState('matte-blur');
+      setMatteState(readActiveTheme() === 'custom' ? 'matte-blur' : 'matte-solid');
     };
 
     const requestUpdate = () => {
@@ -99,9 +136,11 @@
     window.addEventListener('load', requestUpdate);
     document.addEventListener('fragment:mounted', requestUpdate);
     window.addEventListener('neuroartan:language-applied', requestUpdate);
+    window.addEventListener('neuroartan:theme-changed', requestUpdate);
+    window.addEventListener('themechange', requestUpdate);
   });
 })();
 
 /* =============================================================================
-   04) END OF FILE
+   05) END OF FILE
 ============================================================================= */

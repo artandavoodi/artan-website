@@ -76,7 +76,7 @@ section p{
   color:var(--text-secondary-color);
 }
 
-body.light-mode div[style*='flex-direction:column'] p{
+html[data-theme-effective="light"] div[style*='flex-direction:column'] p{
   color:var(--color-black);
 }
 

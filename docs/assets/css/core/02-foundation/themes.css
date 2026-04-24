@@ -4,7 +4,11 @@
    02) ROOT THEME FALLBACK TOKENS
    03) DARK MODE THEME TOKENS
    04) LIGHT MODE THEME TOKENS
-   05) END OF FILE
+   05) SYSTEM MODE THEME TOKENS
+   06) CUSTOM MODE THEME TOKENS
+   07) CONTRAST MODIFIER TOKENS
+   08) CUSTOM COLOR OUTPUT TOKENS
+   09) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -16,6 +20,12 @@
    02) ROOT THEME FALLBACK TOKENS
 ============================================================================= */
 :root{
+  color-scheme:dark;
+
+  --theme-mode:dark;
+  --theme-effective-mode:dark;
+  --theme-contrast:standard;
+
   --bg-color:var(--color-black);
   --text-color:var(--color-white);
   --text-primary-color:var(--text-color);
@@ -46,12 +56,26 @@
   --menu-surface-strong:rgba(0,0,0,0.92);
   --menu-border:rgba(255,255,255,0.18);
   --menu-sep:rgba(255,255,255,0.14);
+
+  --theme-accent-color:var(--link-color);
+  --theme-accent-hover-color:var(--link-hover-color);
+  --theme-custom-bg-color:var(--bg-color);
+  --theme-custom-text-color:var(--text-color);
+  --theme-custom-surface-color:var(--surface-primary);
+  --theme-custom-border-color:var(--border-color);
 }
 
 /* =============================================================================
    03) DARK MODE THEME TOKENS
 ============================================================================= */
-body.dark-mode{
+html[data-theme="dark"],
+html[data-theme="system"][data-theme-effective="dark"],
+html[data-theme="custom"][data-theme-effective="dark"]{
+  color-scheme:dark;
+
+  --theme-mode:dark;
+  --theme-effective-mode:dark;
+
   --bg-color:var(--color-black);
   --text-color:var(--color-white);
   --text-primary-color:var(--text-color);
@@ -87,7 +111,14 @@ body.dark-mode{
 /* =============================================================================
    04) LIGHT MODE THEME TOKENS
 ============================================================================= */
-body.light-mode{
+html[data-theme="light"],
+html[data-theme="system"][data-theme-effective="light"],
+html[data-theme="custom"][data-theme-effective="light"]{
+  color-scheme:light;
+
+  --theme-mode:light;
+  --theme-effective-mode:light;
+
   --bg-color:var(--color-white);
   --text-color:var(--color-black);
   --text-primary-color:var(--text-color);
@@ -121,5 +152,78 @@ body.light-mode{
 }
 
 /* =============================================================================
-   05) END OF FILE
+   05) SYSTEM MODE THEME TOKENS
+============================================================================= */
+html[data-theme="system"]{
+  --theme-mode:system;
+}
+
+/* =============================================================================
+   06) CUSTOM MODE THEME TOKENS
+============================================================================= */
+html[data-theme="custom"]{
+  --theme-mode:custom;
+}
+
+/* =============================================================================
+   07) CONTRAST MODIFIER TOKENS
+============================================================================= */
+html[data-theme-contrast="low"]{
+  --theme-contrast:low;
+  --border-color:color-mix(in srgb,var(--border-color) 72%,transparent);
+  --control-border:color-mix(in srgb,var(--control-border) 72%,transparent);
+  --control-border-strong:color-mix(in srgb,var(--control-border-strong) 72%,transparent);
+  --field-border:color-mix(in srgb,var(--field-border) 72%,transparent);
+  --field-border-focus:color-mix(in srgb,var(--field-border-focus) 72%,transparent);
+}
+
+html[data-theme-contrast="standard"]{
+  --theme-contrast:standard;
+}
+
+html[data-theme-contrast="high"]{
+  --theme-contrast:high;
+  --border-color:color-mix(in srgb,var(--border-color) 72%,var(--text-color));
+  --control-border:color-mix(in srgb,var(--control-border) 72%,var(--text-color));
+  --control-border-strong:color-mix(in srgb,var(--control-border-strong) 72%,var(--text-color));
+  --field-border:color-mix(in srgb,var(--field-border) 72%,var(--text-color));
+  --field-border-focus:color-mix(in srgb,var(--field-border-focus) 72%,var(--text-color));
+}
+
+/* =============================================================================
+   08) CUSTOM COLOR OUTPUT TOKENS
+============================================================================= */
+html[data-theme="custom"]{
+  --bg-color:var(--theme-custom-bg-color);
+  --text-color:var(--theme-custom-text-color);
+  --text-primary-color:var(--theme-custom-text-color);
+  --text-secondary-color:color-mix(in srgb,var(--theme-custom-text-color) 72%,var(--theme-custom-bg-color));
+  --link-color:var(--theme-accent-color);
+  --link-hover-color:var(--theme-accent-hover-color);
+  --border-color:var(--theme-custom-border-color);
+
+  --surface-primary:var(--theme-custom-surface-color);
+  --surface-secondary:color-mix(in srgb,var(--theme-custom-surface-color) 92%,var(--theme-custom-text-color));
+  --surface-tertiary:color-mix(in srgb,var(--theme-custom-surface-color) 84%,var(--theme-custom-text-color));
+  --surface-elevated:color-mix(in srgb,var(--theme-custom-surface-color) 88%,transparent);
+  --surface-glass:color-mix(in srgb,var(--theme-custom-surface-color) 72%,transparent);
+
+  --control-bg:color-mix(in srgb,var(--theme-custom-surface-color) 92%,var(--theme-custom-text-color));
+  --control-bg-hover:color-mix(in srgb,var(--theme-custom-surface-color) 84%,var(--theme-custom-text-color));
+  --control-border:var(--theme-custom-border-color);
+  --control-border-strong:color-mix(in srgb,var(--theme-custom-border-color) 72%,var(--theme-custom-text-color));
+
+  --field-bg:color-mix(in srgb,var(--theme-custom-surface-color) 96%,var(--theme-custom-text-color));
+  --field-bg-focus:color-mix(in srgb,var(--theme-custom-surface-color) 88%,var(--theme-custom-text-color));
+  --field-border:var(--theme-custom-border-color);
+  --field-border-focus:color-mix(in srgb,var(--theme-custom-border-color) 64%,var(--theme-custom-text-color));
+
+  --menu-surface:color-mix(in srgb,var(--theme-custom-bg-color) 94%,transparent);
+  --menu-surface-strong:color-mix(in srgb,var(--theme-custom-bg-color) 88%,transparent);
+  --menu-border:var(--theme-custom-border-color);
+  --menu-sep:color-mix(in srgb,var(--theme-custom-border-color) 76%,transparent);
+}
+
+/* =============================================================================
+   09) END OF FILE
 ============================================================================= */

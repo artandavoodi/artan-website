@@ -74,7 +74,7 @@
 /* =============================================================================
    02) ROOT TOKENS
 ============================================================================= */
-body.light-mode{
+html[data-theme-effective="light"]{
   --account-email-auth-input-background: color-mix(in srgb, var(--bg-color) 92%, white 8%);
   --account-email-auth-input-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
 }

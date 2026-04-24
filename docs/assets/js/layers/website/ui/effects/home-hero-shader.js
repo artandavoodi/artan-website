@@ -6,12 +6,13 @@
    01) MODULE WRAPPER
    02) SHADER SOURCE
    03) DOM HELPERS
-   04) SHADER CONTROLLER
-   05) MOUNT HELPERS
-   06) SHARED READINESS HELPERS
-   07) BOOT RECOVERY
-   08) INITIALIZATION
-   09) GLOBAL EXPORT
+   04) THEME HELPERS
+   05) SHADER CONTROLLER
+   06) MOUNT HELPERS
+   07) SHARED READINESS HELPERS
+   08) BOOT RECOVERY
+   09) INITIALIZATION
+   10) GLOBAL EXPORT
 ============================================================================= */
 
 /* =============================================================================
@@ -204,7 +205,41 @@
   const qs = (selector, scope = document) => scope.querySelector(selector);
 
   /* =============================================================================
-     04) SHADER CONTROLLER
+     04) THEME HELPERS
+  ============================================================================= */
+  function normalizeThemeValue(value) {
+    const normalized = String(value || '').trim().toLowerCase();
+
+    if (normalized === 'color') return 'custom';
+    if (normalized === 'system' || normalized === 'custom' || normalized === 'dark' || normalized === 'light') {
+      return normalized;
+    }
+
+    return '';
+  }
+
+  function readHomeHeroShaderTheme() {
+    const html = document.documentElement;
+
+    const candidates = [
+      window.NeuroartanTheme?.getCurrentTheme?.(),
+      html?.getAttribute('data-theme'),
+    ];
+
+    for (const candidate of candidates) {
+      const normalized = normalizeThemeValue(candidate);
+      if (normalized) return normalized;
+    }
+
+    return 'system';
+  }
+
+  function isHomeHeroShaderCustomTheme() {
+    return readHomeHeroShaderTheme() === 'custom';
+  }
+
+  /* =============================================================================
+     05) SHADER CONTROLLER
   ============================================================================= */
   class HomeHeroShaderController {
     constructor() {
@@ -215,6 +250,7 @@
       this.core = null;
       this.boundPointerMove = null;
       this.boundPointerLeave = null;
+      this.boundThemeSync = null;
     }
 
     resolveElements() {
@@ -228,6 +264,11 @@
     init() {
       if (!window.NeuroShaderCore) return false;
       if (!this.resolveElements()) return false;
+      if (!isHomeHeroShaderCustomTheme()) {
+        this.applyThemeVisibility();
+        this.bindThemeSync();
+        return true;
+      }
 
       this.core = new window.NeuroShaderCore({
         canvas: this.canvas,
@@ -236,13 +277,62 @@
         smoothing: 0.06
       });
 
+      this.applyThemeVisibility();
+      this.bindThemeSync();
       this.bindInteractionSurface();
       this.core.start();
       return true;
     }
 
+    applyThemeVisibility() {
+      const isCustomTheme = isHomeHeroShaderCustomTheme();
+
+      if (this.root) {
+        this.root.dataset.shaderThemeState = isCustomTheme ? 'custom' : 'controlled';
+        this.root.hidden = !isCustomTheme;
+        this.root.setAttribute('aria-hidden', 'true');
+      }
+
+      if (!isCustomTheme && this.canvas) {
+        const context = this.canvas.getContext('2d');
+        if (context) {
+          context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+      }
+    }
+
+    bindThemeSync() {
+      if (this.boundThemeSync) return;
+
+      this.boundThemeSync = () => {
+        const isCustomTheme = isHomeHeroShaderCustomTheme();
+        this.applyThemeVisibility();
+
+        if (!isCustomTheme && this.core) {
+          this.core.destroy();
+          this.core = null;
+          return;
+        }
+
+        if (isCustomTheme && !this.core && window.NeuroShaderCore && this.canvas) {
+          this.core = new window.NeuroShaderCore({
+            canvas: this.canvas,
+            fragmentSource: HOME_HERO_FRAGMENT_SHADER,
+            dprCap: 1.6,
+            smoothing: 0.06
+          });
+          this.bindInteractionSurface();
+          this.core.start();
+        }
+      };
+
+      document.addEventListener('neuroartan:theme-changed', this.boundThemeSync);
+      document.addEventListener('themechange', this.boundThemeSync);
+      window.addEventListener('focus', this.boundThemeSync, { passive: true });
+    }
+
     bindInteractionSurface() {
-      if (!this.canvas || !this.core) return;
+      if (!this.canvas || !this.core || this.boundPointerMove) return;
 
       const pointerSurface = this.stage || document;
       this.boundPointerMove = (event) => {
@@ -278,6 +368,14 @@
       this.boundPointerMove = null;
       this.boundPointerLeave = null;
 
+      if (this.boundThemeSync) {
+        document.removeEventListener('neuroartan:theme-changed', this.boundThemeSync);
+        document.removeEventListener('themechange', this.boundThemeSync);
+        window.removeEventListener('focus', this.boundThemeSync);
+      }
+
+      this.boundThemeSync = null;
+
       if (this.core) {
         this.core.destroy();
         this.core = null;
@@ -286,7 +384,7 @@
   }
 
   /* =============================================================================
-     05) MOUNT HELPERS
+     06) MOUNT HELPERS
   ============================================================================= */
   function mountHomeHeroShaderFragment() {
     const stage = qs('#stage');
@@ -318,7 +416,7 @@
   }
 
   /* =============================================================================
-     06) SHARED READINESS HELPERS
+     07) SHARED READINESS HELPERS
   ============================================================================= */
   window.__artanRunWhenReady = window.__artanRunWhenReady || ((bootFn) => {
     if (typeof bootFn !== 'function') return;
@@ -335,7 +433,7 @@
   });
 
   /* =============================================================================
-     07) BOOT RECOVERY
+     08) BOOT RECOVERY
   ============================================================================= */
   let recoveryBound = false;
 
@@ -350,7 +448,7 @@
   }
 
   /* =============================================================================
-     08) INITIALIZATION
+     09) INITIALIZATION
   ============================================================================= */
   let controller = null;
   let initialized = false;
@@ -383,7 +481,7 @@
   window.__artanRunWhenReady(initHomeHeroShader);
 
   /* =============================================================================
-     09) GLOBAL EXPORT
+     10) GLOBAL EXPORT
   ============================================================================= */
   window.NeuroartanHomeHeroShader = {
     init: initHomeHeroShader,

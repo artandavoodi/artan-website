@@ -4,7 +4,7 @@
    02) LANGUAGE TOGGLE SYSTEM
    03) LANGUAGE DROPDOWN SHELL
    04) LANGUAGE OPTION SYSTEM
-   05) LIGHT MODE ADJUSTMENTS
+   05) LIGHT EFFECTIVE MODE ADJUSTMENTS
    06) END OF FILE
 ============================================================================= */
 
@@ -119,31 +119,31 @@
 }
 
 /* =============================================================================
-   05) LIGHT MODE ADJUSTMENTS
+   05) LIGHT EFFECTIVE MODE ADJUSTMENTS
 ============================================================================= */
-body.light-mode .language-dropdown{
+html[data-theme-effective="light"] .language-dropdown{
   border:var(--stroke-soft) solid rgba(0,0,0,0.14);
   box-shadow:0 18px 40px rgba(0,0,0,0.16), 0 2px 10px rgba(0,0,0,0.10);
 }
 
-body.light-mode .language-dropdown button:hover,
-body.light-mode .language-dropdown a:hover,
-body.light-mode .language-dropdown [role="menuitem"]:hover,
-body.light-mode .language-dropdown .language-option:hover,
-body.light-mode .language-dropdown .lang-option:hover{
+html[data-theme-effective="light"] .language-dropdown button:hover,
+html[data-theme-effective="light"] .language-dropdown a:hover,
+html[data-theme-effective="light"] .language-dropdown [role="menuitem"]:hover,
+html[data-theme-effective="light"] .language-dropdown .language-option:hover,
+html[data-theme-effective="light"] .language-dropdown .lang-option:hover{
   background-color:rgba(0,0,0,0.05);
 }
 
-body.light-mode .language-dropdown button[aria-pressed="true"],
-body.light-mode .language-dropdown a[aria-pressed="true"],
-body.light-mode .language-dropdown [role="menuitem"][aria-pressed="true"],
-body.light-mode .language-dropdown .language-option[aria-pressed="true"],
-body.light-mode .language-dropdown .lang-option[aria-pressed="true"],
-body.light-mode .language-dropdown button.is-selected,
-body.light-mode .language-dropdown a.is-selected,
-body.light-mode .language-dropdown [role="menuitem"].is-selected,
-body.light-mode .language-dropdown .language-option.is-selected,
-body.light-mode .language-dropdown .lang-option.is-selected{
+html[data-theme-effective="light"] .language-dropdown button[aria-pressed="true"],
+html[data-theme-effective="light"] .language-dropdown a[aria-pressed="true"],
+html[data-theme-effective="light"] .language-dropdown [role="menuitem"][aria-pressed="true"],
+html[data-theme-effective="light"] .language-dropdown .language-option[aria-pressed="true"],
+html[data-theme-effective="light"] .language-dropdown .lang-option[aria-pressed="true"],
+html[data-theme-effective="light"] .language-dropdown button.is-selected,
+html[data-theme-effective="light"] .language-dropdown a.is-selected,
+html[data-theme-effective="light"] .language-dropdown [role="menuitem"].is-selected,
+html[data-theme-effective="light"] .language-dropdown .language-option.is-selected,
+html[data-theme-effective="light"] .language-dropdown .lang-option.is-selected{
   background-color:rgba(0,0,0,0.08);
 }
 

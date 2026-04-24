@@ -13,6 +13,27 @@
 /* =============================================================================
    02) SYSTEM AUTHORITIES
 ============================================================================= */
+import './accordion.js';
+import './bottom-navigation.js';
+import './command-palette.js';
+import './context-menu.js';
+import './data-table.js';
+import './editor.js';
+import './mega-menu.js';
+import './modal.js';
+import './pagination.js';
+import './pickers.js';
+import './popover.js';
+import './side-drawer.js';
+import './shortcuts.js';
+import './speech-input.js';
+import './sticky-layout.js';
+import './tabs.js';
+import './toast.js';
+import './tooltip.js';
+import './tree-view.js';
+import './upload.js';
+import './wizard.js';
 import './countries.js';
 import './country-language.js';
 import './locale.js';

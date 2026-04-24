@@ -145,8 +145,9 @@
                 <span data-i18n-key="cookieConsent.analytics.summary">Helps us understand website performance and usage patterns where you allow it.</span>
               </span>
             </div>
-            <button type="button" class="cookie-consent-toggle" data-cookie-consent-toggle="analytics" data-cookie-consent-enabled="true" aria-pressed="true" aria-label="Toggle analytics cookies">
-              <span class="cookie-consent-toggle-track"><span class="cookie-consent-toggle-thumb"></span></span>
+            <button type="button" class="cookie-consent-toggle na-toggle" role="switch" data-na-toggle data-cookie-consent-toggle="analytics" data-cookie-consent-enabled="true" data-toggle-key="analytics" data-toggle-scope="cookie-consent" data-toggle-default="on" aria-checked="true" aria-label="Toggle analytics cookies">
+              <span class="cookie-consent-toggle-track na-toggle__track" aria-hidden="true"><span class="cookie-consent-toggle-thumb na-toggle__thumb"></span></span>
+              <span class="na-toggle__label" hidden>On</span>
             </button>
             <button type="button" class="cookie-consent-row-expand" data-cookie-consent-expand="analytics" aria-expanded="false" aria-controls="cookie-consent-detail-analytics" aria-label="Expand analytics cookie details">
               <img src="/assets/icons/core/interface/navigation/drop-down.svg" alt="" class="cookie-consent-row-expand-icon ui-icon-theme-aware">
@@ -161,8 +162,9 @@
                   <strong data-i18n-key="cookieConsent.analytics.performance.title">Performance measurement</strong>
                   <span data-i18n-key="cookieConsent.analytics.performance.copy">Helps us understand speed, load behavior, and technical reliability across pages.</span>
                 </div>
-                <button type="button" class="cookie-consent-toggle cookie-consent-toggle--subitem" data-cookie-consent-subtoggle="analytics-performance" data-cookie-consent-enabled="true" aria-pressed="true" aria-label="Toggle performance measurement cookies">
-                  <span class="cookie-consent-toggle-track"><span class="cookie-consent-toggle-thumb"></span></span>
+                <button type="button" class="cookie-consent-toggle cookie-consent-toggle--subitem na-toggle" role="switch" data-na-toggle data-cookie-consent-subtoggle="analytics-performance" data-cookie-consent-enabled="true" data-toggle-key="analytics-performance" data-toggle-scope="cookie-consent" data-toggle-default="on" aria-checked="true" aria-label="Toggle performance measurement cookies">
+                  <span class="cookie-consent-toggle-track na-toggle__track" aria-hidden="true"><span class="cookie-consent-toggle-thumb na-toggle__thumb"></span></span>
+                  <span class="na-toggle__label" hidden>On</span>
                 </button>
                 <input type="checkbox" data-cookie-consent-subcategory="analytics-performance" data-cookie-consent-parent="analytics" checked hidden>
               </div>
@@ -171,8 +173,9 @@
                   <strong data-i18n-key="cookieConsent.analytics.usage.title">Usage insights</strong>
                   <span data-i18n-key="cookieConsent.analytics.usage.copy">Shows which sections are visited most and where interaction patterns indicate friction.</span>
                 </div>
-                <button type="button" class="cookie-consent-toggle cookie-consent-toggle--subitem" data-cookie-consent-subtoggle="analytics-usage" data-cookie-consent-enabled="true" aria-pressed="true" aria-label="Toggle usage insights cookies">
-                  <span class="cookie-consent-toggle-track"><span class="cookie-consent-toggle-thumb"></span></span>
+                <button type="button" class="cookie-consent-toggle cookie-consent-toggle--subitem na-toggle" role="switch" data-na-toggle data-cookie-consent-subtoggle="analytics-usage" data-cookie-consent-enabled="true" data-toggle-key="analytics-usage" data-toggle-scope="cookie-consent" data-toggle-default="on" aria-checked="true" aria-label="Toggle usage insights cookies">
+                  <span class="cookie-consent-toggle-track na-toggle__track" aria-hidden="true"><span class="cookie-consent-toggle-thumb na-toggle__thumb"></span></span>
+                  <span class="na-toggle__label" hidden>On</span>
                 </button>
                 <input type="checkbox" data-cookie-consent-subcategory="analytics-usage" data-cookie-consent-parent="analytics" checked hidden>
               </div>
@@ -194,8 +197,9 @@
                 <span data-i18n-key="cookieConsent.experience.summary">Supports remembered preferences and non-essential continuity features where you allow it.</span>
               </span>
             </div>
-            <button type="button" class="cookie-consent-toggle" data-cookie-consent-toggle="experience" data-cookie-consent-enabled="true" aria-pressed="true" aria-label="Toggle experience cookies">
-              <span class="cookie-consent-toggle-track"><span class="cookie-consent-toggle-thumb"></span></span>
+            <button type="button" class="cookie-consent-toggle na-toggle" role="switch" data-na-toggle data-cookie-consent-toggle="experience" data-cookie-consent-enabled="true" data-toggle-key="experience" data-toggle-scope="cookie-consent" data-toggle-default="on" aria-checked="true" aria-label="Toggle experience cookies">
+              <span class="cookie-consent-toggle-track na-toggle__track" aria-hidden="true"><span class="cookie-consent-toggle-thumb na-toggle__thumb"></span></span>
+              <span class="na-toggle__label" hidden>On</span>
             </button>
             <button type="button" class="cookie-consent-row-expand" data-cookie-consent-expand="experience" aria-expanded="false" aria-controls="cookie-consent-detail-experience" aria-label="Expand experience cookie details">
               <img src="/assets/icons/core/interface/navigation/drop-down.svg" alt="" class="cookie-consent-row-expand-icon ui-icon-theme-aware">
@@ -210,8 +214,9 @@
                   <strong data-i18n-key="cookieConsent.experience.preferences.title">Preference memory</strong>
                   <span data-i18n-key="cookieConsent.experience.preferences.copy">Remembers selected interface preferences to create a more continuous return visit.</span>
                 </div>
-                <button type="button" class="cookie-consent-toggle cookie-consent-toggle--subitem" data-cookie-consent-subtoggle="experience-preferences" data-cookie-consent-enabled="true" aria-pressed="true" aria-label="Toggle preference memory cookies">
-                  <span class="cookie-consent-toggle-track"><span class="cookie-consent-toggle-thumb"></span></span>
+                <button type="button" class="cookie-consent-toggle cookie-consent-toggle--subitem na-toggle" role="switch" data-na-toggle data-cookie-consent-subtoggle="experience-preferences" data-cookie-consent-enabled="true" data-toggle-key="experience-preferences" data-toggle-scope="cookie-consent" data-toggle-default="on" aria-checked="true" aria-label="Toggle preference memory cookies">
+                  <span class="cookie-consent-toggle-track na-toggle__track" aria-hidden="true"><span class="cookie-consent-toggle-thumb na-toggle__thumb"></span></span>
+                  <span class="na-toggle__label" hidden>On</span>
                 </button>
                 <input type="checkbox" data-cookie-consent-subcategory="experience-preferences" data-cookie-consent-parent="experience" checked hidden>
               </div>
@@ -220,8 +225,9 @@
                   <strong data-i18n-key="cookieConsent.experience.continuity.title">Refined interaction continuity</strong>
                   <span data-i18n-key="cookieConsent.experience.continuity.copy">Supports smoother repeated interactions and non-essential convenience behavior.</span>
                 </div>
-                <button type="button" class="cookie-consent-toggle cookie-consent-toggle--subitem" data-cookie-consent-subtoggle="experience-continuity" data-cookie-consent-enabled="true" aria-pressed="true" aria-label="Toggle refined interaction continuity cookies">
-                  <span class="cookie-consent-toggle-track"><span class="cookie-consent-toggle-thumb"></span></span>
+                <button type="button" class="cookie-consent-toggle cookie-consent-toggle--subitem na-toggle" role="switch" data-na-toggle data-cookie-consent-subtoggle="experience-continuity" data-cookie-consent-enabled="true" data-toggle-key="experience-continuity" data-toggle-scope="cookie-consent" data-toggle-default="on" aria-checked="true" aria-label="Toggle refined interaction continuity cookies">
+                  <span class="cookie-consent-toggle-track na-toggle__track" aria-hidden="true"><span class="cookie-consent-toggle-thumb na-toggle__thumb"></span></span>
+                  <span class="na-toggle__label" hidden>On</span>
                 </button>
                 <input type="checkbox" data-cookie-consent-subcategory="experience-continuity" data-cookie-consent-parent="experience" checked hidden>
               </div>

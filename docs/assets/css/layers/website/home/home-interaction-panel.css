@@ -1,48 +1,74 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) PANEL ROOT
+   02) META AREA
+   03) TYPOGRAPHY
+   04) MODEL CONTROL
+   05) MODE BADGE
+   06) COMPOSER CONTROLS
+   07) FORM AREA
+   08) FILE AREA
+   09) VOICE CONTROL
+   10) RESPONSE AREA
+   11) THEME STATES
+   12) RESPONSIVE
+============================================================================= */
+
+/* =============================================================================
+   01) PANEL ROOT
+============================================================================= */
 .home-interaction-panel{
   display:grid;
-  gap:0.95rem;
-  width:min(42rem, calc(100vw - (2 * var(--site-gutter))));
+  gap:0.72rem;
+  width:min(44rem, calc(100vw - (2 * var(--site-gutter))));
   margin:0 auto;
-  padding:1.08rem 1.12rem;
-  border:1px solid color-mix(in srgb, var(--text-primary-color) 10%, transparent);
-  border-radius:1.6rem;
-  background:color-mix(in srgb, var(--bg-color) 18%, transparent);
-  box-shadow:0 24px 72px rgba(0, 0, 0, 0.14);
-  backdrop-filter:blur(20px) saturate(140%);
-  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  padding:0.82rem;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:1.55rem;
+  background:rgba(12,12,12,0.48);
+  box-shadow:0 18px 48px rgba(0,0,0,0.18);
+  backdrop-filter:blur(18px) saturate(126%);
+  -webkit-backdrop-filter:blur(18px) saturate(126%);
   transition:border-color 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
 }
 
 .home-interaction-panel[data-home-interaction-mode="listening"]{
-  border-color:color-mix(in srgb, var(--text-primary-color) 18%, rgba(145, 124, 111, 0.55));
+  border-color:rgba(145,124,111,0.55);
 }
 
 .home-interaction-panel[data-home-interaction-mode="thinking"],
 .home-interaction-panel[data-home-interaction-mode="responding"]{
-  border-color:color-mix(in srgb, var(--text-primary-color) 16%, rgba(145, 124, 111, 0.42));
+  border-color:rgba(145,124,111,0.42);
 }
 
+/* =============================================================================
+   02) META AREA
+============================================================================= */
 .home-interaction-panel__meta{
   display:flex;
-  align-items:flex-start;
+  align-items:center;
   justify-content:space-between;
   gap:0.9rem;
+  padding:0 0.12rem;
 }
 
 .home-interaction-panel__meta-controls{
   display:flex;
   align-items:center;
   justify-content:flex-end;
-  gap:0.72rem;
+  gap:0.58rem;
   flex-wrap:wrap;
 }
 
 .home-interaction-panel__meta-copy{
   display:grid;
-  gap:0.35rem;
+  gap:0.14rem;
   min-width:0;
 }
 
+/* =============================================================================
+   03) TYPOGRAPHY
+============================================================================= */
 .home-interaction-panel__eyebrow,
 .home-interaction-panel__label,
 .home-interaction-panel__status,
@@ -51,23 +77,26 @@
 .home-interaction-panel__file-chip,
 .home-interaction-panel__attach,
 .home-interaction-panel__meta-action{
-  font-size:0.72rem;
+  font-size:0.68rem;
   font-weight:500;
-  letter-spacing:0.08em;
+  letter-spacing:0.06em;
   text-transform:uppercase;
 }
 
 .home-interaction-panel__eyebrow,
 .home-interaction-panel__label{
   margin:0;
-  color:color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
+  color:rgba(210,210,210,0.72);
 }
 
+/* =============================================================================
+   04) MODEL CONTROL
+============================================================================= */
 .home-interaction-panel__model-button{
   -webkit-appearance:none;
   appearance:none;
   display:grid;
-  gap:0.15rem;
+  gap:0.12rem;
   padding:0;
   border:0;
   background:transparent;
@@ -76,27 +105,40 @@
 }
 
 .home-interaction-panel__model-name{
-  color:var(--text-primary-color);
-  font-size:1rem;
+  color:rgba(255,255,255,0.92);
+  font-size:0.94rem;
   font-weight:500;
-  line-height:1.32;
+  line-height:1.24;
 }
 
 .home-interaction-panel__model-route{
-  color:color-mix(in srgb, var(--text-primary-color) 62%, transparent);
+  color:rgba(210,210,210,0.62);
 }
 
+/* =============================================================================
+   05) MODE BADGE
+============================================================================= */
 .home-interaction-panel__mode{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  min-height:2rem;
-  padding:0 0.82rem;
+  min-height:1.74rem;
+  padding:0 0.68rem;
   margin:0;
-  border:1px solid color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  border:1px solid rgba(255,255,255,0.1);
   border-radius:999px;
-  background:color-mix(in srgb, var(--bg-color) 24%, transparent);
-  color:color-mix(in srgb, var(--text-secondary-color) 88%, transparent);
+  background:rgba(255,255,255,0.035);
+  color:rgba(210,210,210,0.74);
+}
+
+/* =============================================================================
+   06) COMPOSER CONTROLS
+============================================================================= */
+.home-interaction-panel__composer{
+  display:grid;
+  grid-template-columns:auto minmax(0, 1fr) auto auto;
+  align-items:center;
+  gap:0.5rem;
 }
 
 .home-interaction-panel__meta-action,
@@ -108,15 +150,35 @@
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:0.52rem;
-  min-height:2.5rem;
-  padding:0 0.95rem;
-  border:1px solid var(--control-border);
-  background:transparent;
-  color:var(--text-secondary-color);
+  gap:0.46rem;
+  min-height:2.45rem;
+  padding:0 0.86rem;
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:999px;
+  background:rgba(255,255,255,0.035);
+  color:rgba(188,188,188,1);
   text-decoration:none;
   cursor:pointer;
-  transition:color 220ms ease, border-color 220ms ease, background-color 220ms ease;
+  transition:color 220ms ease, border-color 220ms ease, background-color 220ms ease, opacity 220ms ease;
+}
+
+.home-interaction-panel__attach{
+  width:2.45rem;
+  min-width:2.45rem;
+  padding:0;
+  font-size:1.18rem;
+  font-weight:300;
+  line-height:1;
+}
+
+.home-interaction-panel__attach-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1rem;
+  height:1rem;
+  line-height:1;
+  transform:translateY(-0.02rem);
 }
 
 .home-interaction-panel__meta-action:hover,
@@ -129,84 +191,90 @@
 .home-interaction-panel__submit:focus-visible,
 .home-interaction-panel__model-button:hover .home-interaction-panel__model-name,
 .home-interaction-panel__model-button:focus-visible .home-interaction-panel__model-name{
-  color:var(--text-primary-color);
-  border-color:var(--control-border-strong);
-  background:var(--control-bg);
+  color:rgba(218,206,196,0.94);
+  border-color:rgba(255,255,255,0.24);
+  background:rgba(255,255,255,0.07);
   outline:none;
 }
 
+/* =============================================================================
+   07) FORM AREA
+============================================================================= */
 .home-interaction-panel__form{
   display:grid;
-  gap:0.72rem;
+  gap:0.56rem;
 }
 
 .home-interaction-panel__input{
   width:100%;
-  min-height:7.6rem;
-  padding:1rem 1.05rem;
-  border:1px solid color-mix(in srgb, var(--text-primary-color) 12%, transparent);
-  border-radius:1.2rem;
-  background:transparent;
-  color:var(--text-primary-color);
+  min-height:3.65rem;
+  max-height:8.5rem;
+  padding:0.92rem 1rem;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:1.25rem;
+  background:rgba(255,255,255,0.025);
+  color:rgba(255,255,255,0.92);
   font:inherit;
-  line-height:1.65;
+  line-height:1.5;
   resize:vertical;
   transition:border-color 220ms ease, background-color 220ms ease;
 }
 
 .home-interaction-panel__input:focus-visible{
   outline:none;
-  border-color:var(--control-border-strong);
-  background:color-mix(in srgb, var(--bg-color) 20%, transparent);
+  border-color:rgba(255,255,255,0.24);
+  background:rgba(255,255,255,0.05);
 }
 
 .home-interaction-panel__input::placeholder{
-  color:color-mix(in srgb, var(--text-secondary-color) 78%, transparent);
+  color:rgba(210,210,210,0.54);
 }
 
 .home-interaction-panel__hint{
   margin:0;
-  color:color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
-  font-size:0.78rem;
-  line-height:1.45;
+  color:rgba(210,210,210,0.68);
+  font-size:0.72rem;
+  line-height:1.34;
+  padding:0 0.12rem;
 }
 
-.home-interaction-panel__support{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:0.75rem;
-  flex-wrap:wrap;
+/* =============================================================================
+   08) FILE AREA
+============================================================================= */
+.home-interaction-panel__support,
+.home-interaction-panel__actions{
+  display:contents;
 }
 
 .home-interaction-panel__files{
   display:flex;
   flex-wrap:wrap;
-  justify-content:flex-end;
-  gap:0.45rem;
-  min-height:1.85rem;
-  flex:1 1 auto;
+  align-items:center;
+  justify-content:flex-start;
+  gap:0.42rem;
+  min-height:1.6rem;
+  min-width:0;
 }
 
 .home-interaction-panel__file-chip{
   display:inline-flex;
   align-items:center;
-  min-height:1.85rem;
-  padding:0 0.72rem;
-  border:1px solid color-mix(in srgb, var(--text-primary-color) 10%, transparent);
-  color:color-mix(in srgb, var(--text-secondary-color) 84%, transparent);
+  min-height:1.65rem;
+  max-width:100%;
+  padding:0 0.62rem;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:999px;
+  color:rgba(210,210,210,0.68);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
-.home-interaction-panel__actions{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:0.7rem;
-  flex-wrap:wrap;
-}
-
+/* =============================================================================
+   09) VOICE CONTROL
+============================================================================= */
 .home-interaction-panel__voice{
-  justify-content:flex-start;
+  justify-content:center;
   position:relative;
   overflow:hidden;
 }
@@ -214,12 +282,12 @@
 #stage #stage-microphone-button.home-interaction-panel__voice{
   width:auto;
   height:auto;
-  min-height:2.5rem;
-  padding:0 0.95rem;
-  border:1px solid var(--control-border);
+  min-height:2.45rem;
+  padding:0 0.92rem;
+  border:1px solid rgba(255,255,255,0.14);
   border-radius:999px;
-  background:transparent;
-  color:var(--text-secondary-color);
+  background:rgba(255,255,255,0.035);
+  color:rgba(188,188,188,1);
   opacity:1;
   transform:none;
 }
@@ -227,14 +295,14 @@
 #stage #stage-microphone-button.home-interaction-panel__voice:hover,
 #stage #stage-microphone-button.home-interaction-panel__voice:focus-visible,
 #stage #stage-microphone-button.home-interaction-panel__voice[data-voice-active="true"]{
-  color:var(--text-primary-color);
-  border-color:var(--control-border-strong);
-  background:var(--control-bg);
+  color:rgba(218,206,196,0.94);
+  border-color:rgba(255,255,255,0.24);
+  background:rgba(255,255,255,0.07);
   transform:none;
 }
 
 .home-interaction-panel__close.global-close-button{
-  color:color-mix(in srgb, var(--text-secondary-color) 88%, transparent);
+  color:rgba(210,210,210,0.72);
   flex:0 0 auto;
 }
 
@@ -250,12 +318,18 @@
   display:block;
   width:100%;
   height:100%;
-  filter:var(--icon-image-filter);
+  filter:brightness(0) invert(1);
+}
+
+.home-interaction-panel__voice-label{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
 }
 
 .home-interaction-panel__submit{
-  background:var(--control-bg);
-  color:var(--text-primary-color);
+  background:rgba(255,255,255,0.07);
+  color:rgba(255,255,255,0.92);
 }
 
 .home-interaction-panel__submit[disabled]{
@@ -263,11 +337,14 @@
   opacity:0.7;
 }
 
+/* =============================================================================
+   10) RESPONSE AREA
+============================================================================= */
 .home-interaction-panel__response{
   display:grid;
-  gap:0.45rem;
-  padding-top:0.2rem;
-  border-top:1px solid color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  gap:0.38rem;
+  padding-top:0.12rem;
+  border-top:1px solid rgba(255,255,255,0.08);
 }
 
 #stage #stage-voice-interaction-shell.home-interaction-panel__response{
@@ -279,12 +356,12 @@
 }
 
 .home-interaction-panel__response[hidden]{
-  display:none !important;
+  display:none;
 }
 
 .home-interaction-panel__status{
   margin:0;
-  color:color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
+  color:rgba(210,210,210,0.72);
 }
 
 #stage #stage-voice-status.home-interaction-panel__status{
@@ -301,11 +378,11 @@
 .home-interaction-panel__transcript,
 .home-interaction-panel__answer{
   margin:0;
-  padding:0.85rem 0.95rem;
-  border:1px solid color-mix(in srgb, var(--text-primary-color) 10%, transparent);
-  border-radius:1rem;
-  background:color-mix(in srgb, var(--bg-color) 22%, transparent);
-  color:color-mix(in srgb, var(--text-primary-color) 76%, transparent);
+  padding:0.78rem 0.88rem;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:0.88rem;
+  background:rgba(12,12,12,0.22);
+  color:rgba(235,230,224,0.8);
   font-size:0.88rem;
   line-height:1.6;
 }
@@ -326,28 +403,83 @@
 }
 
 .home-interaction-panel__answer{
-  color:var(--text-primary-color);
+  color:rgba(255,255,255,0.92);
 }
 
-@media (max-width: 760px){
+/* =============================================================================
+   11) THEME STATES
+============================================================================= */
+html[data-theme-effective="light"] .home-interaction-panel{
+  border-color:rgba(0,0,0,0.12);
+  background:rgba(255,255,255,0.76);
+  box-shadow:0 18px 48px rgba(0,0,0,0.08);
+}
+
+html[data-theme-effective="light"] .home-interaction-panel__model-name,
+html[data-theme-effective="light"] .home-interaction-panel__submit,
+html[data-theme-effective="light"] .home-interaction-panel__answer,
+html[data-theme-effective="light"] .home-interaction-panel__input{
+  color:rgba(18,18,18,0.88);
+}
+
+html[data-theme-effective="light"] .home-interaction-panel__eyebrow,
+html[data-theme-effective="light"] .home-interaction-panel__label,
+html[data-theme-effective="light"] .home-interaction-panel__status,
+html[data-theme-effective="light"] .home-interaction-panel__model-route,
+html[data-theme-effective="light"] .home-interaction-panel__hint,
+html[data-theme-effective="light"] .home-interaction-panel__file-chip,
+html[data-theme-effective="light"] .home-interaction-panel__mode{
+  color:rgba(28,28,28,0.62);
+}
+
+html[data-theme-effective="light"] .home-interaction-panel__mode,
+html[data-theme-effective="light"] .home-interaction-panel__input,
+html[data-theme-effective="light"] .home-interaction-panel__file-chip,
+html[data-theme-effective="light"] .home-interaction-panel__transcript,
+html[data-theme-effective="light"] .home-interaction-panel__answer,
+html[data-theme-effective="light"] .home-interaction-panel__meta-action,
+html[data-theme-effective="light"] .home-interaction-panel__attach,
+html[data-theme-effective="light"] .home-interaction-panel__voice,
+html[data-theme-effective="light"] .home-interaction-panel__submit,
+html[data-theme-effective="light"] #stage #stage-microphone-button.home-interaction-panel__voice{
+  border-color:rgba(0,0,0,0.12);
+  background:rgba(0,0,0,0.035);
+}
+
+html[data-theme-effective="light"] .home-interaction-panel__input::placeholder{
+  color:rgba(28,28,28,0.46);
+}
+
+html[data-theme-effective="light"] .home-interaction-panel__meta-action,
+html[data-theme-effective="light"] .home-interaction-panel__attach,
+html[data-theme-effective="light"] .home-interaction-panel__voice,
+html[data-theme-effective="light"] #stage #stage-microphone-button.home-interaction-panel__voice{
+  color:rgba(36,36,36,0.68);
+}
+
+html[data-theme-effective="light"] .home-interaction-panel__submit{
+  background:rgba(0,0,0,0.06);
+}
+
+html[data-theme-effective="light"] .home-interaction-panel__voice-icon img{
+  filter:none;
+}
+
+/* =============================================================================
+   12) RESPONSIVE
+============================================================================= */
+@media (max-width:760px){
   .home-interaction-panel{
     width:min(100%, calc(100vw - (2 * var(--site-gutter))));
-    padding:0.92rem 0.9rem;
+    padding:0.76rem;
   }
 
   .home-interaction-panel__meta,
-  .home-interaction-panel__meta-controls,
-  .home-interaction-panel__support,
-  .home-interaction-panel__actions{
-    align-items:stretch;
+  .home-interaction-panel__meta-controls{
+    align-items:flex-start;
   }
 
   .home-interaction-panel__meta{
-    flex-direction:column;
-  }
-
-  .home-interaction-panel__support,
-  .home-interaction-panel__actions{
     flex-direction:column;
   }
 
@@ -355,14 +487,12 @@
     justify-content:flex-start;
   }
 
-  .home-interaction-panel__files{
-    justify-content:flex-start;
+  .home-interaction-panel__composer{
+    grid-template-columns:auto minmax(0, 1fr) auto;
   }
 
-  .home-interaction-panel__attach,
-  .home-interaction-panel__voice,
-  .home-interaction-panel__submit,
-  .home-interaction-panel__meta-action{
+  .home-interaction-panel__submit{
+    grid-column:1 / -1;
     width:100%;
   }
 }

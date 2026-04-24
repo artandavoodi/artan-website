@@ -254,7 +254,8 @@
 
       const mask = getOrCreateStageVideoMask();
       if (typeof opacity === "number" && opacity < 1) maskRevealStarted = true;
-      const isLight = body.classList.contains("light-mode");
+      const effectiveTheme = document.documentElement?.getAttribute("data-theme-effective") || "dark";
+      const isLight = effectiveTheme === "light";
 
       const targetBg = isLight ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)";
 

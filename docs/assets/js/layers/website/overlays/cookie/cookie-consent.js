@@ -6,8 +6,8 @@
    04) QUERY HELPERS
    05) MOUNT HELPERS
    06) SURFACE HELPERS
-   07) ROW / TOGGLE HELPERS
-   08) GRANULAR SUBTOGGLE HELPERS
+   07) ROW / TOGGLE CONSUMER HELPERS
+   08) GRANULAR SUBTOGGLE CONSUMER HELPERS
    09) LANGUAGE / REGION HELPERS
    10) LANGUAGE ACTION HELPERS
    11) INNER SURFACE ROUTING HELPERS
@@ -18,9 +18,10 @@
    16) EVENT BINDING
    17) SINGLE-OWNER COORDINATION
    18) EVENT REBINDING
-   19) INITIALIZATION
-   20) BOOTSTRAP
-   21) END OF FILE
+   19) CORE PRIMITIVE BRIDGE
+   20) INITIALIZATION
+   21) BOOTSTRAP
+   22) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -555,7 +556,7 @@
   }
 
   /* =============================================================================
-     07) ROW / TOGGLE HELPERS
+     07) ROW / TOGGLE CONSUMER HELPERS
   ============================================================================= */
   function setToggleVisualState(key, enabled) {
     const toggle = getToggleByKey(key);
@@ -563,8 +564,17 @@
 
     const value = Boolean(enabled);
     toggle.dataset.cookieConsentEnabled = value ? 'true' : 'false';
-    toggle.setAttribute('aria-pressed', value ? 'true' : 'false');
     toggle.setAttribute('aria-checked', value ? 'true' : 'false');
+
+    if (window.NeuroartanButtons && typeof window.NeuroartanButtons.setToggleChecked === 'function') {
+      window.NeuroartanButtons.setToggleChecked(toggle, value, { emit: false });
+      return;
+    }
+
+    const labelNode = toggle.querySelector('.na-toggle__label');
+    if (labelNode) {
+      labelNode.textContent = value ? 'On' : 'Off';
+    }
   }
 
   function syncToggleStates() {
@@ -576,7 +586,7 @@
   }
 
   /* =============================================================================
-     08) GRANULAR SUBTOGGLE HELPERS
+     08) GRANULAR SUBTOGGLE CONSUMER HELPERS
   ============================================================================= */
   function setSubtoggleVisualState(key, enabled) {
     const toggle = getSubtoggleByKey(key);
@@ -584,8 +594,17 @@
 
     const value = Boolean(enabled);
     toggle.dataset.cookieConsentEnabled = value ? 'true' : 'false';
-    toggle.setAttribute('aria-pressed', value ? 'true' : 'false');
     toggle.setAttribute('aria-checked', value ? 'true' : 'false');
+
+    if (window.NeuroartanButtons && typeof window.NeuroartanButtons.setToggleChecked === 'function') {
+      window.NeuroartanButtons.setToggleChecked(toggle, value, { emit: false });
+      return;
+    }
+
+    const labelNode = toggle.querySelector('.na-toggle__label');
+    if (labelNode) {
+      labelNode.textContent = value ? 'On' : 'Off';
+    }
   }
 
   function syncSubtoggleStates() {
@@ -1246,7 +1265,7 @@
       if (control.dataset.cookieConsentToggleBound === 'true') return;
       control.dataset.cookieConsentToggleBound = 'true';
 
-      control.addEventListener('click', (event) => {
+      control.addEventListener('neuroartan:toggle-changed', (event) => {
         event.preventDefault();
         event.stopPropagation();
 
@@ -1256,17 +1275,11 @@
         const checkbox = getCheckboxByKey(key);
         if (!checkbox) return;
 
-        checkbox.checked = !checkbox.checked;
-        setSubitemsForParent(key, checkbox.checked);
-        setToggleVisualState(key, checkbox.checked);
-      });
-
-      control.addEventListener('keydown', (event) => {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-
-        event.preventDefault();
-        event.stopPropagation();
-        control.click();
+        const checked = Boolean(event?.detail?.checked);
+        checkbox.checked = checked;
+        setSubitemsForParent(key, checked);
+        setToggleVisualState(key, checked);
+        syncSubtoggleStates();
       });
     });
   }
@@ -1276,7 +1289,7 @@
       if (control.dataset.cookieConsentSubtoggleBound === 'true') return;
       control.dataset.cookieConsentSubtoggleBound = 'true';
 
-      control.addEventListener('click', (event) => {
+      control.addEventListener('neuroartan:toggle-changed', (event) => {
         event.preventDefault();
         event.stopPropagation();
 
@@ -1286,17 +1299,10 @@
         const checkbox = getSubcheckboxByKey(key);
         if (!checkbox) return;
 
-        checkbox.checked = !checkbox.checked;
-        setSubtoggleVisualState(key, checkbox.checked);
+        const checked = Boolean(event?.detail?.checked);
+        checkbox.checked = checked;
+        setSubtoggleVisualState(key, checked);
         syncParentToggleFromSubitems(checkbox.dataset.cookieConsentParent || '');
-      });
-
-      control.addEventListener('keydown', (event) => {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-
-        event.preventDefault();
-        event.stopPropagation();
-        control.click();
       });
     });
   }
@@ -1454,7 +1460,24 @@
   }
 
   /* =============================================================================
-     19) INITIALIZATION
+     19) CORE PRIMITIVE BRIDGE
+  ============================================================================= */
+  function syncCoreTogglePrimitives() {
+    const overlay = getOverlay();
+    if (!(overlay instanceof HTMLElement)) return;
+
+    if (window.NeuroartanToggle && typeof window.NeuroartanToggle.initTogglePrimitive === 'function') {
+      window.NeuroartanToggle.initTogglePrimitive(overlay);
+      return;
+    }
+
+    if (window.NeuroartanButtons && typeof window.NeuroartanButtons.initButtonPrimitive === 'function') {
+      window.NeuroartanButtons.initButtonPrimitive(overlay);
+    }
+  }
+
+  /* =============================================================================
+     20) INITIALIZATION
   ============================================================================= */
   async function initCookieConsent() {
     const mount = getMount();
@@ -1464,6 +1487,8 @@
     ensureMountMetadata();
 
     if (!ensureOverlayReady()) return;
+
+    syncCoreTogglePrimitives();
 
     applyStoredConsentToInputs();
     syncLanguageValue();
@@ -1487,7 +1512,7 @@
   }
 
   /* =============================================================================
-     20) BOOTSTRAP
+     21) BOOTSTRAP
   ============================================================================= */
 
   function boot() {
@@ -1498,6 +1523,6 @@
   window.__artanRunWhenReady(boot);
 
  /* =============================================================================
-   21) END OF FILE
+   22) END OF FILE
 ============================================================================= */
 })();

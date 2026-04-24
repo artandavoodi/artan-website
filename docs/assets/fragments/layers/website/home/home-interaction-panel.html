@@ -1,7 +1,7 @@
 <section class="home-interaction-panel" id="home-interaction-panel" data-home-interaction-mode="idle" aria-label="Homepage interaction panel">
   <div class="home-interaction-panel__meta">
     <div class="home-interaction-panel__meta-copy">
-      <p class="home-interaction-panel__eyebrow">What's in my mind?</p>
+      <p class="home-interaction-panel__eyebrow">Neuroartan</p>
       <button class="home-interaction-panel__model-button" type="button" data-home-interaction-open-search="true">
         <span class="home-interaction-panel__model-name" data-home-interaction-active-model>Neuroartan</span>
         <span class="home-interaction-panel__model-route" data-home-interaction-active-route>Site knowledge</span>
@@ -11,10 +11,6 @@
     <div class="home-interaction-panel__meta-controls">
       <p class="home-interaction-panel__mode" data-home-interaction-mode-label>Ready</p>
 
-      <button class="home-interaction-panel__meta-action" type="button" data-home-interaction-open-search="true">
-        Switch Model
-      </button>
-
       <button class="home-interaction-panel__close global-close-button" type="button" data-home-interaction-clear="true" aria-label="Clear interaction surface">
         <span></span>
         <span></span>
@@ -23,23 +19,23 @@
   </div>
 
   <form class="home-interaction-panel__form" id="home-interaction-panel-form" novalidate>
-    <label class="home-interaction-panel__label" for="home-interaction-panel-input">Prompt</label>
     <textarea
       class="home-interaction-panel__input"
       id="home-interaction-panel-input"
       name="prompt"
       rows="3"
-      placeholder="Write, reflect, or ask the active model."
+      placeholder="Ask, write, or begin."
       aria-describedby="home-interaction-panel-support"></textarea>
-    <p class="home-interaction-panel__hint" data-home-interaction-hint>Text, voice, or documents for the active model.</p>
+    <p class="home-interaction-panel__hint" data-home-interaction-hint>Text, voice, or files.</p>
 
-    <div class="home-interaction-panel__support" id="home-interaction-panel-support">
-      <button class="home-interaction-panel__attach" type="button" data-home-interaction-attach="true">Attach files</button>
+    <div class="home-interaction-panel__composer" id="home-interaction-panel-support">
+      <button class="home-interaction-panel__attach" type="button" data-home-interaction-attach="true" aria-label="Attach file">
+        <span class="home-interaction-panel__attach-icon" aria-hidden="true">+</span>
+      </button>
+
       <input id="home-interaction-panel-file-input" type="file" multiple hidden>
       <div class="home-interaction-panel__files" data-home-interaction-files aria-live="polite"></div>
-    </div>
 
-    <div class="home-interaction-panel__actions">
       <button
         id="stage-microphone-button"
         class="home-interaction-panel__voice"
@@ -50,11 +46,11 @@
         <span class="home-interaction-panel__voice-icon" aria-hidden="true">
           <img class="ui-icon-theme-aware" src="/assets/icons/core/media/unclassified/mic.svg" alt="">
         </span>
-        <span data-home-interaction-voice-label>Voice</span>
+        <span class="home-interaction-panel__voice-label" data-home-interaction-voice-label>Voice</span>
       </button>
 
-      <button class="home-interaction-panel__submit" id="home-interaction-panel-submit" type="submit">
-        <span data-home-interaction-submit-label>Ask Active Model</span>
+      <button class="home-interaction-panel__submit" id="home-interaction-panel-submit" type="submit" aria-label="Submit interaction">
+        <span data-home-interaction-submit-label>Continue</span>
       </button>
     </div>
   </form>

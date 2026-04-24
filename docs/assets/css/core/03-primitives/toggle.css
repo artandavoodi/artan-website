@@ -1,0 +1,166 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) TOGGLE TOKENS
+   03) TOGGLE ROOT
+   04) TOGGLE TRACK
+   05) TOGGLE THUMB
+   06) TOGGLE STATES
+   07) TOGGLE DISABLED STATE
+   08) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/toggle.css */
+
+/* =============================================================================
+   02) TOGGLE TOKENS
+============================================================================= */
+:root{
+  --toggle-width: 2.625rem;
+  --toggle-height: 1.375rem;
+  --toggle-padding: 0.125rem;
+  --toggle-thumb-size: 1.125rem;
+  --toggle-radius: 999px;
+  --toggle-track-border-width: 1px;
+  --toggle-track-bg-off: rgba(127, 127, 127, 0.26);
+  --toggle-track-bg-on: var(--color-primary1);
+  --toggle-track-border-color: color-mix(in srgb, var(--text-primary-color) 16%, transparent);
+  --toggle-thumb-bg: rgb(255, 255, 255);
+  --toggle-thumb-shadow: none;
+  --toggle-focus-ring-width: 0;
+  --toggle-focus-ring-color: color-mix(in srgb, var(--text-primary-color) 16%, transparent);
+  --toggle-transition-duration: 220ms;
+  --toggle-transition-ease: ease;
+  --toggle-thumb-translate-on: calc(var(--toggle-width) - var(--toggle-thumb-size) - (2 * var(--toggle-padding)));
+}
+
+/* =============================================================================
+   03) TOGGLE ROOT
+============================================================================= */
+[data-na-toggle],
+.na-toggle,
+.ui-toggle{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--toggle-width);
+  min-width: var(--toggle-width);
+  height: var(--toggle-height);
+  min-height: var(--toggle-height);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-na-toggle]:focus,
+[data-na-toggle]:focus-visible,
+.na-toggle:focus,
+.na-toggle:focus-visible,
+.ui-toggle:focus,
+.ui-toggle:focus-visible{
+  outline: none;
+}
+
+/* =============================================================================
+   04) TOGGLE TRACK
+============================================================================= */
+[data-na-toggle-track],
+.na-toggle__track,
+.ui-toggle__track{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  padding: var(--toggle-padding);
+  border: var(--toggle-track-border-width) solid var(--toggle-track-border-color);
+  border-radius: var(--toggle-radius);
+  background: var(--toggle-track-bg-off);
+  overflow: hidden;
+  transition:
+    background-color var(--toggle-transition-duration) var(--toggle-transition-ease),
+    border-color var(--toggle-transition-duration) var(--toggle-transition-ease),
+    box-shadow var(--toggle-transition-duration) var(--toggle-transition-ease);
+}
+
+/* =============================================================================
+   05) TOGGLE THUMB
+============================================================================= */
+[data-na-toggle-thumb],
+.na-toggle__thumb,
+.ui-toggle__thumb{
+  position: absolute;
+  top: 50%;
+  left: var(--toggle-padding);
+  display: block;
+  width: var(--toggle-thumb-size);
+  height: var(--toggle-thumb-size);
+  border-radius: 50%;
+  background: var(--toggle-thumb-bg);
+  box-shadow: var(--toggle-thumb-shadow);
+  transform: translate(0, -50%);
+  transition: transform var(--toggle-transition-duration) var(--toggle-transition-ease);
+}
+
+/* =============================================================================
+   06) TOGGLE STATES
+============================================================================= */
+[data-na-toggle]:hover [data-na-toggle-track],
+.na-toggle:hover .na-toggle__track,
+.ui-toggle:hover .ui-toggle__track{
+  border-color: var(--toggle-focus-ring-color);
+}
+
+[data-na-toggle]:focus-visible [data-na-toggle-track],
+.na-toggle:focus-visible .na-toggle__track,
+.ui-toggle:focus-visible .ui-toggle__track{
+  box-shadow: 0 0 0 var(--toggle-focus-ring-width) var(--toggle-focus-ring-color);
+}
+
+[data-na-toggle][aria-checked="true"] [data-na-toggle-track],
+.na-toggle[aria-checked="true"] .na-toggle__track,
+.ui-toggle[aria-checked="true"] .ui-toggle__track,
+[data-na-toggle][data-toggle-checked="true"] [data-na-toggle-track],
+.na-toggle[data-toggle-checked="true"] .na-toggle__track,
+.ui-toggle[data-toggle-checked="true"] .ui-toggle__track,
+[data-na-toggle][data-toggle-state="on"] [data-na-toggle-track],
+.na-toggle[data-toggle-state="on"] .na-toggle__track,
+.ui-toggle[data-toggle-state="on"] .ui-toggle__track{
+  background: var(--toggle-track-bg-on);
+  border-color: var(--toggle-track-bg-on);
+}
+
+[data-na-toggle][aria-checked="true"] [data-na-toggle-thumb],
+.na-toggle[aria-checked="true"] .na-toggle__thumb,
+.ui-toggle[aria-checked="true"] .ui-toggle__thumb,
+[data-na-toggle][data-toggle-checked="true"] [data-na-toggle-thumb],
+.na-toggle[data-toggle-checked="true"] .na-toggle__thumb,
+.ui-toggle[data-toggle-checked="true"] .ui-toggle__thumb,
+[data-na-toggle][data-toggle-state="on"] [data-na-toggle-thumb],
+.na-toggle[data-toggle-state="on"] .na-toggle__thumb,
+.ui-toggle[data-toggle-state="on"] .ui-toggle__thumb{
+  transform: translate(var(--toggle-thumb-translate-on), -50%);
+}
+
+/* =============================================================================
+   07) TOGGLE DISABLED STATE
+============================================================================= */
+[data-na-toggle][disabled],
+[data-na-toggle][aria-disabled="true"],
+.na-toggle[disabled],
+.na-toggle[aria-disabled="true"],
+.ui-toggle[disabled],
+.ui-toggle[aria-disabled="true"]{
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* =============================================================================
+   08) END OF FILE
+============================================================================= */

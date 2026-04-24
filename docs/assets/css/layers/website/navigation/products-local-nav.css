@@ -4,7 +4,7 @@
    02) INSTITUTIONAL MENU TRANSITION CONTRACT
    03) LOCAL NAV SHELL
    04) LOCAL NAV SURFACE
-   05) LIGHT MODE SURFACE
+   05) LIGHT EFFECTIVE MODE SURFACE
    06) LOCAL NAV INNER LAYOUT
    07) LOCAL NAV LABEL
    08) LOCAL NAV LINKS
@@ -90,9 +90,9 @@
 }
 
 /* =============================================================================
-   05) LIGHT MODE SURFACE
+   05) LIGHT EFFECTIVE MODE SURFACE
 ============================================================================= */
-body.light-mode .products-local-nav::before {
+html[data-theme-effective="light"] .products-local-nav::before {
   background: color-mix(in srgb, white 26%, transparent);
   border-color: color-mix(in srgb, black 6%, transparent);
   box-shadow: none;

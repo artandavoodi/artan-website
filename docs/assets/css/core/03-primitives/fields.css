@@ -4,7 +4,12 @@
    02) SHARED FIELD BASE
    03) HOVER / FOCUS STATES
    04) PLACEHOLDER STATES
-   05) END OF FILE
+   05) TOGGLE PRIMITIVE ROOT
+   06) TOGGLE TRACK
+   07) TOGGLE THUMB
+   08) TOGGLE LABEL
+   09) TOGGLE STATES
+   10) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -60,5 +65,111 @@
 }
 
 /* =============================================================================
-   05) END OF FILE
+   05) TOGGLE PRIMITIVE ROOT
+============================================================================= */
+.na-toggle{
+  --_toggle-track-bg:var(--toggle-track-bg-off);
+  --_toggle-thumb-translate:var(--toggle-thumb-translate-off);
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:var(--toggle-label-gap);
+  min-width:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--text-color);
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
+  transition:opacity var(--toggle-transition-duration) var(--toggle-transition-ease);
+}
+
+/* =============================================================================
+   06) TOGGLE TRACK
+============================================================================= */
+.na-toggle__track{
+  position:relative;
+  display:inline-flex;
+  flex:0 0 auto;
+  width:var(--toggle-width);
+  height:var(--toggle-height);
+  padding:var(--toggle-padding);
+  border:var(--toggle-track-border-width) solid var(--toggle-track-border-color);
+  border-radius:var(--toggle-radius);
+  background:var(--_toggle-track-bg);
+  transition:
+    background-color var(--toggle-transition-duration) var(--toggle-transition-ease),
+    border-color var(--toggle-transition-duration) var(--toggle-transition-ease),
+    box-shadow var(--toggle-transition-duration) var(--toggle-transition-ease);
+}
+
+/* =============================================================================
+   07) TOGGLE THUMB
+============================================================================= */
+.na-toggle__thumb{
+  position:relative;
+  display:block;
+  width:var(--toggle-thumb-size);
+  height:var(--toggle-thumb-size);
+  border-radius:50%;
+  background:var(--toggle-thumb-bg);
+  box-shadow:var(--toggle-thumb-shadow);
+  transform:translateX(var(--_toggle-thumb-translate));
+  transition:transform var(--toggle-transition-duration) var(--toggle-transition-ease);
+}
+
+/* =============================================================================
+   08) TOGGLE LABEL
+============================================================================= */
+.na-toggle__label{
+  display:inline-block;
+  min-width:0;
+  font-size:var(--toggle-label-font-size);
+  font-weight:var(--body-3-weight, 400);
+  line-height:var(--toggle-label-line-height);
+  letter-spacing:var(--toggle-label-letter-spacing);
+  white-space:nowrap;
+}
+
+/* =============================================================================
+   09) TOGGLE STATES
+============================================================================= */
+.na-toggle[aria-checked="true"]{
+  --_toggle-track-bg:var(--toggle-track-bg-on);
+  --_toggle-thumb-translate:var(--toggle-thumb-translate-on);
+}
+
+.na-toggle:hover .na-toggle__track{
+  border-color:color-mix(in srgb, var(--text-color) 18%, transparent);
+}
+
+.na-toggle:focus,
+.na-toggle:focus-visible{
+  outline:none;
+}
+
+.na-toggle:focus-visible .na-toggle__track{
+  box-shadow:0 0 0 var(--toggle-focus-ring-width) var(--toggle-focus-ring-color);
+}
+
+.na-toggle[aria-disabled="true"],
+.na-toggle:disabled{
+  opacity:var(--toggle-disabled-opacity);
+  cursor:not-allowed;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .na-toggle,
+  .na-toggle__track,
+  .na-toggle__thumb{
+    transition:none;
+  }
+}
+
+/* =============================================================================
+   10) END OF FILE
 ============================================================================= */

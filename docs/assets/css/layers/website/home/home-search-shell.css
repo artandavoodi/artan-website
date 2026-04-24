@@ -6,7 +6,7 @@
    04) FORM + INPUT
    05) QUICK ACTIONS
    06) RESULTS + EMPTY STATE
-   07) THEME STATES
+   07) EFFECTIVE THEME STATES
    08) RESPONSIVE REFINEMENTS
 ============================================================================= */
 
@@ -446,13 +446,13 @@
 }
 
 /* =============================================================================
-   07) THEME STATES
+   07) EFFECTIVE THEME STATES
 ============================================================================= */
-body.light-mode .home-search-shell__input-row{
+html[data-theme-effective="light"] .home-search-shell__input-row{
   border-color:rgba(0, 0, 0, 0.12);
 }
 
-body:not(.light-mode) .home-search-shell__input-row{
+html[data-theme-effective="dark"] .home-search-shell__input-row{
   border-color:rgba(255, 255, 255, 0.16);
 }
 

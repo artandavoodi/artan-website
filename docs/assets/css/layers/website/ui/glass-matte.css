@@ -5,7 +5,7 @@
    FILE INDEX
    01) ROOT TOKENS
    02) BASE MATTE LAYER
-   03) THEME STATES
+   03) EFFECTIVE THEME STATES
    04) INTENSITY MODIFIERS
    05) VISIBILITY STATES
    06) RESPONSIVE
@@ -39,15 +39,13 @@
 }
 
 /* =============================================================================
-   03) THEME STATES
+   03) EFFECTIVE THEME STATES
 ============================================================================= */
-body.light-mode .glass-matte,
-body.theme-light .glass-matte{
+html[data-theme-effective="light"] .glass-matte{
   background: var(--glass-matte-surface-light);
 }
 
-body.dark-mode .glass-matte,
-body.theme-dark .glass-matte{
+html[data-theme-effective="dark"] .glass-matte{
   background: var(--glass-matte-surface-dark);
 }
 

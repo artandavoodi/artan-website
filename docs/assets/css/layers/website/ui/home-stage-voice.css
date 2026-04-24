@@ -24,13 +24,13 @@
 }
 
 #stage-essence[data-engine-mode="listening"]{
-  color:color-mix(in srgb, var(--text-color) 90%, rgba(145,124,111,0.95));
+  color:rgba(226,216,207,0.94);
   letter-spacing:0.08em;
 }
 
 #stage-essence[data-engine-mode="thinking"],
 #stage-essence[data-engine-mode="responding"]{
-  color:color-mix(in srgb, var(--text-color) 82%, rgba(145,124,111,0.95));
+  color:rgba(218,206,196,0.9);
   letter-spacing:0.06em;
 }
 
@@ -51,7 +51,7 @@
 }
 
 #stage-voice-interaction-shell[hidden]{
-  display:none !important;
+  display:none;
 }
 
 /* =============================================================================
@@ -65,7 +65,7 @@
   max-width:min(42rem, 90vw);
   margin:0 auto;
   text-align:center;
-  color:var(--text-color);
+  color:rgba(235,230,224,0.9);
 }
 
 #stage-voice-status{
@@ -94,8 +94,8 @@
   justify-content:center;
   padding:1.05rem 1.3rem;
   border-radius:999px;
-  border:1px solid color-mix(in srgb, var(--text-color) 12%, transparent);
-  background:color-mix(in srgb, var(--surface-color, rgba(255,255,255,0.06)) 68%, transparent);
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(12,12,12,0.52);
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.02) inset,
     0 18px 50px rgba(0,0,0,0.12);
@@ -141,14 +141,14 @@
 ============================================================================= */
 #stage-cognitive-core-shell[data-voice-mode="listening"] #stage-voice-status,
 #stage-voice-interaction-shell[data-voice-mode="listening"] #stage-voice-status{
-  color:color-mix(in srgb, var(--text-color) 88%, rgba(145,124,111,0.95));
+  color:rgba(226,216,207,0.94);
 }
 
 #stage-cognitive-core-shell[data-voice-mode="thinking"] #stage-voice-status,
 #stage-voice-interaction-shell[data-voice-mode="thinking"] #stage-voice-status,
 #stage-cognitive-core-shell[data-voice-mode="responding"] #stage-voice-status,
 #stage-voice-interaction-shell[data-voice-mode="responding"] #stage-voice-status{
-  color:color-mix(in srgb, var(--text-color) 78%, rgba(145,124,111,0.95));
+  color:rgba(218,206,196,0.9);
 }
 
 /* =============================================================================

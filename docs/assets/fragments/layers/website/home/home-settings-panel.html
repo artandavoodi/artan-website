@@ -1,18 +1,24 @@
 <!-- =============================================================================
-     HOME SETTINGS PANEL FRAGMENT
-     Purpose: unified settings surface for the home layer and platform shell.
-     Notes:
-     - acts as the canonical settings content source
-     - supports both standalone source-panel use and unified shell rendering
-     - delegates language, country, and privacy to existing global systems
+     00) FILE INDEX
+     01) HOME SETTINGS PANEL ROOT
+     02) PANEL HEADER
+     03) APPEARANCE SECTION
+     04) LANGUAGE / REGION / PRIVACY SECTION
+     05) IDENTITY / ROUTE SECTION
 ============================================================================= -->
 
+<!-- =============================================================================
+     01) HOME SETTINGS PANEL ROOT
+============================================================================= -->
 <aside class="home-settings-panel" id="home-settings-panel" aria-label="Home settings panel" hidden>
   <div class="home-settings-panel__inner">
+    <!-- =============================================================================
+         02) PANEL HEADER
+    ============================================================================= -->
     <div class="home-settings-panel__header">
       <div class="home-settings-panel__heading-group">
         <p class="home-settings-panel__eyebrow">Settings</p>
-        <h2 class="home-settings-panel__title">Theme, language, privacy, and identity controls</h2>
+        <h2 class="home-settings-panel__title">Appearance, language, privacy, and identity settings</h2>
       </div>
 
       <button
@@ -26,18 +32,22 @@
       </button>
     </div>
 
+    <!-- =============================================================================
+         03) APPEARANCE SECTION
+    ============================================================================= -->
     <section class="home-settings-panel__section" data-home-settings-section="theme" aria-label="Display settings">
-      <p class="home-settings-panel__section-title">Theme</p>
+      <p class="home-settings-panel__section-title">Appearance</p>
       <div class="home-settings-panel__theme-grid" role="group" aria-label="Theme controls">
-        <button class="home-settings-panel__theme-option" data-theme-option="color" type="button">Color</button>
+        <button class="home-settings-panel__theme-option" data-theme-option="system" type="button">System</button>
+        <button class="home-settings-panel__theme-option" data-theme-option="custom" type="button">Custom</button>
         <button class="home-settings-panel__theme-option" data-theme-option="dark" type="button">Dark</button>
         <button class="home-settings-panel__theme-option" data-theme-option="light" type="button">Light</button>
       </div>
-      <p class="home-settings-panel__context" data-home-settings-theme-summary>
-        Color mode keeps the cinematic homepage atmosphere active. Dark and Light preserve the same system with calmer visual conditions.
-      </p>
     </section>
 
+    <!-- =============================================================================
+         04) LANGUAGE / REGION / PRIVACY SECTION
+    ============================================================================= -->
     <section class="home-settings-panel__section" data-home-settings-section="language-privacy" aria-label="Language and privacy settings">
       <p class="home-settings-panel__section-title">Language, region, and privacy</p>
       <div class="home-settings-panel__stack">
@@ -56,6 +66,9 @@
       </div>
     </section>
 
+    <!-- =============================================================================
+         05) IDENTITY / ROUTE SECTION
+    ============================================================================= -->
     <section class="home-settings-panel__section" data-home-settings-section="identity-route" aria-label="Profile and route settings">
       <p class="home-settings-panel__section-title">Identity and route</p>
       <div class="home-settings-panel__stack">

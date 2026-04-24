@@ -98,6 +98,14 @@
     return null;
   }
 
+  function shouldBootProductsSection() {
+    const pathname = normalizePath(window.location.pathname || '/');
+    const hasProductsRoot = !!document.querySelector('.products-page');
+    const hasProductsMount = !!getFirstMatch(INDEX_SHELL_SELECTORS, document);
+
+    return hasProductsRoot || hasProductsMount || pathname.startsWith('/pages/products');
+  }
+
   function escapeHtml(value) {
     return String(value ?? '')
       .replace(/&/g, '&amp;')
@@ -359,6 +367,7 @@
      12) BOOTSTRAP
   ============================================================================= */
   async function boot() {
+    if (!shouldBootProductsSection()) return;
     try {
       await Promise.all([
         loadProductsRegistry(),

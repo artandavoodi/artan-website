@@ -5,8 +5,12 @@
    03) FORM ROWS
    04) LABEL SYSTEM
    05) HELP / ERROR TEXT
-   06) CHECK / CHOICE ROWS
-   07) END OF FILE
+   06) SETTINGS ROW PRIMITIVE
+   07) CHECK / CHOICE ROWS
+   08) CHECKBOX / RADIO INPUTS
+   09) CHECKMARK PRIMITIVE
+   10) RESPONSIVE REFINEMENTS
+   11) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -57,6 +61,11 @@
   line-height:1.2;
 }
 
+.ui-label__text{
+  display:inline-block;
+  min-width:0;
+}
+
 /* =============================================================================
    05) HELP / ERROR TEXT
 ============================================================================= */
@@ -77,7 +86,54 @@
 }
 
 /* =============================================================================
-   06) CHECK / CHOICE ROWS
+   06) SETTINGS ROW PRIMITIVE
+============================================================================= */
+.ui-settings-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:var(--spacing-md);
+  width:100%;
+  padding:0.95rem 0;
+  border-top:1px solid color-mix(in srgb, var(--text-color) 8%, transparent);
+}
+
+.ui-settings-row:first-child{
+  padding-top:0;
+  border-top:0;
+}
+
+.ui-settings-row__copy{
+  display:flex;
+  flex:1 1 auto;
+  flex-direction:column;
+  gap:0.22rem;
+  min-width:0;
+}
+
+.ui-settings-row__title{
+  margin:0;
+  color:var(--text-color);
+  font-size:var(--body-2-size);
+  font-weight:var(--body-2-weight);
+  line-height:1.3;
+}
+
+.ui-settings-row__description{
+  margin:0;
+  color:var(--text-secondary-color);
+  font-size:var(--body-3-size);
+  line-height:var(--body-3-line-height);
+  letter-spacing:var(--body-3-tracking);
+}
+
+.ui-settings-row__control{
+  flex:0 0 auto;
+  align-self:center;
+}
+
+/* =============================================================================
+   07) CHECK / CHOICE ROWS
 ============================================================================= */
 .ui-choice-row{
   display:flex;
@@ -85,14 +141,85 @@
   gap:var(--spacing-sm);
 }
 
+.ui-choice-row__copy{
+  display:flex;
+  flex:1 1 auto;
+  flex-direction:column;
+  gap:0.18rem;
+  min-width:0;
+}
+
+.ui-choice-row__title{
+  margin:0;
+  color:var(--text-color);
+  font-size:var(--body-3-size);
+  font-weight:var(--body-3-weight);
+  line-height:1.3;
+}
+
+.ui-choice-row__description{
+  margin:0;
+  color:var(--text-secondary-color);
+  font-size:var(--body-3-size);
+  line-height:var(--body-3-line-height);
+  letter-spacing:var(--body-3-tracking);
+}
+
+/* =============================================================================
+   08) CHECKBOX / RADIO INPUTS
+============================================================================= */
 .ui-check,
 .ui-radio{
   width:1rem;
   height:1rem;
   margin-top:0.15rem;
   accent-color:var(--color-primary1);
+  flex:0 0 auto;
+}
+
+.ui-check:focus-visible,
+.ui-radio:focus-visible{
+  outline:2px solid color-mix(in srgb, var(--color-primary1) 42%, transparent);
+  outline-offset:2px;
 }
 
 /* =============================================================================
-   07) END OF FILE
+   09) CHECKMARK PRIMITIVE
+============================================================================= */
+.ui-checkmark{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1rem;
+  height:1rem;
+  flex:0 0 auto;
+}
+
+.ui-checkmark > svg,
+.ui-checkmark > img{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+/* =============================================================================
+   10) RESPONSIVE REFINEMENTS
+============================================================================= */
+@media (max-width:640px){
+  .ui-form-row--inline{
+    grid-template-columns:1fr;
+  }
+
+  .ui-settings-row{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .ui-settings-row__control{
+    align-self:flex-start;
+  }
+}
+
+/* =============================================================================
+   11) END OF FILE
 ============================================================================= */

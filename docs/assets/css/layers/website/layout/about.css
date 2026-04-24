@@ -81,15 +81,12 @@
   }
 }
 
-body.dark-mode{
+html[data-theme-effective="dark"],
+html[data-theme="custom"]{
   --home-stack-surface: #000000;
 }
 
-body.color-mode{
-  --home-stack-surface: #000000;
-}
-
-body.light-mode{
+html[data-theme-effective="light"]{
   --home-stack-surface: #ffffff;
 }
 

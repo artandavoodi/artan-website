@@ -89,9 +89,7 @@
   --account-sign-up-header-brand-margin-bottom-mobile: var(--account-sign-up-content-gap-lg);
 }
 
-:root.light-mode,
-html.light-mode,
-body.light-mode{
+html[data-theme-effective="light"]{
   --account-sign-up-surface: rgba(255, 255, 255, 0.88);
   --account-sign-up-shell-inner-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.03);
   --account-sign-up-shell-highlight: linear-gradient(180deg, rgba(0, 0, 0, 0.022) 0%, transparent 22%);
@@ -102,9 +100,7 @@ body.light-mode{
   --account-sign-up-divider-line: rgba(0, 0, 0, 0.16);
 }
 
-:root.dark-mode,
-html.dark-mode,
-body.dark-mode{
+html[data-theme-effective="dark"]{
   --account-sign-up-surface: rgba(0, 0, 0, 0.82);
   --account-sign-up-shell-inner-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
   --account-sign-up-shell-highlight: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 22%);

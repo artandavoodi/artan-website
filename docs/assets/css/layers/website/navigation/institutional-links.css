@@ -68,11 +68,11 @@
   transform-origin: center;
 }
 
-body.light-mode .institutional-links-separator{
+html[data-theme-effective="light"] .institutional-links-separator{
   background: rgba(0, 0, 0, 0.16);
 }
 
-body.dark-mode .institutional-links-separator{
+html[data-theme-effective="dark"] .institutional-links-separator{
   background: rgba(255, 255, 255, 0.16);
 }
 
@@ -144,11 +144,11 @@ body.dark-mode .institutional-links-separator{
   opacity: 0.42;
 }
 
-body.light-mode .institutional-links-title{
+html[data-theme-effective="light"] .institutional-links-title{
   opacity: 0.46;
 }
 
-body.dark-mode .institutional-links-title{
+html[data-theme-effective="dark"] .institutional-links-title{
   opacity: 0.4;
 }
 

@@ -40,12 +40,12 @@
   opacity: 1;
 }
 
-body.light-mode #auth-access-button {
+html[data-theme-effective="light"] #auth-access-button {
   background: rgba(0, 0, 0, 0.03);
 }
 
-body.light-mode #auth-access-button:hover,
-body.light-mode #auth-access-button:focus-visible {
+html[data-theme-effective="light"] #auth-access-button:hover,
+html[data-theme-effective="light"] #auth-access-button:focus-visible {
   background: rgba(0, 0, 0, 0.06);
   border-color: rgba(0, 0, 0, 0.18);
 }

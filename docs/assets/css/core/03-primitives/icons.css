@@ -26,19 +26,8 @@
   --icon-color-accent:var(--color-primary1);
 }
 
-:root.color-mode,
-html.color-mode,
-body.color-mode{
-  --icon-image-filter:brightness(0) invert(1);
-  --icon-image-filter-strong:brightness(0) invert(1);
-  --icon-color:var(--text-color);
-  --icon-color-muted:var(--text-secondary-color);
-  --icon-color-accent:var(--color-primary1);
-}
 
-:root.light-mode,
-html.light-mode,
-body.light-mode{
+html[data-theme-effective="light"]{
   --icon-image-filter:brightness(0) saturate(100%);
   --icon-image-filter-strong:brightness(0) saturate(100%);
   --icon-color:var(--text-color);
@@ -46,9 +35,7 @@ body.light-mode{
   --icon-color-accent:var(--color-primary1);
 }
 
-:root.dark-mode,
-html.dark-mode,
-body.dark-mode{
+html[data-theme-effective="dark"]{
   --icon-image-filter:brightness(0) invert(1);
   --icon-image-filter-strong:brightness(0) invert(1);
   --icon-color:var(--text-color);

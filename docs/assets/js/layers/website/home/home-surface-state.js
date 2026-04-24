@@ -14,7 +14,18 @@
 
 const HOME_SURFACE_STATE = {
   isBound: false,
-  theme: 'color',
+  theme: 'system',
+  themeDetail: {
+    theme: 'system',
+    themeLabel: 'System',
+    themeSummary: '',
+    effectiveTheme: 'dark',
+    contrast: 'standard',
+    palette: 'neuroartan',
+    tokens: {},
+    cinematicAllowed: false,
+    monoSolidRequired: false,
+  },
   locale: {
     countryCode: '',
     countryLabel: '',
@@ -49,11 +60,12 @@ function normalizeString(value) {
 function normalizeThemeValue(value) {
   const normalized = normalizeString(value).toLowerCase();
 
-  if (normalized === 'light' || normalized === 'dark' || normalized === 'color') {
+  if (normalized === 'color') return 'custom';
+  if (normalized === 'system' || normalized === 'custom' || normalized === 'dark' || normalized === 'light') {
     return normalized;
   }
 
-  return 'color';
+  return 'system';
 }
 
 function normalizeLocaleSnapshot(locale = {}) {
@@ -130,13 +142,31 @@ function readThemeFromRuntime() {
   const runtimeTheme = window.NeuroartanTheme?.getCurrentTheme?.();
   if (runtimeTheme) return normalizeThemeValue(runtimeTheme);
 
-  const bodyTheme = document.body?.getAttribute('data-theme');
-  if (bodyTheme) return normalizeThemeValue(bodyTheme);
-
   const htmlTheme = document.documentElement?.getAttribute('data-theme');
   if (htmlTheme) return normalizeThemeValue(htmlTheme);
 
-  return 'color';
+  return 'system';
+}
+
+function readThemeDetailFromRuntime() {
+  const runtimeThemeApi = window.NeuroartanTheme;
+  const theme = readThemeFromRuntime();
+
+  if (runtimeThemeApi && typeof runtimeThemeApi.getThemeStateDetail === 'function') {
+    return runtimeThemeApi.getThemeStateDetail(theme);
+  }
+
+  return {
+    theme,
+    themeLabel: theme === 'system' ? 'System' : theme === 'custom' ? 'Custom' : theme === 'dark' ? 'Dark' : 'Light',
+    themeSummary: '',
+    effectiveTheme: document.documentElement?.getAttribute('data-theme-effective') || 'dark',
+    contrast: document.documentElement?.getAttribute('data-theme-contrast') || 'standard',
+    palette: document.documentElement?.getAttribute('data-theme-palette') || 'neuroartan',
+    tokens: {},
+    cinematicAllowed: theme === 'custom',
+    monoSolidRequired: theme === 'dark' || theme === 'light',
+  };
 }
 
 function readLocaleFromRuntime() {
@@ -167,6 +197,9 @@ function readAccountFromRuntime() {
 function cloneHomeSurfaceState() {
   return {
     theme: HOME_SURFACE_STATE.theme,
+    themeDetail: {
+      ...HOME_SURFACE_STATE.themeDetail,
+    },
     locale: {
       ...HOME_SURFACE_STATE.locale,
       languages: [...HOME_SURFACE_STATE.locale.languages],
@@ -217,7 +250,21 @@ export function subscribeHomeSurfaceState(listener) {
    ========================================================= */
 
 function syncThemeState(value = null) {
-  HOME_SURFACE_STATE.theme = normalizeThemeValue(value || readThemeFromRuntime());
+  const runtimeDetail = readThemeDetailFromRuntime();
+  const normalizedTheme = normalizeThemeValue(value || runtimeDetail.theme || readThemeFromRuntime());
+
+  HOME_SURFACE_STATE.theme = normalizedTheme;
+  HOME_SURFACE_STATE.themeDetail = {
+    ...runtimeDetail,
+    theme: normalizedTheme,
+    themeLabel: runtimeDetail.themeLabel || (normalizedTheme === 'system' ? 'System' : normalizedTheme === 'custom' ? 'Custom' : normalizedTheme === 'dark' ? 'Dark' : 'Light'),
+    effectiveTheme: runtimeDetail.effectiveTheme || document.documentElement?.getAttribute('data-theme-effective') || 'dark',
+    contrast: runtimeDetail.contrast || document.documentElement?.getAttribute('data-theme-contrast') || 'standard',
+    palette: runtimeDetail.palette || document.documentElement?.getAttribute('data-theme-palette') || 'neuroartan',
+    tokens: runtimeDetail.tokens || {},
+    cinematicAllowed: normalizedTheme === 'custom',
+    monoSolidRequired: normalizedTheme === 'dark' || normalizedTheme === 'light',
+  };
 }
 
 function syncLocaleState(detail = null) {

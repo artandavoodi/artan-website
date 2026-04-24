@@ -1,3 +1,331 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) THEME DESTINATION ROOT
+     02) APPEARANCE HEADER
+     03) APPEARANCE MODE SECTION
+     04) CONTRAST SECTION
+     05) CUSTOM PALETTE SECTION
+     06) CUSTOM HEX TOKEN SECTION
+     07) CUSTOM BACKGROUND CONTROLS
+     08) CANONICAL OWNERSHIP NOTE
+============================================================================= -->
+<!-- =============================================================================
+     01) THEME DESTINATION ROOT
+============================================================================= -->
 <section class="home-platform-destination home-platform-destination--settings-theme" data-home-platform-destination-root aria-label="Theme destination">
-  <div class="home-platform-destination__surface" data-home-platform-destination-surface></div>
+  <div class="home-platform-destination__surface home-platform-theme" data-home-platform-destination-surface>
+    <!-- =============================================================================
+         02) APPEARANCE HEADER
+    ============================================================================= -->
+    <header class="home-platform-theme__header">
+      <p class="home-platform-theme__eyebrow">Settings</p>
+      <h1 class="home-platform-theme__title">Appearance</h1>
+      <p class="home-platform-theme__summary">
+        System follows the device appearance preference. Custom, Dark, and Light are governed by one global token engine.
+      </p>
+    </header>
+
+    <!-- =============================================================================
+         03) APPEARANCE MODE SECTION
+    ============================================================================= -->
+    <section class="home-platform-theme__section" aria-labelledby="home-platform-theme-mode-title">
+      <div class="home-platform-theme__section-header">
+        <p class="home-platform-theme__section-eyebrow">Mode</p>
+        <h2 class="home-platform-theme__section-title" id="home-platform-theme-mode-title">Choose your appearance mode</h2>
+      </div>
+
+      <div class="home-platform-theme__mode-grid" role="group" aria-label="Appearance mode">
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-mode-option
+          data-theme-option="system"
+          aria-pressed="false">
+          <span class="home-platform-theme__mode-label">System</span>
+          <span class="home-platform-theme__mode-caption">Follows device appearance</span>
+        </button>
+
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-mode-option
+          data-theme-option="custom"
+          aria-pressed="false">
+          <span class="home-platform-theme__mode-label">Custom</span>
+          <span class="home-platform-theme__mode-caption">Palette, contrast, and hex tokens</span>
+        </button>
+
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-mode-option
+          data-theme-option="dark"
+          aria-pressed="false">
+          <span class="home-platform-theme__mode-label">Dark</span>
+          <span class="home-platform-theme__mode-caption">Institutional dark surface</span>
+        </button>
+
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-mode-option
+          data-theme-option="light"
+          aria-pressed="false">
+          <span class="home-platform-theme__mode-label">Light</span>
+          <span class="home-platform-theme__mode-caption">Institutional light surface</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =============================================================================
+         04) CONTRAST SECTION
+    ============================================================================= -->
+    <section class="home-platform-theme__section" aria-labelledby="home-platform-theme-contrast-title">
+      <div class="home-platform-theme__section-header">
+        <p class="home-platform-theme__section-eyebrow">Contrast</p>
+        <h2 class="home-platform-theme__section-title" id="home-platform-theme-contrast-title">Choose contrast density</h2>
+        <p class="home-platform-theme__section-context">
+          Contrast is a global theme sublayer and applies through canonical token attributes only.
+        </p>
+      </div>
+
+      <div class="home-platform-theme__mode-grid" role="group" aria-label="Theme contrast">
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-contrast-option
+          data-theme-contrast-option="low"
+          aria-pressed="false">
+          <span class="home-platform-theme__mode-label">Low</span>
+          <span class="home-platform-theme__mode-caption">Softer borders and controls</span>
+        </button>
+
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-contrast-option
+          data-theme-contrast-option="standard"
+          aria-pressed="true">
+          <span class="home-platform-theme__mode-label">Standard</span>
+          <span class="home-platform-theme__mode-caption">Default institutional balance</span>
+        </button>
+
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-contrast-option
+          data-theme-contrast-option="high"
+          aria-pressed="false">
+          <span class="home-platform-theme__mode-label">High</span>
+          <span class="home-platform-theme__mode-caption">Sharper borders and controls</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =============================================================================
+         05) CUSTOM PALETTE SECTION
+    ============================================================================= -->
+    <section class="home-platform-theme__section" aria-labelledby="home-platform-theme-palette-title">
+      <div class="home-platform-theme__section-header">
+        <p class="home-platform-theme__section-eyebrow">Palette</p>
+        <h2 class="home-platform-theme__section-title" id="home-platform-theme-palette-title">Choose custom palette</h2>
+        <p class="home-platform-theme__section-context">
+          Palette selection activates Custom and stores the selected palette through the canonical theme state.
+        </p>
+      </div>
+
+      <div class="home-platform-theme__mode-grid" role="group" aria-label="Custom palette">
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-palette-option
+          data-theme-palette-option="neuroartan"
+          aria-pressed="true">
+          <span class="home-platform-theme__mode-label">Neuroartan</span>
+          <span class="home-platform-theme__mode-caption">Default institutional palette</span>
+        </button>
+
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-palette-option
+          data-theme-palette-option="mono"
+          aria-pressed="false">
+          <span class="home-platform-theme__mode-label">Mono</span>
+          <span class="home-platform-theme__mode-caption">Minimal black and white discipline</span>
+        </button>
+
+        <button
+          class="home-platform-theme__mode-option"
+          type="button"
+          data-home-platform-theme-palette-option
+          data-theme-palette-option="sovereign"
+          aria-pressed="false">
+          <span class="home-platform-theme__mode-label">Sovereign</span>
+          <span class="home-platform-theme__mode-caption">Reserved institutional accent layer</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =============================================================================
+         06) CUSTOM HEX TOKEN SECTION
+    ============================================================================= -->
+    <section class="home-platform-theme__section" aria-labelledby="home-platform-theme-token-title">
+      <div class="home-platform-theme__section-header">
+        <p class="home-platform-theme__section-eyebrow">Hex tokens</p>
+        <h2 class="home-platform-theme__section-title" id="home-platform-theme-token-title">Adjust custom colors</h2>
+        <p class="home-platform-theme__section-context">
+          Hex inputs write to global CSS variables through the canonical theme engine. Local styling ownership is not duplicated here.
+        </p>
+      </div>
+
+      <div class="home-platform-theme__token-grid" role="group" aria-label="Custom hex color tokens">
+        <label class="home-platform-theme__token-field">
+          <span class="home-platform-theme__token-label">Accent</span>
+          <input class="home-platform-theme__token-input" type="color" data-theme-token="accent" value="#ffffff" aria-label="Custom accent color">
+        </label>
+
+        <label class="home-platform-theme__token-field">
+          <span class="home-platform-theme__token-label">Accent hover</span>
+          <input class="home-platform-theme__token-input" type="color" data-theme-token="accentHover" value="#f5f5f5" aria-label="Custom accent hover color">
+        </label>
+
+        <label class="home-platform-theme__token-field">
+          <span class="home-platform-theme__token-label">Background</span>
+          <input class="home-platform-theme__token-input" type="color" data-theme-token="background" value="#000000" aria-label="Custom background color">
+        </label>
+
+        <label class="home-platform-theme__token-field">
+          <span class="home-platform-theme__token-label">Text</span>
+          <input class="home-platform-theme__token-input" type="color" data-theme-token="text" value="#ffffff" aria-label="Custom text color">
+        </label>
+
+        <label class="home-platform-theme__token-field">
+          <span class="home-platform-theme__token-label">Surface</span>
+          <input class="home-platform-theme__token-input" type="color" data-theme-token="surface" value="#111111" aria-label="Custom surface color">
+        </label>
+
+        <label class="home-platform-theme__token-field">
+          <span class="home-platform-theme__token-label">Border</span>
+          <input class="home-platform-theme__token-input" type="color" data-theme-token="border" value="#333333" aria-label="Custom border color">
+        </label>
+      </div>
+    </section>
+
+    <!-- =============================================================================
+         07) CUSTOM BACKGROUND CONTROLS
+    ============================================================================= -->
+    <section class="home-platform-theme__section" aria-labelledby="home-platform-theme-effects-title">
+      <div class="home-platform-theme__section-header">
+        <p class="home-platform-theme__section-eyebrow">Custom</p>
+        <h2 class="home-platform-theme__section-title" id="home-platform-theme-effects-title">Background controls</h2>
+        <p class="home-platform-theme__section-context">
+          These controls are active for Custom. System, Dark, and Light keep governed institutional surfaces.
+        </p>
+      </div>
+
+      <div class="home-platform-theme__toggle-list" role="list" aria-label="Background controls">
+        <div class="home-platform-theme__toggle-row" role="listitem" data-home-platform-theme-toggle-row data-toggle-key="breathing-circle">
+          <div class="home-platform-theme__toggle-copy">
+            <p class="home-platform-theme__toggle-title">Breathing Circle</p>
+            <p class="home-platform-theme__toggle-description">Controls the background breathing circle atmosphere in Custom mode.</p>
+          </div>
+          <button
+            class="na-toggle"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            data-na-toggle
+            data-toggle-key="breathing-circle"
+            data-toggle-scope="homepage-theme"
+            data-toggle-default="off"
+            data-toggle-mode="custom-only">
+            <span class="na-toggle__track" aria-hidden="true">
+              <span class="na-toggle__thumb"></span>
+            </span>
+            <span class="na-toggle__label">Off</span>
+          </button>
+        </div>
+
+        <div class="home-platform-theme__toggle-row" role="listitem" data-home-platform-theme-toggle-row data-toggle-key="cinematic-background">
+          <div class="home-platform-theme__toggle-copy">
+            <p class="home-platform-theme__toggle-title">Cinematic Background</p>
+            <p class="home-platform-theme__toggle-description">Controls the homepage cinematic video background in Custom mode.</p>
+          </div>
+          <button
+            class="na-toggle"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            data-na-toggle
+            data-toggle-key="cinematic-background"
+            data-toggle-scope="homepage-theme"
+            data-toggle-default="off"
+            data-toggle-mode="custom-only">
+            <span class="na-toggle__track" aria-hidden="true">
+              <span class="na-toggle__thumb"></span>
+            </span>
+            <span class="na-toggle__label">Off</span>
+          </button>
+        </div>
+
+        <div class="home-platform-theme__toggle-row" role="listitem" data-home-platform-theme-toggle-row data-toggle-key="hero-shader">
+          <div class="home-platform-theme__toggle-copy">
+            <p class="home-platform-theme__toggle-title">Hero Shader</p>
+            <p class="home-platform-theme__toggle-description">Controls the moving homepage shader environment in Custom mode.</p>
+          </div>
+          <button
+            class="na-toggle"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            data-na-toggle
+            data-toggle-key="hero-shader"
+            data-toggle-scope="homepage-theme"
+            data-toggle-default="on"
+            data-toggle-mode="custom-only">
+            <span class="na-toggle__track" aria-hidden="true">
+              <span class="na-toggle__thumb"></span>
+            </span>
+            <span class="na-toggle__label">On</span>
+          </button>
+        </div>
+
+        <div class="home-platform-theme__toggle-row" role="listitem" data-home-platform-theme-toggle-row data-toggle-key="matte-atmosphere">
+          <div class="home-platform-theme__toggle-copy">
+            <p class="home-platform-theme__toggle-title">Matte Atmosphere</p>
+            <p class="home-platform-theme__toggle-description">Controls the premium matte environment in Custom mode.</p>
+          </div>
+          <button
+            class="na-toggle"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            data-na-toggle
+            data-toggle-key="matte-atmosphere"
+            data-toggle-scope="homepage-theme"
+            data-toggle-default="on"
+            data-toggle-mode="custom-only">
+            <span class="na-toggle__track" aria-hidden="true">
+              <span class="na-toggle__thumb"></span>
+            </span>
+            <span class="na-toggle__label">On</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================================
+         08) CANONICAL OWNERSHIP NOTE
+    ============================================================================= -->
+    <section class="home-platform-theme__section" aria-labelledby="home-platform-theme-note-title">
+      <div class="home-platform-theme__section-header">
+        <p class="home-platform-theme__section-eyebrow">System note</p>
+        <h2 class="home-platform-theme__section-title" id="home-platform-theme-note-title">Canonical ownership</h2>
+        <p class="home-platform-theme__section-context">
+          These controls are consumer slots only. Theme state, toggle state, contrast, palette, and color tokens are owned by the global theme and toggle systems and must not be redefined locally in this destination.
+        </p>
+      </div>
+    </section>
+  </div>
 </section>

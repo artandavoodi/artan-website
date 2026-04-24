@@ -1,11 +1,13 @@
 /* =============================================================================
    00) FILE INDEX
    01) MODULE IDENTITY
-   02) THEME TOGGLE BASE
-   03) MODE VARIANTS
-   04) HOVER STATES
-   05) REDUCED MOTION
-   06) END OF FILE
+   02) THEME TOGGLE OWNERSHIP NOTE
+   03) SYSTEM TOGGLE BASE
+   04) CYCLE TOGGLE STATE
+   05) MODE VARIANTS
+   06) HOVER / FOCUS STATES
+   07) REDUCED MOTION
+   08) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -14,43 +16,79 @@
 /* /website/docs/assets/css/core/04-systems/theme-toggle.css */
 
 /* =============================================================================
-   02) THEME TOGGLE BASE
+   02) THEME TOGGLE OWNERSHIP NOTE
 ============================================================================= */
-.theme-toggle{
-  width:14px;
-  height:14px;
+/* Theme toggle remains a theme-specific consumer and must not become the sovereign generic toggle owner.
+   The generic reusable toggle primitive now lives in core/03-primitives/toggle.css and core/01-foundation/toggle.js.
+   This file keeps only the current theme-toggle presentation and theme-mode behavior. */
+
+/* =============================================================================
+   03) SYSTEM TOGGLE BASE
+============================================================================= */
+.theme-toggle:not([data-theme-option]){
+  display:inline-flex;
+  flex:0 0 auto;
+  align-items:center;
+  justify-content:center;
+  min-width:var(--control-height-sm);
+  min-height:var(--control-height-sm);
+  padding:0;
+  border:0;
   border-radius:50%;
-  border:none;
+  background:transparent;
+  color:var(--text-color);
   box-shadow:none;
   cursor:pointer;
   z-index:var(--z-header-controls);
   transition:
-    transform var(--duration-base) var(--ease-standard),
     opacity var(--duration-base) var(--ease-standard),
-    background-color var(--duration-base) var(--ease-standard);
+    background-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard);
 }
 
 /* =============================================================================
-   03) MODE VARIANTS
+   04) CYCLE TOGGLE STATE
 ============================================================================= */
-body.dark-mode .theme-toggle{
+.theme-toggle:not([data-theme-option]){
+  width:14px;
+  height:14px;
+}
+
+/* =============================================================================
+   05) MODE VARIANTS
+============================================================================= */
+html[data-theme-effective="dark"] .theme-toggle:not([data-theme-option]){
   background-color:var(--color-white);
 }
 
-body.light-mode .theme-toggle{
+html[data-theme-effective="light"] .theme-toggle:not([data-theme-option]){
   background-color:var(--color-black);
 }
 
-/* =============================================================================
-   04) HOVER STATES
-============================================================================= */
-.theme-toggle:hover{
-  transform:scale(1.15);
-  opacity:0.9;
+html[data-theme="custom"] .theme-toggle:not([data-theme-option]){
+  background-color:var(--theme-accent-color);
 }
 
 /* =============================================================================
-   05) REDUCED MOTION
+   06) HOVER / FOCUS STATES
+============================================================================= */
+.theme-toggle:hover{
+  opacity:1;
+}
+
+.theme-toggle:focus,
+.theme-toggle:focus-visible{
+  outline:none;
+}
+
+.theme-toggle:focus-visible{
+  box-shadow:0 0 0 2px color-mix(in srgb, var(--color-primary1) 38%, transparent);
+}
+
+/* =============================================================================
+   07) REDUCED MOTION
 ============================================================================= */
 @media (prefers-reduced-motion:reduce){
   .theme-toggle{
@@ -59,5 +97,5 @@ body.light-mode .theme-toggle{
 }
 
 /* =============================================================================
-   06) END OF FILE
+   08) END OF FILE
 ============================================================================= */

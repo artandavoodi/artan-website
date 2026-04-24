@@ -20,7 +20,7 @@
 ============================================================================= */
 :root{
   --home-hero-shader-z-index: 0;
-  --home-hero-shader-opacity: 1;
+  --home-hero-shader-opacity: 0;
   --home-hero-shader-matte-opacity: 0.42;
   --home-hero-shader-matte-blur: 28px;
   --home-hero-shader-matte-surface-light: rgba(255, 255, 255, 0.08);
@@ -106,7 +106,7 @@
   display: block;
   transform: translateZ(0) scale(1.02);
   filter: blur(var(--home-hero-shader-canvas-softness));
-  opacity: 0.96;
+  opacity: 0;
 }
 
 /* =============================================================================
@@ -116,6 +116,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  visibility: hidden;
   opacity: var(--home-hero-shader-veil-opacity);
   backdrop-filter: blur(var(--home-hero-shader-veil-blur));
   -webkit-backdrop-filter: blur(var(--home-hero-shader-veil-blur));
@@ -130,17 +131,15 @@
   pointer-events: none;
   backdrop-filter: blur(var(--home-hero-shader-matte-blur));
   -webkit-backdrop-filter: blur(var(--home-hero-shader-matte-blur));
-  opacity: calc(var(--home-hero-shader-matte-opacity) + 0.06);
+  opacity: 0;
   transition: opacity var(--home-hero-shader-transition);
 }
 
-body.light-mode .home-hero-shader-matte,
-body.theme-light .home-hero-shader-matte{
+html[data-theme-effective="light"] .home-hero-shader-matte{
   background: var(--home-hero-shader-matte-surface-light);
 }
 
-body.dark-mode .home-hero-shader-matte,
-body.theme-dark .home-hero-shader-matte{
+html[data-theme-effective="dark"] .home-hero-shader-matte{
   background: var(--home-hero-shader-matte-surface-dark);
 }
 
@@ -176,10 +175,32 @@ body.hero-stage-hidden .home-hero-shader{
   transition: opacity var(--home-hero-shader-transition);
 }
 
-body.theme-dark .home-hero-shader,
-body.theme-light .home-hero-shader{
+.home-hero-shader,
+.home-hero-shader-canvas,
+.home-hero-shader-veil,
+.home-hero-shader-matte{
   opacity: 0;
   visibility: hidden;
+}
+
+html[data-theme="custom"] .home-hero-shader{
+  opacity: 1;
+  visibility: visible;
+}
+
+html[data-theme="custom"] .home-hero-shader .home-hero-shader-canvas{
+  opacity: 0.96;
+  visibility: visible;
+}
+
+html[data-theme="custom"] .home-hero-shader .home-hero-shader-veil{
+  opacity: var(--home-hero-shader-veil-opacity);
+  visibility: visible;
+}
+
+html[data-theme="custom"] .home-hero-shader .home-hero-shader-matte{
+  opacity: calc(var(--home-hero-shader-matte-opacity) + 0.06);
+  visibility: visible;
 }
 
 /* =============================================================================

@@ -1,11 +1,12 @@
 /* =============================================================================
    00) FILE INDEX
    01) HOME SHELL TOKEN BRIDGE
-   02) TOPBAR AND FOOTER CHROME
-   03) PANEL MOUNTS
-   04) SHARED PANEL SURFACES
-   05) SHARED PANEL TYPOGRAPHY AND ACTIONS
-   06) RESPONSIVE REFINEMENTS
+   02) SHELL OPEN STATES
+   03) TOPBAR AND FOOTER CHROME
+   04) PANEL MOUNTS
+   05) SHARED PANEL SURFACES
+   06) SHARED PANEL TYPOGRAPHY AND ACTIONS
+   07) RESPONSIVE REFINEMENTS
 ============================================================================= */
 
 /* =============================================================================
@@ -41,7 +42,7 @@
   pointer-events:none;
 }
 
-body.light-mode .home-shell{
+html[data-theme-effective="light"] .home-shell{
   --home-ribbon-surface: color-mix(in srgb, white 26%, transparent);
   --home-ribbon-border: color-mix(in srgb, black 6%, transparent);
   --home-panel-surface: color-mix(in srgb, white 20%, transparent);
@@ -200,8 +201,7 @@ body.home-page.home-search-shell-open .home-shell__footer-separator{
 .home-navigation-drawer__stack-item,
 .home-workspace-panel__item,
 .home-profile-control-panel__item,
-.home-settings-panel__item,
-.home-settings-panel__theme-option{
+.home-settings-panel__item{
   appearance:none;
   -webkit-appearance:none;
   border:1px solid transparent;
@@ -223,10 +223,7 @@ body.home-page.home-search-shell-open .home-shell__footer-separator{
 .home-profile-control-panel__item:hover,
 .home-profile-control-panel__item:focus-visible,
 .home-settings-panel__item:hover,
-.home-settings-panel__item:focus-visible,
-.home-settings-panel__theme-option:hover,
-.home-settings-panel__theme-option:focus-visible,
-.home-settings-panel__theme-option[aria-pressed="true"]{
+.home-settings-panel__item:focus-visible{
   color:var(--text-primary-color);
   background:var(--control-bg);
   border-color:var(--control-border);

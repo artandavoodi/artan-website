@@ -62,6 +62,7 @@ function clearHomeStageMotionTokens(node) {
   delete node.dataset.voicePulse;
   delete node.dataset.voiceOrbit;
   delete node.dataset.voiceGlow;
+  delete node.dataset.voiceState;
 }
 
 /* =========================================================
@@ -73,30 +74,29 @@ function applyHomeStageMotionMode(mode) {
   const nodes = getHomeStageMotionNodes();
 
   HOME_STAGE_MOTION_STATE.mode = normalizedMode;
+  const isActiveMode = normalizedMode === 'listening' || normalizedMode === 'thinking' || normalizedMode === 'responding';
 
   [nodes.stageShell, nodes.microphoneButton, nodes.interactionShell].forEach(clearHomeStageMotionTokens);
 
   if (nodes.stageShell) {
     nodes.stageShell.dataset.voiceMotion = normalizedMode;
+    nodes.stageShell.dataset.voiceState = isActiveMode ? 'active' : 'idle';
   }
 
   if (nodes.microphoneButton) {
     nodes.microphoneButton.dataset.voiceMotion = normalizedMode;
+    nodes.microphoneButton.dataset.voiceState = isActiveMode ? 'active' : 'idle';
   }
 
   if (nodes.interactionShell) {
     nodes.interactionShell.dataset.voiceMotion = normalizedMode;
+    nodes.interactionShell.dataset.voiceState = isActiveMode ? 'active' : 'idle';
   }
 
   switch (normalizedMode) {
     case 'listening': {
       if (nodes.microphoneButton) {
         nodes.microphoneButton.dataset.voicePulse = 'active';
-        nodes.microphoneButton.dataset.voiceGlow = 'active';
-      }
-
-      if (nodes.interactionShell) {
-        nodes.interactionShell.dataset.voiceOrbit = 'active';
       }
       break;
     }
@@ -104,11 +104,6 @@ function applyHomeStageMotionMode(mode) {
     case 'thinking': {
       if (nodes.microphoneButton) {
         nodes.microphoneButton.dataset.voicePulse = 'soft';
-        nodes.microphoneButton.dataset.voiceGlow = 'active';
-      }
-
-      if (nodes.interactionShell) {
-        nodes.interactionShell.dataset.voiceOrbit = 'thinking';
       }
       break;
     }
@@ -116,11 +111,6 @@ function applyHomeStageMotionMode(mode) {
     case 'responding': {
       if (nodes.microphoneButton) {
         nodes.microphoneButton.dataset.voicePulse = 'response';
-        nodes.microphoneButton.dataset.voiceGlow = 'active';
-      }
-
-      if (nodes.interactionShell) {
-        nodes.interactionShell.dataset.voiceOrbit = 'response';
       }
       break;
     }

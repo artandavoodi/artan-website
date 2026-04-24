@@ -4,11 +4,45 @@
    02) CONTROL SIZE TOKENS
    03) BUTTON TOKENS
    04) FIELD TOKENS
-   05) ACCOUNT / AUTH CONTROL TOKENS
-   06) ICON TOKENS
-   07) GLASS TOKENS
-   08) END OF FILE
+   05) TOGGLE TOKENS
+   06) ACCOUNT / AUTH CONTROL TOKENS
+   07) ICON TOKENS
+   08) GLASS TOKENS
+   09) END OF FILE
 ============================================================================= */
+/* =============================================================================
+   05) TOGGLE TOKENS
+============================================================================= */
+:root{
+  --toggle-width:2.9rem;
+  --toggle-height:1.7rem;
+  --toggle-radius:999px;
+  --toggle-padding:0.14rem;
+
+  --toggle-track-bg-off:color-mix(in srgb, var(--text-color) 12%, transparent);
+  --toggle-track-bg-on:var(--color-primary1);
+  --toggle-track-border-color:color-mix(in srgb, var(--text-color) 12%, transparent);
+  --toggle-track-border-width:1px;
+
+  --toggle-thumb-size:1.26rem;
+  --toggle-thumb-bg:rgb(255, 255, 255);
+  --toggle-thumb-shadow:0 1px 4px rgba(0, 0, 0, 0.18);
+  --toggle-thumb-translate-off:0;
+  --toggle-thumb-translate-on:1.18rem;
+
+  --toggle-label-gap:0.55rem;
+  --toggle-label-font-size:var(--body-3-size);
+  --toggle-label-line-height:var(--body-3-line-height);
+  --toggle-label-letter-spacing:var(--body-3-tracking);
+
+  --toggle-transition-duration:220ms;
+  --toggle-transition-ease:cubic-bezier(0.22, 1, 0.36, 1);
+
+  --toggle-focus-ring-width:2px;
+  --toggle-focus-ring-color:color-mix(in srgb, var(--color-primary1) 42%, transparent);
+  --toggle-disabled-opacity:0.45;
+}
+
 
 /* =============================================================================
    01) MODULE IDENTITY
@@ -88,7 +122,7 @@
 }
 
 /* =============================================================================
-   05) ACCOUNT / AUTH CONTROL TOKENS
+   06) ACCOUNT / AUTH CONTROL TOKENS
 ============================================================================= */
 :root{
   --account-control-width-max:var(--control-width-auth-max);
@@ -130,7 +164,7 @@
 }
 
 /* =============================================================================
-   06) ICON TOKENS
+   07) ICON TOKENS
 ============================================================================= */
 :root{
   --icon-size-xs:0.9rem;
@@ -141,7 +175,7 @@
 }
 
 /* =============================================================================
-   07) GLASS TOKENS
+   08) GLASS TOKENS
 ============================================================================= */
 :root{
   --glass-blur-sm:10px;
@@ -150,5 +184,5 @@
 }
 
 /* =============================================================================
-   08) END OF FILE
+   09) END OF FILE
 ============================================================================= */

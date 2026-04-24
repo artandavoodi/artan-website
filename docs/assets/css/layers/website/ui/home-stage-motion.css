@@ -1,8 +1,8 @@
 /* =============================================================================
    00) FILE INDEX
-   01) STAGE CORE AMBIENT FIELDS
+   01) STAGE CORE SOVEREIGN BASELINE
    02) STAGE MICROPHONE MOTION FIELDS
-   03) ACTIVE MODE VISIBILITY
+   03) ACTIVE VOICE MODE MOTION
    04) LISTENING MODE MOTION
    05) THINKING MODE MOTION
    06) RESPONDING MODE MOTION
@@ -11,10 +11,43 @@
 ============================================================================= */
 
 /* =============================================================================
-   01) STAGE CORE AMBIENT FIELDS
+   01) STAGE CORE SOVEREIGN BASELINE
 ============================================================================= */
 #stage-cognitive-core-shell::before,
-#stage-cognitive-core-shell::after,
+#stage-cognitive-core-shell::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(1);
+  border-radius:50%;
+  pointer-events:none;
+  transition:
+    opacity 0.35s ease,
+    transform 0.7s cubic-bezier(0.22,1,0.36,1),
+    filter 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+
+#stage-cognitive-core-shell::before{
+  width:13rem;
+  height:13rem;
+  background:radial-gradient(circle, rgba(145,124,111,0.18) 0%, rgba(145,124,111,0.08) 38%, rgba(145,124,111,0.02) 58%, rgba(145,124,111,0) 74%);
+  filter:blur(10px);
+  opacity:0.34;
+  z-index:0;
+}
+
+#stage-cognitive-core-shell::after{
+  width:17rem;
+  height:17rem;
+  border:1px solid rgba(255,255,255,0.18);
+  opacity:0.58;
+  z-index:0;
+}
+
+/* =============================================================================
+   02) STAGE MICROPHONE MOTION FIELDS
+============================================================================= */
 #stage-microphone-button::before,
 #stage-microphone-button::after{
   content:"";
@@ -31,24 +64,6 @@
     filter 0.7s cubic-bezier(0.22,1,0.36,1);
 }
 
-#stage-cognitive-core-shell::before{
-  width:min(13rem, 44vw);
-  height:min(13rem, 44vw);
-  background:radial-gradient(circle, rgba(145,124,111,0.18) 0%, rgba(145,124,111,0.08) 38%, rgba(145,124,111,0.02) 58%, rgba(145,124,111,0) 74%);
-  filter:blur(10px);
-  z-index:0;
-}
-
-#stage-cognitive-core-shell::after{
-  width:min(17rem, 58vw);
-  height:min(17rem, 58vw);
-  border:1px solid rgba(255,255,255,0.10);
-  z-index:0;
-}
-
-/* =============================================================================
-   02) STAGE MICROPHONE MOTION FIELDS
-============================================================================= */
 #stage-microphone-button::before{
   width:100%;
   height:100%;
@@ -65,20 +80,23 @@
 }
 
 /* =============================================================================
-   03) ACTIVE MODE VISIBILITY
+   03) ACTIVE VOICE MODE MOTION
 ============================================================================= */
 #stage-cognitive-core-shell[data-voice-mode="listening"]::before,
 #stage-cognitive-core-shell[data-voice-mode="thinking"]::before,
-#stage-cognitive-core-shell[data-voice-mode="responding"]::before,
-#stage-microphone-button[data-voice-active="true"]::before,
-#stage-microphone-button[data-voice-active="true"]::after{
-  opacity:1;
+#stage-cognitive-core-shell[data-voice-mode="responding"]::before{
+  opacity:0.72;
 }
 
 #stage-cognitive-core-shell[data-voice-mode="listening"]::after,
 #stage-cognitive-core-shell[data-voice-mode="thinking"]::after,
 #stage-cognitive-core-shell[data-voice-mode="responding"]::after{
   opacity:0.82;
+}
+
+#stage-microphone-button[data-voice-active="true"]::before,
+#stage-microphone-button[data-voice-active="true"]::after{
+  opacity:1;
 }
 
 /* =============================================================================
@@ -133,7 +151,7 @@
    07) ACTIVE MICROPHONE STATE
 ============================================================================= */
 #stage-microphone-button[data-voice-active="true"]{
-  color:color-mix(in srgb, var(--text-color) 82%, rgba(145,124,111,1));
+  color:rgba(218,206,196,0.92);
   opacity:1;
   transform:scale(1.04);
 }

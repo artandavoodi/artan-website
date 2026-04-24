@@ -1,3 +1,283 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) DESTINATION ROOT
+   02) SURFACE SHELL
+   03) HEADER
+   04) SECTION STRUCTURE
+   05) MODE GRID
+   06) TOKEN FIELD GRID
+   07) TOGGLE LIST CONSUMER LAYOUT
+   08) CANONICAL OWNERSHIP NOTE
+   09) RESPONSIVE REFINEMENTS
+============================================================================= */
+
+/* =============================================================================
+   01) DESTINATION ROOT
+============================================================================= */
 .home-platform-destination--settings-theme{
   width:100%;
+}
+
+/* =============================================================================
+   02) SURFACE SHELL
+============================================================================= */
+.home-platform-theme{
+  display:flex;
+  flex-direction:column;
+  gap:1.4rem;
+  width:100%;
+}
+
+/* =============================================================================
+   03) HEADER
+============================================================================= */
+.home-platform-theme__header{
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+}
+
+.home-platform-theme__eyebrow,
+.home-platform-theme__section-eyebrow{
+  margin:0;
+  font-size:0.72rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  opacity:0.72;
+}
+
+.home-platform-theme__title,
+.home-platform-theme__section-title{
+  margin:0;
+  font-size:1.35rem;
+  font-weight:500;
+  line-height:1.18;
+  letter-spacing:-0.01em;
+}
+
+.home-platform-theme__summary,
+.home-platform-theme__section-context,
+.home-platform-theme__toggle-description{
+  margin:0;
+  font-size:0.95rem;
+  line-height:1.55;
+  opacity:0.78;
+}
+
+/* =============================================================================
+   04) SECTION STRUCTURE
+============================================================================= */
+.home-platform-theme__section{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  padding:1rem 0 0;
+  border-top:1px solid color-mix(in srgb, var(--text-color) 10%, transparent);
+}
+
+.home-platform-theme__section:first-of-type{
+  padding-top:0;
+  border-top:0;
+}
+
+.home-platform-theme__section-header{
+  display:flex;
+  flex-direction:column;
+  gap:0.42rem;
+}
+
+/* =============================================================================
+   05) MODE GRID
+============================================================================= */
+.home-platform-theme__mode-grid{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:0.8rem;
+}
+
+.home-platform-theme__mode-option{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:flex-start;
+  gap:0.22rem;
+  min-height:6rem;
+  width:100%;
+  padding:0.9rem 0.95rem;
+  border:1px solid transparent;
+  border-radius:1rem;
+  background:transparent;
+  color:var(--text-color);
+  text-align:left;
+  cursor:pointer;
+  transition:
+    border-color 220ms ease,
+    background 220ms ease,
+    opacity 220ms ease,
+    color 220ms ease;
+}
+
+.home-platform-theme__mode-option:hover,
+.home-platform-theme__mode-option:focus-visible{
+  border-color:var(--control-border);
+  background:var(--control-bg);
+  outline:none;
+}
+
+.home-platform-theme__mode-option[aria-pressed="true"]{
+  border-color:color-mix(in srgb, var(--color-primary1) 46%, var(--text-color) 18%);
+  background:color-mix(in srgb, var(--color-primary1) 10%, transparent);
+}
+
+.home-platform-theme__mode-label,
+.home-platform-theme__toggle-title{
+  margin:0;
+  font-size:0.96rem;
+  font-weight:500;
+  line-height:1.3;
+}
+
+.home-platform-theme__mode-caption{
+  margin:0;
+  font-size:0.82rem;
+  line-height:1.4;
+  opacity:0.72;
+}
+
+/* =============================================================================
+   06) TOKEN FIELD GRID
+============================================================================= */
+.home-platform-theme__token-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:0.8rem;
+}
+
+.home-platform-theme__token-field{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:0.9rem;
+  min-height:4.2rem;
+  width:100%;
+  padding:0.9rem 0.95rem;
+  border:1px solid transparent;
+  border-radius:1rem;
+  background:transparent;
+  color:var(--text-color);
+}
+
+.home-platform-theme__token-label{
+  margin:0;
+  font-size:0.86rem;
+  font-weight:500;
+  line-height:1.35;
+}
+
+.home-platform-theme__token-input{
+  flex:0 0 auto;
+  width:2.6rem;
+  height:2.6rem;
+  padding:0;
+  border:1px solid var(--control-border);
+  border-radius:0.85rem;
+  background:transparent;
+  cursor:pointer;
+}
+
+.home-platform-theme__token-input::-webkit-color-swatch-wrapper{
+  padding:0;
+}
+
+.home-platform-theme__token-input::-webkit-color-swatch{
+  border:0;
+  border-radius:0.7rem;
+}
+
+.home-platform-theme[data-active-theme="system"] .home-platform-theme__token-grid,
+.home-platform-theme[data-active-theme="dark"] .home-platform-theme__token-grid,
+.home-platform-theme[data-active-theme="light"] .home-platform-theme__token-grid{
+  opacity:0.48;
+  pointer-events:none;
+}
+
+.home-platform-theme[data-active-theme="custom"] .home-platform-theme__token-grid{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* =============================================================================
+   07) TOGGLE LIST CONSUMER LAYOUT
+============================================================================= */
+.home-platform-theme__toggle-list{
+  display:flex;
+  flex-direction:column;
+  gap:0.9rem;
+}
+
+.home-platform-theme__toggle-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  padding:0.95rem 0;
+  border-top:1px solid color-mix(in srgb, var(--text-color) 8%, transparent);
+}
+
+.home-platform-theme__toggle-row:first-child{
+  padding-top:0;
+  border-top:0;
+}
+
+.home-platform-theme__toggle-copy{
+  display:flex;
+  flex:1 1 auto;
+  flex-direction:column;
+  gap:0.22rem;
+  min-width:0;
+}
+
+.home-platform-theme__toggle-row .na-toggle{
+  flex:0 0 auto;
+  align-self:center;
+}
+
+/* =============================================================================
+   08) CANONICAL OWNERSHIP NOTE
+============================================================================= */
+.home-platform-theme__section:last-child .home-platform-theme__section-context{
+  max-width:62ch;
+}
+
+/* =============================================================================
+   09) RESPONSIVE REFINEMENTS
+============================================================================= */
+@media (max-width:900px){
+  .home-platform-theme__mode-grid{
+    grid-template-columns:1fr;
+  }
+
+  .home-platform-theme__token-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width:640px){
+  .home-platform-theme{
+    gap:1.15rem;
+  }
+
+  .home-platform-theme__section{
+    gap:0.85rem;
+  }
+
+  .home-platform-theme__toggle-row{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .home-platform-theme__toggle-row .na-toggle{
+    align-self:flex-start;
+  }
 }

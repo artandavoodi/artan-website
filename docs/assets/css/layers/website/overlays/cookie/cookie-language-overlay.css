@@ -56,15 +56,11 @@
   --cookie-language-overlay-back-icon-filter: var(--icon-image-filter, none);
 }
 
-:root.light-mode,
-html.light-mode,
-body.light-mode{
+html[data-theme-effective="light"]{
   --cookie-language-overlay-surface: rgba(255, 255, 255, 0.96);
 }
 
-:root.dark-mode,
-html.dark-mode,
-body.dark-mode{
+html[data-theme-effective="dark"]{
   --cookie-language-overlay-surface: rgba(10, 10, 10, 0.96);
   --cookie-language-overlay-border: rgba(255, 255, 255, 0.08);
   --cookie-language-overlay-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);

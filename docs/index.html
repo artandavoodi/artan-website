@@ -10,7 +10,7 @@
      08) CUSTOM CURSOR
      09) HIDDEN SITE NAME
      10) LANDING STAGE
-     10A) STAGE BACKGROUND VIDEO
+     10A) STAGE BACKGROUND VIDEO (DISABLED)
      10B) STAGE COGNITIVE CORE SHELL
      10C) STAGE VOICE INTERACTION SHELL
      11) MAIN CONTENT
@@ -202,16 +202,21 @@
 ============================================================================= -->
 <div class="stage-circle">
 <!-- =============================================================================
-     10A) STAGE BACKGROUND VIDEO
+     10A) STAGE BACKGROUND VIDEO (DISABLED)
 ============================================================================= -->
-  <div class="stage-video" aria-hidden="true">
+  <div class="stage-video" aria-hidden="true" hidden data-stage-video-disabled="true">
     <div class="stage-video-overlay" aria-hidden="true"></div>
 
     <video class="stage-video-media" autoplay muted playsinline preload="auto">
       <source src="assets/video/core/video-1.webm" type="video/webm">
     </video>
   </div>
-    <div class="stage-container" id="stage">
+</div>
+
+<!-- =============================================================================
+     10B) STAGE COGNITIVE CORE SHELL
+============================================================================= -->
+<div class="stage-container" id="stage">
         <div class="stage-stack">
             <div class="stage-intro" id="stage-intro">
                 <div class="stage-region stage-region-top" id="stage-top">
@@ -247,7 +252,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <!-- =============================================================================
      11) MAIN CONTENT

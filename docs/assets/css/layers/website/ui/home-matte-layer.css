@@ -2,7 +2,7 @@
    00) FILE INDEX
    01) HOME MATTE TOKENS
    02) HOME MATTE LAYER BASE
-   03) HOME MATTE THEME MODES
+   03) HOME MATTE CUSTOM MODE GATE
    04) HOME MATTE STATE MODES
    05) HOME MATTE EXTENDED STATE MODES
    06) END OF FILE
@@ -65,7 +65,9 @@
   left: 0;
   pointer-events: none;
   z-index: 1;
-  display: block !important;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
   contain: paint;
   overflow: hidden;
   backface-visibility: hidden;
@@ -89,6 +91,7 @@
     background var(--home-matte-transition-duration) var(--home-matte-transition-ease),
     background-color var(--home-matte-transition-duration) var(--home-matte-transition-ease),
     opacity var(--home-matte-transition-duration) var(--home-matte-transition-ease),
+    visibility var(--home-matte-transition-duration) var(--home-matte-transition-ease),
     backdrop-filter var(--home-matte-transition-duration) var(--home-matte-transition-ease),
     -webkit-backdrop-filter var(--home-matte-transition-duration) var(--home-matte-transition-ease);
 }
@@ -101,42 +104,13 @@
 }
 
 /* =============================================================================
-   03) HOME MATTE THEME MODES
+   03) HOME MATTE CUSTOM MODE GATE
 ============================================================================= */
 
-body.light-mode #home-hero .home-hero-matte,
-body.light-mode .home-hero-matte{
-  background-color: rgb(var(--home-matte-rgb-light));
-  background:
-    linear-gradient(
-      180deg,
-      rgba(var(--home-matte-rgb-light), var(--home-matte-opacity-top)) 0%,
-      rgba(var(--home-matte-rgb-light), var(--home-matte-opacity-mid)) 38%,
-      rgba(var(--home-matte-rgb-light), var(--home-matte-opacity-low)) 68%,
-      rgba(var(--home-matte-rgb-light), var(--home-matte-opacity-bottom)) 100%
-    );
-}
-
-body.theme-dark #home-hero .home-hero-matte,
-body.theme-dark .home-hero-matte{
-  --home-matte-opacity-top: 1;
-  --home-matte-opacity-mid: 1;
-  --home-matte-opacity-low: 1;
-  --home-matte-opacity-bottom: 1;
-  --home-matte-blur: 0px;
-  background-color: rgb(0, 0, 0);
-  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%);
-}
-
-body.theme-light #home-hero .home-hero-matte,
-body.theme-light .home-hero-matte{
-  --home-matte-opacity-top: 1;
-  --home-matte-opacity-mid: 1;
-  --home-matte-opacity-low: 1;
-  --home-matte-opacity-bottom: 1;
-  --home-matte-blur: 0px;
-  background-color: rgb(255, 255, 255);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+html[data-theme="custom"] #home-hero .home-hero-matte,
+html[data-theme="custom"] .home-hero-matte{
+  opacity: 1;
+  visibility: visible;
 }
 
 /* =============================================================================
@@ -147,8 +121,8 @@ body.theme-light .home-hero-matte{
    - matte-solid : full solid theme-aware surface, no visible video bleed
 ============================================================================= */
 
-body.matte-blur #home-hero .home-hero-matte,
-body.matte-blur .home-hero-matte{
+html[data-theme="custom"] body.matte-blur #home-hero .home-hero-matte,
+html[data-theme="custom"] body.matte-blur .home-hero-matte{
   --home-matte-opacity-top: var(--home-matte-opacity-top-light);
   --home-matte-opacity-mid: var(--home-matte-opacity-mid-light);
   --home-matte-opacity-low: var(--home-matte-opacity-low-light);
@@ -156,8 +130,8 @@ body.matte-blur .home-hero-matte{
   --home-matte-blur: 24px;
 }
 
-body.matte-soft #home-hero .home-hero-matte,
-body.matte-soft .home-hero-matte{
+html[data-theme="custom"] body.matte-soft #home-hero .home-hero-matte,
+html[data-theme="custom"] body.matte-soft .home-hero-matte{
   --home-matte-opacity-top: var(--home-matte-opacity-top-soft);
   --home-matte-opacity-mid: var(--home-matte-opacity-mid-soft);
   --home-matte-opacity-low: var(--home-matte-opacity-low-soft);
@@ -165,8 +139,8 @@ body.matte-soft .home-hero-matte{
   --home-matte-blur: 30px;
 }
 
-body.matte-solid #home-hero .home-hero-matte,
-body.matte-solid .home-hero-matte{
+html[data-theme="custom"] body.matte-solid #home-hero .home-hero-matte,
+html[data-theme="custom"] body.matte-solid .home-hero-matte{
   --home-matte-opacity-top: 1;
   --home-matte-opacity-mid: 1;
   --home-matte-opacity-low: 1;
@@ -179,8 +153,8 @@ body.matte-solid .home-hero-matte{
    Future-ready optional states for deeper homepage tuning.
 ============================================================================= */
 
-body.matte-clear #home-hero .home-hero-matte,
-body.matte-clear .home-hero-matte{
+html[data-theme="custom"] body.matte-clear #home-hero .home-hero-matte,
+html[data-theme="custom"] body.matte-clear .home-hero-matte{
   --home-matte-opacity-top: var(--home-matte-opacity-top-clear);
   --home-matte-opacity-mid: var(--home-matte-opacity-mid-clear);
   --home-matte-opacity-low: var(--home-matte-opacity-low-clear);
@@ -188,8 +162,8 @@ body.matte-clear .home-hero-matte{
   --home-matte-blur: 10px;
 }
 
-body.matte-solid-softedge #home-hero .home-hero-matte,
-body.matte-solid-softedge .home-hero-matte{
+html[data-theme="custom"] body.matte-solid-softedge #home-hero .home-hero-matte,
+html[data-theme="custom"] body.matte-solid-softedge .home-hero-matte{
   --home-matte-opacity-top: var(--home-matte-opacity-top-solid-softedge);
   --home-matte-opacity-mid: var(--home-matte-opacity-mid-solid-softedge);
   --home-matte-opacity-low: var(--home-matte-opacity-low-solid-softedge);

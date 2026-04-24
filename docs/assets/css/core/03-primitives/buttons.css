@@ -7,7 +7,9 @@
    05) BRAND BUTTON VARIANT
    06) SECONDARY BUTTON VARIANT
    07) GHOST BUTTON VARIANT
-   08) END OF FILE
+   08) ICON BUTTON PRIMITIVE
+   09) BUTTON SIZE VARIANTS
+   10) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -36,9 +38,12 @@
   text-align:center;
   text-decoration:none;
   display:inline-flex;
+  flex:0 0 auto;
   align-items:center;
   justify-content:center;
+  min-width:0;
   gap:0.55rem;
+  white-space:nowrap;
   cursor:pointer;
   box-shadow:none;
   backdrop-filter:blur(var(--glass-blur-sm));
@@ -118,5 +123,62 @@
 }
 
 /* =============================================================================
-   08) END OF FILE
+   08) ICON BUTTON PRIMITIVE
+============================================================================= */
+.ui-button--icon,
+.ui-control--icon{
+  width:var(--control-height-md);
+  min-width:var(--control-height-md);
+  padding:0;
+  gap:0;
+}
+
+.ui-button--icon.ui-button--sm,
+.ui-control--icon.ui-control--sm{
+  width:var(--control-height-sm);
+  min-width:var(--control-height-sm);
+}
+
+.ui-button--icon.ui-button--lg,
+.ui-control--icon.ui-control--lg{
+  width:var(--control-height-lg);
+  min-width:var(--control-height-lg);
+}
+
+.ui-button__icon,
+.ui-control__icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1.15rem;
+  height:1.15rem;
+  flex:0 0 auto;
+}
+
+.ui-button__icon > svg,
+.ui-button__icon > img,
+.ui-control__icon > svg,
+.ui-control__icon > img{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+/* =============================================================================
+   09) BUTTON SIZE VARIANTS
+============================================================================= */
+.ui-button--sm,
+.ui-control--sm{
+  min-height:var(--control-height-sm);
+  padding:0 var(--control-padding-x-sm);
+}
+
+.ui-button--lg,
+.ui-control--lg{
+  min-height:var(--control-height-lg);
+  padding:0 var(--control-padding-x-lg);
+}
+
+/* =============================================================================
+   10) END OF FILE
 ============================================================================= */

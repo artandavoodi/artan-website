@@ -38,6 +38,7 @@ const HOME_STAGE_CORE_EFFECT_STATE = {
 
 const HOME_STAGE_CORE_EFFECT_SELECTORS = {
   shell: '#stage-cognitive-core-shell',
+  vessel: '#stage-glass-vessel',
   microphoneButton: '#stage-microphone-button',
 };
 
@@ -84,6 +85,7 @@ function setHomeStageCoreEffectMode(mode) {
 function getHomeStageCoreEffectNodes() {
   return {
     shell: document.querySelector(HOME_STAGE_CORE_EFFECT_SELECTORS.shell),
+    vessel: document.querySelector(HOME_STAGE_CORE_EFFECT_SELECTORS.vessel),
     microphoneButton: document.querySelector(HOME_STAGE_CORE_EFFECT_SELECTORS.microphoneButton),
   };
 }
@@ -126,16 +128,23 @@ function ensureHomeStageCoreEffectMount() {
    ========================================================= */
 
 function resizeHomeStageCoreEffectCanvas() {
-  const { shell, canvas } = HOME_STAGE_CORE_EFFECT_STATE;
+  const { shell, mount, canvas } = HOME_STAGE_CORE_EFFECT_STATE;
 
-  if (!shell || !canvas) {
+  if (!shell || !mount || !canvas) {
     return;
   }
 
-  const rect = shell.getBoundingClientRect();
+  const nodes = getHomeStageCoreEffectNodes();
+  const vesselRect = nodes.vessel?.getBoundingClientRect?.();
   const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
-  const width = Math.max(1, Math.round(rect.width));
-  const height = Math.max(1, Math.round(rect.height));
+
+  const vesselSize = vesselRect
+    ? Math.max(vesselRect.width, vesselRect.height)
+    : 0;
+
+  const sovereignSize = Math.max(272, Math.round(vesselSize * 1.72));
+  const width = sovereignSize;
+  const height = sovereignSize;
 
   HOME_STAGE_CORE_EFFECT_STATE.width = width;
   HOME_STAGE_CORE_EFFECT_STATE.height = height;
@@ -143,8 +152,6 @@ function resizeHomeStageCoreEffectCanvas() {
 
   canvas.width = Math.round(width * dpr);
   canvas.height = Math.round(height * dpr);
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
 
   const context = HOME_STAGE_CORE_EFFECT_STATE.context;
   if (context) {
@@ -314,6 +321,7 @@ function bindHomeStageCoreEffectEvents() {
    ========================================================= */
 
 function bootHomeStageCoreEffect() {
+
   if (HOME_STAGE_CORE_EFFECT_STATE.isBound) {
     resizeHomeStageCoreEffectCanvas();
     return;

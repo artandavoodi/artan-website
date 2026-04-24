@@ -22,7 +22,14 @@
 import './path-authorities.js';
 import './fragment-authorities.js';
 import './runtime-state.js';
+import './toggle.js';
 import './buttons.js';
+import './selection.js';
+import './forms.js';
+import './menus.js';
+import './navigation.js';
+import './feedback.js';
+import './data.js';
 import './close-button.js';
 import './cursor.js';
 import './drawers.js';
