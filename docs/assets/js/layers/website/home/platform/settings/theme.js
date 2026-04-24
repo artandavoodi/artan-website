@@ -212,6 +212,10 @@ function bindModeOptions(root) {
       const requestedTheme = normalizeTheme(option.getAttribute('data-theme-option'));
       const nextState = createThemeStatePatch({ theme: requestedTheme });
 
+      if (requestedTheme !== THEME_COMPANY && requestedTheme !== THEME_CUSTOM) {
+        setAllHomepageVisualToggles(root, false);
+      }
+
       syncDestinationState(root, nextState);
       requestThemeChange(createThemeIntentFromPatch(nextState));
     });
@@ -283,6 +287,7 @@ function bindModeOptions(root) {
 
       if (themeApi && typeof themeApi.resetThemeToCompanyDefault === 'function') {
         const nextState = themeApi.resetThemeToCompanyDefault();
+        setAllHomepageVisualToggles(root, true);
         syncDestinationState(root, nextState);
         return;
       }
@@ -294,6 +299,7 @@ function bindModeOptions(root) {
         tokens: {}
       });
 
+      setAllHomepageVisualToggles(root, true);
       syncDestinationState(root, nextState);
       requestThemeChange(createThemeIntentFromPatch(nextState));
     });
@@ -393,6 +399,10 @@ function syncToggleAvailability(root, theme) {
   const customThemeActive = getThemeDetail(theme).cinematicAllowed;
   const toggles = Array.from(root.querySelectorAll(TOGGLE_SELECTOR));
   const rows = Array.from(root.querySelectorAll('[data-home-platform-theme-toggle-row]'));
+
+  if (!customThemeActive) {
+    setAllHomepageVisualToggles(root, false);
+  }
 
   toggles.forEach((toggle) => {
     if (!(toggle instanceof HTMLElement)) return;
@@ -608,3 +618,44 @@ export function mountHomePlatformDestination(root) {
 /* =============================================================================
    11) END OF FILE
 ============================================================================= */
+function setHomepageToggleStorage(key, checked) {
+  const toggleApi = window.NeuroartanToggle;
+  const storageId = `homepage-theme:${key}`;
+
+  if (toggleApi && typeof toggleApi.writeStoredToggleState === 'function') {
+    toggleApi.writeStoredToggleState(storageId, checked);
+  }
+}
+
+function setHomepageToggleElement(toggle, checked) {
+  if (!(toggle instanceof HTMLElement)) return;
+
+  const toggleApi = window.NeuroartanToggle;
+
+  if (toggleApi && typeof toggleApi.syncToggleState === 'function') {
+    toggleApi.syncToggleState(toggle, checked, {
+      emit: true,
+      persist: true,
+      source: 'home-platform-settings-theme-mode-gate'
+    });
+    return;
+  }
+
+  toggle.setAttribute('aria-checked', checked ? 'true' : 'false');
+  toggle.setAttribute('aria-pressed', checked ? 'true' : 'false');
+  toggle.dataset.toggleChecked = checked ? 'true' : 'false';
+}
+
+function setAllHomepageVisualToggles(root, checked) {
+  const toggles = Array.from(root.querySelectorAll(TOGGLE_SELECTOR));
+
+  Object.keys(HOMEPAGE_THEME_TOGGLE_ATTRIBUTE_MAP).forEach((key) => {
+    setHomepageToggleAttribute(key, checked);
+    setHomepageToggleStorage(key, checked);
+  });
+
+  toggles.forEach((toggle) => {
+    if (!(toggle instanceof HTMLElement)) return;
+    setHomepageToggleElement(toggle, checked);
+  });
+}
