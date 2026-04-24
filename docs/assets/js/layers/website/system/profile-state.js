@@ -15,8 +15,10 @@
    01) MODULE IMPORTS
 ============================================================================= */
 import {
+  buildPublicProfileModel,
   getProfileIdentityBackendState,
   getSupabaseClient as getProfileIdentitySupabaseClient,
+  getSupabaseProfileByUsername,
   loadProfileIdentityPolicy,
   normalizeString,
   resolvePublicProfileByUsername
@@ -62,6 +64,56 @@ function getProfileStateBackendState() {
     profileIdentityBackendState: getProfileIdentityBackendState(),
     publicModelRegistryBackendState: getPublicModelRegistryBackendState(),
     migrationStatus: 'transitional_public_profile_resolution_continuity'
+  };
+}
+
+async function resolveSupabasePublicProfileByUsername(route, policy) {
+  const supabase = getSupabaseClient();
+  const normalizedUsername = normalizeString(route.normalizedUsername || route.routeCandidate || '');
+
+  if (!supabase || !normalizedUsername) {
+    return null;
+  }
+
+  const profile = await getSupabaseProfileByUsername({
+    supabase,
+    username: normalizedUsername
+  });
+
+  if (!profile) {
+    return {
+      outcome: 'not_found',
+      username: normalizedUsername,
+      normalizedUsername,
+      publicRoutePath: route.publicRoutePath || '',
+      publicRouteUrl: route.publicRouteUrl || '',
+      publicRouteDisplay: route.publicRouteDisplay || '',
+      publicProfile: null,
+      reason: 'PUBLIC_PROFILE_NOT_FOUND'
+    };
+  }
+
+  const publicProfile = buildPublicProfileModel(profile, policy);
+  const publicEnabled = profile.public_profile_enabled === true;
+  const publicVisibility = normalizeString(profile.public_profile_visibility || '').toLowerCase();
+  const routeStatus = normalizeString(profile.public_route_status || '').toLowerCase();
+  const renderable = publicEnabled
+    && !['hidden', 'private', 'owner_only', 'internal'].includes(publicVisibility)
+    && ['ready', 'renderable', 'active'].includes(routeStatus || 'ready');
+
+  return {
+    outcome: renderable
+      ? 'found_renderable'
+      : publicEnabled
+        ? 'reserved_but_not_ready'
+        : 'reserved_but_disabled',
+    username: normalizedUsername,
+    normalizedUsername,
+    publicRoutePath: route.publicRoutePath || '',
+    publicRouteUrl: route.publicRouteUrl || '',
+    publicRouteDisplay: route.publicRouteDisplay || '',
+    publicProfile: renderable ? publicProfile : null,
+    reason: renderable ? '' : 'PUBLIC_ROUTE_NOT_PUBLISHED'
   };
 }
 
@@ -113,11 +165,11 @@ async function waitForFirebaseReady(timeoutMs = 1200) {
 ============================================================================= */
 /*
  * Transitional rule:
- * Firestore-backed public-profile resolution below remains tolerated continuity
- * only until backend-native public profile resolution is implemented in the
- * approved backend direction. This file must not silently treat Firebase,
- * browser-local continuity, or static projection layers as canonical owner of
- * public profile truth.
+ * Public-profile resolution below must now prefer Supabase-backed canonical
+ * profile truth, while Firestore and static registry fallbacks remain tolerated
+ * continuity only for still-unmigrated scopes. This file must not silently
+ * treat Firebase, browser-local continuity, or static projection layers as the
+ * canonical owner of public profile truth.
  */
 function buildBaseState(route = getPublicRouteState()) {
   return {
@@ -175,7 +227,10 @@ async function buildRegistryResolutionState(route) {
 
   const routeStatus = normalizeString(publicProfile.public_route_status || 'ready').toLowerCase();
   const publicEnabled = publicProfile.public_profile_enabled === true;
-  const renderable = publicEnabled && ['ready', 'renderable', 'active'].includes(routeStatus);
+  const publicVisibility = normalizeString(publicProfile.public_profile_visibility || '').toLowerCase();
+  const renderable = publicEnabled
+    && !['hidden', 'private', 'owner_only', 'internal'].includes(publicVisibility)
+    && ['ready', 'renderable', 'active'].includes(routeStatus || 'ready');
 
   return {
     ...baseState,
@@ -187,6 +242,7 @@ async function buildRegistryResolutionState(route) {
         : 'reserved_but_disabled',
     publicProfile: {
       ...publicProfile,
+      public_profile_visibility: normalizeString(publicProfile.public_profile_visibility || (publicEnabled ? 'public' : 'private')).toLowerCase(),
       public_route_path: normalizeString(publicProfile.public_route_path || route.publicRoutePath),
       public_route_canonical_url: normalizeString(publicProfile.public_route_canonical_url || route.publicRouteUrl)
     },
@@ -269,22 +325,57 @@ async function resolveStateForRoute(route) {
   });
 
   const policy = await loadProfileIdentityPolicy();
-  const firebaseReady = await waitForFirebaseReady();
 
   if (requestId !== RUNTIME.requestId) return;
 
-  if (!firebaseReady) {
-    setState(await buildRegistryResolutionState(route));
-    return;
-  }
-
-  const firestore = getFirestore();
-  if (!firestore) {
-    setState(await buildRegistryResolutionState(route));
-    return;
-  }
-
   try {
+    const supabaseResolution = await resolveSupabasePublicProfileByUsername(route, policy);
+
+    if (requestId !== RUNTIME.requestId) return;
+
+    if (supabaseResolution?.outcome === 'found_renderable') {
+      setState({
+        ...baseState,
+        ...supabaseResolution,
+        loading: false,
+        route,
+        model: registryModel || null,
+        creator: registryCreator
+      });
+      return;
+    }
+
+    if (
+      supabaseResolution
+      && supabaseResolution.outcome !== 'not_found'
+      && supabaseResolution.outcome !== 'error'
+    ) {
+      setState({
+        ...baseState,
+        ...supabaseResolution,
+        loading: false,
+        route,
+        model: null,
+        creator: null
+      });
+      return;
+    }
+
+    const firebaseReady = await waitForFirebaseReady();
+
+    if (requestId !== RUNTIME.requestId) return;
+
+    if (!firebaseReady) {
+      setState(await buildRegistryResolutionState(route));
+      return;
+    }
+
+    const firestore = getFirestore();
+    if (!firestore) {
+      setState(await buildRegistryResolutionState(route));
+      return;
+    }
+
     const resolution = await resolvePublicProfileByUsername({
       firestore,
       username: route.normalizedUsername || route.routeCandidate,
@@ -298,7 +389,7 @@ async function resolveStateForRoute(route) {
 
       if (requestId !== RUNTIME.requestId) return;
 
-      if (registryResolution.outcome === 'found_renderable') {
+      if (registryResolution.outcome === 'found_renderable' && resolution.outcome === 'not_found') {
         setState(registryResolution);
         return;
       }
@@ -309,8 +400,8 @@ async function resolveStateForRoute(route) {
       ...resolution,
       loading: false,
       route,
-      model: registryModel || null,
-      creator: registryCreator
+      model: resolution.outcome === 'found_renderable' ? (registryModel || null) : null,
+      creator: resolution.outcome === 'found_renderable' ? registryCreator : null
     });
   } catch (error) {
     if (requestId !== RUNTIME.requestId) return;

@@ -1,0 +1,29 @@
+<section class="home-platform-destination home-platform-destination--workspace-model-overview" data-home-platform-destination-root aria-label="Model overview destination">
+  <div class="home-model-workspace" data-model-workspace-root>
+    <div class="home-model-workspace__grid" data-model-workspace-summary></div>
+
+    <form class="home-model-workspace__form" data-model-create-form>
+      <div class="home-model-workspace__form-row">
+        <label class="home-model-workspace__field">
+          <span>Model name</span>
+          <input name="model_name" type="text" autocomplete="off" placeholder="Personal continuity model" required>
+        </label>
+        <label class="home-model-workspace__field">
+          <span>Visibility</span>
+          <select name="model_visibility">
+            <option value="private">Private</option>
+            <option value="public">Public</option>
+          </select>
+        </label>
+      </div>
+      <label class="home-model-workspace__field">
+        <span>Description</span>
+        <textarea name="description" rows="3" placeholder="Describe what this model represents."></textarea>
+      </label>
+      <button class="home-platform-shell__content-state-action" type="submit">Create Model</button>
+      <p class="home-model-workspace__status" data-model-workspace-status aria-live="polite"></p>
+    </form>
+
+    <div class="home-model-workspace__list" data-model-workspace-list></div>
+  </div>
+</section>

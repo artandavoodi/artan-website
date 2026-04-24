@@ -38,6 +38,9 @@ import {
   createUsernameError,
   evaluateEligibility,
   findProfileByUsername,
+  getSupabaseProfileByAuthUserId,
+  getSupabaseProfileByUsername,
+  getSupabaseUsernameReservation,
   getUsernameAvailability,
   loadProfileIdentityPolicy,
   messageForUsernameError,
@@ -45,6 +48,7 @@ import {
   normalizeGenderValue,
   normalizeString,
   normalizeUsername,
+  reserveSupabaseUsernameProfile,
   reserveUsernameProfile,
   splitFullName,
   validateUsernameLocally
@@ -91,6 +95,124 @@ import {
 
   function hasSupabaseClient() {
     return !!getSupabaseClient();
+  }
+
+  async function getSupabaseSessionUser() {
+    const supabase = getSupabaseClient();
+    if (!supabase) return null;
+
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      throw error;
+    }
+
+    return data?.session?.user || null;
+  }
+
+  async function getSupabaseSession() {
+    const supabase = getSupabaseClient();
+    if (!supabase) return null;
+
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      throw error;
+    }
+
+    return data?.session || null;
+  }
+
+  function isSupabaseEmailVerificationPending(data = {}) {
+    const session = data?.session || null;
+    const user = data?.user || null;
+
+    return !!(user && !session && !user?.email_confirmed_at);
+  }
+
+  async function getSupabaseProfile(authUserId) {
+    return getSupabaseProfileByAuthUserId({
+      supabase: getSupabaseClient(),
+      authUserId
+    });
+  }
+
+  async function resolveSupabaseEmailIdentity(identity) {
+    const normalizedIdentity = normalizeString(identity);
+    if (!normalizedIdentity) return '';
+
+    if (normalizedIdentity.includes('@')) {
+      return normalizeEmail(normalizedIdentity);
+    }
+
+    if (isPhoneIdentity(normalizedIdentity)) {
+      return '';
+    }
+
+    const profile = await getSupabaseProfileByUsername({
+      supabase: getSupabaseClient(),
+      username: normalizedIdentity
+    });
+
+    return normalizeEmail(profile?.email || '');
+  }
+
+  function isSupabaseRelationMissingError(error) {
+    const code = normalizeString(error?.code || '').toUpperCase();
+    const message = normalizeString(error?.message || '').toLowerCase();
+
+    return code === '42P01' || message.includes('does not exist');
+  }
+
+  async function assertSupabaseUsernameAvailable(values, existingProfile, user) {
+    const supabase = getSupabaseClient();
+    const normalizedUsername = normalizeUsername(values?.username || existingProfile?.username || '');
+    if (!supabase || !normalizedUsername) return normalizedUsername;
+
+    const currentAuthUserId = normalizeString(user?.id || user?.uid || '');
+    const currentProfileId = normalizeString(existingProfile?.id || '');
+
+    const conflictingProfile = await getSupabaseProfileByUsername({
+      supabase,
+      username: normalizedUsername
+    });
+
+    if (conflictingProfile) {
+      const conflictingAuthUserId = normalizeString(conflictingProfile.auth_user_id || '');
+      const conflictingProfileId = normalizeString(conflictingProfile.id || '');
+
+      if (conflictingAuthUserId && currentAuthUserId && conflictingAuthUserId !== currentAuthUserId) {
+        throw createUsernameError('USERNAME_TAKEN');
+      }
+
+      if (conflictingProfileId && currentProfileId && conflictingProfileId !== currentProfileId) {
+        throw createUsernameError('USERNAME_TAKEN');
+      }
+    }
+
+    try {
+      const reservation = await getSupabaseUsernameReservation({
+        supabase,
+        username: normalizedUsername
+      });
+
+      if (!reservation) return normalizedUsername;
+
+      const reservationAuthUserId = normalizeString(reservation.auth_user_id || reservation.owner_auth_user_id || '');
+      const reservationProfileId = normalizeString(reservation.profile_id || reservation.owner_profile_id || '');
+
+      if (reservationAuthUserId && currentAuthUserId && reservationAuthUserId !== currentAuthUserId) {
+        throw createUsernameError('USERNAME_TAKEN');
+      }
+
+      if (reservationProfileId && currentProfileId && reservationProfileId !== currentProfileId) {
+        throw createUsernameError('USERNAME_TAKEN');
+      }
+    } catch (error) {
+      if (!isSupabaseRelationMissingError(error)) {
+        throw error;
+      }
+    }
+
+    return normalizedUsername;
   }
   const MODULE_ID = 'account-completion';
   const PROFILE_ROUTE = '/profile.html';
@@ -315,14 +437,24 @@ import {
   }
 
   function getPrimaryProviderId(user) {
-    const providerId = user?.providerData?.find((entry) => entry?.providerId && entry.providerId !== 'firebase')?.providerId || '';
+    const firebaseProviderId = user?.providerData?.find((entry) => entry?.providerId && entry.providerId !== 'firebase')?.providerId || '';
+    const supabaseProviderId = normalizeString(
+      user?.app_metadata?.provider
+      || (Array.isArray(user?.app_metadata?.providers) ? user.app_metadata.providers[0] : '')
+      || user?.identities?.[0]?.provider
+      || ''
+    );
+    const providerId = firebaseProviderId || supabaseProviderId;
 
     switch (providerId) {
       case 'apple.com':
+      case 'apple':
         return 'apple';
       case 'google.com':
+      case 'google':
         return 'google';
       case 'password':
+      case 'email':
         return 'email';
       case 'phone':
         return 'phone';
@@ -478,10 +610,18 @@ import {
      11) ACCOUNT STORE HELPERS
   ============================================================================= */
   async function getProfileByUid(uid) {
-    const firestore = getFirestore();
-    if (!firestore || !uid) return null;
+    const normalizedUid = normalizeString(uid);
+    if (!normalizedUid) return null;
 
-    const snapshot = await firestore.collection(PROFILE_COLLECTION).doc(uid).get();
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      return getSupabaseProfile(normalizedUid);
+    }
+
+    const firestore = getFirestore();
+    if (!firestore) return null;
+
+    const snapshot = await firestore.collection(PROFILE_COLLECTION).doc(normalizedUid).get();
     if (!snapshot.exists) return null;
     return snapshot.data() || null;
   }
@@ -489,6 +629,11 @@ import {
   async function resolveEmailIdentity(identity) {
     const normalizedIdentity = normalizeString(identity);
     if (!normalizedIdentity) return '';
+
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      return resolveSupabaseEmailIdentity(normalizedIdentity);
+    }
 
     if (normalizedIdentity.includes('@')) {
       return normalizeEmail(normalizedIdentity);
@@ -528,7 +673,7 @@ import {
   function buildProfilePrefill(user, profile = null) {
     const providerContext = RUNTIME.lastProviderContext || {};
     const onboarding = RUNTIME.onboardingContext || {};
-    const splitDisplayName = splitFullName(user?.displayName || providerContext.display_name || '');
+    const splitDisplayName = splitFullName(user?.displayName || user?.user_metadata?.full_name || user?.user_metadata?.name || providerContext.display_name || '');
 
     const values = {
       method: onboarding.method || providerContext.method || getPrimaryProviderId(user),
@@ -536,7 +681,7 @@ import {
       email: onboarding.email || providerContext.email || normalizeEmail(profile?.email || user?.email || ''),
       first_name: profile?.first_name || onboarding.first_name || providerContext.first_name || splitDisplayName.first_name || '',
       last_name: profile?.last_name || onboarding.last_name || providerContext.last_name || splitDisplayName.last_name || '',
-      display_name: profile?.display_name || onboarding.display_name || providerContext.display_name || normalizeString(user?.displayName || ''),
+      display_name: profile?.display_name || onboarding.display_name || providerContext.display_name || normalizeString(user?.displayName || user?.user_metadata?.full_name || user?.user_metadata?.name || ''),
       username: profile?.username || onboarding.username || providerContext.username || '',
       password: onboarding.password || '',
       password_confirm: onboarding.password_confirm || onboarding.password || '',
@@ -646,7 +791,7 @@ import {
     }
 
     try {
-      emitProfileState(user, await getProfileByUid(user.uid));
+      emitProfileState(user, await getProfileByUid(user.id || user.uid));
     } catch (error) {
       emitProfileState(user, null);
       console.error('Profile redirect state refresh failed:', error);
@@ -726,6 +871,32 @@ import {
 
         RUNTIME.usernameValidationTimer = window.setTimeout(async () => {
           try {
+            const supabase = getSupabaseClient();
+
+            if (supabase) {
+              const sessionUser = await getSupabaseSessionUser();
+              const availabilityUsername = localValidation.normalized;
+              const currentProfile = sessionUser?.id
+                ? await getSupabaseProfileByAuthUserId({
+                    supabase,
+                    authUserId: sessionUser.id
+                  })
+                : null;
+
+              await assertSupabaseUsernameAvailable({
+                username: availabilityUsername
+              }, currentProfile, sessionUser);
+
+              if (requestId !== RUNTIME.usernameValidationRequestId) return;
+
+              emitUsernameStatus({
+                state: 'available',
+                normalized: availabilityUsername,
+                message: buildUsernameStatus('available', availabilityUsername, policy)
+              });
+              return;
+            }
+
             const firestore = getFirestore() || (await waitForFirebaseReady(1500) ? getFirestore() : null);
             const availability = await getUsernameAvailability({
               firestore,
@@ -1035,24 +1206,40 @@ import {
     const context = patchOnboardingContext(detail);
     const auth = getFirebaseAuth();
     const currentUser = auth?.currentUser || null;
-    const method = normalizeString(detail.method || context.method || getPrimaryProviderId(currentUser));
+    const supabase = getSupabaseClient();
+    const supabaseSessionUser = supabase ? await getSupabaseSessionUser() : null;
+    const activeUser = supabaseSessionUser || currentUser || null;
+    const method = normalizeString(detail.method || context.method || getPrimaryProviderId(activeUser));
+    const firstName = normalizeString(detail.first_name || context.first_name || '');
+    const lastName = normalizeString(detail.last_name || context.last_name || '');
     const values = {
       method,
-      auth_provider: method || getPrimaryProviderId(currentUser) || 'email',
-      email: normalizeEmail(context.email || currentUser?.email || ''),
+      auth_provider: method || getPrimaryProviderId(activeUser) || 'email',
+      email: normalizeEmail(detail.email || context.email || activeUser?.email || activeUser?.user_metadata?.email || ''),
       username: normalizeUsername(detail.username || context.username || ''),
-      first_name: normalizeString(detail.first_name || context.first_name || ''),
-      last_name: normalizeString(detail.last_name || context.last_name || ''),
+      first_name: firstName,
+      last_name: lastName,
       display_name: buildDisplayName({
-        display_name: detail.display_name || context.display_name || '',
-        first_name: detail.first_name || context.first_name || '',
-        last_name: detail.last_name || context.last_name || ''
+        display_name: detail.display_name || context.display_name || activeUser?.user_metadata?.full_name || activeUser?.user_metadata?.name || '',
+        first_name: firstName,
+        last_name: lastName
       }),
       password: normalizeString(detail.password || context.password || ''),
       password_confirm: normalizeString(detail.password_confirm || context.password_confirm || detail.password || context.password || ''),
       date_of_birth: normalizeString(detail.date_of_birth || context.date_of_birth || ''),
       gender: normalizeGenderValue(detail.gender || context.gender || '')
     };
+
+    patchOnboardingContext({
+      ...context,
+      ...values,
+      display_name: values.display_name,
+      first_name: values.first_name,
+      last_name: values.last_name,
+      username: values.username,
+      date_of_birth: values.date_of_birth,
+      gender: values.gender
+    });
 
     if (!values.username) {
       setFieldError(usernameField, 'Choose a username.');
@@ -1100,7 +1287,7 @@ import {
       return;
     }
 
-    if (method === 'email' && !currentUser) {
+    if (method === 'email' && !activeUser) {
       if (!values.email) {
         setFieldError(firstNameField, 'Email onboarding lost context. Start again from Continue with email.');
         return;
@@ -1131,8 +1318,95 @@ import {
     });
 
     try {
-      const { auth: authInstance, firestore } = await ensureReadyOrThrow();
-      let user = authInstance.currentUser || null;
+      let user = activeUser;
+      let firestore = getFirestore();
+
+      if (supabase) {
+        const currentSession = await getSupabaseSession();
+        user = currentSession?.user || user;
+
+        if (method === 'email' && !user) {
+          const { data, error } = await supabase.auth.signUp({
+            email: values.email,
+            password: values.password,
+            options: {
+              emailRedirectTo: `${window.location.origin}${PROFILE_ROUTE}`
+            }
+          });
+
+          if (error) {
+            throw error;
+          }
+
+          if (isSupabaseEmailVerificationPending(data)) {
+            clearOnboardingContext();
+            clearFlowState();
+            emitProfileSetupSubmitStatus({
+              state: 'success',
+              message: 'Check your email to verify your account, then sign in again to complete your profile.'
+            });
+            return;
+          }
+
+          user = data?.session?.user || data?.user || null;
+        }
+
+        if (!user) {
+          throw createUsernameError('AUTHENTICATED_USER_REQUIRED');
+        }
+
+        const activeSession = await getSupabaseSession();
+        const authenticatedUser = activeSession?.user || null;
+
+        if (!authenticatedUser?.id) {
+          if (method === 'email') {
+            throw createUsernameError('EMAIL_VERIFICATION_REQUIRED');
+          }
+
+          throw createUsernameError('AUTHENTICATED_USER_REQUIRED');
+        }
+
+        user = authenticatedUser;
+
+        const existingProfile = await getSupabaseProfileByAuthUserId({
+          supabase,
+          authUserId: user.id || user.uid
+        });
+
+        await assertSupabaseUsernameAvailable(values, existingProfile, user);
+
+        const profile = await reserveSupabaseUsernameProfile({
+          supabase,
+          user,
+          values,
+          existingProfile,
+          policy
+        });
+
+        emitUsernameStatus({
+          state: 'available',
+          normalized: values.username,
+          message: buildUsernameStatus('available', values.username, policy)
+        });
+
+        clearOnboardingContext();
+        setFlowState({
+          resolveProfile: true,
+          redirectToProfile: true
+        });
+        emitProfileSetupSubmitStatus({
+          state: 'success',
+          message: 'Profile created. Opening your private profile.'
+        });
+        emitProfileState(user, profile || existingProfile || null);
+        await maybeRedirectAfterCompleteProfile(user);
+        return;
+      }
+
+      const readyServices = await ensureReadyOrThrow();
+      const authInstance = readyServices.auth;
+      firestore = readyServices.firestore;
+      user = authInstance.currentUser || user;
 
       await assertUsernameAvailable({
         firestore,
@@ -1201,6 +1475,7 @@ import {
         || usernameCode === 'USERNAME_TAKEN'
         || usernameCode === 'USERNAME_CHANGE_LOCKED'
         || usernameCode === 'PROFILE_STORE_UNAVAILABLE'
+        || usernameCode === 'EMAIL_VERIFICATION_REQUIRED'
       ) {
         const state = usernameCode === 'USERNAME_INVALID'
           ? 'invalid-format'
@@ -1215,7 +1490,9 @@ import {
           normalized: values.username,
           message: buildUsernameStatus(state, values.username, policy)
         });
-        const usernameMessage = messageForUsernameError(usernameCode, policy);
+        const usernameMessage = usernameCode === 'EMAIL_VERIFICATION_REQUIRED'
+          ? 'Verify your email first, then sign in again to complete your profile.'
+          : messageForUsernameError(usernameCode, policy);
         emitProfileSetupSubmitStatus({
           state: 'error',
           message: usernameMessage
@@ -1234,7 +1511,10 @@ import {
         });
         setFieldError(usernameField, unavailableMessage);
       } else {
-        const message = mapFirebaseError(error, 'Unable to complete profile setup right now.');
+        const supabaseMessage = normalizeString(error?.message || '').toLowerCase();
+        const message = supabaseMessage.includes('row-level security')
+          ? 'Profile creation is blocked by backend access policy right now.'
+          : mapFirebaseError(error, 'Unable to complete profile setup right now.');
         emitProfileSetupSubmitStatus({
           state: 'error',
           message
@@ -1257,7 +1537,7 @@ import {
     resetAccountSurfaces('signed-in');
 
     try {
-      const profile = await getProfileByUid(user.uid);
+      const profile = await getProfileByUid(user.id || user.uid);
       if (requestId !== RUNTIME.profileRequestId) return;
 
       if (isProfileComplete(profile)) {
@@ -1370,25 +1650,45 @@ import {
   }
 
   function bindAccountEvents() {
-    document.addEventListener('account:entry-request', (event) => {
+    document.addEventListener('account:entry-request', async (event) => {
       const detail = event instanceof CustomEvent ? event.detail || {} : {};
-      const user = getFirebaseAuth()?.currentUser || null;
+      const firebaseUser = getFirebaseAuth()?.currentUser || null;
 
-      if (!user) {
-        requestGuestAccountEntry(detail);
+      if (firebaseUser) {
+        if (isProfileRoute()) {
+          document.dispatchEvent(new CustomEvent('profile:navigate-request', {
+            detail: {
+              section: 'overview'
+            }
+          }));
+          return;
+        }
+
+        redirectToProfile();
         return;
       }
 
-      if (isProfileRoute()) {
-        document.dispatchEvent(new CustomEvent('profile:navigate-request', {
-          detail: {
-            section: 'overview'
+      try {
+        const supabaseUser = await getSupabaseSessionUser();
+
+        if (supabaseUser) {
+          if (isProfileRoute()) {
+            document.dispatchEvent(new CustomEvent('profile:navigate-request', {
+              detail: {
+                section: 'overview'
+              }
+            }));
+            return;
           }
-        }));
-        return;
+
+          redirectToProfile();
+          return;
+        }
+      } catch (error) {
+        console.error('Supabase account entry resolution failed:', error);
       }
 
-      redirectToProfile();
+      requestGuestAccountEntry(detail);
     });
 
     document.addEventListener('account:provider-submit', (event) => {
@@ -1459,10 +1759,20 @@ import {
       clearFlowState();
     });
 
-    document.addEventListener('account:profile-refresh-request', () => {
-      const user = getFirebaseAuth()?.currentUser || null;
-      if (!user) return;
-      void handleSignedInState(user);
+    document.addEventListener('account:profile-refresh-request', async () => {
+      const firebaseUser = getFirebaseAuth()?.currentUser || null;
+      if (firebaseUser) {
+        void handleSignedInState(firebaseUser);
+        return;
+      }
+
+      try {
+        const supabaseUser = await getSupabaseSessionUser();
+        if (!supabaseUser) return;
+        void handleSignedInState(supabaseUser);
+      } catch (error) {
+        console.error('Supabase profile refresh failed:', error);
+      }
     });
 
     document.addEventListener('submit', (event) => {

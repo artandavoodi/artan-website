@@ -1,0 +1,89 @@
+.home-platform-destination--workspace-model-overview{
+  width:100%;
+}
+
+.home-model-workspace{
+  display:grid;
+  gap:1rem;
+}
+
+.home-model-workspace__grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:0.72rem;
+}
+
+.home-model-workspace__metric,
+.home-model-workspace__form,
+.home-model-workspace__item{
+  display:grid;
+  gap:0.5rem;
+  padding:1rem;
+  border:1px solid var(--home-panel-card-border);
+  background:var(--home-panel-card-surface);
+}
+
+.home-model-workspace__label,
+.home-model-workspace__field span,
+.home-model-workspace__status{
+  margin:0;
+  color:color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
+  font-size:0.72rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.home-model-workspace__value,
+.home-model-workspace__name{
+  margin:0;
+  color:var(--text-primary-color);
+  font-size:1rem;
+  font-weight:500;
+}
+
+.home-model-workspace__copy{
+  margin:0;
+  color:color-mix(in srgb, var(--text-secondary-color) 84%, transparent);
+  font-size:0.88rem;
+  line-height:1.55;
+}
+
+.home-model-workspace__form-row{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(10rem, 0.38fr);
+  gap:0.72rem;
+}
+
+.home-model-workspace__field{
+  display:grid;
+  gap:0.45rem;
+}
+
+.home-model-workspace__field input,
+.home-model-workspace__field select,
+.home-model-workspace__field textarea{
+  width:100%;
+  min-height:2.65rem;
+  padding:0.72rem 0.82rem;
+  border:1px solid var(--control-border);
+  background:transparent;
+  color:var(--text-primary-color);
+  font:inherit;
+}
+
+.home-model-workspace__field textarea{
+  resize:vertical;
+}
+
+.home-model-workspace__list{
+  display:grid;
+  gap:0.7rem;
+}
+
+@media (max-width:760px){
+  .home-model-workspace__grid,
+  .home-model-workspace__form-row{
+    grid-template-columns:1fr;
+  }
+}

@@ -4,20 +4,21 @@
    02) STATE
    03) BACKEND QUERY HELPERS
    04) DRAWER QUERY HELPERS
-   05) STATE VISIBILITY HELPERS
-   06) OPEN / CLOSE HELPERS
-   06A) INNER ROUTE REQUEST HELPERS
-   07) OPEN REQUEST BINDING
-   08) CLOSE REQUEST BINDING
-   09) GLOBAL CLICK BINDING
-   10) ROUTE REQUEST BINDING
-   10A) INNER ROUTE CONTROLS
-   10B) PROVIDER REQUEST HELPERS
-   10C) FORM SUBMIT BINDING
-   11) ESCAPE BINDING
-   12) EVENT REBINDING
-   13) BOOTSTRAP
-   14) END OF FILE
+   05) HIDDEN CONTEXT FIELD HELPERS
+   06) STATE VISIBILITY HELPERS
+   07) OPEN / CLOSE HELPERS
+   07A) INNER ROUTE REQUEST HELPERS
+   08) OPEN REQUEST BINDING
+   09) CLOSE REQUEST BINDING
+   10) GLOBAL CLICK BINDING
+   11) ROUTE REQUEST BINDING
+   11A) INNER ROUTE CONTROLS
+   11B) PROVIDER REQUEST HELPERS
+   11C) FORM SUBMIT BINDING
+   12) ESCAPE BINDING
+   13) EVENT REBINDING
+   14) BOOTSTRAP
+   15) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -69,7 +70,33 @@
   }
 
   /* =============================================================================
-     05) STATE VISIBILITY HELPERS
+     05) HIDDEN CONTEXT FIELD HELPERS
+  ============================================================================= */
+  function getHiddenMethodInput() {
+    return document.querySelector('#account-sign-up-method');
+  }
+
+  function getHiddenAuthProviderInput() {
+    return document.querySelector('#account-sign-up-auth-provider');
+  }
+
+  function syncHiddenContextFields(detail = {}) {
+    const hiddenMethodInput = getHiddenMethodInput();
+    const hiddenAuthProviderInput = getHiddenAuthProviderInput();
+    const method = String(detail.method || 'email').trim() || 'email';
+    const authProvider = String(detail.auth_provider || detail.provider || method || 'email').trim() || 'email';
+
+    if (hiddenMethodInput) {
+      hiddenMethodInput.value = method;
+    }
+
+    if (hiddenAuthProviderInput) {
+      hiddenAuthProviderInput.value = authProvider;
+    }
+  }
+
+  /* =============================================================================
+     06) STATE VISIBILITY HELPERS
   ============================================================================= */
   function normalizeStateVisibility() {
     const drawer = getDrawer();
@@ -80,12 +107,13 @@
   }
 
   /* =============================================================================
-     06) OPEN / CLOSE HELPERS
+     07) OPEN / CLOSE HELPERS
   ============================================================================= */
   function openDrawer() {
     const drawer = getDrawer();
     if (!drawer) return;
 
+    syncHiddenContextFields({ method: 'email', auth_provider: 'email' });
     window.clearTimeout(closeTimer);
     drawer.classList.add('is-open');
     drawer.setAttribute('aria-hidden', 'false');
@@ -102,7 +130,7 @@
   }
 
   /* =============================================================================
-     06A) INNER ROUTE REQUEST HELPERS
+     07A) INNER ROUTE REQUEST HELPERS
   ============================================================================= */
   function requestInnerView(action) {
     if (!action) return;
@@ -116,7 +144,7 @@
   }
 
   /* =============================================================================
-     07) OPEN REQUEST BINDING
+     08) OPEN REQUEST BINDING
   ============================================================================= */
   function bindOpenRequests() {
     if (document.documentElement.dataset.accountSignUpDrawerOpenBound === 'true') return;
@@ -128,7 +156,7 @@
   }
 
   /* =============================================================================
-     08) CLOSE REQUEST BINDING
+     09) CLOSE REQUEST BINDING
   ============================================================================= */
   function bindCloseRequests() {
     if (document.documentElement.dataset.accountSignUpDrawerCloseBound === 'true') return;
@@ -140,7 +168,7 @@
   }
 
   /* =============================================================================
-     09) GLOBAL CLICK BINDING
+     10) GLOBAL CLICK BINDING
   ============================================================================= */
   function bindGlobalClicks() {
     if (document.documentElement.dataset.accountSignUpDrawerGlobalClickBound === 'true') return;
@@ -162,7 +190,7 @@
   }
 
   /* =============================================================================
-     10) ROUTE REQUEST BINDING
+     11) ROUTE REQUEST BINDING
   ============================================================================= */
   function bindRouteRequests() {
     if (document.documentElement.dataset.accountSignUpDrawerRouteBound === 'true') return;
@@ -171,6 +199,7 @@
     const handleSignUpRoute = (event) => {
       const route = event?.detail?.route || event?.detail?.action || '';
       if (route !== 'sign-up') return;
+      syncHiddenContextFields(event?.detail || {});
       openDrawer();
     };
 
@@ -180,7 +209,7 @@
   }
 
   /* =============================================================================
-     10A) INNER ROUTE CONTROLS
+     11A) INNER ROUTE CONTROLS
   ============================================================================= */
   function bindInnerRouteControls() {
     if (document.documentElement.dataset.accountSignUpDrawerInnerRouteBound === 'true') return;
@@ -224,6 +253,7 @@
       if (appleControl) {
         event.preventDefault();
         event.stopPropagation();
+        syncHiddenContextFields({ method: 'apple', auth_provider: 'apple' });
         requestInnerView('provider-apple');
         return;
       }
@@ -244,9 +274,10 @@
   }
 
   /* =============================================================================
-     10B) PROVIDER REQUEST HELPERS
+     11B) PROVIDER REQUEST HELPERS
   ============================================================================= */
   function requestGoogleProviderLogin() {
+    syncHiddenContextFields({ method: 'google', auth_provider: 'google' });
     const supabase = getSupabaseClient();
 
     if (supabase) {
@@ -266,7 +297,7 @@
   }
 
   /* =============================================================================
-     10C) FORM SUBMIT BINDING
+     11C) FORM SUBMIT BINDING
   ============================================================================= */
   function bindFormSubmit() {
     if (document.documentElement.dataset.accountSignUpDrawerFormBound === 'true') return;
@@ -313,8 +344,9 @@
         detail: {
           source: 'account-sign-up-drawer',
           action: 'profile-setup',
-          method: 'email',
-          provider: 'email',
+          method: getHiddenMethodInput()?.value?.trim() || 'email',
+          auth_provider: getHiddenAuthProviderInput()?.value?.trim() || 'email',
+          provider: getHiddenAuthProviderInput()?.value?.trim() || 'email',
           name,
           display_name: name,
           email,
@@ -328,8 +360,9 @@
           source: 'account-sign-up-drawer',
           state: 'guest',
           surface: 'profile-setup',
-          method: 'email',
-          provider: 'email',
+          method: getHiddenMethodInput()?.value?.trim() || 'email',
+          auth_provider: getHiddenAuthProviderInput()?.value?.trim() || 'email',
+          provider: getHiddenAuthProviderInput()?.value?.trim() || 'email',
           email
         }
       }));
@@ -337,7 +370,7 @@
   }
 
   /* =============================================================================
-     11) ESCAPE BINDING
+     12) ESCAPE BINDING
   ============================================================================= */
   function bindEscape() {
     if (document.documentElement.dataset.accountSignUpDrawerEscapeBound === 'true') return;
@@ -352,7 +385,7 @@
   }
 
   /* =============================================================================
-     12) EVENT REBINDING
+     13) EVENT REBINDING
   ============================================================================= */
   function bindMountEvents() {
     if (mountEventsBound) return;
@@ -368,13 +401,14 @@
   }
 
   /* =============================================================================
-     13) BOOTSTRAP
+     14) BOOTSTRAP
   ============================================================================= */
   function init() {
     if (document.documentElement.dataset.accountSignUpDrawerInitialized === 'true' && getDrawer()) return;
     document.documentElement.dataset.accountSignUpDrawerInitialized = 'true';
 
     normalizeStateVisibility();
+    syncHiddenContextFields({ method: 'email', auth_provider: 'email' });
 
     const drawer = getDrawer();
     if (drawer) {
@@ -409,6 +443,6 @@
   }
 
   /* =============================================================================
-     14) END OF FILE
+     15) END OF FILE
   ============================================================================= */
 })();

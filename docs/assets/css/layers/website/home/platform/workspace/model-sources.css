@@ -1,0 +1,40 @@
+.home-platform-destination--workspace-model-sources{
+  width:100%;
+}
+
+.home-model-source-workspace{
+  display:grid;
+  gap:1rem;
+}
+
+.home-model-source-workspace__summary,
+.home-model-source-workspace__item{
+  display:grid;
+  gap:0.5rem;
+  padding:1rem;
+  border:1px solid var(--home-panel-card-border);
+  background:var(--home-panel-card-surface);
+}
+
+.home-model-source-workspace__label{
+  margin:0;
+  color:color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
+  font-size:0.72rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.home-model-source-workspace__title{
+  margin:0;
+  color:var(--text-primary-color);
+  font-size:1rem;
+  font-weight:500;
+}
+
+.home-model-source-workspace__copy{
+  margin:0;
+  color:color-mix(in srgb, var(--text-secondary-color) 84%, transparent);
+  font-size:0.88rem;
+  line-height:1.55;
+}

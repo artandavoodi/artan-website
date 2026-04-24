@@ -5,14 +5,15 @@
 03) CONTENT STAGE
 04) SEGMENT TITLE
 05) PROFILE SETUP FORM
-06) IDENTITY FIELDS
-07) CONDITIONAL CREDENTIAL FIELDS
-08) ELIGIBILITY FIELDS
-09) OPTIONAL FIELDS
-10) PRIMARY ACTIONS
-11) SECONDARY ACTIONS
-12) BACK CONTROL
-13) END OF VIEW
+06) CANONICAL HIDDEN CONTEXT FIELDS
+07) IDENTITY FIELDS
+08) CONDITIONAL CREDENTIAL FIELDS
+09) ELIGIBILITY FIELDS
+10) OPTIONAL FIELDS
+11) PRIMARY ACTIONS
+12) SECONDARY ACTIONS
+13) BACK CONTROL
+14) END OF VIEW
 ============================================================================= -->
 
 <!-- =============================================================================
@@ -48,9 +49,30 @@
       ====================================================================== -->
       <form id="account-profile-setup-drawer-form" class="account-profile-setup-drawer-form" data-account-profile-setup-form="true" novalidate>
         <div class="account-profile-setup-drawer-center-stage">
+          <!-- ==================================================================
+          06) CANONICAL HIDDEN CONTEXT FIELDS
+          ================================================================== -->
+          <input
+            id="account-profile-setup-email"
+            name="email"
+            type="hidden"
+            data-account-profile-setup-field="email"
+          >
+          <input
+            id="account-profile-setup-method"
+            name="method"
+            type="hidden"
+            data-account-profile-setup-field="method"
+          >
+          <input
+            id="account-profile-setup-auth-provider"
+            name="auth_provider"
+            type="hidden"
+            data-account-profile-setup-field="auth-provider"
+          >
 
           <!-- ==================================================================
-          06) IDENTITY FIELDS
+          07) IDENTITY FIELDS
           ================================================================== -->
           <div class="account-profile-setup-drawer-field-group">
             <input
@@ -122,7 +144,7 @@
           </div>
 
           <!-- ==================================================================
-          07) CONDITIONAL CREDENTIAL FIELDS
+          08) CONDITIONAL CREDENTIAL FIELDS
           ================================================================== -->
           <div class="account-profile-setup-drawer-credential-group" data-account-profile-setup-credentials="true" hidden>
             <div class="account-profile-setup-drawer-field-group">
@@ -167,7 +189,7 @@
           </div>
 
           <!-- ==================================================================
-          08) ELIGIBILITY FIELDS
+          09) ELIGIBILITY FIELDS
           ================================================================== -->
           <div class="account-profile-setup-drawer-field-group">
             <input
@@ -215,7 +237,7 @@
           </div>
 
           <!-- ==================================================================
-          09) OPTIONAL FIELDS
+          10) OPTIONAL FIELDS
           ================================================================== -->
           <div class="account-profile-setup-drawer-field-group">
             <select
@@ -237,7 +259,7 @@
       </form>
 
       <!-- ======================================================================
-      10) PRIMARY ACTIONS
+      11) PRIMARY ACTIONS
       ====================================================================== -->
       <div class="account-profile-setup-drawer-actions">
         <button type="submit" form="account-profile-setup-drawer-form" class="account-profile-setup-drawer-action account-profile-setup-drawer-action--primary" data-account-profile-setup-submit="true">
@@ -247,7 +269,7 @@
       </div>
 
       <!-- ======================================================================
-      11) SECONDARY ACTIONS
+      12) SECONDARY ACTIONS
       ====================================================================== -->
       <div class="account-profile-setup-drawer-secondary-actions">
         <button type="button" class="account-profile-setup-drawer-text-action" data-account-profile-setup-skip="true" hidden aria-hidden="true">
@@ -255,7 +277,7 @@
         </button>
 
         <!-- ====================================================================
-        12) BACK CONTROL
+        13) BACK CONTROL
         ==================================================================== -->
         <button type="button" class="account-profile-setup-drawer-back-control" data-account-route="entry" data-account-profile-setup-back="true" aria-label="Back">
           <img src="/assets/icons/core/navigation/unclassified/back.svg" alt="" class="account-profile-setup-drawer-back-icon ui-icon-theme-aware" aria-hidden="true">
@@ -266,5 +288,5 @@
 </section>
 
 <!-- =============================================================================
-13) END OF VIEW
+14) END OF VIEW
 ============================================================================= -->

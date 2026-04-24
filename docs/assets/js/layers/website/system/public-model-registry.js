@@ -20,13 +20,16 @@
    02) IMPORTS
 ============================================================================= */
 import { normalizeString, normalizeUsername } from './account-profile-identity.js';
+import {
+  getModelStoreBackendState,
+  listPublishedModels
+} from './model-store.js';
 
 /* =============================================================================
    03) MODULE STATE
 ============================================================================= */
 const PUBLIC_MODEL_REGISTRY_URL = '/assets/data/profiles/public-models.json';
 const FOUNDER_DATA_URL = '/assets/data/company/founder.json';
-const SUPABASE_PUBLIC_MODELS_SELECT_FIELDS = 'id, slug, model_name, description, model_visibility, model_status, readiness_state, publication_state';
 
 const PUBLIC_MODEL_REGISTRY_STATE = {
   registry: null,
@@ -49,8 +52,8 @@ export function hasPublicModelBackend() {
 export function getPublicModelRegistryBackendState() {
   return {
     supabaseConfigured: hasPublicModelBackend(),
-    selectFields: SUPABASE_PUBLIC_MODELS_SELECT_FIELDS,
-    migrationStatus: 'transitional_static_registry_projection'
+    modelStore: getModelStoreBackendState(),
+    migrationStatus: 'supabase_canonical_with_static_projection_fallback'
   };
 }
 
@@ -86,6 +89,45 @@ function uniqueStrings(values = []) {
   return Array.from(new Set(values.map((value) => normalizeString(value)).filter(Boolean)));
 }
 
+function dedupeResolvedModels(models = []) {
+  const byKey = new Map();
+
+  models.forEach((model) => {
+    if (!model || typeof model !== 'object') return;
+
+    const idKey = normalizeString(model.id || '');
+    const routeKey = normalizeString(model.public_route_path || model.public_profile?.public_route_path || model.page_route || '');
+    const usernameKey = normalizeUsername(model.username || model.public_profile?.public_username || '');
+    const key = routeKey || usernameKey || idKey;
+
+    if (!key) return;
+
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, model);
+      return;
+    }
+
+    const existingSource = normalizeString(existing.source || 'static');
+    const incomingSource = normalizeString(model.source || 'static');
+    const existingVisibility = normalizeString(existing.public_profile?.public_profile_visibility || existing.model_visibility || '');
+    const incomingVisibility = normalizeString(model.public_profile?.public_profile_visibility || model.model_visibility || '');
+
+    if (existingSource !== 'supabase' && incomingSource === 'supabase') {
+      byKey.set(key, model);
+      return;
+    }
+
+    if (existingSource === incomingSource) {
+      if (existingVisibility !== 'public' && incomingVisibility === 'public') {
+        byKey.set(key, model);
+      }
+    }
+  });
+
+  return Array.from(byKey.values());
+}
+
 function buildPublicProfileFromModel(model, founder) {
   if (model?.public_profile && typeof model.public_profile === 'object') {
     return {
@@ -107,7 +149,7 @@ function buildPublicProfileFromModel(model, founder) {
     public_identity_label: normalizeString(model.identity_label || 'Public continuity model'),
     public_profile_enabled: model.public_route_enabled === true,
     public_profile_discoverable: model.public_route_discoverable === true,
-    public_profile_visibility: model.public_route_enabled === true ? 'public' : 'limited',
+    public_profile_visibility: model.public_route_enabled === true ? 'public' : 'private',
     public_route_path: `/${username}`,
     public_route_canonical_url: `https://neuroartan.com/${username}`,
     public_route_status: model.public_route_enabled === true ? 'ready' : 'pending',
@@ -152,6 +194,7 @@ function buildResolvedModel(model, founder) {
 
   return {
     ...model,
+    source: normalizeString(model.source || 'static'),
     display_name: displayName,
     username,
     creator: buildCreatorFromModel(model, founder),
@@ -166,6 +209,59 @@ function buildResolvedModel(model, founder) {
       founder?.public_name,
       founder?.title,
       founder?.summary
+    ]).join(' ').toLowerCase()
+  };
+}
+
+function buildResolvedModelFromBackend(model) {
+  const displayName = normalizeString(model.model_name || model.display_name || '');
+  const username = normalizeUsername(model.creator_username || model.model_slug || '');
+
+  return {
+    id: normalizeString(model.id),
+    source: 'supabase',
+    display_name: displayName,
+    search_title: displayName,
+    username,
+    description: normalizeString(model.description || ''),
+    page_route: model.model_slug ? `/pages/models/index.html?model=${encodeURIComponent(model.model_slug)}` : '/pages/models/index.html',
+    selectable: true,
+    status: normalizeString(model.lifecycle_state || 'draft'),
+    readiness_state: normalizeString(model.readiness_state || 'uninitialized'),
+    publication_state: normalizeString(model.publication_state || 'unpublished'),
+    verification_state: normalizeString(model.verification_state || 'unverified'),
+    trust_label: normalizeString(model.verification_state || 'unverified'),
+    public_route_enabled: model.model_visibility === 'public' && model.publication_state === 'published',
+    public_route_discoverable: model.model_visibility === 'public',
+    creator: {
+      display_name: normalizeString(model.creator_display_name || ''),
+      username,
+      title: 'Model owner',
+      image: normalizeString(model.model_image_url || '')
+    },
+    public_profile: {
+      public_username: username,
+      public_display_name: displayName,
+      public_avatar_url: normalizeString(model.model_image_url || ''),
+      public_identity_label: normalizeString(model.routing_class || 'Continuity model'),
+      public_profile_enabled: model.model_visibility === 'public',
+      public_profile_discoverable: model.model_visibility === 'public',
+      public_profile_visibility: model.model_visibility || 'private',
+      public_route_path: model.model_slug ? `/models/${model.model_slug}` : '',
+      public_route_canonical_url: model.model_slug ? `https://neuroartan.com/models/${model.model_slug}` : '',
+      public_route_status: model.publication_state || 'unpublished',
+      public_summary: normalizeString(model.description || ''),
+      public_links: []
+    },
+    search_blob: uniqueStrings([
+      displayName,
+      username,
+      model.description,
+      model.model_visibility,
+      model.readiness_state,
+      model.publication_state,
+      model.verification_state,
+      model.training_state
     ]).join(' ').toLowerCase()
   };
 }
@@ -210,20 +306,32 @@ export async function loadPublicModelRegistry() {
   if (!PUBLIC_MODEL_REGISTRY_STATE.promise) {
     PUBLIC_MODEL_REGISTRY_STATE.promise = Promise.all([
       fetchJson(PUBLIC_MODEL_REGISTRY_URL),
-      fetchJson(FOUNDER_DATA_URL).catch(() => null)
+      fetchJson(FOUNDER_DATA_URL).catch(() => null),
+      listPublishedModels().catch((error) => {
+        console.warn('[public-model-registry] Supabase model projection unavailable; static projection remains active.', error);
+        return [];
+      })
     ])
-      .then(([registry, founder]) => {
+      .then(([registry, founder, backendModels]) => {
         PUBLIC_MODEL_REGISTRY_STATE.backendState = getPublicModelRegistryBackendState();
         PUBLIC_MODEL_REGISTRY_STATE.founder = founder;
+        const projectedModels = Array.isArray(registry?.models)
+          ? registry.models.map((model) => {
+            const resolvedFounder = model.identity_ref && founder?.id === model.identity_ref ? founder : null;
+            return buildResolvedModel(model, resolvedFounder);
+          })
+          : [];
+        const canonicalModels = Array.isArray(backendModels)
+          ? backendModels.map(buildResolvedModelFromBackend).filter(Boolean)
+          : [];
+
         PUBLIC_MODEL_REGISTRY_STATE.registry = {
           ...registry,
           backend_state: getPublicModelRegistryBackendState(),
-          models: Array.isArray(registry?.models)
-            ? registry.models.map((model) => {
-              const resolvedFounder = model.identity_ref && founder?.id === model.identity_ref ? founder : null;
-              return buildResolvedModel(model, resolvedFounder);
-            })
-            : []
+          models: dedupeResolvedModels([
+            ...canonicalModels,
+            ...projectedModels
+          ])
         };
 
         return PUBLIC_MODEL_REGISTRY_STATE.registry;

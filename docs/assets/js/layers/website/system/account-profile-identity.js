@@ -182,7 +182,7 @@ export function getProfileIdentityBackendState() {
     profilesTable: SUPABASE_PROFILES_TABLE,
     usernameReservationsTable: SUPABASE_USERNAME_RESERVATIONS_TABLE,
     selectFields: SUPABASE_PROFILE_IDENTITY_SELECT_FIELDS,
-    migrationStatus: 'transitional_firestore_continuity'
+    migrationStatus: 'supabase_canonical_profile_identity'
   };
 }
 /* =============================================================================
@@ -246,6 +246,140 @@ export async function getSupabaseUsernameReservation({
   }
 
   return data || null;
+}
+
+export async function reserveSupabaseUsernameProfile({
+  supabase = getSupabaseClient(),
+  user,
+  values,
+  existingProfile = null,
+  policy = null
+} = {}) {
+  const resolvedPolicy = policy || await loadProfileIdentityPolicy();
+  const authUserId = normalizeString(user?.id || user?.uid || '');
+  const rawUsername = normalizeString(values?.username || '');
+  const normalizedUsername = normalizeUsername(rawUsername);
+
+  if (!supabase || !authUserId) {
+    throw createUsernameError('PROFILE_STORE_UNAVAILABLE');
+  }
+
+  if (!normalizedUsername) {
+    throw createUsernameError('USERNAME_REQUIRED');
+  }
+
+  const payload = buildProfilePayload({
+    firebaseNamespace: null,
+    user,
+    values: {
+      ...values,
+      username_raw: values?.username_raw || rawUsername,
+      username: normalizedUsername
+    },
+    existingProfile,
+    policy: resolvedPolicy
+  });
+
+  const profilePayload = {
+    auth_user_id: authUserId,
+    username: payload.username,
+    username_lower: payload.username_lower,
+    username_normalized: payload.username_normalized,
+    username_status: payload.username_status,
+    username_route_ready: payload.username_route_ready === true,
+    public_route_ready: payload.public_route_ready === true,
+    username_reserved_at: payload.username_reserved_at,
+    public_username: payload.public_username,
+    public_display_name: payload.public_display_name,
+    public_avatar_url: payload.public_avatar_url,
+    public_identity_label: payload.public_identity_label,
+    public_profile_enabled: payload.public_profile_enabled === true,
+    public_profile_discoverable: payload.public_profile_discoverable === true,
+    public_profile_visibility: payload.public_profile_visibility,
+    public_route_path: payload.public_route_path,
+    public_route_url: payload.public_route_url,
+    public_route_canonical_url: payload.public_route_canonical_url,
+    public_route_status: payload.public_route_status,
+    public_summary: payload.public_summary,
+    public_bio: payload.public_bio,
+    public_tagline: payload.public_tagline,
+    public_links: payload.public_links,
+    public_primary_link: payload.public_primary_link,
+    public_modules: payload.public_modules,
+    public_feature_flags: payload.public_feature_flags,
+    first_name: payload.first_name,
+    last_name: payload.last_name,
+    display_name: payload.display_name,
+    email: payload.email,
+    avatar_url: payload.avatar_url,
+    photo_url: payload.photo_url,
+    date_of_birth: payload.date_of_birth || null,
+    birth_date: payload.birth_date || null,
+    gender: payload.gender,
+    profile_exists: true,
+    profile_complete: payload.profile_complete === true,
+    profile_completion_status: payload.profile_completion_status,
+    profile_completion_percent: payload.profile_completion_percent,
+    missing_required_fields: payload.missing_required_fields,
+    profile_visibility_status: payload.profile_visibility_status,
+    eligibility_status: payload.eligibility_status,
+    eligibility_age_years: payload.eligibility_age_years || null,
+    minimum_eligible_age_years: payload.minimum_eligible_age_years || null,
+    eligibility_policy_status: payload.eligibility_policy_status,
+    eligibility_checked_at: payload.eligibility_checked_at,
+    updated_at: new Date().toISOString()
+  };
+
+  const profileQuery = existingProfile?.id
+    ? supabase
+      .from(SUPABASE_PROFILES_TABLE)
+      .update(profilePayload)
+      .eq('id', existingProfile.id)
+      .select(SUPABASE_PROFILE_IDENTITY_SELECT_FIELDS)
+      .single()
+    : supabase
+      .from(SUPABASE_PROFILES_TABLE)
+      .insert({
+        ...profilePayload,
+        created_at: new Date().toISOString()
+      })
+      .select(SUPABASE_PROFILE_IDENTITY_SELECT_FIELDS)
+      .single();
+
+  const { data: profile, error: profileError } = await profileQuery;
+  if (profileError) {
+    throw profileError;
+  }
+
+  const reservationPayload = {
+    username: normalizedUsername,
+    username_lower: normalizedUsername,
+    auth_user_id: authUserId,
+    profile_id: profile?.id || existingProfile?.id || null,
+    public_profile_path: buildPublicProfilePath(normalizedUsername, resolvedPolicy),
+    public_profile_url: buildPublicProfileUrl(normalizedUsername, resolvedPolicy),
+    public_route_path: buildPublicProfilePath(normalizedUsername, resolvedPolicy),
+    public_route_url: buildPublicProfileUrl(normalizedUsername, resolvedPolicy),
+    public_route_canonical_url: buildPublicProfileUrl(normalizedUsername, resolvedPolicy),
+    reservation_status: 'active',
+    username_status: payload.username_status,
+    username_route_ready: payload.username_route_ready === true,
+    public_route_status: payload.public_route_status,
+    public_route_ready: payload.public_route_ready === true,
+    updated_at: new Date().toISOString()
+  };
+
+  const { error: reservationError } = await supabase
+    .from(SUPABASE_USERNAME_RESERVATIONS_TABLE)
+    .upsert(reservationPayload, {
+      onConflict: 'username_lower'
+    });
+
+  if (reservationError) {
+    throw reservationError;
+  }
+
+  return profile || payload;
 }
 
 
@@ -363,6 +497,16 @@ export function normalizeUsername(value) {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/-{2,}/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+export function normalizePublicProfileVisibility(value, enabled = false) {
+  const normalized = normalizeString(value).toLowerCase();
+
+  if (['public', 'private', 'hidden', 'owner_only', 'internal'].includes(normalized)) {
+    return normalized;
+  }
+
+  return enabled ? 'public' : 'private';
 }
 
 export function splitFullName(value) {
@@ -908,6 +1052,7 @@ export function buildPublicProfileModel(profile, policy = getProfileIdentityPoli
   if (!publicUsername) return null;
 
   const publicLinks = normalizePublicLinks(profile.public_links);
+  const publicProfileEnabled = profile.public_profile_enabled === true;
   const publicPrimaryLink = normalizeString(
     profile.public_primary_link
     || publicLinks[0]?.url
@@ -941,13 +1086,13 @@ export function buildPublicProfileModel(profile, policy = getProfileIdentityPoli
       || buildPublicProfilePath(publicUsername, policy)
     ),
     public_route_status: normalizeString(profile.public_route_status || ''),
-    public_profile_enabled: profile.public_profile_enabled === true,
+    public_profile_enabled: publicProfileEnabled,
     public_route_canonical_url: normalizeString(
       profile.public_route_url
       || profile.public_profile_url
       || buildPublicProfileUrl(publicUsername, policy)
     ),
-    public_profile_visibility: normalizeString(profile.public_profile_visibility || ''),
+    public_profile_visibility: normalizePublicProfileVisibility(profile.public_profile_visibility, publicProfileEnabled),
     public_profile_discoverable: profile.public_profile_discoverable === true,
     public_profile_state_reason: normalizeString(profile.public_profile_state_reason || ''),
     public_summary: publicSummary,
@@ -1071,19 +1216,37 @@ function uniqueStrings(values = []) {
   ));
 }
 
+function resolveSupabaseProviderIds(user) {
+  const appProviders = Array.isArray(user?.app_metadata?.providers)
+    ? user.app_metadata.providers
+    : [];
+  const identityProviders = Array.isArray(user?.identities)
+    ? user.identities.map((identity) => identity?.provider || '')
+    : [];
+  const primaryProvider = normalizeString(user?.app_metadata?.provider || '');
+
+  return uniqueStrings([
+    primaryProvider,
+    ...appProviders,
+    ...identityProviders
+  ]);
+}
+
 function resolveAuthProviderLinks(user, existingProfile = null, explicitProvider = '') {
   const existingProviders = Array.isArray(existingProfile?.auth_provider_links)
     ? existingProfile.auth_provider_links
     : [];
 
-  const providerData = Array.isArray(user?.providerData)
+  const firebaseProviderData = Array.isArray(user?.providerData)
     ? user.providerData.map((provider) => provider?.providerId || '')
     : [];
+  const supabaseProviders = resolveSupabaseProviderIds(user);
 
   return uniqueStrings([
     explicitProvider,
     ...existingProviders,
-    ...providerData
+    ...firebaseProviderData,
+    ...supabaseProviders
   ]);
 }
 
@@ -1095,6 +1258,10 @@ export function buildProfilePayload({
   policy = getProfileIdentityPolicy()
 } = {}) {
   const timestamp = resolveServerTimestamp(firebaseNamespace);
+  const authUserId = normalizeString(user?.uid || user?.id || '');
+  const userMetadata = user?.user_metadata && typeof user.user_metadata === 'object'
+    ? user.user_metadata
+    : {};
   const normalizedUsername = normalizeUsername(
     values.username
     || existingProfile?.username
@@ -1104,7 +1271,14 @@ export function buildProfilePayload({
   );
   const authProviderPrimary = normalizeString(values.auth_provider || existingProfile?.auth_provider_primary || '');
   const authProviderLinks = resolveAuthProviderLinks(user, existingProfile, authProviderPrimary);
-  const avatarUrl = normalizeString(user.photoURL || existingProfile?.avatar_url || existingProfile?.photo_url || '');
+  const avatarUrl = normalizeString(
+    user?.photoURL
+    || userMetadata.avatar_url
+    || userMetadata.picture
+    || existingProfile?.avatar_url
+    || existingProfile?.photo_url
+    || ''
+  );
   const completionState = buildProfileCompletionState(values, existingProfile);
   const usernameRouteReady = typeof values.username_route_ready === 'boolean'
     ? values.username_route_ready
@@ -1117,6 +1291,10 @@ export function buildProfilePayload({
     ? values.public_profile_discoverable
     : existingProfile?.public_profile_discoverable === true;
   const publicProfileDiscoverable = publicProfileEnabled && requestedPublicProfileDiscoverable;
+  const publicProfileVisibility = normalizePublicProfileVisibility(
+    values.public_profile_visibility || existingProfile?.public_profile_visibility || '',
+    publicProfileEnabled
+  );
   const publicRouteStatus = normalizeString(
     values.public_route_status
     || existingProfile?.public_route_status
@@ -1152,15 +1330,15 @@ export function buildProfilePayload({
     : null;
 
   const payload = {
-    profile_id: existingProfile?.profile_id || user.uid,
-    auth_user_id: user.uid,
+    profile_id: existingProfile?.profile_id || existingProfile?.id || authUserId,
+    auth_user_id: authUserId,
     record_version: Number(existingProfile?.record_version || 1),
-    uid: user.uid,
+    uid: authUserId,
     auth_provider_primary: authProviderPrimary,
     auth_provider_links: authProviderLinks,
     auth_email: normalizeEmail(values.email || user.email || ''),
     auth_phone: normalizeString(values.phone || existingProfile?.auth_phone || ''),
-    auth_email_verified: user.emailVerified === true || existingProfile?.auth_email_verified === true,
+    auth_email_verified: user?.emailVerified === true || Boolean(user?.email_confirmed_at) || existingProfile?.auth_email_verified === true,
     auth_phone_verified: existingProfile?.auth_phone_verified === true,
     email: normalizeEmail(values.email || user.email || ''),
     username: normalizedUsername,
@@ -1180,9 +1358,10 @@ export function buildProfilePayload({
     public_route_url: buildPublicProfileUrl(normalizedUsername, policy),
     public_route_canonical_url: buildPublicProfileUrl(normalizedUsername, policy),
     public_route_status: publicRouteStatus,
+    public_route_ready: publicProfileEnabled && usernameRouteReady,
     public_profile_enabled: publicProfileEnabled,
     public_profile_discoverable: publicProfileDiscoverable,
-    public_profile_visibility: publicProfileEnabled ? 'enabled' : 'disabled',
+    public_profile_visibility: publicProfileVisibility,
     public_summary: normalizeString(values.public_summary || existingProfile?.public_summary || ''),
     public_bio: normalizeString(values.public_bio || existingProfile?.public_bio || ''),
     public_tagline: normalizeString(values.public_tagline || existingProfile?.public_tagline || ''),

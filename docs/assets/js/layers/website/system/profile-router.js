@@ -20,15 +20,14 @@ import {
   getProfileIdentityBackendState,
   getProfileIdentityPolicy,
   getPublicRouteConfig,
+  getSupabaseProfileByUsername,
   loadProfileIdentityPolicy,
   normalizeString,
   normalizeUsername,
   validateUsernameLocally
 } from './account-profile-identity.js';
 import {
-  getPublicModelByUsername,
-  getPublicModelRegistryBackendState,
-  loadPublicModelRegistry
+  getPublicModelRegistryBackendState
 } from './public-model-registry.js';
 
 /* =============================================================================
@@ -65,6 +64,32 @@ function getProfileRouterBackendState() {
   };
 }
 
+async function hasCanonicalSupabasePublicRoute(username) {
+  const supabase = getSupabaseClient();
+  const normalizedUsername = normalizeUsername(username);
+
+  if (!supabase || !normalizedUsername) {
+    return false;
+  }
+
+  const profile = await getSupabaseProfileByUsername({
+    supabase,
+    username: normalizedUsername
+  });
+
+  if (!profile) {
+    return false;
+  }
+
+  const publicEnabled = profile.public_profile_enabled === true;
+  const publicVisibility = normalizeString(profile.public_profile_visibility || '').toLowerCase();
+  const routeStatus = normalizeString(profile.public_route_status || '').toLowerCase();
+
+  return publicEnabled
+    && !['hidden', 'private', 'owner_only', 'internal'].includes(publicVisibility)
+    && ['ready', 'renderable', 'active'].includes(routeStatus || 'ready');
+}
+
 /* =============================================================================
    04) DEFAULT ROUTE STATE
 ============================================================================= */
@@ -89,16 +114,17 @@ function createDefaultRouteState() {
 ============================================================================= */
 /*
  * Transitional rule:
- * Public-route resolution below remains tolerated continuity using local policy
- * and public registry projection behavior until backend-native public profile
- * routing is fully implemented. This file must not silently treat the static
- * registry as the canonical owner of public-route truth.
+ * Public-route resolution below must preserve policy-restricted usernames as
+ * restricted unless canonical backend truth explicitly authorizes them. Static
+ * registry projection must not revive restricted usernames into live route
+ * candidates.
  */
 /*
  * Transitional scope note:
  * This router currently determines candidate public-route ownership through
- * local policy validation plus public-registry projection fallback. Backend-
- * native public profile resolution still remains a later migration step.
+ * local policy validation, canonical Supabase-backed profile truth where
+ * available, and only then public-registry projection fallback. Static/public
+ * projection must never outrank backend-native route truth.
  */
 function decodePathSegment(segment) {
   try {
@@ -243,10 +269,11 @@ export async function refreshPublicRoute(pathname = window.location.pathname) {
 
   if (resolvedRoute.handleAsPublicRoute && resolvedRoute.outcome === 'restricted_username') {
     try {
-      await loadPublicModelRegistry();
-      const canonicalModel = getPublicModelByUsername(resolvedRoute.normalizedUsername || resolvedRoute.routeCandidate);
+      const canonicalSupabaseRoute = await hasCanonicalSupabasePublicRoute(
+        resolvedRoute.normalizedUsername || resolvedRoute.routeCandidate
+      );
 
-      if (canonicalModel?.public_profile?.public_route_path) {
+      if (canonicalSupabaseRoute) {
         setRoute({
           ...resolvedRoute,
           outcome: 'candidate',

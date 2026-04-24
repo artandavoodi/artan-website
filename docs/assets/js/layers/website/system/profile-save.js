@@ -29,6 +29,7 @@ import {
   normalizeEmail,
   normalizeString,
   normalizeUsername,
+  reserveSupabaseUsernameProfile,
   reserveUsernameProfile
 } from './account-profile-identity.js';
 
@@ -46,7 +47,7 @@ const RUNTIME = (window.__NEUROARTAN_PROFILE_SAVE__ ||= {
 ============================================================================= */
 const PROFILE_COLLECTION = 'profiles';
 const USERNAME_RESERVATION_COLLECTION = 'username_reservations';
-const SUPABASE_PROFILE_SELECT_FIELDS = 'id, auth_user_id, username, display_name, avatar_url, bio, visibility_state, profile_status, public_profile_enabled, public_profile_discoverable, public_display_name, public_identity_label, public_summary, public_primary_link, email, first_name, last_name, date_of_birth, birth_date, gender, username_lower, username_normalized';
+const SUPABASE_PROFILE_SELECT_FIELDS = 'id, auth_user_id, username, public_username, username_status, username_route_ready, username_reserved_at, display_name, avatar_url, photo_url, bio, visibility_state, profile_status, public_profile_enabled, public_profile_discoverable, public_profile_visibility, public_route_path, public_route_url, public_route_canonical_url, public_route_status, public_route_ready, public_display_name, public_identity_label, public_avatar_url, public_summary, public_primary_link, public_bio, public_tagline, public_links, public_modules, public_feature_flags, email, first_name, last_name, date_of_birth, birth_date, gender, profile_exists, profile_complete, profile_completion_status, profile_completion_percent, missing_required_fields, profile_visibility_status, eligibility_status, eligibility_age_years, minimum_eligible_age_years, eligibility_policy_status, eligibility_checked_at, username_lower, username_normalized, created_at, updated_at';
 const SAVE_SCOPES = Object.freeze(['identity', 'route', 'visibility']);
 
 /* =============================================================================
@@ -265,15 +266,22 @@ export function subscribePrivateProfileSaveState(subscriber) {
    07) VALUE HELPERS
 ============================================================================= */
 function getExistingProfileSeed(existingProfile = null, user = null) {
+  const userDisplayName = normalizeString(
+    user?.user_metadata?.full_name
+    || user?.user_metadata?.name
+    || user?.displayName
+    || ''
+  );
+
   return {
-    email: normalizeEmail(existingProfile?.email || user?.email || ''),
+    email: normalizeEmail(existingProfile?.email || user?.email || user?.user_metadata?.email || ''),
     first_name: normalizeString(existingProfile?.first_name || ''),
     last_name: normalizeString(existingProfile?.last_name || ''),
-    display_name: normalizeString(existingProfile?.display_name || user?.displayName || ''),
+    display_name: normalizeString(existingProfile?.display_name || userDisplayName),
     date_of_birth: normalizeString(existingProfile?.date_of_birth || existingProfile?.birth_date || ''),
     gender: normalizeString(existingProfile?.gender || ''),
     username: normalizeString(existingProfile?.username || existingProfile?.username_normalized || existingProfile?.username_lower || ''),
-    public_display_name: normalizeString(existingProfile?.public_display_name || existingProfile?.display_name || user?.displayName || ''),
+    public_display_name: normalizeString(existingProfile?.public_display_name || existingProfile?.display_name || userDisplayName),
     public_identity_label: normalizeString(existingProfile?.public_identity_label || ''),
     public_summary: normalizeString(existingProfile?.public_summary || ''),
     public_primary_link: normalizeString(existingProfile?.public_primary_link || ''),
@@ -392,6 +400,19 @@ async function persistProfileWithSupabase(scope, values, existingProfile, user, 
     values.minimum_eligible_age_years = eligibility.minimumAge;
   }
 
+  if (normalizedUsername) {
+    return reserveSupabaseUsernameProfile({
+      supabase,
+      user,
+      values: {
+        ...values,
+        username: normalizedUsername
+      },
+      existingProfile,
+      policy
+    });
+  }
+
   const payload = buildProfilePayload({
     user,
     values: {
@@ -409,6 +430,10 @@ async function persistProfileWithSupabase(scope, values, existingProfile, user, 
     auth_user_id: user.id || user.uid,
     public_username: payload.public_username || payload.username || normalizedUsername || '',
     username: payload.username || normalizedUsername || currentProfile?.username || '',
+    // --- username additions
+    username_status: payload.username_status || 'reserved',
+    username_route_ready: payload.username_route_ready === true,
+    username_reserved_at: payload.username_reserved_at || null,
     display_name: payload.display_name || '',
     avatar_url: payload.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
     bio: payload.public_summary || currentProfile?.bio || '',
@@ -416,13 +441,15 @@ async function persistProfileWithSupabase(scope, values, existingProfile, user, 
     profile_status: payload.profile_status || currentProfile?.profile_status || 'active',
     public_profile_enabled: payload.public_profile_enabled === true,
     public_profile_discoverable: payload.public_profile_discoverable === true,
-    public_profile_visibility: payload.public_profile_enabled ? 'public' : 'private',
+    public_profile_visibility: payload.public_profile_visibility || (payload.public_profile_enabled ? 'public' : 'private'),
     public_route_path: payload.public_route_path || '',
     public_route_url: payload.public_route_url || '',
     public_route_canonical_url: payload.public_route_canonical_url || '',
     public_route_status: payload.public_route_status || '',
+    public_route_ready: payload.public_route_ready === true,
     public_display_name: payload.public_display_name || '',
     public_identity_label: payload.public_identity_label || '',
+    public_avatar_url: payload.public_avatar_url || payload.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
     public_summary: payload.public_summary || '',
     public_primary_link: payload.public_primary_link || '',
     public_bio: payload.public_bio || payload.public_summary || '',
@@ -430,11 +457,12 @@ async function persistProfileWithSupabase(scope, values, existingProfile, user, 
     public_links: payload.public_links || [],
     public_modules: payload.public_modules || [],
     public_feature_flags: payload.public_feature_flags || [],
+    photo_url: payload.photo_url || payload.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
     email: payload.email || normalizeEmail(user.email || ''),
     first_name: payload.first_name || '',
     last_name: payload.last_name || '',
-    date_of_birth: payload.date_of_birth || payload.birth_date || '',
-    birth_date: payload.birth_date || payload.date_of_birth || '',
+    date_of_birth: payload.date_of_birth || payload.birth_date || null,
+    birth_date: payload.birth_date || payload.date_of_birth || null,
     gender: payload.gender || '',
     profile_exists: true,
     profile_complete: payload.profile_complete === true,
@@ -448,7 +476,9 @@ async function persistProfileWithSupabase(scope, values, existingProfile, user, 
     eligibility_policy_status: payload.eligibility_policy_status || '',
     eligibility_checked_at: payload.eligibility_checked_at || null,
     username_lower: payload.username_lower || normalizeUsername(payload.username || normalizedUsername || ''),
-    username_normalized: payload.username_lower || normalizeUsername(payload.username || normalizedUsername || '')
+    username_normalized: payload.username_lower || normalizeUsername(payload.username || normalizedUsername || ''),
+    created_at: currentProfile?.created_at || null,
+    updated_at: new Date().toISOString()
   };
 
   if (existingRecordId) {
@@ -466,9 +496,14 @@ async function persistProfileWithSupabase(scope, values, existingProfile, user, 
     return data;
   }
 
+  const insertPayload = {
+    ...supabasePayload,
+    created_at: new Date().toISOString()
+  };
+
   const { data, error } = await supabase
     .from(PROFILE_COLLECTION)
-    .insert(supabasePayload)
+    .insert(insertPayload)
     .select(SUPABASE_PROFILE_SELECT_FIELDS)
     .single();
 

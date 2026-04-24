@@ -51,6 +51,42 @@
           "module": "/assets/js/layers/website/home/platform/workspace/interaction-state.js"
         },
         {
+          "id": "model-overview",
+          "label": "Model Overview",
+          "detail_title": "Model Overview",
+          "detail_copy": "Canonical model records, owner state, and creation workflow from the Supabase-backed model layer.",
+          "fragment": "/assets/fragments/layers/website/home/platform/workspace/model-overview.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/workspace/model-overview.css",
+          "module": "/assets/js/layers/website/home/platform/workspace/model-overview.js"
+        },
+        {
+          "id": "model-sources",
+          "label": "Sources",
+          "detail_title": "Source Connections",
+          "detail_copy": "Model-owned source authorization and connector readiness.",
+          "fragment": "/assets/fragments/layers/website/home/platform/workspace/model-sources.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/workspace/model-sources.css",
+          "module": "/assets/js/layers/website/home/platform/workspace/model-sources.js"
+        },
+        {
+          "id": "model-training",
+          "label": "Training",
+          "detail_title": "Training and Readiness",
+          "detail_copy": "Training, ingestion, provenance, and retrieval readiness states.",
+          "fragment": "/assets/fragments/layers/website/home/platform/workspace/model-training.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/workspace/model-training.css",
+          "module": "/assets/js/layers/website/home/platform/workspace/model-training.js"
+        },
+        {
+          "id": "model-runtime",
+          "label": "Runtime",
+          "detail_title": "Runtime and Publication",
+          "detail_copy": "Provider routing, active model state, and publication controls.",
+          "fragment": "/assets/fragments/layers/website/home/platform/workspace/model-runtime.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/workspace/model-runtime.css",
+          "module": "/assets/js/layers/website/home/platform/workspace/model-runtime.js"
+        },
+        {
           "id": "continuity-actions",
           "label": "Continuity Actions",
           "detail_title": "Continuity Actions",
@@ -114,6 +150,15 @@
       "default_subdestination": "theme",
       "subdestinations": [
         {
+          "id": "account-security",
+          "label": "Account & Security",
+          "detail_title": "Account and Security",
+          "detail_copy": "Authentication, recovery, and access state for the Supabase-first account layer.",
+          "fragment": "/assets/fragments/layers/website/home/platform/settings/account-security.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/settings/account-security.css",
+          "module": "/assets/js/layers/website/home/platform/settings/account-security.js"
+        },
+        {
           "id": "theme",
           "label": "Theme",
           "detail_title": "Theme",
@@ -139,6 +184,24 @@
           "fragment": "/assets/fragments/layers/website/home/platform/settings/identity-route.html",
           "stylesheet": "/assets/css/layers/website/home/platform/settings/identity-route.css",
           "module": "/assets/js/layers/website/home/platform/settings/identity-route.js"
+        },
+        {
+          "id": "model-settings",
+          "label": "Model Settings",
+          "detail_title": "Model Settings",
+          "detail_copy": "Model visibility, publication, runtime, and source/training settings.",
+          "fragment": "/assets/fragments/layers/website/home/platform/settings/model-settings.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/settings/model-settings.css",
+          "module": "/assets/js/layers/website/home/platform/settings/model-settings.js"
+        },
+        {
+          "id": "notifications-security",
+          "label": "Notifications",
+          "detail_title": "Notifications and Security Signals",
+          "detail_copy": "Notification posture, security notices, and future message state preferences.",
+          "fragment": "/assets/fragments/layers/website/home/platform/settings/notifications-security.html",
+          "stylesheet": "/assets/css/layers/website/home/platform/settings/notifications-security.css",
+          "module": "/assets/js/layers/website/home/platform/settings/notifications-security.js"
         }
       ]
     },

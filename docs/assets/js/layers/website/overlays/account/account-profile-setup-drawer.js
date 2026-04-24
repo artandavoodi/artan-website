@@ -3,10 +3,11 @@
    01) MODULE IDENTITY
    02) STATE
    03) QUERY HELPERS
-   04) CONTEXT HELPERS
-   05) CREDENTIAL VISIBILITY HELPERS
-   06) USERNAME PREVIEW HELPERS
-   07) OPEN REQUEST BINDING
+   04) HIDDEN CONTEXT FIELD HELPERS
+   05) CONTEXT HELPERS
+   06) CREDENTIAL VISIBILITY HELPERS
+   07) USERNAME PREVIEW HELPERS
+   08) OPEN REQUEST BINDING
    08) CLOSE REQUEST BINDING
    09) ROUTE REQUEST BINDING
    09A) INNER ROUTE CONTROLS
@@ -62,6 +63,18 @@ import {
 
   function getForm() {
     return q('[data-account-profile-setup-form="true"]', getDrawer() || document);
+  }
+
+  function getHiddenEmailInput() {
+    return q('#account-profile-setup-email', getDrawer() || document);
+  }
+
+  function getHiddenMethodInput() {
+    return q('#account-profile-setup-method', getDrawer() || document);
+  }
+
+  function getHiddenAuthProviderInput() {
+    return q('#account-profile-setup-auth-provider', getDrawer() || document);
   }
 
   function getCredentialGroup() {
@@ -179,6 +192,7 @@ import {
   }
 
   function applyPrefill(detail = {}) {
+    syncHiddenContextFields(detail);
     setFieldValue(getUsernameInput(), detail.username || '', { overwrite: false });
     setFieldValue(getFirstNameInput(), detail.first_name || '', { overwrite: false });
     setFieldValue(getLastNameInput(), detail.last_name || '', { overwrite: false });
@@ -194,7 +208,32 @@ import {
   }
 
   /* =============================================================================
-     04) CONTEXT HELPERS
+     04) HIDDEN CONTEXT FIELD HELPERS
+  ============================================================================= */
+  function syncHiddenContextFields(detail = {}) {
+    const hiddenEmailInput = getHiddenEmailInput();
+    const hiddenMethodInput = getHiddenMethodInput();
+    const hiddenAuthProviderInput = getHiddenAuthProviderInput();
+
+    const normalizedMethod = normalizeMethod(detail.method || state.method || '');
+    const normalizedProvider = normalizeMethod(detail.auth_provider || detail.provider || state.provider || normalizedMethod || '');
+    const normalizedEmail = String(detail.email || '').trim();
+
+    if (hiddenEmailInput) {
+      hiddenEmailInput.value = normalizedEmail;
+    }
+
+    if (hiddenMethodInput) {
+      hiddenMethodInput.value = normalizedMethod || '';
+    }
+
+    if (hiddenAuthProviderInput) {
+      hiddenAuthProviderInput.value = normalizedProvider || normalizedMethod || '';
+    }
+  }
+
+  /* =============================================================================
+     05) CONTEXT HELPERS
   ============================================================================= */
   function focusPrimaryField() {
     const usernameInput = getUsernameInput();
@@ -240,6 +279,7 @@ import {
 
     state.method = method;
     state.provider = provider;
+    syncHiddenContextFields(detail);
 
     const drawer = getDrawer();
     if (drawer) {
@@ -253,7 +293,7 @@ import {
   }
 
   /* =============================================================================
-     05) CREDENTIAL VISIBILITY HELPERS
+     06) CREDENTIAL VISIBILITY HELPERS
   ============================================================================= */
   function syncCredentialVisibility() {
     const credentialGroup = getCredentialGroup();
@@ -283,7 +323,7 @@ import {
   }
 
   /* =============================================================================
-     06) USERNAME PREVIEW HELPERS
+     07) USERNAME PREVIEW HELPERS
   ============================================================================= */
   function normalizeUsernamePreview(value) {
     const raw = String(value || '').trim().toLowerCase();
@@ -493,7 +533,7 @@ import {
   }
 
   /* =============================================================================
-     07) OPEN REQUEST BINDING
+     08) OPEN REQUEST BINDING
   ============================================================================= */
   function bindOpenRequests() {
     if (document.documentElement.dataset.accountProfileSetupDrawerOpenBound === 'true') return;
@@ -630,8 +670,10 @@ import {
       document.dispatchEvent(new CustomEvent('account:profile-setup-submit', {
         detail: {
           source: MODULE_ID,
-          method: state.method,
-          provider: state.provider,
+          email: getHiddenEmailInput()?.value?.trim() || '',
+          method: getHiddenMethodInput()?.value?.trim() || state.method,
+          auth_provider: getHiddenAuthProviderInput()?.value?.trim() || state.provider,
+          provider: getHiddenAuthProviderInput()?.value?.trim() || state.provider,
           username: state.username,
           first_name: getFirstNameInput()?.value?.trim() || '',
           last_name: getLastNameInput()?.value?.trim() || '',
@@ -726,6 +768,7 @@ import {
       drawer.dataset.moduleId = MODULE_ID;
       drawer.dataset.modulePath = MODULE_PATH;
       drawer.setAttribute('aria-hidden', drawer.hidden ? 'true' : 'false');
+      syncHiddenContextFields({ method: state.method, auth_provider: state.provider, email: '' });
     }
 
     bindOpenRequests();

@@ -5,12 +5,13 @@
 03) CONTENT STAGE
 04) SEGMENT TITLE
 05) SIGN-IN FORM
-06) PRIMARY ACTIONS
-07) ACTION DIVIDER
-08) PROVIDER ACTIONS
-09) SECONDARY ACTIONS
-10) BACK CONTROL
-11) END OF VIEW
+06) CANONICAL HIDDEN CONTEXT FIELDS
+07) PRIMARY ACTIONS
+08) ACTION DIVIDER
+09) PROVIDER ACTIONS
+10) SECONDARY ACTIONS
+11) BACK CONTROL
+12) END OF VIEW
 ============================================================================= -->
 <!-- =============================================================================
 01) INNER VIEW ROOT
@@ -45,6 +46,23 @@
       ====================================================================== -->
       <form id="account-sign-in-drawer-form" class="account-sign-in-drawer-form" data-account-sign-in-form="true" novalidate>
         <div class="account-sign-in-drawer-center-stage">
+          <!-- ==================================================================
+          06) CANONICAL HIDDEN CONTEXT FIELDS
+          ================================================================== -->
+          <input
+            id="account-sign-in-method"
+            name="method"
+            type="hidden"
+            value="email"
+            data-account-sign-in-field="method"
+          >
+          <input
+            id="account-sign-in-auth-provider"
+            name="auth_provider"
+            type="hidden"
+            value="email"
+            data-account-sign-in-field="auth-provider"
+          >
           <div class="account-sign-in-drawer-field-group">
             <input
               id="account-sign-in-identity"
@@ -73,7 +91,7 @@
       </form>
 
       <!-- ======================================================================
-      06) PRIMARY ACTIONS
+      07) PRIMARY ACTIONS
       ====================================================================== -->
       <div class="account-sign-in-drawer-actions">
         <button type="submit" form="account-sign-in-drawer-form" class="account-sign-in-drawer-action account-sign-in-drawer-action--primary" data-account-sign-in-submit="true">
@@ -82,7 +100,7 @@
       </div>
 
       <!-- ======================================================================
-      07) ACTION DIVIDER
+      08) ACTION DIVIDER
       ====================================================================== -->
       <div class="account-sign-in-drawer-divider" aria-hidden="true">
         <span class="account-sign-in-drawer-divider-line"></span>
@@ -91,7 +109,7 @@
       </div>
 
       <!-- ======================================================================
-      08) PROVIDER ACTIONS
+      09) PROVIDER ACTIONS
       ====================================================================== -->
       <div class="account-sign-in-drawer-actions">
         <button type="button" class="account-drawer-identity-option account-drawer-identity-option--apple" data-account-provider-apple-submit="true" data-account-sign-in-apple="true">
@@ -109,12 +127,12 @@
       </div>
 
       <!-- ======================================================================
-      09) SECONDARY ACTIONS
+      10) SECONDARY ACTIONS
       ====================================================================== -->
       <div class="account-sign-in-drawer-secondary-actions">
         <button type="button" class="account-sign-in-drawer-text-action" data-account-route="forgot-password" data-account-sign-in-forgot-password="true" data-i18n-key="account_sign_in_forgot_password">Forgot password?</button>
         <!-- ====================================================================
-        10) BACK CONTROL
+        11) BACK CONTROL
         ==================================================================== -->
         <button type="button" class="account-sign-in-drawer-back-control" data-account-route="entry" data-account-sign-in-back="true" aria-label="Back">
           <img src="/assets/icons/core/navigation/unclassified/back.svg" alt="" class="account-sign-in-drawer-back-icon ui-icon-theme-aware" aria-hidden="true">
@@ -125,5 +143,5 @@
 </section>
 
 <!-- =============================================================================
-11) END OF VIEW
+12) END OF VIEW
 ============================================================================= -->

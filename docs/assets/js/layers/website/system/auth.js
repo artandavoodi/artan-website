@@ -96,15 +96,28 @@
      09) PROFILE SURFACE RESOLUTION
   ============================================================================= */
   function resolveDisplayName(user, profile) {
-    return profile?.display_name || user?.displayName || 'Neuroartan User';
+    return profile?.public_display_name
+      || profile?.display_name
+      || user?.user_metadata?.name
+      || user?.displayName
+      || 'Neuroartan User';
   }
 
   function resolveEmail(user, profile) {
-    return profile?.email || user?.email || 'No email available';
+    return profile?.email
+      || user?.email
+      || user?.user_metadata?.email
+      || 'No email available';
   }
 
   function resolvePhotoUrl(user, profile) {
-    return profile?.photo_url || user?.photoURL || CORE_NEUROARTAN_LOGO;
+    return profile?.public_avatar_url
+      || profile?.photo_url
+      || profile?.avatar_url
+      || user?.user_metadata?.avatar_url
+      || user?.user_metadata?.picture
+      || user?.photoURL
+      || CORE_NEUROARTAN_LOGO;
   }
 
   function resolveSignedInCopy(profileComplete) {
@@ -118,7 +131,7 @@
   /* =============================================================================
      10) PROFILE SURFACE — SIGNED IN
   ============================================================================= */
-  function updateProfileSurface(user, profile = null, profileComplete = true) {
+  function updateProfileSurface(user, profile = null, profileComplete = null) {
     if (!user) return;
 
     const displayName = resolveDisplayName(user, profile);
@@ -178,7 +191,8 @@
   }
 
   function handleSignedInState(user) {
-    updateProfileSurface(user);
+    updateProfileSurface(user, null, null);
+    document.dispatchEvent(new CustomEvent('account:profile-refresh-request'));
   }
 
   /* =============================================================================

@@ -4,19 +4,20 @@
    02) STATE
    03) BACKEND QUERY HELPERS
    04) DRAWER QUERY HELPERS
-   05) STATE VISIBILITY HELPERS
-   06) OPEN / CLOSE HELPERS
-   06A) INNER ROUTE REQUEST HELPERS
-   07) OPEN REQUEST BINDING
-   08) CLOSE REQUEST BINDING
-   09) ROUTE REQUEST BINDING
-   09A) INNER ROUTE CONTROLS
-   09B) PROVIDER REQUEST HELPERS
-   09C) FORM SUBMIT BINDING
-   10) ESCAPE BINDING
-   11) EVENT REBINDING
-   12) BOOTSTRAP
-   13) END OF FILE
+   05) HIDDEN CONTEXT FIELD HELPERS
+   06) STATE VISIBILITY HELPERS
+   07) OPEN / CLOSE HELPERS
+   07A) INNER ROUTE REQUEST HELPERS
+   08) OPEN REQUEST BINDING
+   09) CLOSE REQUEST BINDING
+   10) ROUTE REQUEST BINDING
+   10A) INNER ROUTE CONTROLS
+   10B) PROVIDER REQUEST HELPERS
+   10C) FORM SUBMIT BINDING
+   11) ESCAPE BINDING
+   12) EVENT REBINDING
+   13) BOOTSTRAP
+   14) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -60,7 +61,33 @@
   }
 
   /* =============================================================================
-     05) STATE VISIBILITY HELPERS
+     05) HIDDEN CONTEXT FIELD HELPERS
+  ============================================================================= */
+  function getHiddenMethodInput() {
+    return document.querySelector('#account-email-auth-method');
+  }
+
+  function getHiddenAuthProviderInput() {
+    return document.querySelector('#account-email-auth-auth-provider');
+  }
+
+  function syncHiddenContextFields(detail = {}) {
+    const hiddenMethodInput = getHiddenMethodInput();
+    const hiddenAuthProviderInput = getHiddenAuthProviderInput();
+    const method = String(detail.method || 'email').trim() || 'email';
+    const authProvider = String(detail.auth_provider || detail.provider || method || 'email').trim() || 'email';
+
+    if (hiddenMethodInput) {
+      hiddenMethodInput.value = method;
+    }
+
+    if (hiddenAuthProviderInput) {
+      hiddenAuthProviderInput.value = authProvider;
+    }
+  }
+
+  /* =============================================================================
+     06) STATE VISIBILITY HELPERS
   ============================================================================= */
   function normalizeStateVisibility() {
     const drawer = getDrawer();
@@ -71,12 +98,13 @@
   }
 
   /* =============================================================================
-     06) OPEN / CLOSE HELPERS
+     07) OPEN / CLOSE HELPERS
   ============================================================================= */
   function openDrawer() {
     const drawer = getDrawer();
     if (!drawer) return;
 
+    syncHiddenContextFields({ method: 'email', auth_provider: 'email' });
     window.clearTimeout(closeTimer);
     drawer.classList.add('is-open');
     drawer.setAttribute('aria-hidden', 'false');
@@ -93,7 +121,7 @@
   }
 
   /* =============================================================================
-     06A) INNER ROUTE REQUEST HELPERS
+     07A) INNER ROUTE REQUEST HELPERS
   ============================================================================= */
   function requestInnerView(action) {
     if (!action) return;
@@ -122,8 +150,9 @@
       detail: {
         source: 'account-email-auth-drawer',
         action: 'profile-setup',
-        method: 'email',
-        provider: 'email',
+        method: getHiddenMethodInput()?.value?.trim() || 'email',
+        auth_provider: getHiddenAuthProviderInput()?.value?.trim() || 'email',
+        provider: getHiddenAuthProviderInput()?.value?.trim() || 'email',
         email
       }
     }));
@@ -133,15 +162,16 @@
         source: 'account-email-auth-drawer',
         state: 'guest',
         surface: 'profile-setup',
-        method: 'email',
-        provider: 'email',
+        method: getHiddenMethodInput()?.value?.trim() || 'email',
+        auth_provider: getHiddenAuthProviderInput()?.value?.trim() || 'email',
+        provider: getHiddenAuthProviderInput()?.value?.trim() || 'email',
         email
       }
     }));
   }
 
   /* =============================================================================
-     07) OPEN REQUEST BINDING
+     08) OPEN REQUEST BINDING
   ============================================================================= */
   function bindOpenRequests() {
     if (document.documentElement.dataset.accountEmailAuthDrawerOpenBound === 'true') return;
@@ -153,7 +183,7 @@
   }
 
   /* =============================================================================
-     08) CLOSE REQUEST BINDING
+     09) CLOSE REQUEST BINDING
   ============================================================================= */
   function bindCloseRequests() {
     if (document.documentElement.dataset.accountEmailAuthDrawerCloseBound === 'true') return;
@@ -166,7 +196,7 @@
 
 
   /* =============================================================================
-     09) ROUTE REQUEST BINDING
+     10) ROUTE REQUEST BINDING
   ============================================================================= */
   function bindRouteRequests() {
     if (document.documentElement.dataset.accountEmailAuthDrawerRouteBound === 'true') return;
@@ -175,6 +205,7 @@
     const handleEmailAuthRoute = (event) => {
       const route = event?.detail?.route || event?.detail?.action || '';
       if (route !== 'email-auth') return;
+      syncHiddenContextFields(event?.detail || {});
       openDrawer();
     };
 
@@ -184,7 +215,7 @@
   }
 
   /* =============================================================================
-     09A) INNER ROUTE CONTROLS
+     10A) INNER ROUTE CONTROLS
   ============================================================================= */
   function bindInnerRouteControls() {
     if (document.documentElement.dataset.accountEmailAuthDrawerInnerRouteBound === 'true') return;
@@ -228,6 +259,7 @@
       if (appleControl) {
         event.preventDefault();
         event.stopPropagation();
+        syncHiddenContextFields({ method: 'apple', auth_provider: 'apple' });
         requestInnerView('provider-apple');
         return;
       }
@@ -248,9 +280,10 @@
   }
 
   /* =============================================================================
-     09B) PROVIDER REQUEST HELPERS
+     10B) PROVIDER REQUEST HELPERS
   ============================================================================= */
   function requestGoogleProviderLogin() {
+    syncHiddenContextFields({ method: 'google', auth_provider: 'google' });
     const supabase = getSupabaseClient();
 
     if (supabase) {
@@ -270,7 +303,7 @@
   }
 
   /* =============================================================================
-     09C) FORM SUBMIT BINDING
+     10C) FORM SUBMIT BINDING
   ============================================================================= */
   function bindFormSubmit() {
     if (document.documentElement.dataset.accountEmailAuthDrawerFormBound === 'true') return;
@@ -288,7 +321,7 @@
   }
 
   /* =============================================================================
-     10) ESCAPE BINDING
+     11) ESCAPE BINDING
   ============================================================================= */
   function bindEscape() {
     if (document.documentElement.dataset.accountEmailAuthDrawerEscapeBound === 'true') return;
@@ -303,7 +336,7 @@
   }
 
   /* =============================================================================
-     11) EVENT REBINDING
+     12) EVENT REBINDING
   ============================================================================= */
   function bindMountEvents() {
     if (mountEventsBound) return;
@@ -319,13 +352,14 @@
   }
 
   /* =============================================================================
-     12) BOOTSTRAP
+     13) BOOTSTRAP
   ============================================================================= */
   function init() {
     if (document.documentElement.dataset.accountEmailAuthDrawerInitialized === 'true' && getDrawer()) return;
     document.documentElement.dataset.accountEmailAuthDrawerInitialized = 'true';
 
     normalizeStateVisibility();
+    syncHiddenContextFields({ method: 'email', auth_provider: 'email' });
 
     const drawer = getDrawer();
     if (drawer) {
@@ -359,6 +393,6 @@
   }
 
   /* =============================================================================
-     13) END OF FILE
+     14) END OF FILE
   ============================================================================= */
 })();

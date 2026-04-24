@@ -5,10 +5,11 @@
 03) CONTENT STAGE
 04) SEGMENT TITLE
 05) EMAIL AUTH FORM
-06) PRIMARY ACTIONS
-07) SECONDARY ACTIONS
-08) BACK CONTROL
-09) END OF VIEW
+06) CANONICAL HIDDEN CONTEXT FIELDS
+07) PRIMARY ACTIONS
+08) SECONDARY ACTIONS
+09) BACK CONTROL
+10) END OF VIEW
 ============================================================================= -->
 
 <!-- =============================================================================
@@ -45,6 +46,24 @@
       <form id="account-email-auth-drawer-form" class="account-email-auth-drawer-form" data-account-email-auth-form="true" novalidate>
         <div class="account-email-auth-drawer-center-stage">
 
+          <!-- ==================================================================
+          06) CANONICAL HIDDEN CONTEXT FIELDS
+          ================================================================== -->
+          <input
+            id="account-email-auth-method"
+            name="method"
+            type="hidden"
+            value="email"
+            data-account-email-auth-field="method"
+          >
+          <input
+            id="account-email-auth-auth-provider"
+            name="auth_provider"
+            type="hidden"
+            value="email"
+            data-account-email-auth-field="auth-provider"
+          >
+
           <div class="account-email-auth-drawer-field-group">
             <input
               id="account-email-auth-email"
@@ -61,7 +80,7 @@
       </form>
 
       <!-- ======================================================================
-      06) PRIMARY ACTIONS
+      07) PRIMARY ACTIONS
       ====================================================================== -->
       <div class="account-email-auth-drawer-actions">
         <button type="submit" form="account-email-auth-drawer-form" class="account-email-auth-drawer-action account-email-auth-drawer-action--primary" data-account-email-auth-submit="true">
@@ -70,7 +89,7 @@
       </div>
 
       <!-- ======================================================================
-      07) SECONDARY ACTIONS
+      08) SECONDARY ACTIONS
       ====================================================================== -->
       <div class="account-email-auth-drawer-secondary-actions">
 
@@ -79,7 +98,7 @@
         </button>
 
         <!-- ====================================================================
-        08) BACK CONTROL
+        09) BACK CONTROL
         ==================================================================== -->
         <button type="button" class="account-email-auth-drawer-back-control" data-account-route="entry" data-account-email-auth-back="true" aria-label="Back">
           <img src="/assets/icons/core/navigation/unclassified/back.svg" alt="" class="account-email-auth-drawer-back-icon ui-icon-theme-aware" aria-hidden="true">
@@ -90,5 +109,5 @@
 </section>
 
 <!-- =============================================================================
-09) END OF VIEW
+10) END OF VIEW
 ============================================================================= -->
