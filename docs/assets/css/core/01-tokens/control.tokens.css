@@ -10,38 +10,6 @@
    08) GLASS TOKENS
    09) END OF FILE
 ============================================================================= */
-/* =============================================================================
-   05) TOGGLE TOKENS
-============================================================================= */
-:root{
-  --toggle-width:2.9rem;
-  --toggle-height:1.7rem;
-  --toggle-radius:999px;
-  --toggle-padding:0.14rem;
-
-  --toggle-track-bg-off:color-mix(in srgb, var(--text-color) 12%, transparent);
-  --toggle-track-bg-on:var(--color-primary1);
-  --toggle-track-border-color:color-mix(in srgb, var(--text-color) 12%, transparent);
-  --toggle-track-border-width:1px;
-
-  --toggle-thumb-size:1.26rem;
-  --toggle-thumb-bg:rgb(255, 255, 255);
-  --toggle-thumb-shadow:0 1px 4px rgba(0, 0, 0, 0.18);
-  --toggle-thumb-translate-off:0;
-  --toggle-thumb-translate-on:1.18rem;
-
-  --toggle-label-gap:0.55rem;
-  --toggle-label-font-size:var(--body-3-size);
-  --toggle-label-line-height:var(--body-3-line-height);
-  --toggle-label-letter-spacing:var(--body-3-tracking);
-
-  --toggle-transition-duration:220ms;
-  --toggle-transition-ease:cubic-bezier(0.22, 1, 0.36, 1);
-
-  --toggle-focus-ring-width:2px;
-  --toggle-focus-ring-color:color-mix(in srgb, var(--color-primary1) 42%, transparent);
-  --toggle-disabled-opacity:0.45;
-}
 
 
 /* =============================================================================
@@ -119,6 +87,31 @@
   --input-padding-x-sm:var(--control-padding-x-sm);
   --input-padding-x-md:var(--control-padding-x-md);
   --input-padding-x-lg:var(--control-padding-x-lg);
+}
+
+/* =============================================================================
+   05) TOGGLE TOKENS
+============================================================================= */
+:root{
+  --toggle-width:2.625rem;
+  --toggle-height:1.25rem;
+  --toggle-padding:0.125rem;
+  --toggle-thumb-size:1rem;
+  --toggle-radius:999px;
+  --toggle-track-border-width:0;
+  --toggle-track-bg-off:color-mix(in srgb, var(--text-primary-color) 14%, transparent);
+  --toggle-track-bg-on:var(--color-primary1);
+  --toggle-track-border-color:transparent;
+  --toggle-track-border-hover-color:transparent;
+  --toggle-thumb-bg:rgb(255, 255, 255);
+  --toggle-thumb-shadow:0 0.0625rem 0.125rem rgba(0, 0, 0, 0.22), 0 0.03125rem 0.0625rem rgba(0, 0, 0, 0.14);
+  --toggle-thumb-shadow-active:0 0.03125rem 0.0625rem rgba(0, 0, 0, 0.16);
+  --toggle-focus-ring-width:0.125rem;
+  --toggle-focus-ring-color:color-mix(in srgb, var(--color-primary1) 22%, transparent);
+  --toggle-disabled-opacity:0.42;
+  --toggle-transition-duration:220ms;
+  --toggle-transition-ease:cubic-bezier(0.25, 0.1, 0.25, 1);
+  --toggle-thumb-translate-on:calc(var(--toggle-width) - var(--toggle-thumb-size) - (2 * var(--toggle-padding)));
 }
 
 /* =============================================================================

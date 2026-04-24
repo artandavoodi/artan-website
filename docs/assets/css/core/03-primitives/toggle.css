@@ -1,13 +1,12 @@
 /* =============================================================================
    00) FILE INDEX
    01) MODULE IDENTITY
-   02) TOGGLE TOKENS
-   03) TOGGLE ROOT
-   04) TOGGLE TRACK
-   05) TOGGLE THUMB
-   06) TOGGLE STATES
-   07) TOGGLE DISABLED STATE
-   08) END OF FILE
+   02) TOGGLE ROOT
+   03) TOGGLE TRACK
+   04) TOGGLE THUMB
+   05) TOGGLE STATES
+   06) TOGGLE DISABLED STATE
+   07) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -16,29 +15,7 @@
 /* /website/docs/assets/css/core/03-primitives/toggle.css */
 
 /* =============================================================================
-   02) TOGGLE TOKENS
-============================================================================= */
-:root{
-  --toggle-width: 2.625rem;
-  --toggle-height: 1.375rem;
-  --toggle-padding: 0.125rem;
-  --toggle-thumb-size: 1.125rem;
-  --toggle-radius: 999px;
-  --toggle-track-border-width: 1px;
-  --toggle-track-bg-off: rgba(127, 127, 127, 0.26);
-  --toggle-track-bg-on: var(--color-primary1);
-  --toggle-track-border-color: color-mix(in srgb, var(--text-primary-color) 16%, transparent);
-  --toggle-thumb-bg: rgb(255, 255, 255);
-  --toggle-thumb-shadow: none;
-  --toggle-focus-ring-width: 0;
-  --toggle-focus-ring-color: color-mix(in srgb, var(--text-primary-color) 16%, transparent);
-  --toggle-transition-duration: 220ms;
-  --toggle-transition-ease: ease;
-  --toggle-thumb-translate-on: calc(var(--toggle-width) - var(--toggle-thumb-size) - (2 * var(--toggle-padding)));
-}
-
-/* =============================================================================
-   03) TOGGLE ROOT
+   02) TOGGLE ROOT
 ============================================================================= */
 [data-na-toggle],
 .na-toggle,
@@ -50,9 +27,10 @@
   min-width: var(--toggle-width);
   height: var(--toggle-height);
   min-height: var(--toggle-height);
-  padding: 0;
+  padding:0;
   border: 0;
   background: transparent;
+  color:var(--text-color);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -67,7 +45,7 @@
 }
 
 /* =============================================================================
-   04) TOGGLE TRACK
+   03) TOGGLE TRACK
 ============================================================================= */
 [data-na-toggle-track],
 .na-toggle__track,
@@ -79,18 +57,20 @@
   width: var(--toggle-width);
   height: var(--toggle-height);
   padding: var(--toggle-padding);
-  border: var(--toggle-track-border-width) solid var(--toggle-track-border-color);
+  border:var(--toggle-track-border-width) solid var(--toggle-track-border-color);
   border-radius: var(--toggle-radius);
   background: var(--toggle-track-bg-off);
   overflow: hidden;
+  box-shadow:inset 0 0 0 0.0625rem color-mix(in srgb, var(--text-primary-color) 7%, transparent);
   transition:
     background-color var(--toggle-transition-duration) var(--toggle-transition-ease),
     border-color var(--toggle-transition-duration) var(--toggle-transition-ease),
-    box-shadow var(--toggle-transition-duration) var(--toggle-transition-ease);
+    box-shadow var(--toggle-transition-duration) var(--toggle-transition-ease),
+    opacity var(--toggle-transition-duration) var(--toggle-transition-ease);
 }
 
 /* =============================================================================
-   05) TOGGLE THUMB
+   04) TOGGLE THUMB
 ============================================================================= */
 [data-na-toggle-thumb],
 .na-toggle__thumb,
@@ -105,22 +85,28 @@
   background: var(--toggle-thumb-bg);
   box-shadow: var(--toggle-thumb-shadow);
   transform: translate(0, -50%);
-  transition: transform var(--toggle-transition-duration) var(--toggle-transition-ease);
+  transition:
+    transform var(--toggle-transition-duration) var(--toggle-transition-ease),
+    box-shadow var(--toggle-transition-duration) var(--toggle-transition-ease),
+    width var(--toggle-transition-duration) var(--toggle-transition-ease);
 }
 
 /* =============================================================================
-   06) TOGGLE STATES
+   05) TOGGLE STATES
 ============================================================================= */
 [data-na-toggle]:hover [data-na-toggle-track],
 .na-toggle:hover .na-toggle__track,
 .ui-toggle:hover .ui-toggle__track{
-  border-color: var(--toggle-focus-ring-color);
+  border-color:var(--toggle-track-border-hover-color);
+  box-shadow:inset 0 0 0 0.0625rem color-mix(in srgb, var(--text-primary-color) 11%, transparent);
 }
 
 [data-na-toggle]:focus-visible [data-na-toggle-track],
 .na-toggle:focus-visible .na-toggle__track,
 .ui-toggle:focus-visible .ui-toggle__track{
-  box-shadow: 0 0 0 var(--toggle-focus-ring-width) var(--toggle-focus-ring-color);
+  box-shadow:
+    inset 0 0 0 0.0625rem color-mix(in srgb, var(--text-primary-color) 10%, transparent),
+    0 0 0 var(--toggle-focus-ring-width) var(--toggle-focus-ring-color);
 }
 
 [data-na-toggle][aria-checked="true"] [data-na-toggle-track],
@@ -134,6 +120,7 @@
 .ui-toggle[data-toggle-state="on"] .ui-toggle__track{
   background: var(--toggle-track-bg-on);
   border-color: var(--toggle-track-bg-on);
+  box-shadow:none;
 }
 
 [data-na-toggle][aria-checked="true"] [data-na-toggle-thumb],
@@ -146,10 +133,17 @@
 .na-toggle[data-toggle-state="on"] .na-toggle__thumb,
 .ui-toggle[data-toggle-state="on"] .ui-toggle__thumb{
   transform: translate(var(--toggle-thumb-translate-on), -50%);
+  box-shadow:var(--toggle-thumb-shadow-active);
+}
+
+[data-na-toggle]:active [data-na-toggle-thumb],
+.na-toggle:active .na-toggle__thumb,
+.ui-toggle:active .ui-toggle__thumb{
+  width:calc(var(--toggle-thumb-size) + 0.1875rem);
 }
 
 /* =============================================================================
-   07) TOGGLE DISABLED STATE
+   06) TOGGLE DISABLED STATE
 ============================================================================= */
 [data-na-toggle][disabled],
 [data-na-toggle][aria-disabled="true"],
@@ -158,9 +152,19 @@
 .ui-toggle[disabled],
 .ui-toggle[aria-disabled="true"]{
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity:var(--toggle-disabled-opacity);
 }
 
 /* =============================================================================
-   08) END OF FILE
+   07) END OF FILE
 ============================================================================= */
+@media (prefers-reduced-motion:reduce){
+  [data-na-toggle-track],
+  .na-toggle__track,
+  .ui-toggle__track,
+  [data-na-toggle-thumb],
+  .na-toggle__thumb,
+  .ui-toggle__thumb{
+    transition:none;
+  }
+}

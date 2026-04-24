@@ -5,7 +5,7 @@
    03) HEADER
    04) SECTION STRUCTURE
    05) MODE GRID
-   06) TOKEN FIELD GRID
+   06) COLOR PICKER CONSUMER STATE
    07) TOGGLE LIST CONSUMER LAYOUT
    08) SCROLL SAFETY
    09) RESPONSIVE REFINEMENTS
@@ -150,7 +150,7 @@
 }
 
 /* =============================================================================
-   06) TOKEN FIELD GRID
+   06) COLOR PICKER CONSUMER STATE
 ============================================================================= */
 .home-platform-theme__token-grid{
   display:grid;
@@ -182,22 +182,6 @@
 
 .home-platform-theme__token-input{
   flex:0 0 auto;
-  width:2.25rem;
-  height:2.25rem;
-  padding:0;
-  border:1px solid var(--control-border);
-  border-radius:0.85rem;
-  background:transparent;
-  cursor:pointer;
-}
-
-.home-platform-theme__token-input::-webkit-color-swatch-wrapper{
-  padding:0;
-}
-
-.home-platform-theme__token-input::-webkit-color-swatch{
-  border:0;
-  border-radius:0.7rem;
 }
 
 .home-platform-theme[data-active-theme="system"] .home-platform-theme__token-grid,

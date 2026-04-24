@@ -33,6 +33,7 @@
   --link-color:var(--color-primary5);
   --link-hover-color:var(--color-primary6);
   --border-color:rgba(255,255,255,0.14);
+  --border-color-base:rgba(255,255,255,0.14);
 
   --surface-primary:var(--surface-1);
   --surface-secondary:var(--surface-2);
@@ -44,11 +45,15 @@
   --control-bg-hover:rgba(255,255,255,0.08);
   --control-border:rgba(255,255,255,0.14);
   --control-border-strong:rgba(255,255,255,0.22);
+  --control-border-base:rgba(255,255,255,0.14);
+  --control-border-strong-base:rgba(255,255,255,0.22);
 
   --field-bg:rgba(255,255,255,0.03);
   --field-bg-focus:rgba(255,255,255,0.05);
   --field-border:rgba(255,255,255,0.14);
   --field-border-focus:rgba(255,255,255,0.26);
+  --field-border-base:rgba(255,255,255,0.14);
+  --field-border-focus-base:rgba(255,255,255,0.26);
 
   --overlay-backdrop:var(--overlay-backdrop-dark);
 
@@ -83,6 +88,7 @@ html[data-theme="custom"][data-theme-effective="dark"]{
   --link-color:var(--color-primary5);
   --link-hover-color:var(--color-primary6);
   --border-color:rgba(255,255,255,0.14);
+  --border-color-base:rgba(255,255,255,0.14);
 
   --surface-primary:var(--surface-1);
   --surface-secondary:var(--surface-2);
@@ -94,11 +100,15 @@ html[data-theme="custom"][data-theme-effective="dark"]{
   --control-bg-hover:rgba(255,255,255,0.08);
   --control-border:rgba(255,255,255,0.14);
   --control-border-strong:rgba(255,255,255,0.22);
+  --control-border-base:rgba(255,255,255,0.14);
+  --control-border-strong-base:rgba(255,255,255,0.22);
 
   --field-bg:rgba(255,255,255,0.03);
   --field-bg-focus:rgba(255,255,255,0.05);
   --field-border:rgba(255,255,255,0.14);
   --field-border-focus:rgba(255,255,255,0.26);
+  --field-border-base:rgba(255,255,255,0.14);
+  --field-border-focus-base:rgba(255,255,255,0.26);
 
   --overlay-backdrop:var(--overlay-backdrop-dark);
 
@@ -126,6 +136,7 @@ html[data-theme="custom"][data-theme-effective="light"]{
   --link-color:var(--color-primary5);
   --link-hover-color:var(--color-primary6);
   --border-color:rgba(0,0,0,0.14);
+  --border-color-base:rgba(0,0,0,0.14);
 
   --surface-primary:var(--surface-inverse-1);
   --surface-secondary:var(--surface-inverse-2);
@@ -137,11 +148,15 @@ html[data-theme="custom"][data-theme-effective="light"]{
   --control-bg-hover:rgba(0,0,0,0.06);
   --control-border:rgba(0,0,0,0.14);
   --control-border-strong:rgba(0,0,0,0.2);
+  --control-border-base:rgba(0,0,0,0.14);
+  --control-border-strong-base:rgba(0,0,0,0.2);
 
   --field-bg:rgba(0,0,0,0.02);
   --field-bg-focus:rgba(0,0,0,0.035);
   --field-border:rgba(0,0,0,0.14);
   --field-border-focus:rgba(0,0,0,0.24);
+  --field-border-base:rgba(0,0,0,0.14);
+  --field-border-focus-base:rgba(0,0,0,0.24);
 
   --overlay-backdrop:var(--overlay-backdrop-light);
 
@@ -170,11 +185,11 @@ html[data-theme="custom"]{
 ============================================================================= */
 html[data-theme-contrast="low"]{
   --theme-contrast:low;
-  --border-color:color-mix(in srgb,var(--border-color) 72%,transparent);
-  --control-border:color-mix(in srgb,var(--control-border) 72%,transparent);
-  --control-border-strong:color-mix(in srgb,var(--control-border-strong) 72%,transparent);
-  --field-border:color-mix(in srgb,var(--field-border) 72%,transparent);
-  --field-border-focus:color-mix(in srgb,var(--field-border-focus) 72%,transparent);
+  --border-color:color-mix(in srgb,var(--border-color-base) 52%,transparent);
+  --control-border:color-mix(in srgb,var(--control-border-base) 52%,transparent);
+  --control-border-strong:color-mix(in srgb,var(--control-border-strong-base) 52%,transparent);
+  --field-border:color-mix(in srgb,var(--field-border-base) 52%,transparent);
+  --field-border-focus:color-mix(in srgb,var(--field-border-focus-base) 52%,transparent);
 }
 
 html[data-theme-contrast="standard"]{
@@ -183,11 +198,11 @@ html[data-theme-contrast="standard"]{
 
 html[data-theme-contrast="high"]{
   --theme-contrast:high;
-  --border-color:color-mix(in srgb,var(--border-color) 72%,var(--text-color));
-  --control-border:color-mix(in srgb,var(--control-border) 72%,var(--text-color));
-  --control-border-strong:color-mix(in srgb,var(--control-border-strong) 72%,var(--text-color));
-  --field-border:color-mix(in srgb,var(--field-border) 72%,var(--text-color));
-  --field-border-focus:color-mix(in srgb,var(--field-border-focus) 72%,var(--text-color));
+  --border-color:color-mix(in srgb,var(--border-color-base) 72%,var(--text-color));
+  --control-border:color-mix(in srgb,var(--control-border-base) 72%,var(--text-color));
+  --control-border-strong:color-mix(in srgb,var(--control-border-strong-base) 72%,var(--text-color));
+  --field-border:color-mix(in srgb,var(--field-border-base) 72%,var(--text-color));
+  --field-border-focus:color-mix(in srgb,var(--field-border-focus-base) 72%,var(--text-color));
 }
 
 /* =============================================================================
@@ -201,6 +216,7 @@ html[data-theme="custom"]{
   --link-color:var(--theme-accent-color);
   --link-hover-color:var(--theme-accent-hover-color);
   --border-color:var(--theme-custom-border-color);
+  --border-color-base:var(--theme-custom-border-color);
 
   --surface-primary:var(--theme-custom-surface-color);
   --surface-secondary:color-mix(in srgb,var(--theme-custom-surface-color) 92%,var(--theme-custom-text-color));
@@ -212,11 +228,15 @@ html[data-theme="custom"]{
   --control-bg-hover:color-mix(in srgb,var(--theme-custom-surface-color) 84%,var(--theme-custom-text-color));
   --control-border:var(--theme-custom-border-color);
   --control-border-strong:color-mix(in srgb,var(--theme-custom-border-color) 72%,var(--theme-custom-text-color));
+  --control-border-base:var(--theme-custom-border-color);
+  --control-border-strong-base:color-mix(in srgb,var(--theme-custom-border-color) 72%,var(--theme-custom-text-color));
 
   --field-bg:color-mix(in srgb,var(--theme-custom-surface-color) 96%,var(--theme-custom-text-color));
   --field-bg-focus:color-mix(in srgb,var(--theme-custom-surface-color) 88%,var(--theme-custom-text-color));
   --field-border:var(--theme-custom-border-color);
   --field-border-focus:color-mix(in srgb,var(--theme-custom-border-color) 64%,var(--theme-custom-text-color));
+  --field-border-base:var(--theme-custom-border-color);
+  --field-border-focus-base:color-mix(in srgb,var(--theme-custom-border-color) 64%,var(--theme-custom-text-color));
 
   --menu-surface:color-mix(in srgb,var(--theme-custom-bg-color) 94%,transparent);
   --menu-surface-strong:color-mix(in srgb,var(--theme-custom-bg-color) 88%,transparent);
