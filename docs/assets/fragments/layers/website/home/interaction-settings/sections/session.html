@@ -1,0 +1,58 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) SESSION SECTION ROOT
+     02) SESSION SUMMARY
+     03) SESSION CONTROLS
+     04) SESSION STATUS
+============================================================================= -->
+
+<!-- =============================================================================
+     01) SESSION SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="session" aria-label="Session">
+  <!-- =============================================================================
+       02) SESSION SUMMARY
+  ============================================================================= -->
+  <div class="home-interaction-settings-panel__section-heading">
+    <p class="home-interaction-settings-panel__section-title">Session</p>
+    <p class="home-interaction-settings-panel__status">Control the active conversation state, reset behavior, temporary mode, and future session identity routing.</p>
+  </div>
+
+  <!-- =============================================================================
+       03) SESSION CONTROLS
+  ============================================================================= -->
+  <div class="home-interaction-settings-panel__option-stack" aria-label="Session controls">
+    <button class="home-interaction-settings-panel__toggle-row" type="button" data-home-interaction-setting="session-save" data-home-interaction-setting-value="enabled" aria-pressed="true">
+      <span class="home-interaction-settings-panel__toggle-copy">
+        <span class="home-interaction-settings-panel__toggle-label">Session save</span>
+        <span class="home-interaction-settings-panel__toggle-description">Preserve the active session state where storage is available.</span>
+      </span>
+      <span class="home-interaction-settings-panel__toggle" aria-hidden="true"></span>
+    </button>
+    <button class="home-interaction-settings-panel__toggle-row" type="button" data-home-interaction-setting="reset-confirmation" data-home-interaction-setting-value="enabled" aria-pressed="true">
+      <span class="home-interaction-settings-panel__toggle-copy">
+        <span class="home-interaction-settings-panel__toggle-label">Reset confirmation</span>
+        <span class="home-interaction-settings-panel__toggle-description">Prepare confirmation behavior before clearing an active chat.</span>
+      </span>
+      <span class="home-interaction-settings-panel__toggle" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <!-- =============================================================================
+       04) SESSION STATUS
+  ============================================================================= -->
+  <div class="home-interaction-settings-panel__option-grid" aria-label="Session status">
+    <article class="home-interaction-settings-panel__option" aria-label="Active chat status">
+      <span class="home-interaction-settings-panel__option-label">Active chat</span>
+      <span class="home-interaction-settings-panel__option-description">Current chat identity will connect to the conversation registry.</span>
+    </article>
+    <article class="home-interaction-settings-panel__option" aria-label="Reset behavior status">
+      <span class="home-interaction-settings-panel__option-label">Reset behavior</span>
+      <span class="home-interaction-settings-panel__option-description">Reset clears composer and response surfaces while preserving the control layer.</span>
+    </article>
+    <article class="home-interaction-settings-panel__option" aria-label="Persistence status">
+      <span class="home-interaction-settings-panel__option-label">Persistence</span>
+      <span class="home-interaction-settings-panel__option-description">Session persistence will route through local storage first, then account storage.</span>
+    </article>
+  </div>
+</section>

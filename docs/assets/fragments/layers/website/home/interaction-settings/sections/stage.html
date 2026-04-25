@@ -1,0 +1,58 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) STAGE SECTION ROOT
+     02) STAGE SUMMARY
+     03) STAGE VISIBILITY CONTROLS
+     04) STAGE MOTION CONTROLS
+============================================================================= -->
+
+<!-- =============================================================================
+     01) STAGE SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="stage" aria-label="Stage presentation">
+  <!-- =============================================================================
+       02) STAGE SUMMARY
+  ============================================================================= -->
+  <div class="home-interaction-settings-panel__section-heading">
+    <p class="home-interaction-settings-panel__section-title">Stage presentation</p>
+    <p class="home-interaction-settings-panel__status">Control the visible intelligence layer, including the interactive text, responsive circle, motion behavior, and stage feedback.</p>
+  </div>
+
+  <!-- =============================================================================
+       03) STAGE VISIBILITY CONTROLS
+  ============================================================================= -->
+  <div class="home-interaction-settings-panel__option-stack" aria-label="Stage visibility controls">
+    <button class="home-interaction-settings-panel__toggle-row" type="button" data-home-interaction-setting="stage-text" data-home-interaction-setting-value="enabled" aria-pressed="true">
+      <span class="home-interaction-settings-panel__toggle-copy">
+        <span class="home-interaction-settings-panel__toggle-label">Interactive text</span>
+        <span class="home-interaction-settings-panel__toggle-description">Show the stage state text above the composer.</span>
+      </span>
+      <span class="home-interaction-settings-panel__toggle" aria-hidden="true"></span>
+    </button>
+    <button class="home-interaction-settings-panel__toggle-row" type="button" data-home-interaction-setting="stage-circle" data-home-interaction-setting-value="enabled" aria-pressed="true">
+      <span class="home-interaction-settings-panel__toggle-copy">
+        <span class="home-interaction-settings-panel__toggle-label">Responsive circle</span>
+        <span class="home-interaction-settings-panel__toggle-description">Show the stage circle and motion feedback.</span>
+      </span>
+      <span class="home-interaction-settings-panel__toggle" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <!-- =============================================================================
+       04) STAGE MOTION CONTROLS
+  ============================================================================= -->
+  <div class="home-interaction-settings-panel__option-grid" role="group" aria-label="Stage motion intensity">
+    <button class="home-interaction-settings-panel__option" type="button" data-home-interaction-setting="stage-motion" data-home-interaction-setting-value="subtle" aria-pressed="true">
+      <span class="home-interaction-settings-panel__option-label">Subtle</span>
+      <span class="home-interaction-settings-panel__option-description">Keep motion quiet and premium.</span>
+    </button>
+    <button class="home-interaction-settings-panel__option" type="button" data-home-interaction-setting="stage-motion" data-home-interaction-setting-value="standard" aria-pressed="false">
+      <span class="home-interaction-settings-panel__option-label">Standard</span>
+      <span class="home-interaction-settings-panel__option-description">Use balanced motion and visible feedback.</span>
+    </button>
+    <button class="home-interaction-settings-panel__option" type="button" data-home-interaction-setting="stage-motion" data-home-interaction-setting-value="minimal" aria-pressed="false">
+      <span class="home-interaction-settings-panel__option-label">Minimal</span>
+      <span class="home-interaction-settings-panel__option-description">Reduce animated state changes.</span>
+    </button>
+  </div>
+</section>

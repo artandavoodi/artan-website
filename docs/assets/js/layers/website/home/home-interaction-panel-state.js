@@ -11,7 +11,7 @@ function getHomeInteractionPanelStateNodes() {
     submit: document.querySelector('#home-interaction-panel-submit'),
     submitLabel: document.querySelector('[data-home-interaction-submit-label]'),
     submitIcon: document.querySelector('[data-home-interaction-submit-icon] img'),
-    settingsButton: document.querySelector('[data-home-interaction-settings="true"]'),
+    settingsButton: document.querySelector('[data-home-interaction-settings-open="true"]'),
     voiceButton: document.querySelector('#stage-microphone-button'),
   };
 }

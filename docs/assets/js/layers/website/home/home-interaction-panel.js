@@ -219,7 +219,7 @@ function bindHomeInteractionPanel() {
       return;
     }
 
-    const target = event.target.closest('[data-home-interaction-open-search], [data-home-interaction-attach], [data-home-interaction-settings="true"]');
+    const target = event.target.closest('[data-home-interaction-open-search], [data-home-interaction-attach], [data-home-interaction-settings-open="true"]');
     if (!target || !root.contains(target)) {
       return;
     }
@@ -236,13 +236,12 @@ function bindHomeInteractionPanel() {
       return;
     }
 
-    if (target.matches('[data-home-interaction-settings="true"]')) {
+    if (target.matches('[data-home-interaction-settings-open="true"]')) {
       event.preventDefault();
-      const isExpanded = target.getAttribute('aria-expanded') === 'true';
-      target.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
-      dispatchHomeInteractionEvent('neuroartan:home-interaction-settings-toggle-requested', {
+      target.setAttribute('aria-expanded', 'true');
+      dispatchHomeInteractionEvent('neuroartan:home-interaction-settings-open-requested', {
         source: 'home-interaction-panel',
-        open: !isExpanded,
+        section: target.dataset.homeInteractionSettingsSection || 'overview',
       });
     }
   });

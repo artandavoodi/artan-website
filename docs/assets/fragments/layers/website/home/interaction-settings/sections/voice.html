@@ -1,0 +1,46 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) VOICE SECTION ROOT
+     02) VOICE SUMMARY
+     03) VOICE OUTPUT CONTROLS
+     04) VOICE INPUT CONTROLS
+============================================================================= -->
+
+<!-- =============================================================================
+     01) VOICE SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="voice" aria-label="Voice">
+  <!-- =============================================================================
+       02) VOICE SUMMARY
+  ============================================================================= -->
+  <div class="home-interaction-settings-panel__section-heading">
+    <p class="home-interaction-settings-panel__section-title">Voice</p>
+    <p class="home-interaction-settings-panel__status">Prepare speech input, spoken response output, and voice-engine behavior for connected local or cloud voice services.</p>
+  </div>
+
+  <!-- =============================================================================
+       03) VOICE OUTPUT CONTROLS
+  ============================================================================= -->
+  <div class="home-interaction-settings-panel__option-stack" aria-label="Voice output controls">
+    <button class="home-interaction-settings-panel__toggle-row" type="button" data-home-interaction-setting="text-to-speech" data-home-interaction-setting-value="disabled" aria-pressed="false">
+      <span class="home-interaction-settings-panel__toggle-copy">
+        <span class="home-interaction-settings-panel__toggle-label">Text to speech</span>
+        <span class="home-interaction-settings-panel__toggle-description">Read responses aloud when a voice engine is connected.</span>
+      </span>
+      <span class="home-interaction-settings-panel__toggle" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <!-- =============================================================================
+       04) VOICE INPUT CONTROLS
+  ============================================================================= -->
+  <div class="home-interaction-settings-panel__option-stack" aria-label="Voice input controls">
+    <button class="home-interaction-settings-panel__toggle-row" type="button" data-home-interaction-setting="voice-input" data-home-interaction-setting-value="enabled" aria-pressed="true">
+      <span class="home-interaction-settings-panel__toggle-copy">
+        <span class="home-interaction-settings-panel__toggle-label">Voice input</span>
+        <span class="home-interaction-settings-panel__toggle-description">Allow the stage microphone to prepare spoken input capture.</span>
+      </span>
+      <span class="home-interaction-settings-panel__toggle" aria-hidden="true"></span>
+    </button>
+  </div>
+</section>

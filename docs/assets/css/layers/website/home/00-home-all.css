@@ -16,7 +16,7 @@
 @import url('./home-interaction-panel.css');
 @import url('./home-interaction-response-panel.css');
 @import url('./home-stage-composition.css');
-@import url('./home-interaction-settings-panel.css');
+@import url('./interaction-settings/00-interaction-settings-all.css');
 @import url('./home-stage-interactive-text.css');
 @import url('./home-shell.css');
 @import url('./home-footer.css');

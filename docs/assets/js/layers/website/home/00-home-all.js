@@ -18,7 +18,7 @@ import './home-settings-panel.js';
 import './home-footer.js';
 import './home-interaction-panel.js';
 import './home-interaction-response-panel.js';
-import './home-interaction-settings-panel.js';
+import './interaction-settings/00-interaction-settings-all.js';
 import './home-stage-interactive-text.js';
 import './home-interaction-panel-state.js';
 
