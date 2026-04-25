@@ -30,6 +30,8 @@ const HOME_STAGE_CORE_EFFECT_STATE = {
   startTime: 0,
   energy: 0,
   targetEnergy: 0,
+  isResetting: false,
+  resizeTimer: null,
 };
 
 /* =========================================================
@@ -83,6 +85,21 @@ function setHomeStageCoreEffectMode(mode) {
   if (nodes.vessel) {
     nodes.vessel.dataset.coreEffectMode = nextMode;
   }
+}
+
+function scheduleHomeStageCoreEffectResize() {
+  window.requestAnimationFrame(() => {
+    resizeHomeStageCoreEffectCanvas();
+  });
+
+  if (HOME_STAGE_CORE_EFFECT_STATE.resizeTimer) {
+    window.clearTimeout(HOME_STAGE_CORE_EFFECT_STATE.resizeTimer);
+  }
+
+  HOME_STAGE_CORE_EFFECT_STATE.resizeTimer = window.setTimeout(() => {
+    resizeHomeStageCoreEffectCanvas();
+    HOME_STAGE_CORE_EFFECT_STATE.resizeTimer = null;
+  }, 680);
 }
 
 /* =========================================================
@@ -143,13 +160,14 @@ function resizeHomeStageCoreEffectCanvas() {
 
   const nodes = getHomeStageCoreEffectNodes();
   const vesselRect = nodes.vessel?.getBoundingClientRect?.();
+  const shellRect = shell.getBoundingClientRect();
   const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
 
   const vesselSize = vesselRect
     ? Math.max(vesselRect.width, vesselRect.height)
-    : 0;
+    : Math.max(shellRect.width, shellRect.height);
 
-  const sovereignSize = Math.max(272, Math.round(vesselSize * 1.72));
+  const sovereignSize = Math.max(272, Math.round(vesselSize * 1.52));
   const width = sovereignSize;
   const height = sovereignSize;
 
@@ -312,19 +330,32 @@ function startHomeStageCoreEffectLoop() {
 
 function bindHomeStageCoreEffectEvents() {
   document.addEventListener('neuroartan:home-stage-voice-mode', (event) => {
+    HOME_STAGE_CORE_EFFECT_STATE.isResetting = false;
     setHomeStageCoreEffectMode(event?.detail?.mode ?? 'idle');
+    scheduleHomeStageCoreEffectResize();
   });
 
   document.addEventListener('neuroartan:home-stage-voice-query-submitted', () => {
+    HOME_STAGE_CORE_EFFECT_STATE.isResetting = false;
     setHomeStageCoreEffectMode('thinking');
+    scheduleHomeStageCoreEffectResize();
   });
 
   document.addEventListener('neuroartan:home-stage-voice-response', (event) => {
+    if (HOME_STAGE_CORE_EFFECT_STATE.isResetting) {
+      return;
+    }
+
     const response = typeof event?.detail?.response === 'string'
       ? event.detail.response.trim()
       : '';
 
-    setHomeStageCoreEffectMode(response ? 'responding' : 'thinking');
+    if (!response) {
+      return;
+    }
+
+    setHomeStageCoreEffectMode('responding');
+    scheduleHomeStageCoreEffectResize();
   });
 
   document.addEventListener('neuroartan:home-stage-voice-transcript', (event) => {
@@ -338,15 +369,28 @@ function bindHomeStageCoreEffectEvents() {
   });
 
   document.addEventListener('neuroartan:home-stage-voice-activated', () => {
+    HOME_STAGE_CORE_EFFECT_STATE.isResetting = false;
     setHomeStageCoreEffectMode('listening');
+    scheduleHomeStageCoreEffectResize();
   });
 
   document.addEventListener('neuroartan:home-stage-voice-deactivated', () => {
     setHomeStageCoreEffectMode('idle');
+    scheduleHomeStageCoreEffectResize();
   });
 
   document.addEventListener('neuroartan:home-stage-reset-requested', () => {
+    HOME_STAGE_CORE_EFFECT_STATE.isResetting = true;
+    HOME_STAGE_CORE_EFFECT_STATE.energy = HOME_STAGE_CORE_EFFECT_MODE_ENERGY.idle;
+    HOME_STAGE_CORE_EFFECT_STATE.targetEnergy = HOME_STAGE_CORE_EFFECT_MODE_ENERGY.idle;
+    HOME_STAGE_CORE_EFFECT_STATE.startTime = 0;
     setHomeStageCoreEffectMode('idle');
+    scheduleHomeStageCoreEffectResize();
+
+    window.setTimeout(() => {
+      HOME_STAGE_CORE_EFFECT_STATE.isResetting = false;
+      scheduleHomeStageCoreEffectResize();
+    }, 700);
   });
 
   if ('ResizeObserver' in window && HOME_STAGE_CORE_EFFECT_STATE.shell) {
@@ -354,6 +398,11 @@ function bindHomeStageCoreEffectEvents() {
       resizeHomeStageCoreEffectCanvas();
     });
     HOME_STAGE_CORE_EFFECT_STATE.resizeObserver.observe(HOME_STAGE_CORE_EFFECT_STATE.shell);
+
+    const nodes = getHomeStageCoreEffectNodes();
+    if (nodes.vessel) {
+      HOME_STAGE_CORE_EFFECT_STATE.resizeObserver.observe(nodes.vessel);
+    }
   } else {
     window.addEventListener('resize', resizeHomeStageCoreEffectCanvas, { passive: true });
   }
@@ -366,6 +415,7 @@ function bindHomeStageCoreEffectEvents() {
 function bootHomeStageCoreEffect() {
   if (HOME_STAGE_CORE_EFFECT_STATE.isBound) {
     resizeHomeStageCoreEffectCanvas();
+    scheduleHomeStageCoreEffectResize();
     return;
   }
 
@@ -375,6 +425,7 @@ function bootHomeStageCoreEffect() {
 
   HOME_STAGE_CORE_EFFECT_STATE.isBound = true;
   resizeHomeStageCoreEffectCanvas();
+  scheduleHomeStageCoreEffectResize();
   bindHomeStageCoreEffectEvents();
   startHomeStageCoreEffectLoop();
 }

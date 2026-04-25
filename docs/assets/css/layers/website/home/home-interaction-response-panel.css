@@ -22,7 +22,6 @@
   --home-interaction-response-panel-content-align:left;
   --home-interaction-response-panel-radius:1rem;
   --home-interaction-response-panel-surface:transparent;
-  --home-interaction-response-panel-border:transparent;
   --home-interaction-response-panel-text:var(--text-primary-color);
   --home-interaction-response-panel-muted:var(--text-secondary-color);
   --home-interaction-response-panel-font-size:1.02rem;
@@ -42,7 +41,7 @@
   max-width:100%;
   margin:var(--home-interaction-response-panel-margin-top) auto var(--home-interaction-response-panel-margin-bottom);
   padding:var(--home-interaction-response-panel-padding);
-  border:1px solid var(--home-interaction-response-panel-border);
+  border:0;
   border-radius:var(--home-interaction-response-panel-radius);
   background:var(--home-interaction-response-panel-surface);
   color:var(--home-interaction-response-panel-text);
@@ -70,6 +69,7 @@
   scrollbar-width:thin;
   scrollbar-color:var(--home-interaction-response-panel-scrollbar) transparent;
   outline:none;
+  border-radius:calc(var(--home-interaction-response-panel-radius) - 0.24rem);
   scroll-padding-bottom:var(--home-interaction-response-panel-footer-clearance);
 }
 

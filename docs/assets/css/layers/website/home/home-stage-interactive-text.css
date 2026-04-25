@@ -13,14 +13,12 @@
    01) INTERACTIVE TEXT TOKENS
 ============================================================================= */
 :root{
-  --home-stage-interactive-text-margin:1rem auto 0;
   --home-stage-interactive-text-gap:0;
-  --home-stage-interactive-text-min-height:5.05rem;
   --home-stage-interactive-text-color:var(--text-color);
   --home-stage-interactive-text-muted:var(--text-secondary-color);
-  --home-stage-interactive-text-font-size:3.05rem;
-  --home-stage-interactive-text-font-size-mobile:1.64rem;
-  --home-stage-interactive-text-font-weight:300;
+  --home-stage-interactive-text-font-size:1.86rem;
+  --home-stage-interactive-text-font-size-mobile:1.06rem;
+  --home-stage-interactive-text-font-weight:250;
   --home-stage-interactive-text-letter-spacing:0.01em;
   --home-stage-interactive-text-line-height:1.12;
   --home-stage-interactive-text-max-width:18ch;
@@ -42,8 +40,6 @@
   width:100%;
   place-items:center;
   gap:var(--home-stage-interactive-text-gap);
-  min-height:var(--home-stage-interactive-text-min-height);
-  margin:var(--home-stage-interactive-text-margin);
   color:var(--home-stage-interactive-text-color);
   text-align:center;
   pointer-events:none;
@@ -55,7 +51,6 @@
 .home-stage-interactive-text__state{
   display:grid;
   place-items:center;
-  min-height:var(--home-stage-interactive-text-min-height);
   line-height:0;
 }
 
@@ -147,8 +142,6 @@
 @media (max-width:760px){
   :root{
     --home-stage-interactive-text-font-size:var(--home-stage-interactive-text-font-size-mobile);
-    --home-stage-interactive-text-min-height:3.2rem;
-    --home-stage-interactive-text-margin:0.72rem auto 0;
   }
 }
 
