@@ -1,25 +1,49 @@
 <!-- =============================================================================
-     01) PRIVATE PROFILE FOOTER
-     02) PRIVATE PROFILE FOOTER SURFACE
-     03) PRIVATE PROFILE FOOTER BRAND
-     04) PRIVATE PROFILE FOOTER META
+00) FILE INDEX
+01) PROFILE FOOTER SHELL
+02) FLEX RAIL
+03) BRAND BLOCK
+04) LOCALE BLOCK
+05) END OF FOOTER
 ============================================================================= -->
-<footer class="profile-footer" data-profile-footer data-profile-surface="private" aria-label="Private profile footer">
-  <div class="profile-footer__rail">
-    <div class="profile-footer__surface">
-      <a class="profile-footer__brand" href="/" aria-label="Go to Neuroartan home">
-        <img
-          class="profile-footer__brand-mark"
-          src="/assets/icons/core/identity/brand/neuroartan/logo-plain.svg"
-          alt="Neuroartan"
-        >
-      </a>
 
-      <div class="profile-footer__meta">
-        <p class="profile-footer__meta-item" data-profile-footer-environment>Private continuity environment</p>
-        <span class="profile-footer__meta-separator" aria-hidden="true">•</span>
-        <p class="profile-footer__meta-item" data-profile-footer-route>/profile.html</p>
+<!-- =============================================================================
+01) PROFILE FOOTER SHELL
+============================================================================= -->
+<footer class="site-footer home-footer profile-footer" id="profile-footer" aria-label="Profile footer">
+  <!-- ==========================================================================
+  02) FLEX RAIL
+  ========================================================================== -->
+  <div class="footer-flex">
+    <!-- ========================================================================
+    03) BRAND BLOCK
+    ======================================================================== -->
+    <div class="footer-left">
+      <span class="footer-brand">© 2026 Neuroartan</span>
+    </div>
+
+    <!-- ========================================================================
+    04) LOCALE BLOCK
+    ======================================================================== -->
+    <div class="footer-locale">
+      <div class="locale-item">
+        <button id="language-toggle" class="locale-button" aria-label="Select language and locale" data-locale-trigger="language">
+          <span id="current-language">—</span>
+        </button>
+        <div id="language-dropdown" class="language-dropdown" aria-hidden="true"></div>
+      </div>
+
+      <span class="footer-separator-dot">•</span>
+
+      <div class="locale-item">
+        <button id="country-selector" class="locale-button" aria-label="Select country and region" data-locale-trigger="country">
+          <span id="current-country">—</span>
+        </button>
       </div>
     </div>
   </div>
 </footer>
+
+<!-- =============================================================================
+05) END OF FOOTER
+============================================================================= -->

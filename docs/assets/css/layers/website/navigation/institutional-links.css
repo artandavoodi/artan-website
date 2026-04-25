@@ -6,7 +6,7 @@
    04) TOP AND BOTTOM SEPARATOR ROWS
    05) SEPARATOR LINES
    06) SOCIAL LINKS ROW
-   07) REVEAL STATES
+   07) COLUMN AND SEPARATOR REVEAL STATES
    08) COLUMN LAYOUT
    09) COLUMN TITLES
    10) NAVIGATION STACK
@@ -20,7 +20,6 @@
    01) LINKS TOKENS
 ============================================================================= */
 :root{
-  --institutional-links-separator-bg:color-mix(in srgb, var(--text-primary-color) 16%, transparent);
   --institutional-links-title-color:var(--text-color);
   --institutional-links-title-opacity:0.42;
   --institutional-links-text-color:var(--text-secondary-color);
@@ -36,12 +35,10 @@
 }
 
 html[data-theme-effective="light"]{
-  --institutional-links-separator-bg:color-mix(in srgb, var(--text-primary-color) 16%, transparent);
   --institutional-links-title-opacity:0.46;
 }
 
 html[data-theme-effective="dark"]{
-  --institutional-links-separator-bg:color-mix(in srgb, var(--text-primary-color) 16%, transparent);
   --institutional-links-title-opacity:0.4;
 }
 
@@ -76,26 +73,21 @@ html[data-theme-effective="dark"]{
    04) TOP AND BOTTOM SEPARATOR ROWS
 ============================================================================= */
 .institutional-links-separator-row{
-  grid-column: 1 / -1;
-  display: block;
-  width: 100%;
-  min-height: 1px;
-  margin: 0;
-  padding: 0;
-  pointer-events: none;
+  grid-column:1 / -1;
+  display:block;
+  width:100vw;
+  min-height:0;
+  margin:0 0 0 calc(50% - 50vw);
+  padding:0;
+  border-top:var(--stroke-soft) solid var(--border-color);
+  pointer-events:none;
 }
 
 /* =============================================================================
    05) SEPARATOR LINES
 ============================================================================= */
 .institutional-links-separator{
-  display: block;
-  width: 100%;
-  height: 1px;
-  min-height: 1px;
-  background:var(--institutional-links-separator-bg);
-  pointer-events: none;
-  transform-origin: center;
+  display:none;
 }
 
 /* =============================================================================
@@ -117,7 +109,6 @@ html[data-theme-effective="dark"]{
    07) REVEAL STATES
 ============================================================================= */
 .institutional-links-column.motion-init,
-.institutional-links-social-row.motion-init,
 .institutional-links-separator-row.motion-init{
   opacity:0;
   transform:translateY(var(--institutional-links-reveal-y));
@@ -128,18 +119,17 @@ html[data-theme-effective="dark"]{
 }
 
 .institutional-links-column.motion-visible,
-.institutional-links-social-row.motion-visible,
 .institutional-links-separator-row.motion-visible{
   opacity: 1;
   transform: translateY(0);
 }
 
-.institutional-links-separator-row--bottom.motion-init,
-.institutional-links-separator-row--bottom.motion-visible{
-  opacity: 1;
-  transform: none;
-  transition: none;
-  will-change: auto;
+.institutional-links-social-row.motion-init,
+.institutional-links-social-row.motion-visible{
+  opacity:1;
+  transform:none;
+  transition:none;
+  will-change:auto;
 }
 
 /* =============================================================================

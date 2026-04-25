@@ -108,7 +108,7 @@
 
     document.addEventListener('fragment:mounted', (event) => {
       const name = event?.detail?.name || '';
-      if (name !== 'footer') return;
+      if (!['footer', 'home-footer', 'profile-private-footer', 'profile-public-footer'].includes(name)) return;
       initFooterReveal();
     });
   };

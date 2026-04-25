@@ -19,10 +19,13 @@
 :root{
   --footer-text-color:var(--text-secondary-color);
   --footer-text-hover-color:var(--text-primary-color);
-  --footer-separator-opacity:0.35;
   --footer-reveal-duration:1.2s;
   --footer-motion-ease:cubic-bezier(0.22, 1, 0.36, 1);
   --footer-interaction-duration:220ms;
+  --footer-outer-top-spacing:1.05rem;
+  --footer-inner-top-padding:1.05rem;
+  --footer-inner-bottom-padding:0.9rem;
+  --footer-brand-size:calc(var(--type-body-sm-size, 0.9rem) + 0.05rem);
 }
 
 /* =============================================================================
@@ -34,8 +37,9 @@
   font-weight:var(--type-body-regular-weight, 400);
   line-height:var(--type-body-sm-line-height, 1.4);
   letter-spacing:var(--type-body-tracking, normal);
-  margin:0.6rem 0 0 0;
-  padding:0.8rem 0 0.9rem 0;
+  margin:var(--footer-outer-top-spacing) 0 0 0;
+  padding:var(--footer-inner-top-padding) 0 var(--footer-inner-bottom-padding) 0;
+  border-top:var(--stroke-soft) solid var(--border-color);
   background-color:transparent;
   color:var(--footer-text-color);
   text-align:initial;
@@ -62,9 +66,6 @@
 /* =============================================================================
    04) BASE FOOTER LAYOUT
 ============================================================================= */
-.footer-separator{
-  opacity:var(--footer-separator-opacity);
-}
 
 .footer-left{
   display:flex;
@@ -79,7 +80,7 @@
   display:inline-flex;
   align-items:center;
   color:var(--footer-text-color);
-  font-size:inherit;
+  font-size:var(--footer-brand-size);
   font-weight:inherit;
   line-height:inherit;
   letter-spacing:inherit;

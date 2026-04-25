@@ -1,84 +1,44 @@
 /* =============================================================================
-   01) MODULE IMPORTS
-   02) PROFILE FOOTER HELPERS
-   03) PROFILE FOOTER RENDER
+   01) MODULE IDENTITY
+   02) PROFILE FOOTER ROOTS
+   03) PROFILE FOOTER ACTION ROUTING
    04) PROFILE FOOTER INIT
    ============================================================================= */
 
 /* =============================================================================
-   01) MODULE IMPORTS
+   01) MODULE IDENTITY
    ============================================================================= */
 
-import { getProfileRuntimeState, subscribeProfileRuntime } from '../shell/profile-runtime.js';
+const MODULE_ID = 'profile-private-footer';
 
 /* =============================================================================
-   02) PROFILE FOOTER HELPERS
+   02) PROFILE FOOTER ROOTS
    ============================================================================= */
 
 function getProfileFooterRoots() {
-  return Array.from(document.querySelectorAll('[data-profile-footer]'));
-}
-
-function setText(root, selector, value) {
-  const node = root.querySelector(selector);
-  if (!node) return;
-  node.textContent = value;
-}
-
-function renderPrivateFooter(root, state) {
-  root.dataset.profileViewerState = state.viewerState;
-  root.dataset.profileStateKey = state.stateKey;
-
-  setText(
-    root,
-    '[data-profile-footer-environment]',
-    state.viewerState === 'authenticated'
-      ? 'Authenticated owner environment'
-      : 'Private continuity environment'
-  );
-
-  setText(
-    root,
-    '[data-profile-footer-route]',
-    state.username.normalized
-      ? `${state.publicViewAvailable ? 'Public route ready' : 'Reserved route'} · ${state.publicRouteDisplay}`
-      : 'Owner route · /profile.html'
-  );
-}
-
-function renderPublicFooter(root, state) {
-  root.dataset.profileViewerState = 'public';
-  root.dataset.profileStateKey = state.stateKey;
-
-  setText(
-    root,
-    '[data-profile-footer-environment]',
-    state.publicViewAvailable
-      ? 'Company-domain identity surface'
-      : 'Canonical public route surface'
-  );
-
-  setText(
-    root,
-    '[data-profile-footer-route]',
-    state.publicRouteDisplay || 'neuroartan.com/username'
-  );
+  return Array.from(document.querySelectorAll('.profile-footer'));
 }
 
 /* =============================================================================
-   03) PROFILE FOOTER RENDER
+   03) PROFILE FOOTER ACTION ROUTING
    ============================================================================= */
 
-function renderProfileFooter(state = getProfileRuntimeState()) {
-  getProfileFooterRoots().forEach((root) => {
-    const surface = root.getAttribute('data-profile-surface');
+function bindProfileFooter(root) {
+  if (!root || root.dataset.profileFooterBound === 'true') return;
 
-    if (surface === 'public') {
-      renderPublicFooter(root, state);
-      return;
-    }
+  root.dataset.profileFooterBound = 'true';
 
-    renderPrivateFooter(root, state);
+  root.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-profile-footer-action]');
+    if (!trigger) return;
+
+    document.dispatchEvent(new CustomEvent('profile:footer-action-request', {
+      detail: {
+        source: MODULE_ID,
+        action: trigger.dataset.profileFooterAction || '',
+        trigger
+      }
+    }));
   });
 }
 
@@ -87,14 +47,16 @@ function renderProfileFooter(state = getProfileRuntimeState()) {
    ============================================================================= */
 
 function initProfileFooter() {
-  subscribeProfileRuntime(renderProfileFooter);
+  getProfileFooterRoots().forEach(bindProfileFooter);
 
   document.addEventListener('fragment:mounted', (event) => {
-    if (event?.detail?.name !== 'profile-private-footer' && event?.detail?.name !== 'profile-public-footer') return;
-    renderProfileFooter();
+    if (event?.detail?.name !== 'profile-private-footer') return;
+    getProfileFooterRoots().forEach(bindProfileFooter);
   });
-
-  renderProfileFooter();
 }
 
-initProfileFooter();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProfileFooter, { once:true });
+} else {
+  initProfileFooter();
+}
