@@ -1,0 +1,49 @@
+<!-- =============================================================================
+     01) PRIVATE PROFILE SETTINGS
+     02) PRIVACY CONTROLS
+     03) ACCOUNT PREFERENCES
+============================================================================= -->
+<section class="profile-private-settings" data-profile-private-settings aria-labelledby="profile-private-settings-title">
+  <div class="profile-private-settings__surface">
+    <header class="profile-private-settings__header">
+      <p class="profile-private-settings__eyebrow">Settings</p>
+      <h2 class="profile-private-settings__title" id="profile-private-settings-title">Profile controls</h2>
+      <p class="profile-private-settings__description">
+        Manage private identity visibility, public profile readiness, and account-level profile preferences from one controlled surface.
+      </p>
+    </header>
+
+    <div class="profile-private-settings__grid">
+      <article class="profile-private-settings__control" data-profile-setting="private-profile">
+        <div class="profile-private-settings__copy">
+          <strong>Private profile</strong>
+          <span>Your profile starts private by default.</span>
+        </div>
+        <span class="profile-private-settings__state" data-profile-private-state>Enabled</span>
+      </article>
+
+      <article class="profile-private-settings__control" data-profile-setting="public-profile">
+        <div class="profile-private-settings__copy">
+          <strong>Public profile</strong>
+          <span>Public visibility remains off until explicitly activated.</span>
+        </div>
+        <span class="profile-private-settings__state" data-profile-public-state>Off</span>
+      </article>
+
+      <article class="profile-private-settings__control" data-profile-setting="discoverability">
+        <div class="profile-private-settings__copy">
+          <strong>Discoverability</strong>
+          <span>Search and public discovery are disabled by default.</span>
+        </div>
+        <span class="profile-private-settings__state" data-profile-discoverability-state>Off</span>
+      </article>
+    </div>
+
+    <footer class="profile-private-settings__footer">
+      <span class="profile-private-settings__status" data-profile-settings-status>Profile settings are staged for activation after baseline persistence.</span>
+      <button class="profile-private-settings__button" type="button" data-profile-action="open-settings">
+        Open settings
+      </button>
+    </footer>
+  </div>
+</section>

@@ -1,0 +1,48 @@
+<!-- =============================================================================
+     01) PRIVATE PROFILE MEDIA
+     02) AVATAR / COVER CONTROLS
+     03) MEDIA READINESS
+============================================================================= -->
+<section class="profile-private-media" data-profile-private-media aria-labelledby="profile-private-media-title">
+  <div class="profile-private-media__surface">
+    <header class="profile-private-media__header">
+      <p class="profile-private-media__eyebrow">Media Layer</p>
+      <h2 class="profile-private-media__title" id="profile-private-media-title">Profile image and visual identity</h2>
+      <p class="profile-private-media__description">
+        Add a profile image, cover image, and visual identity assets after the private profile baseline is created.
+      </p>
+    </header>
+
+    <div class="profile-private-media__grid">
+      <article class="profile-private-media__card" data-profile-media-card="avatar">
+        <div class="profile-private-media__preview profile-private-media__preview--avatar" data-profile-avatar-preview>
+          <span data-profile-avatar-preview-initials>NA</span>
+        </div>
+        <div class="profile-private-media__copy">
+          <strong>Profile image</strong>
+          <span data-profile-avatar-status>Not uploaded</span>
+        </div>
+        <button class="profile-private-media__button" type="button" data-profile-action="upload-avatar">
+          Add image
+        </button>
+      </article>
+
+      <article class="profile-private-media__card" data-profile-media-card="cover">
+        <div class="profile-private-media__preview profile-private-media__preview--cover" data-profile-cover-preview>
+          <span>Cover pending</span>
+        </div>
+        <div class="profile-private-media__copy">
+          <strong>Cover image</strong>
+          <span data-profile-cover-status>Not uploaded</span>
+        </div>
+        <button class="profile-private-media__button" type="button" data-profile-action="upload-cover">
+          Add cover
+        </button>
+      </article>
+    </div>
+
+    <footer class="profile-private-media__footer">
+      <span class="profile-private-media__status" data-profile-media-status>Media controls are prepared for the next profile stage.</span>
+    </footer>
+  </div>
+</section>

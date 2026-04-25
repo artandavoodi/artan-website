@@ -136,6 +136,28 @@ function hasSignedInAccount() {
   return !!HOME_PLATFORM_SHELL_STATE.snapshot?.account?.signedIn;
 }
 
+function hasCompletedProfile() {
+  const account = HOME_PLATFORM_SHELL_STATE.snapshot?.account || {};
+  return account.profileComplete === true || account.profile?.profile_complete === true;
+}
+
+function requestAccountEntryFromShell() {
+  document.dispatchEvent(new CustomEvent('account:entry-request', {
+    detail: {
+      source: 'home-platform-shell',
+    },
+  }));
+}
+
+function requestProfileSetupFromShell() {
+  document.dispatchEvent(new CustomEvent('account:profile-setup-open-request', {
+    detail: {
+      source: 'home-platform-shell',
+      reason: 'profile-incomplete',
+    },
+  }));
+}
+
 function fetchHomePlatformJson(path) {
   return fetch(path, {
     cache: 'no-store',
@@ -384,17 +406,19 @@ function handleProfileShellAction(action) {
   const normalized = normalizeShellActionLabel(action);
 
   if (normalized === 'account-identity' || normalized === 'verification' || normalized === 'linked-accounts') {
-    if (hasSignedInAccount()) {
-      window.location.href = '/profile.html';
+    if (!hasSignedInAccount()) {
+      requestAccountEntryFromShell();
+      closeHomePlatformShell();
       return;
     }
 
-    document.dispatchEvent(new CustomEvent('account:entry-request', {
-      detail: {
-        source: 'home-platform-shell',
-      },
-    }));
-    closeHomePlatformShell();
+    if (!hasCompletedProfile()) {
+      requestProfileSetupFromShell();
+      closeHomePlatformShell();
+      return;
+    }
+
+    window.location.href = '/profile.html';
     return;
   }
 

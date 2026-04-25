@@ -1,0 +1,37 @@
+<!-- =============================================================================
+     01) PRIVATE PROFILE ORGANIZATION
+     02) ORGANIZATION READINESS
+     03) ORGANIZATION ACTIONS
+============================================================================= -->
+<section class="profile-private-organization" data-profile-private-organization aria-labelledby="profile-private-organization-title">
+  <div class="profile-private-organization__surface">
+    <header class="profile-private-organization__header">
+      <p class="profile-private-organization__eyebrow">Organization Layer</p>
+      <h2 class="profile-private-organization__title" id="profile-private-organization-title">Company and team spaces</h2>
+      <p class="profile-private-organization__description">
+        Create or join organization spaces after the private profile is complete. Organizations will later own teams, models, access, billing, and institutional workspaces.
+      </p>
+    </header>
+
+    <div class="profile-private-organization__grid">
+      <article class="profile-private-organization__card" data-profile-organization-card="personal">
+        <span class="profile-private-organization__label">Personal account</span>
+        <strong class="profile-private-organization__value" data-profile-personal-space-status>Private profile pending</strong>
+        <p class="profile-private-organization__note">Your personal account is the root identity for all future organization memberships.</p>
+      </article>
+
+      <article class="profile-private-organization__card" data-profile-organization-card="company">
+        <span class="profile-private-organization__label">Company space</span>
+        <strong class="profile-private-organization__value" data-profile-company-space-status>Not created</strong>
+        <p class="profile-private-organization__note">Company creation will be enabled after account identity, verification, and profile persistence are stable.</p>
+      </article>
+    </div>
+
+    <footer class="profile-private-organization__footer">
+      <span class="profile-private-organization__status" data-profile-organization-status>Organization controls are staged for the next account layer.</span>
+      <button class="profile-private-organization__button" type="button" data-profile-action="create-organization" disabled>
+        Create organization
+      </button>
+    </footer>
+  </div>
+</section>

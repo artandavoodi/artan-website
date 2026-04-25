@@ -1,0 +1,57 @@
+<!-- =============================================================================
+     01) PRIVATE PROFILE ACCOUNT STATUS
+     02) STATUS STEPS
+     03) STATUS ACTION
+============================================================================= -->
+<section class="profile-private-account-status" data-profile-private-account-status aria-labelledby="profile-private-account-status-title">
+  <div class="profile-private-account-status__surface">
+    <header class="profile-private-account-status__header">
+      <p class="profile-private-account-status__eyebrow">Account Status</p>
+      <h2 class="profile-private-account-status__title" id="profile-private-account-status-title">Profile readiness</h2>
+      <p class="profile-private-account-status__description">
+        Your account becomes platform-ready after email verification, private profile creation, username reservation, and profile completion.
+      </p>
+    </header>
+
+    <div class="profile-private-account-status__steps" data-profile-readiness-steps>
+      <article class="profile-private-account-status__step" data-profile-readiness-step="email">
+        <span class="profile-private-account-status__marker" aria-hidden="true"></span>
+        <div class="profile-private-account-status__step-copy">
+          <strong>Email verified</strong>
+          <span data-profile-email-verification-status>Pending confirmation</span>
+        </div>
+      </article>
+
+      <article class="profile-private-account-status__step" data-profile-readiness-step="profile">
+        <span class="profile-private-account-status__marker" aria-hidden="true"></span>
+        <div class="profile-private-account-status__step-copy">
+          <strong>Private profile created</strong>
+          <span data-profile-creation-status>Not completed</span>
+        </div>
+      </article>
+
+      <article class="profile-private-account-status__step" data-profile-readiness-step="username">
+        <span class="profile-private-account-status__marker" aria-hidden="true"></span>
+        <div class="profile-private-account-status__step-copy">
+          <strong>Username reserved</strong>
+          <span data-profile-username-reservation-status>Pending reservation</span>
+        </div>
+      </article>
+
+      <article class="profile-private-account-status__step" data-profile-readiness-step="platform">
+        <span class="profile-private-account-status__marker" aria-hidden="true"></span>
+        <div class="profile-private-account-status__step-copy">
+          <strong>Platform access</strong>
+          <span data-profile-platform-access-status>Private baseline only</span>
+        </div>
+      </article>
+    </div>
+
+    <footer class="profile-private-account-status__footer">
+      <span class="profile-private-account-status__summary" data-profile-readiness-summary>Profile readiness is being prepared.</span>
+      <button class="profile-private-account-status__button" type="button" data-profile-action="complete-profile">
+        Complete profile
+      </button>
+    </footer>
+  </div>
+</section>

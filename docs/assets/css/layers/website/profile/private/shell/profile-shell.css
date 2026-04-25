@@ -1,9 +1,12 @@
 /* =============================================================================
    00A) PROFILE SHELL TOKENS
    01) PROFILE SHELL FOUNDATION
-   02) PROFILE SHELL SURFACE
-   03) PROFILE SHELL INNER COMPOSITION
-   04) PROFILE SHARED CONTROL STATES
+   02) PROFILE SHELL RAIL
+   03) PROFILE SHELL SURFACE
+   04) PROFILE SHELL INNER COMPOSITION
+   05) PROFILE SHELL MOUNTS
+   06) PROFILE SHARED CONTROL STATES
+   07) PROFILE SHELL RESPONSIVE STATES
    ============================================================================= */
 
 /* =============================================================================
@@ -11,8 +14,10 @@
    ============================================================================= */
 :root{
   --profile-shell-disabled-opacity:0.48;
+  --profile-shell-rail-width:var(--profile-page-rail-width, var(--site-rail-width));
+  --profile-shell-inner-gap:var(--spacing-2xl);
+  --profile-shell-inner-gap-mobile:var(--spacing-xl);
 }
-
 
 /* =============================================================================
    01) PROFILE SHELL FOUNDATION
@@ -20,15 +25,20 @@
 
 .profile-shell{
   width:100%;
+  color:var(--color-text-primary);
 }
 
+/* =============================================================================
+   02) PROFILE SHELL RAIL
+   ============================================================================= */
+
 .profile-shell__rail{
-  width:var(--profile-page-rail-width, var(--site-rail-width));
+  width:var(--profile-shell-rail-width);
   margin:0 auto;
 }
 
 /* =============================================================================
-   02) PROFILE SHELL SURFACE
+   03) PROFILE SHELL SURFACE
    ============================================================================= */
 
 .profile-shell__surface{
@@ -45,22 +55,31 @@
 }
 
 /* =============================================================================
-   03) PROFILE SHELL INNER COMPOSITION
+   04) PROFILE SHELL INNER COMPOSITION
    ============================================================================= */
 
 .profile-shell__inner{
   position:relative;
   z-index:1;
   display:grid;
-  gap:var(--profile-shell-inner-gap, var(--spacing-2xl));
-}
-
-.profile-shell__mount{
-  width:100%;
+  gap:var(--profile-shell-inner-gap);
 }
 
 /* =============================================================================
-   04) PROFILE SHARED CONTROL STATES
+   05) PROFILE SHELL MOUNTS
+   ============================================================================= */
+
+.profile-shell__mount{
+  width:100%;
+  min-width:0;
+}
+
+.profile-shell__mount:empty{
+  display:none;
+}
+
+/* =============================================================================
+   06) PROFILE SHARED CONTROL STATES
    ============================================================================= */
 
 .profile-shell [aria-disabled="true"],
@@ -69,8 +88,12 @@
   pointer-events:none;
 }
 
+/* =============================================================================
+   07) PROFILE SHELL RESPONSIVE STATES
+   ============================================================================= */
+
 @media (max-width:820px){
-  .profile-shell__surface{
-    padding:var(--profile-shell-surface-padding-mobile, var(--spacing-lg));
+  :root{
+    --profile-shell-inner-gap:var(--profile-shell-inner-gap-mobile);
   }
 }

@@ -1,22 +1,12 @@
 /* =============================================================================
    01. PROFILE SHARED LAYER ENTRY
-   02. PROFILE MENU
-   03. PROFILE FOOTER
-   04. PROFILE SHELL
-   05. PROFILE HEADER
-   06. PROFILE SECTIONS
+   02. PRIVATE PROFILE LAYER
+   03. PUBLIC PROFILE LAYER
    ============================================================================= */
 
 /* =============================================================================
    01. PROFILE SHARED LAYER ENTRY
    ============================================================================= */
 
-@import url('./profile-menu.css');
-@import url('./profile-footer.css');
-@import url('./profile-shell.css');
-@import url('./profile-header.css');
-@import url('./profile-sections.css');
-@import url('./profile-workspace.css');
-@import url('./profile-dashboard.css');
-@import url('./profile-thought-bank.css');
-@import url('./profile-settings.css');
+@import url('./private/00-profile-private-all.css');
+@import url('./public/00-profile-public-all.css');

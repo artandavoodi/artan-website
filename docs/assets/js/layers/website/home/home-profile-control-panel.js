@@ -63,6 +63,33 @@ function getLiveHomeProfileControlPanelRoot() {
   return document.querySelector('#home-profile-control-panel');
 }
 
+function getHomeProfileControlPanelSnapshot() {
+  return HOME_PROFILE_CONTROL_PANEL_STATE.snapshot || {};
+}
+
+function isHomeProfileSignedIn(snapshot = getHomeProfileControlPanelSnapshot()) {
+  return !!snapshot?.account?.signedIn;
+}
+
+function isHomeProfileComplete(snapshot = getHomeProfileControlPanelSnapshot()) {
+  if (!isHomeProfileSignedIn(snapshot)) return false;
+
+  return snapshot?.account?.profileComplete === true || snapshot?.account?.profile?.profile_complete === true;
+}
+
+function requestAccountEntry(source = 'home-profile-control-panel') {
+  dispatchHomeProfileControlPanelEvent('account:entry-request', {
+    source,
+  });
+}
+
+function requestProfileSetup(source = 'home-profile-control-panel') {
+  dispatchHomeProfileControlPanelEvent('account:profile-setup-open-request', {
+    source,
+    reason: 'profile-incomplete',
+  });
+}
+
 /* =========================================================
    03. PANEL STATE HELPERS
    ========================================================= */
@@ -70,7 +97,7 @@ function getLiveHomeProfileControlPanelRoot() {
 function getHomeProfileControlPanelTitleForIntent(intent) {
   switch (intent) {
     case 'create-profile':
-      return 'Create private profile, subscription, and account identity';
+      return 'Create private profile and account identity';
     default:
       return 'Profile, subscription, trust, and account control';
   }
@@ -95,6 +122,13 @@ function openHomeProfileControlPanel(intent = null) {
   const nodes = getHomeProfileControlPanelNodes();
 
   if (!nodes.panel) {
+    return;
+  }
+
+  const snapshot = getHomeProfileControlPanelSnapshot();
+
+  if (!isHomeProfileSignedIn(snapshot)) {
+    requestAccountEntry('home-profile-control-trigger');
     return;
   }
 
@@ -129,13 +163,15 @@ function resolveHomeProfileControlPanelName(snapshot) {
     snapshot?.account?.user?.displayName ||
     snapshot?.account?.profile?.email ||
     snapshot?.account?.user?.email ||
-    'Sign in to Neuroartan'
+    'Create your Neuroartan account'
   );
 }
 
 function resolveHomeProfileControlPanelUsername(snapshot) {
   const username = snapshot?.account?.profile?.username || '';
-  return username ? `@${username}` : '@username';
+  if (username) return `@${username}`;
+
+  return snapshot?.account?.signedIn ? '@username pending' : '@account required';
 }
 
 function resolveHomeProfileControlPanelMeta(snapshot) {
@@ -317,15 +353,21 @@ function handleHomeProfileControlPanelAction(action) {
   const normalized = normalizeHomeProfileControlPanelLabel(action);
 
   if (normalized === 'account-identity' || normalized === 'verification' || normalized === 'linked-accounts') {
-    if (HOME_PROFILE_CONTROL_PANEL_STATE.snapshot?.account?.signedIn) {
-      window.location.href = '/profile.html';
+    const snapshot = getHomeProfileControlPanelSnapshot();
+
+    if (!isHomeProfileSignedIn(snapshot)) {
+      requestAccountEntry('home-profile-control-panel');
+      closeHomeProfileControlPanel();
       return;
     }
 
-    dispatchHomeProfileControlPanelEvent('account:entry-request', {
-      source: 'home-profile-control-panel',
-    });
-    closeHomeProfileControlPanel();
+    if (!isHomeProfileComplete(snapshot)) {
+      requestProfileSetup('home-profile-control-panel');
+      closeHomeProfileControlPanel();
+      return;
+    }
+
+    window.location.href = '/profile.html';
     return;
   }
 

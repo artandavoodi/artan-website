@@ -1453,10 +1453,7 @@ import {
 
         user = authenticatedUser;
 
-        const existingProfile = await getSupabaseProfileByAuthUserId({
-          supabase,
-          authUserId: user.id || user.uid
-        });
+        const existingProfile = await getSupabaseProfile(user.id || user.uid);
 
         await assertSupabaseUsernameAvailable(values, existingProfile, user);
 

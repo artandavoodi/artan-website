@@ -1,0 +1,57 @@
+/* =============================================================================
+   01. PRIVATE PROFILE LAYER ENTRY
+   02. PRIVATE PROFILE CORE COMPOSITION
+   03. PRIVATE PROFILE PRIMARY MODULES
+   04. PRIVATE PROFILE PANEL MODULES
+   05. PRIVATE PROFILE SUPPORT MODULES
+   ============================================================================= */
+
+/* =============================================================================
+   01. PRIVATE PROFILE LAYER ENTRY
+   ============================================================================= */
+
+/* =============================================================================
+   02. PRIVATE PROFILE CORE COMPOSITION
+   ============================================================================= */
+
+@import url('./shell/profile-shell.css');
+@import url('./header/profile-header.css');
+@import url('./menu/profile-menu.css');
+@import url('./sections/profile-sections.css');
+@import url('./workspace/profile-workspace.css');
+@import url('./footer/profile-footer.css');
+
+/* =============================================================================
+   03. PRIVATE PROFILE PRIMARY MODULES
+   ============================================================================= */
+
+@import url('./hero/profile-private-hero.css');
+@import url('./identity/profile-private-identity.css');
+@import url('./account-status/profile-private-account-status.css');
+@import url('./media/profile-private-media.css');
+@import url('./organization/profile-private-organization.css');
+@import url('./models/profile-private-models.css');
+@import url('./settings/profile-private-settings.css');
+@import url('./status/profile-private-status.css');
+
+/* =============================================================================
+   04. PRIVATE PROFILE PANEL MODULES
+   ============================================================================= */
+
+@import url('./overview/profile-overview-panel.css');
+@import url('./dashboard/profile-dashboard.css');
+@import url('./dashboard/profile-dashboard-panel.css');
+@import url('./dashboard/profile-dashboard-graph-panel.css');
+@import url('./dashboard/profile-dashboard-metrics-panel.css');
+@import url('./sidebar/profile-sidebar.css');
+@import url('./thoughts/profile-thought-bank.css');
+@import url('./thoughts/profile-thought-bank-panel.css');
+@import url('./thoughts/profile-thought-composer-panel.css');
+@import url('./thoughts/profile-thought-stream-panel.css');
+@import url('./settings/profile-settings.css');
+
+/* =============================================================================
+   05. PRIVATE PROFILE SUPPORT MODULES
+   ============================================================================= */
+
+@import url('./navigation/profile-navigation.css');
