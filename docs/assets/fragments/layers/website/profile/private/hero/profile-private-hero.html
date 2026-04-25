@@ -1,32 +1,72 @@
 <!-- =============================================================================
      01) PRIVATE PROFILE HERO
-     02) PROFILE IDENTITY SUMMARY
-     03) PROFILE PRIMARY ACTIONS
+     02) HERO COVER
+     03) HERO IDENTITY ROW
+     04) HERO PROFILE IMAGE
+     05) HERO COPY
+     06) HERO SOCIAL ROW
 ============================================================================= -->
 <section class="profile-private-hero" data-profile-private-hero aria-labelledby="profile-private-hero-title">
   <div class="profile-private-hero__surface">
-    <div class="profile-private-hero__identity">
-      <div class="profile-private-hero__avatar" data-profile-avatar aria-hidden="true">
-        <span class="profile-private-hero__avatar-initials" data-profile-avatar-initials>NA</span>
+    <!-- =========================================================================
+         02) HERO COVER
+    ========================================================================= -->
+    <div class="profile-private-hero__cover" data-profile-cover>
+      <button class="profile-private-hero__media-action profile-private-hero__media-action--cover" type="button" data-profile-action="edit-cover" aria-label="Edit cover image">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/actions/unclassified/edit.svg" alt="" aria-hidden="true">
+      </button>
+    </div>
+
+    <!-- =========================================================================
+         03) HERO IDENTITY ROW
+    ========================================================================= -->
+    <div class="profile-private-hero__identity-row">
+      <!-- =======================================================================
+           04) HERO PROFILE IMAGE
+      ======================================================================= -->
+      <div class="profile-private-hero__avatar-wrap">
+        <div class="profile-private-hero__avatar" data-profile-avatar aria-hidden="true">
+          <span class="profile-private-hero__avatar-initials" data-profile-avatar-initials>NA</span>
+        </div>
+
+        <button class="profile-private-hero__media-action profile-private-hero__media-action--avatar" type="button" data-profile-action="edit-avatar" aria-label="Edit profile image">
+          <img class="ui-icon-theme-aware" src="/assets/icons/core/media/unclassified/camera.svg" alt="" aria-hidden="true">
+        </button>
       </div>
 
+      <!-- =======================================================================
+           05) HERO COPY
+      ======================================================================= -->
       <div class="profile-private-hero__copy">
-        <p class="profile-private-hero__eyebrow">Private Profile</p>
         <h1 class="profile-private-hero__title" id="profile-private-hero-title" data-profile-display-name>Profile not completed</h1>
         <p class="profile-private-hero__meta" data-profile-username>@username pending</p>
-        <p class="profile-private-hero__description" data-profile-hero-description>
-          Complete your private identity layer before activating public profile, organizations, models, or workspace access.
-        </p>
+
+        <div class="profile-private-hero__details" aria-label="Profile details">
+          <span class="profile-private-hero__detail" data-profile-location-wrap>
+            <img class="ui-icon-theme-aware" src="/assets/icons/core/navigation/unclassified/location.svg" alt="" aria-hidden="true">
+            <span data-profile-location>Location pending</span>
+          </span>
+          <span class="profile-private-hero__detail" data-profile-role>Role pending</span>
+        </div>
       </div>
     </div>
 
-    <div class="profile-private-hero__actions" aria-label="Profile actions">
-      <button class="profile-private-hero__button profile-private-hero__button--primary" type="button" data-profile-action="complete-profile">
-        Complete profile
-      </button>
-      <button class="profile-private-hero__button profile-private-hero__button--secondary" type="button" data-profile-action="edit-identity">
-        Edit identity
-      </button>
+    <!-- =========================================================================
+         06) HERO SOCIAL ROW
+    ========================================================================= -->
+    <div class="profile-private-hero__social-row">
+      <div class="profile-private-hero__stats" aria-label="Profile social statistics">
+        <span class="profile-private-hero__stat"><strong data-profile-followers-count>0</strong> Followers</span>
+        <span class="profile-private-hero__stat"><strong data-profile-following-count>0</strong> Following</span>
+      </div>
+
+      <nav class="profile-private-hero__tabs" aria-label="Profile sections" data-profile-hero-tabs>
+        <button class="profile-private-hero__tab" type="button" data-profile-tab="posts" aria-current="page">Posts</button>
+        <button class="profile-private-hero__tab" type="button" data-profile-tab="thoughts">Thoughts</button>
+        <button class="profile-private-hero__tab" type="button" data-profile-tab="models">Models</button>
+        <button class="profile-private-hero__tab" type="button" data-profile-tab="organizations">Organizations</button>
+        <button class="profile-private-hero__tab" type="button" data-profile-tab="edit-profile">Edit Profile</button>
+      </nav>
     </div>
   </div>
 </section>

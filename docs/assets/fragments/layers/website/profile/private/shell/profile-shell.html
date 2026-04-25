@@ -2,16 +2,24 @@
      01) PRIVATE PROFILE SHELL
      02) PRIVATE PROFILE SHELL RAIL
      03) PRIVATE PROFILE SHELL SURFACE
-     04) PRIVATE PROFILE FOUNDATION GROUP
-     05) PRIVATE PROFILE EXPANSION GROUP
-     06) PRIVATE PROFILE SYSTEM GROUP
+     04) PRIVATE PROFILE HERO MOUNT
+     05) PRIVATE PROFILE FOUNDATION GROUP
+     06) PRIVATE PROFILE EXPANSION GROUP
+     07) PRIVATE PROFILE SYSTEM GROUP
 ============================================================================= -->
 <section class="profile-shell" data-profile-shell data-profile-surface="private" aria-label="Private profile shell">
   <div class="profile-shell__rail">
     <div class="profile-shell__surface">
       <div class="profile-shell__inner">
+        <!-- =====================================================================
+        04) PRIVATE PROFILE HERO MOUNT
+        ====================================================================== -->
+        <div class="profile-shell__mount profile-shell__mount--hero" data-include="profile-private-hero"></div>
+
+        <!-- =====================================================================
+        05) PRIVATE PROFILE FOUNDATION GROUP
+        ====================================================================== -->
         <div class="profile-shell__group" data-profile-shell-group="foundation">
-          <div class="profile-shell__mount" data-include="profile-private-hero"></div>
           <div class="profile-shell__mount" data-include="profile-private-identity"></div>
           <div class="profile-shell__mount" data-include="profile-private-account-status"></div>
         </div>

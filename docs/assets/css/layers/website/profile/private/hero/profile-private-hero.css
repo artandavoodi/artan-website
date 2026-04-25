@@ -1,93 +1,242 @@
 /* =============================================================================
-   00A) PRIVATE PROFILE HERO TOKENS
-   01) PRIVATE PROFILE HERO FOUNDATION
-   02) PRIVATE PROFILE HERO SURFACE
-   03) PRIVATE PROFILE HERO IDENTITY
-   04) PRIVATE PROFILE HERO AVATAR
-   05) PRIVATE PROFILE HERO COPY
-   06) PRIVATE PROFILE HERO ACTIONS
-   07) PRIVATE PROFILE HERO RESPONSIVE STATES
-   ============================================================================= */
+   00) FILE INDEX
+   01) PRIVATE PROFILE HERO TOKENS
+   02) PRIVATE PROFILE HERO FOUNDATION
+   03) PRIVATE PROFILE HERO SURFACE
+   04) PRIVATE PROFILE HERO COVER
+   05) PRIVATE PROFILE HERO IDENTITY ROW
+   06) PRIVATE PROFILE HERO AVATAR
+   07) PRIVATE PROFILE HERO COPY
+   08) PRIVATE PROFILE HERO DETAILS
+   09) PRIVATE PROFILE HERO SOCIAL ROW
+   10) PRIVATE PROFILE HERO STATS
+   11) PRIVATE PROFILE HERO TABS
+   12) PRIVATE PROFILE HERO ACTIONS
+   13) PRIVATE PROFILE HERO SURFACE LAYER STATES
+   14) PRIVATE PROFILE HERO RESPONSIVE STATES
+============================================================================= */
 
 /* =============================================================================
-   00A) PRIVATE PROFILE HERO TOKENS
-   ============================================================================= */
+   01) PRIVATE PROFILE HERO TOKENS
+============================================================================= */
 :root{
-  --profile-private-hero-border:var(--stroke-soft) solid var(--control-border);
-  --profile-private-hero-surface:transparent;
-  --profile-private-hero-padding:0 0 var(--spacing-lg);
-  --profile-private-hero-gap:var(--spacing-lg);
-  --profile-private-hero-avatar-size:var(--control-height-lg);
+  --profile-private-hero-cover-height:13.5rem;
+  --profile-private-hero-cover-radius:1.4rem;
+  --profile-private-hero-cover-offset-top:var(--spacing-md);
+  --profile-private-hero-avatar-size:7.25rem;
+  --profile-private-hero-avatar-border-width:4px;
+  --profile-private-hero-media-action-size:2.15rem;
+  --profile-private-hero-scroll-overlay-opacity:0;
+  --profile-private-hero-scroll-overlay-opacity-active:0.58;
+  --profile-private-hero-cover-blur-active:10px;
+  --profile-private-hero-surface-layer-bg:var(--bg-color);
+  --profile-private-hero-surface-layer-opacity:1;
+  --profile-private-hero-surface-layer-opacity-active:1;
+  --profile-private-hero-surface-layer-border:var(--stroke-soft) solid var(--border-color);
+  --profile-private-hero-cover-bg:color-mix(in srgb, var(--text-primary-color) 5%, transparent);
+  --profile-private-hero-cover-border:color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  --profile-private-hero-avatar-bg:var(--surface-secondary);
+  --profile-private-hero-avatar-border:var(--bg-color);
+  --profile-private-hero-control-bg:color-mix(in srgb, var(--bg-color) 88%, transparent);
+  --profile-private-hero-control-border:color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  --profile-private-hero-motion-fast:220ms;
+  --profile-private-hero-motion-ease:cubic-bezier(0.22, 1, 0.36, 1);
+  --profile-private-hero-tabs-gap:1.42rem;
+  --profile-private-hero-tab-color:var(--text-secondary-color);
+  --profile-private-hero-tab-hover-color:var(--text-primary-color);
+  --profile-private-hero-tab-active-underline-bg:var(--text-primary-color);
+  --profile-private-hero-tab-active-opacity:1;
+  --profile-private-hero-tab-font-size:1rem;
 }
 
 /* =============================================================================
-   01) PRIVATE PROFILE HERO FOUNDATION
-   ============================================================================= */
-
+   02) PRIVATE PROFILE HERO FOUNDATION
+============================================================================= */
 .profile-private-hero{
   width:100%;
-  color:var(--text-primary);
-  background:transparent;
 }
 
 /* =============================================================================
-   02) PRIVATE PROFILE HERO SURFACE
-   ============================================================================= */
-
+   03) PRIVATE PROFILE HERO SURFACE
+============================================================================= */
 .profile-private-hero__surface{
+  display:grid;
+  width:100%;
+  gap:var(--spacing-lg);
+  position:relative;
+  isolation:isolate;
+  border-radius:var(--profile-private-hero-cover-radius);
+}
+
+.profile-private-hero__surface::before{
+  content:"";
+  position:absolute;
+  top:calc(var(--spacing-md) * -1);
+  bottom:calc(var(--spacing-md) * -1);
+  left:calc(50% - 50vw);
+  width:100vw;
+  z-index:-1;
+  border-radius:0;
+  border-bottom:var(--profile-private-hero-surface-layer-border);
+  background:var(--profile-private-hero-surface-layer-bg);
+  opacity:var(--profile-private-hero-surface-layer-opacity);
+  pointer-events:none;
+  transition:opacity var(--profile-private-hero-motion-fast) var(--profile-private-hero-motion-ease);
+}
+
+.profile-private-hero[data-profile-hero-stuck="true"] .profile-private-hero__surface::before{
+  opacity:var(--profile-private-hero-surface-layer-opacity-active);
+}
+
+/* =============================================================================
+   04) PRIVATE PROFILE HERO COVER
+============================================================================= */
+.profile-private-hero__cover{
+  position:relative;
+  width:100%;
+  margin-top:var(--profile-private-hero-cover-offset-top);
+  min-height:var(--profile-private-hero-cover-height);
+  border:1px solid var(--profile-private-hero-cover-border);
+  border-radius:var(--profile-private-hero-cover-radius);
+  background:var(--profile-private-hero-cover-bg);
+  overflow:hidden;
+  isolation:isolate;
+  transition:
+    filter var(--profile-private-hero-motion-fast) var(--profile-private-hero-motion-ease),
+    border-color var(--profile-private-hero-motion-fast) var(--profile-private-hero-motion-ease),
+    background-color var(--profile-private-hero-motion-fast) var(--profile-private-hero-motion-ease);
+}
+
+.profile-private-hero__cover::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--text-primary-color) 5%, transparent) 100%);
+  pointer-events:none;
+}
+
+.profile-private-hero__cover::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-color) 58%, transparent) 0%, transparent 42%),
+    linear-gradient(180deg, transparent 46%, color-mix(in srgb, var(--bg-color) 38%, transparent) 100%);
+  opacity:var(--profile-private-hero-scroll-overlay-opacity);
+  pointer-events:none;
+  transition:opacity var(--profile-private-hero-motion-fast) var(--profile-private-hero-motion-ease);
+}
+
+.profile-private-hero[data-profile-hero-stuck="true"] .profile-private-hero__cover{
+  filter:blur(var(--profile-private-hero-cover-blur-active));
+}
+
+.profile-private-hero[data-profile-hero-stuck="true"] .profile-private-hero__cover::after{
+  opacity:var(--profile-private-hero-scroll-overlay-opacity-active);
+}
+
+/* =============================================================================
+   05) PRIVATE PROFILE HERO IDENTITY ROW
+============================================================================= */
+.profile-private-hero__identity-row{
+  display:grid;
+  grid-template-columns:auto minmax(0, 1fr) auto;
+  align-items:flex-start;
+  gap:var(--spacing-lg);
+  padding-inline:var(--spacing-md);
+  margin-top:calc((var(--profile-private-hero-avatar-size) / -2) - var(--spacing-sm));
+  position:relative;
+  z-index:1;
+}
+
+/* =============================================================================
+   06) PRIVATE PROFILE HERO AVATAR
+============================================================================= */
+.profile-private-hero__avatar-wrap{
+  position:relative;
+  width:var(--profile-private-hero-avatar-size);
+  height:var(--profile-private-hero-avatar-size);
+  flex:0 0 auto;
+}
+
+.profile-private-hero__avatar{
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  gap:var(--profile-private-hero-gap);
-  padding:var(--profile-private-hero-padding);
-  border-bottom:var(--profile-private-hero-border);
-  background:var(--profile-private-hero-surface);
+  justify-content:center;
+  width:100%;
+  height:100%;
+  border-radius:999px;
+  border:var(--profile-private-hero-avatar-border-width) solid var(--profile-private-hero-avatar-border);
+  background:var(--profile-private-hero-avatar-bg);
+  color:var(--text-primary-color);
+  overflow:hidden;
   box-sizing:border-box;
 }
 
-/* =============================================================================
-   03) PRIVATE PROFILE HERO IDENTITY
-   ============================================================================= */
-
-.profile-private-hero__identity{
-  display:flex;
-  align-items:center;
-  min-width:0;
-  gap:var(--spacing-md);
-}
-
-/* =============================================================================
-   04) PRIVATE PROFILE HERO AVATAR
-   ============================================================================= */
-
-.profile-private-hero__avatar{
-  display:grid;
-  place-items:center;
-  flex:0 0 auto;
-  width:var(--profile-private-hero-avatar-size);
-  height:var(--profile-private-hero-avatar-size);
-  border:var(--stroke-soft) solid var(--control-border);
-  border-radius:var(--radius-pill);
-  background:var(--surface-secondary);
-  color:var(--text-primary);
-}
-
 .profile-private-hero__avatar-initials{
-  font-size:var(--body-3-size);
-  font-weight:var(--body-3-weight);
-  line-height:var(--body-3-line-height);
-  letter-spacing:var(--body-3-tracking);
-  text-transform:uppercase;
+  font-size:1.7rem;
+  font-weight:500;
+  line-height:1;
+  letter-spacing:0.02em;
+}
+
+.profile-private-hero__media-action{
+  appearance:none;
+  -webkit-appearance:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:var(--profile-private-hero-media-action-size);
+  height:var(--profile-private-hero-media-action-size);
+  padding:0;
+  border:1px solid var(--profile-private-hero-control-border);
+  border-radius:999px;
+  background:var(--profile-private-hero-control-bg);
+  color:var(--text-primary-color);
+  backdrop-filter:blur(8px) saturate(120%);
+  -webkit-backdrop-filter:blur(8px) saturate(120%);
+  transition:
+    color var(--profile-private-hero-motion-fast) ease,
+    border-color var(--profile-private-hero-motion-fast) ease,
+    background-color var(--profile-private-hero-motion-fast) ease,
+    opacity var(--profile-private-hero-motion-fast) ease;
+}
+
+.profile-private-hero__media-action img{
+  width:1rem;
+  height:1rem;
+}
+
+.profile-private-hero__media-action:hover,
+.profile-private-hero__media-action:focus-visible{
+  color:var(--text-primary-color);
+  opacity:1;
+  outline:none;
+}
+
+.profile-private-hero__media-action--cover{
+  position:absolute;
+  right:var(--spacing-md);
+  bottom:var(--spacing-md);
+  z-index:3;
+}
+
+.profile-private-hero__media-action--avatar{
+  position:absolute;
+  right:0;
+  bottom:0;
+  z-index:2;
 }
 
 /* =============================================================================
-   05) PRIVATE PROFILE HERO COPY
-   ============================================================================= */
-
+   07) PRIVATE PROFILE HERO COPY
+============================================================================= */
 .profile-private-hero__copy{
   display:grid;
-  min-width:0;
   gap:var(--spacing-xs);
+  min-width:0;
+  padding-top:calc((var(--profile-private-hero-avatar-size) / 2) + var(--spacing-xs));
 }
 
 .profile-private-hero__eyebrow{
@@ -97,7 +246,7 @@
   line-height:var(--body-3-line-height);
   letter-spacing:var(--body-3-tracking);
   text-transform:uppercase;
-  color:var(--text-secondary);
+  color:var(--text-secondary-color);
 }
 
 .profile-private-hero__title{
@@ -106,33 +255,169 @@
   font-weight:var(--headline-3-weight);
   line-height:var(--headline-3-line-height);
   letter-spacing:var(--headline-3-tracking);
-  color:var(--text-primary);
+  color:var(--text-primary-color);
 }
 
 .profile-private-hero__meta,
-.profile-private-hero__description{
+.profile-private-hero__description,
+.profile-private-hero__detail,
+.profile-private-hero__stat,
+.profile-private-hero__visibility{
   margin:0;
   font-size:var(--body-2-size);
   font-weight:var(--body-2-weight);
   line-height:var(--body-2-line-height);
   letter-spacing:var(--body-2-tracking);
-  color:var(--text-secondary);
+  color:var(--text-secondary-color);
 }
 
 .profile-private-hero__description{
-  max-width:64ch;
+  max-width:66ch;
 }
 
 /* =============================================================================
-   06) PRIVATE PROFILE HERO ACTIONS
-   ============================================================================= */
-
-.profile-private-hero__actions{
+   08) PRIVATE PROFILE HERO DETAILS
+============================================================================= */
+.profile-private-hero__details{
   display:flex;
   align-items:center;
+  flex-wrap:wrap;
+  gap:var(--spacing-sm);
+  margin-top:var(--spacing-xs);
+}
+
+.profile-private-hero__detail{
+  display:inline-flex;
+  align-items:center;
+  gap:0.35rem;
+}
+
+.profile-private-hero__detail img{
+  width:1rem;
+  height:1rem;
+  opacity:0.72;
+}
+
+/* =============================================================================
+   09) PRIVATE PROFILE HERO SOCIAL ROW
+============================================================================= */
+.profile-private-hero__social-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--spacing-md);
+  width:100%;
+  box-sizing:border-box;
+}
+
+/* =============================================================================
+   10) PRIVATE PROFILE HERO STATS
+============================================================================= */
+.profile-private-hero__stats{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:var(--spacing-md);
+  flex:0 0 auto;
+  margin:0;
+  padding:0;
+}
+
+.profile-private-hero__stat strong{
+  color:var(--text-primary-color);
+  font-weight:500;
+}
+
+/* =============================================================================
+   11) PRIVATE PROFILE HERO TABS
+============================================================================= */
+.profile-private-hero__tabs{
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:var(--profile-private-hero-tabs-gap);
+  min-width:0;
+  margin:0;
+  padding:0;
+  flex:0 1 auto;
+}
+
+.profile-private-hero__tab{
+  appearance:none;
+  -webkit-appearance:none;
+  border:0;
+  background:transparent;
+  padding:0;
+  margin:0;
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:auto;
+  color:var(--profile-private-hero-tab-color);
+  text-decoration:none;
+  font-size:var(--profile-private-hero-tab-font-size);
+  font-weight:400;
+  letter-spacing:0.008em;
+  line-height:1;
+  white-space:nowrap;
+  transform:none !important;
+  transition:
+    color var(--profile-private-hero-motion-fast) ease,
+    opacity var(--profile-private-hero-motion-fast) ease,
+    transform var(--profile-private-hero-motion-fast) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-private-hero__tab::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:calc((3.55rem - 100%) / -2);
+  height:0.35px;
+  background:var(--profile-private-hero-tab-active-underline-bg);
+  opacity:0;
+  pointer-events:none;
+}
+
+.profile-private-hero__tab:hover,
+.profile-private-hero__tab:focus-visible,
+.profile-private-hero__tab:active,
+.profile-private-hero__tab[aria-current="page"]{
+  color:var(--profile-private-hero-tab-hover-color);
+  opacity:var(--profile-private-hero-tab-active-opacity);
+  transform:none !important;
+  text-decoration:none;
+  outline:none;
+}
+
+.profile-private-hero__tab[aria-current="page"]::after{
+  opacity:1;
+}
+
+/* =============================================================================
+   12) PRIVATE PROFILE HERO ACTIONS
+============================================================================= */
+.profile-private-hero__actions{
+  display:flex;
+  align-items:flex-start;
   justify-content:flex-end;
   flex-wrap:wrap;
   gap:var(--spacing-xs);
+  padding-top:calc((var(--profile-private-hero-avatar-size) / 2) + var(--spacing-xs));
+}
+
+.profile-private-hero__visibility{
+  display:inline-flex;
+  align-items:center;
+  gap:0.35rem;
+  min-height:var(--control-height-sm);
+}
+
+.profile-private-hero__visibility img{
+  width:1rem;
+  height:1rem;
+  opacity:0.72;
 }
 
 .profile-private-hero__button{
@@ -141,18 +426,57 @@
 }
 
 /* =============================================================================
-   07) PRIVATE PROFILE HERO RESPONSIVE STATES
-   ============================================================================= */
+   13) PRIVATE PROFILE HERO SURFACE LAYER STATES
+============================================================================= */
+.profile-private-hero[data-profile-hero-stuck="true"]{
+  position:relative;
+}
 
-@media (max-width:820px){
-  .profile-private-hero__surface{
-    align-items:flex-start;
-    flex-direction:column;
-    gap:var(--spacing-md);
+/* =============================================================================
+   14) PRIVATE PROFILE HERO RESPONSIVE STATES
+============================================================================= */
+@media (max-width:980px){
+  .profile-private-hero__identity-row{
+    grid-template-columns:auto minmax(0, 1fr);
   }
 
   .profile-private-hero__actions{
-    width:100%;
+    grid-column:1 / -1;
     justify-content:flex-start;
+    padding-top:0;
+  }
+}
+
+@media (max-width:720px){
+  :root{
+    --profile-private-hero-cover-height:10.5rem;
+    --profile-private-hero-avatar-size:6rem;
+  }
+
+  .profile-private-hero__identity-row{
+    grid-template-columns:minmax(0, 1fr);
+    padding-inline:0;
+  }
+
+  .profile-private-hero__avatar-wrap{
+    margin-inline:var(--spacing-md);
+  }
+
+  .profile-private-hero__copy,
+  .profile-private-hero__actions{
+    padding-inline:var(--spacing-md);
+  }
+
+  .profile-private-hero__social-row{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .profile-private-hero__tabs{
+    justify-content:flex-start;
+  }
+
+  .profile-private-hero__copy{
+    padding-top:0;
   }
 }

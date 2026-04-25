@@ -18,8 +18,11 @@
   --profile-shell-group-gap:var(--spacing-xl);
   --profile-shell-mount-gap:var(--spacing-lg);
   --profile-shell-disabled-opacity:var(--disabled-opacity, 0.48);
-  --profile-shell-top-clearance:calc(env(safe-area-inset-top, 0px) + 3.55rem + var(--spacing-xl));
-  --profile-shell-top-clearance-mobile:calc(env(safe-area-inset-top, 0px) + 3.3rem + var(--spacing-lg));
+  --profile-shell-top-clearance:calc(env(safe-area-inset-top, 0px) + 3.55rem);
+  --profile-shell-top-clearance-mobile:calc(env(safe-area-inset-top, 0px) + 3.3rem);
+  --profile-shell-hero-sticky-top:calc(env(safe-area-inset-top, 0px) + 3.55rem - 11rem);
+  --profile-shell-hero-sticky-top-mobile:calc(env(safe-area-inset-top, 0px) + 3.3rem - 8rem);
+  --profile-shell-hero-sticky-z-index:1200;
 }
 
 /* =============================================================================
@@ -32,6 +35,7 @@
   color:var(--text-primary);
   background:transparent;
   padding-top:var(--profile-shell-top-clearance);
+  overflow:visible;
 }
 
 /* =============================================================================
@@ -40,8 +44,9 @@
 
 .profile-shell__rail{
   width:var(--profile-shell-rail-width);
-  max-width:100%;
+  max-width:calc(100% - (var(--site-gutter) * 2));
   margin-inline:auto;
+  overflow:visible;
 }
 
 /* =============================================================================
@@ -56,6 +61,7 @@
   border-radius:0;
   background:transparent;
   box-shadow:none;
+  overflow:visible;
 }
 
 
@@ -68,6 +74,8 @@
   display:grid;
   width:100%;
   gap:var(--profile-shell-group-gap);
+  align-items:start;
+  overflow:visible;
 }
 
 /* =============================================================================
@@ -79,6 +87,8 @@
   width:100%;
   min-width:0;
   gap:var(--profile-shell-mount-gap);
+  align-items:start;
+  overflow:visible;
 }
 
 /* =============================================================================
@@ -88,6 +98,14 @@
 .profile-shell__mount{
   width:100%;
   min-width:0;
+  overflow:visible;
+}
+
+.profile-shell__mount--hero{
+  position:sticky;
+  top:var(--profile-shell-hero-sticky-top);
+  z-index:var(--profile-shell-hero-sticky-z-index);
+  align-self:start;
 }
 
 
@@ -109,5 +127,6 @@
     --profile-shell-group-gap:var(--spacing-lg);
     --profile-shell-mount-gap:var(--spacing-md);
     --profile-shell-top-clearance:var(--profile-shell-top-clearance-mobile);
+    --profile-shell-hero-sticky-top:var(--profile-shell-hero-sticky-top-mobile);
   }
 }

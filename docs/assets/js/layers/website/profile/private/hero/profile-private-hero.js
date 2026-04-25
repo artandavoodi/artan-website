@@ -4,7 +4,8 @@
    03) DOM HELPERS
    04) HERO STATE RENDERING
    05) HERO ACTIONS
-   06) INITIALIZATION
+   06) HERO STICKY STATE
+   07) INITIALIZATION
 ============================================================================= */
 
 /* =============================================================================
@@ -31,6 +32,13 @@ function setText(root, selector, value) {
   const node = root?.querySelector(selector);
   if (!node) return;
   node.textContent = value || '';
+}
+
+function getHeroStickyTop(root) {
+  if (!(root instanceof HTMLElement)) return 0;
+
+  const value = Number.parseFloat(getComputedStyle(root).top || '0');
+  return Number.isFinite(value) ? value : 0;
 }
 
 function getInitials(profile = {}) {
@@ -95,12 +103,58 @@ function bindProfilePrivateHeroActions() {
 }
 
 /* =============================================================================
-   06) INITIALIZATION
+   06) HERO STICKY STATE
+============================================================================= */
+function syncProfileHeroStickyState() {
+  const root = getHeroRoot();
+  if (!(root instanceof HTMLElement)) return;
+
+  const stickyTop = getHeroStickyTop(root);
+  const rect = root.getBoundingClientRect();
+  const isStuck = rect.top <= stickyTop + 0.5;
+
+  root.dataset.profileHeroStuck = isStuck ? 'true' : 'false';
+}
+
+function bindProfileHeroStickyState() {
+  const root = getHeroRoot();
+  if (!root || root.dataset.profileHeroStickyBound === 'true') return;
+
+  root.dataset.profileHeroStickyBound = 'true';
+
+  let ticking = false;
+
+  const requestSync = () => {
+    if (ticking) return;
+    ticking = true;
+
+    window.requestAnimationFrame(() => {
+      ticking = false;
+      syncProfileHeroStickyState();
+    });
+  };
+
+  window.addEventListener('scroll', requestSync, { passive:true });
+  window.addEventListener('resize', requestSync, { passive:true });
+  syncProfileHeroStickyState();
+}
+
+/* =============================================================================
+   07) INITIALIZATION
 ============================================================================= */
 function initProfilePrivateHero() {
   bindProfilePrivateHeroActions();
+  bindProfileHeroStickyState();
   renderProfilePrivateHero();
   subscribeProfileRuntime(renderProfilePrivateHero);
+
+  document.addEventListener('fragment:mounted', (event) => {
+    if (event?.detail?.name !== 'profile-private-hero') return;
+    bindProfilePrivateHeroActions();
+    bindProfileHeroStickyState();
+    renderProfilePrivateHero();
+    syncProfileHeroStickyState();
+  });
 }
 
 if (document.readyState === 'loading') {
