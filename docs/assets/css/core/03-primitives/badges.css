@@ -23,19 +23,19 @@
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:0.4rem;
-  min-height:1.65rem;
-  min-width:0;
-  padding:0.22rem 0.65rem;
-  border-radius:var(--radius-pill);
-  border:var(--stroke-soft) solid transparent;
-  background:var(--surface-secondary);
-  color:var(--text-color);
-  font-family:var(--font-base);
+  gap:var(--control-gap);
+  min-height:var(--control-height-sm);
+  min-width:var(--spacing-none);
+  padding:var(--spacing-2xs) var(--control-padding-x-sm);
+  border-radius:var(--shape-control-radius);
+  border:var(--border-width-hairline) solid transparent;
+  background:var(--control-surface);
+  color:var(--control-text-unified);
+  font-family:var(--font-family);
   font-size:var(--body-3-size);
   font-weight:var(--body-3-weight);
   letter-spacing:var(--tracking-ui);
-  line-height:1;
+  line-height:var(--control-line-height);
   white-space:nowrap;
 }
 
@@ -44,7 +44,7 @@
 ============================================================================= */
 .ui-badge__label{
   display:inline-block;
-  min-width:0;
+  min-width:var(--spacing-none);
 }
 
 .ui-badge__icon,
@@ -56,22 +56,22 @@
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:0.9rem;
-  height:0.9rem;
+  width:var(--close-control-line-width);
+  height:var(--close-control-line-width);
 }
 
 .ui-badge__icon > svg,
 .ui-badge__icon > img{
   display:block;
-  width:100%;
-  height:100%;
+  width:var(--size-full);
+  height:var(--size-full);
 }
 
 /* =============================================================================
    04) BADGE SOFT VARIANT
 ============================================================================= */
 .ui-badge--soft{
-  background:var(--surface-secondary);
+  background:var(--control-surface);
   border-color:transparent;
 }
 
@@ -80,7 +80,7 @@
 ============================================================================= */
 .ui-badge--outline{
   background:transparent;
-  border-color:var(--control-border);
+  border-color:var(--control-border-unified);
 }
 
 /* =============================================================================
@@ -106,24 +106,24 @@
    07) BADGE SIZE VARIANTS
 ============================================================================= */
 .ui-badge--sm{
-  min-height:1.4rem;
-  padding:0.18rem 0.52rem;
-  font-size:0.72rem;
+  min-height:var(--control-height-sm);
+  padding:var(--spacing-3xs) var(--control-padding-x-sm);
+  font-size:var(--body-3-size);
 }
 
 .ui-badge--lg{
-  min-height:1.9rem;
-  padding:0.28rem 0.78rem;
+  min-height:var(--control-height-md);
+  padding:var(--spacing-xs) var(--control-padding-x-md);
 }
 
 .ui-badge--sm .ui-badge__icon{
-  width:0.8rem;
-  height:0.8rem;
+  width:var(--space-4);
+  height:var(--space-4);
 }
 
 .ui-badge--lg .ui-badge__icon{
-  width:1rem;
-  height:1rem;
+  width:var(--close-control-line-width);
+  height:var(--close-control-line-width);
 }
 
 /* =============================================================================
@@ -131,9 +131,9 @@
 ============================================================================= */
 .ui-badge__dot{
   display:inline-block;
-  width:0.45rem;
-  height:0.45rem;
-  border-radius:50%;
+  width:var(--spacing-xs);
+  height:var(--spacing-xs);
+  border-radius:var(--radius-circle);
   background:currentColor;
 }
 

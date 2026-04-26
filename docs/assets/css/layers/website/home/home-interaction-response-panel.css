@@ -20,7 +20,7 @@
   --home-interaction-response-panel-padding:0.18rem 0.18rem 0.18rem;
   --home-interaction-response-panel-content-max-width:42rem;
   --home-interaction-response-panel-content-align:left;
-  --home-interaction-response-panel-radius:1rem;
+  --home-interaction-response-panel-radius:var(--control-radius);
   --home-interaction-response-panel-surface:transparent;
   --home-interaction-response-panel-text:var(--text-primary-color);
   --home-interaction-response-panel-muted:var(--text-secondary-color);
@@ -30,7 +30,7 @@
   --home-interaction-response-panel-letter-spacing:-0.012em;
   --home-interaction-response-panel-scrollbar:color-mix(in srgb, var(--text-secondary-color) 22%, transparent);
   --home-interaction-response-panel-scrollbar-hover:color-mix(in srgb, var(--text-secondary-color) 38%, transparent);
-  --home-interaction-response-panel-motion-fast:220ms;
+  --home-interaction-response-panel-motion-fast:var(--interaction-motion-medium);
 }
 
 /* =============================================================================
@@ -42,7 +42,7 @@
   margin:var(--home-interaction-response-panel-margin-top) auto var(--home-interaction-response-panel-margin-bottom);
   padding:var(--home-interaction-response-panel-padding);
   border:0;
-  border-radius:var(--home-interaction-response-panel-radius);
+  border-radius:var(--control-radius);
   background:var(--home-interaction-response-panel-surface);
   color:var(--home-interaction-response-panel-text);
   text-align:var(--home-interaction-response-panel-content-align);
@@ -69,7 +69,7 @@
   scrollbar-width:thin;
   scrollbar-color:var(--home-interaction-response-panel-scrollbar) transparent;
   outline:none;
-  border-radius:calc(var(--home-interaction-response-panel-radius) - 0.24rem);
+  border-radius:var(--control-radius);
   scroll-padding-bottom:var(--home-interaction-response-panel-footer-clearance);
 }
 
@@ -82,7 +82,7 @@
 }
 
 .home-interaction-response-panel__scroller::-webkit-scrollbar-thumb{
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   background:var(--home-interaction-response-panel-scrollbar);
 }
 

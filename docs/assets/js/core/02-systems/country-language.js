@@ -434,7 +434,7 @@
      11) COUNTRY OVERLAY
   ============================================================================= */
 
-  const CO_CLOSE_DURATION = 520;
+  const CO_CLOSE_DURATION_FALLBACK = 520;
   const CO_STAGGER_IN_START_DELAY = 180;
   const CO_STAGGER_IN_STEP = 70;
   const CO_STAGGER_OUT_STEP = 55;
@@ -442,6 +442,60 @@
   const getCountryItems = () => {
     const root = getCountryOverlayRoot();
     return root ? Array.from(root.querySelectorAll('.country-item')) : [];
+  };
+
+  const parseMotionDurationMs = (value) => {
+    const raw = String(value || '').trim();
+    if (!raw) return 0;
+
+    const firstValue = raw.split(',')[0].trim();
+    const parsedValue = Number.parseFloat(firstValue);
+    if (!Number.isFinite(parsedValue)) return 0;
+
+    return firstValue.endsWith('ms') ? parsedValue : parsedValue * 1000;
+  };
+
+  const getCountryOverlayInner = () => {
+    const root = getCountryOverlayRoot();
+    return root ? root.querySelector('.country-overlay-inner') : null;
+  };
+
+  const getCountryOverlayCloseDuration = () => {
+    const root = getCountryOverlayRoot();
+    if (!root) return CO_CLOSE_DURATION_FALLBACK;
+
+    const computed = window.getComputedStyle(root);
+    const tokenDuration = parseMotionDurationMs(computed.getPropertyValue('--country-motion-overlay'));
+    if (tokenDuration > 0) return tokenDuration;
+
+    const inner = getCountryOverlayInner();
+    if (!inner) return CO_CLOSE_DURATION_FALLBACK;
+
+    const innerComputed = window.getComputedStyle(inner);
+    const transitionDuration = parseMotionDurationMs(innerComputed.transitionDuration);
+    const transitionDelay = parseMotionDurationMs(innerComputed.transitionDelay);
+    const totalDuration = transitionDuration + transitionDelay;
+
+    return totalDuration > 0 ? totalDuration : CO_CLOSE_DURATION_FALLBACK;
+  };
+
+  const runAfterCountryOverlayClose = (callback) => {
+    const inner = getCountryOverlayInner();
+    const fallbackDuration = getCountryOverlayCloseDuration();
+    let didRun = false;
+
+    const complete = () => {
+      if (didRun) return;
+      didRun = true;
+      if (inner) inner.removeEventListener('transitionend', complete);
+      callback();
+    };
+
+    if (inner) {
+      inner.addEventListener('transitionend', complete, { once: true });
+    }
+
+    window.setTimeout(complete, fallbackDuration + 80);
   };
 
   const prepCountryItemsForOpen = (items) => {
@@ -486,7 +540,7 @@
 
   const closeCountryOverlay = () => {
     const o = qs('#country-overlay');
-    if (!o) return;
+    if (!o || o.classList.contains('closing')) return;
 
     const items = getCountryItems();
     staggerCountryOut(items);
@@ -494,7 +548,7 @@
     o.classList.add('closing');
     o.setAttribute('aria-hidden', 'true');
 
-    window.setTimeout(() => {
+    runAfterCountryOverlayClose(() => {
       o.classList.remove('active', 'closing');
       document.body.classList.remove('country-active');
       items.forEach((el) => {
@@ -502,7 +556,7 @@
         el.style.opacity = '';
         el.style.transform = '';
       });
-    }, CO_CLOSE_DURATION);
+    });
   };
 
   /* =============================================================================

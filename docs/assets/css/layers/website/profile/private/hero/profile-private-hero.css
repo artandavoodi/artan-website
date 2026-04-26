@@ -29,24 +29,24 @@
   --profile-private-hero-scroll-overlay-opacity-active:0.58;
   --profile-private-hero-cover-blur-active:var(--effect-blur-md);
   --profile-private-hero-surface-layer-bg:var(--bg-color);
-  --profile-private-hero-surface-layer-opacity:var(--state-opacity-idle);
-  --profile-private-hero-surface-layer-opacity-active:var(--state-opacity-selected);
-  --profile-private-hero-surface-layer-border:var(--stroke-soft) solid var(--border-color);
+  --profile-private-hero-surface-layer-opacity:0;
+  --profile-private-hero-surface-layer-opacity-active:1;
+  --profile-private-hero-surface-layer-border:var(--border-width-hairline) solid var(--border-color);
   --profile-private-hero-cover-bg:color-mix(in srgb, var(--text-primary-color) 5%, transparent);
   --profile-private-hero-cover-border:color-mix(in srgb, var(--text-primary-color) 8%, transparent);
   --profile-private-hero-avatar-bg:var(--surface-secondary);
   --profile-private-hero-avatar-border:var(--bg-color);
   --profile-private-hero-control-bg:color-mix(in srgb, var(--bg-color) 88%, transparent);
   --profile-private-hero-control-border:color-mix(in srgb, var(--text-primary-color) 10%, transparent);
-  --profile-private-hero-motion-fast:220ms;
-  --profile-private-hero-motion-ease:cubic-bezier(0.22, 1, 0.36, 1);
+  --profile-private-hero-motion-fast:var(--interaction-motion-medium);
+  --profile-private-hero-motion-ease:var(--interaction-ease-standard);
   --profile-private-hero-avatar-initials-size:var(--data-value-lg-size);
   --profile-private-hero-avatar-initials-weight:var(--data-value-lg-weight);
   --profile-private-hero-avatar-initials-line-height:var(--line-height-ui);
   --profile-private-hero-avatar-initials-tracking:var(--data-value-lg-tracking);
   --profile-private-hero-detail-gap:var(--spacing-2xs);
   --profile-private-hero-stat-strong-weight:var(--font-weight-heading-soft);
-  --profile-private-hero-media-action-hover-opacity:var(--state-opacity-selected);
+  --profile-private-hero-media-action-hover-opacity:1;
   --profile-private-hero-tab-indicator-opacity:0;
   --profile-private-hero-tab-indicator-opacity-active:var(--selected-indicator-opacity);
   --profile-private-hero-tab-color:var(--nav-local-color);
@@ -172,7 +172,7 @@
   justify-content:center;
   width:100%;
   height:100%;
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   border:var(--profile-private-hero-avatar-border-width) solid var(--profile-private-hero-avatar-border);
   background:var(--profile-private-hero-avatar-bg);
   color:var(--text-primary-color);
@@ -197,16 +197,12 @@
   height:var(--profile-private-hero-media-action-size);
   padding:0;
   border:1px solid var(--profile-private-hero-control-border);
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   background:var(--profile-private-hero-control-bg);
   color:var(--text-primary-color);
   backdrop-filter:blur(var(--effect-blur-sm)) saturate(120%);
   -webkit-backdrop-filter:blur(var(--effect-blur-sm)) saturate(120%);
-  transition:
-    color var(--profile-private-hero-motion-fast) ease,
-    border-color var(--profile-private-hero-motion-fast) ease,
-    background-color var(--profile-private-hero-motion-fast) ease,
-    opacity var(--profile-private-hero-motion-fast) ease;
+  transition:var(--interaction-transition-control);
 }
 
 .profile-private-hero__media-action img{
@@ -358,10 +354,7 @@
   line-height:var(--website-local-nav-line-height);
   white-space:nowrap;
   transform:none !important;
-  transition:
-    color var(--profile-private-hero-motion-fast) ease,
-    opacity var(--profile-private-hero-motion-fast) ease,
-    transform var(--profile-private-hero-motion-fast) cubic-bezier(0.22, 1, 0.36, 1);
+  transition:color var(--profile-private-hero-motion-fast) var(--profile-private-hero-motion-ease), opacity var(--profile-private-hero-motion-fast) var(--profile-private-hero-motion-ease), transform var(--profile-private-hero-motion-fast) var(--profile-private-hero-motion-ease);
 }
 
 .profile-private-hero__tab::after{

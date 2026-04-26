@@ -19,7 +19,7 @@
   --profile-settings-status-color:var(--text-secondary-color);
   --profile-settings-status-success-color:var(--status-success-color, var(--text-color));
   --profile-settings-status-error-color:var(--status-danger-color, var(--color-primary7));
-  --profile-settings-motion-fast:220ms;
+  --profile-settings-motion-fast:var(--interaction-motion-medium);
 }
 
 /* =============================================================================
@@ -93,16 +93,12 @@
 .profile-settings__nav-item{
   min-height:3rem;
   padding:0.86rem 1rem;
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   border:1px solid transparent;
   background:transparent;
   color:var(--profile-settings-nav-color);
   opacity:var(--profile-settings-nav-opacity);
-  transition:
-    color var(--profile-settings-motion-fast) ease,
-    opacity var(--profile-settings-motion-fast) ease,
-    background-color var(--profile-settings-motion-fast) ease,
-    border-color var(--profile-settings-motion-fast) ease;
+  transition:var(--interaction-transition-control);
 }
 
 .profile-settings__nav-item[data-profile-settings-active="true"],
@@ -234,7 +230,7 @@
 .profile-settings__media-avatar{
   width:5rem;
   height:5rem;
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   display:flex;
   align-items:center;
   justify-content:center;

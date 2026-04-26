@@ -142,7 +142,7 @@
   position:absolute;
   left:50%;
   top:50%;
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -160,18 +160,18 @@
 #stage-glass-vessel-highlight{
   position:absolute;
   inset:0;
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   pointer-events:none;
 }
 
 #stage-glass-vessel-ring{
   border:1px solid var(--home-stage-motion-vessel-ring-border);
-  opacity:var(--state-opacity-selected);
+  opacity:1;
 }
 
 #stage-glass-vessel-inner{
   background:var(--home-stage-motion-vessel-inner-bg);
-  opacity:var(--state-opacity-selected);
+  opacity:1;
 }
 
 #stage-glass-vessel-highlight{
@@ -202,12 +202,12 @@
   position:absolute;
   left:50%;
   top:50%;
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   pointer-events:none;
-  opacity:var(--state-opacity-idle);
+  opacity:1;
   transform:translate(-50%, -50%) scale(1);
   transition:
-    opacity var(--home-stage-motion-fast) ease,
+    opacity var(--home-stage-motion-fast) var(--interaction-ease-standard),
     transform var(--home-stage-motion-transition);
 }
 
@@ -249,7 +249,7 @@
 #stage-cognitive-core-shell[data-voice-active="true"] #stage-cognitive-core-signal,
 #stage-cognitive-core-shell[data-voice-active="true"] #stage-cognitive-core-ring,
 #stage-cognitive-core-shell[data-voice-active="true"] #stage-cognitive-core-pulse{
-  opacity:var(--state-opacity-selected);
+  opacity:1;
 }
 
 /* =============================================================================
@@ -290,15 +290,15 @@
   border:0;
   background:transparent;
   color:var(--home-stage-motion-mic-color);
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   opacity:var(--home-stage-motion-mic-opacity);
   pointer-events:auto;
   appearance:none;
   -webkit-appearance:none;
   transition:
-    color var(--home-stage-motion-fast) ease,
-    opacity var(--home-stage-motion-fast) ease,
-    transform var(--home-stage-motion-fast) ease;
+    color var(--home-stage-motion-fast) var(--interaction-ease-standard),
+    opacity var(--home-stage-motion-fast) var(--interaction-ease-standard),
+    transform var(--home-stage-motion-fast) var(--interaction-ease-standard);
 }
 
 #stage .stage-microphone-button:hover,
@@ -306,7 +306,7 @@
 #stage #stage-microphone-button:hover,
 #stage #stage-microphone-button:focus-visible{
   color:var(--home-stage-motion-mic-hover-color);
-  opacity:var(--state-opacity-selected);
+  opacity:1;
   transform:scale(var(--home-stage-motion-mic-hover-scale));
 }
 
@@ -325,8 +325,8 @@
   height:var(--home-stage-motion-mic-icon-size);
   opacity:var(--home-stage-motion-mic-icon-opacity);
   transition:
-    transform var(--home-stage-motion-fast) ease,
-    opacity var(--home-stage-motion-fast) ease;
+    transform var(--home-stage-motion-fast) var(--interaction-ease-standard),
+    opacity var(--home-stage-motion-fast) var(--interaction-ease-standard);
   background-color:currentColor;
   -webkit-mask-image:url("../../../../icons/core/media/unclassified/mic.svg");
   mask-image:url("../../../../icons/core/media/unclassified/mic.svg");
@@ -342,7 +342,7 @@
 #stage .stage-microphone-button:focus-visible .stage-microphone-icon,
 #stage #stage-microphone-button:hover .stage-microphone-icon,
 #stage #stage-microphone-button:focus-visible .stage-microphone-icon{
-  opacity:var(--state-opacity-selected);
+  opacity:1;
   transform:scale(var(--home-stage-motion-mic-icon-hover-scale));
 }
 
@@ -363,11 +363,11 @@
   left:50%;
   top:50%;
   transform:translate(-50%,-50%) scale(1);
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   pointer-events:none;
-  opacity:var(--state-opacity-idle);
+  opacity:1;
   transition:
-    opacity var(--home-stage-motion-field-opacity-transition) ease,
+    opacity var(--home-stage-motion-field-opacity-transition) var(--interaction-ease-standard),
     transform var(--home-stage-motion-transition),
     filter var(--home-stage-motion-transition);
 }
@@ -404,14 +404,14 @@
 
 #stage-microphone-button[data-voice-active="true"]::before,
 #stage-microphone-button[data-voice-active="true"]::after{
-  opacity:var(--state-opacity-selected);
+  opacity:1;
 }
 
 /* =============================================================================
    09) LISTENING MODE MOTION
 ============================================================================= */
 #stage-cognitive-core-shell[data-voice-mode="listening"]::before{
-  animation:stage-voice-core-breathe var(--home-stage-motion-listening-core-duration) cubic-bezier(0.22,1,0.36,1) infinite;
+  animation:stage-voice-core-breathe var(--home-stage-motion-listening-core-duration) var(--interaction-ease-standard) infinite;
 }
 
 #stage-cognitive-core-shell[data-voice-mode="listening"]::after{
@@ -420,39 +420,39 @@
 
 #stage-microphone-button[data-voice-mode="listening"]::before,
 #stage-microphone-button[data-voice-mode="listening"]::after{
-  animation:stage-mic-pulse-listening var(--home-stage-motion-listening-mic-duration) cubic-bezier(0.22,1,0.36,1) infinite;
+  animation:stage-mic-pulse-listening var(--home-stage-motion-listening-mic-duration) var(--interaction-ease-standard) infinite;
 }
 
 /* =============================================================================
    10) THINKING MODE MOTION
 ============================================================================= */
 #stage-cognitive-core-shell[data-voice-mode="thinking"]::before{
-  animation:stage-voice-core-think var(--home-stage-motion-thinking-core-duration) ease-in-out infinite;
+  animation:stage-voice-core-think var(--home-stage-motion-thinking-core-duration) var(--interaction-ease-standard) infinite;
 }
 
 #stage-cognitive-core-shell[data-voice-mode="thinking"]::after{
-  animation:stage-voice-ring-thinking var(--home-stage-motion-thinking-ring-duration) ease-in-out infinite;
+  animation:stage-voice-ring-thinking var(--home-stage-motion-thinking-ring-duration) var(--interaction-ease-standard) infinite;
 }
 
 #stage-microphone-button[data-voice-mode="thinking"]::before,
 #stage-microphone-button[data-voice-mode="thinking"]::after{
-  animation:stage-mic-pulse-thinking var(--home-stage-motion-thinking-mic-duration) ease-in-out infinite;
+  animation:stage-mic-pulse-thinking var(--home-stage-motion-thinking-mic-duration) var(--interaction-ease-standard) infinite;
 }
 
 /* =============================================================================
    11) RESPONDING MODE MOTION
 ============================================================================= */
 #stage-cognitive-core-shell[data-voice-mode="responding"]::before{
-  animation:stage-voice-core-respond var(--home-stage-motion-responding-core-duration) cubic-bezier(0.22,1,0.36,1) infinite;
+  animation:stage-voice-core-respond var(--home-stage-motion-responding-core-duration) var(--interaction-ease-standard) infinite;
 }
 
 #stage-cognitive-core-shell[data-voice-mode="responding"]::after{
-  animation:stage-voice-ring-responding var(--home-stage-motion-responding-ring-duration) cubic-bezier(0.22,1,0.36,1) infinite;
+  animation:stage-voice-ring-responding var(--home-stage-motion-responding-ring-duration) var(--interaction-ease-standard) infinite;
 }
 
 #stage-microphone-button[data-voice-mode="responding"]::before,
 #stage-microphone-button[data-voice-mode="responding"]::after{
-  animation:stage-mic-pulse-responding var(--home-stage-motion-responding-mic-duration) cubic-bezier(0.22,1,0.36,1) infinite;
+  animation:stage-mic-pulse-responding var(--home-stage-motion-responding-mic-duration) var(--interaction-ease-standard) infinite;
 }
 
 /* =============================================================================
@@ -460,12 +460,12 @@
 ============================================================================= */
 #stage-microphone-button[data-voice-active="true"]{
   color:var(--home-stage-motion-active-color);
-  opacity:var(--state-opacity-selected);
+  opacity:1;
   transform:scale(var(--home-stage-motion-active-mic-scale));
 }
 
 #stage-microphone-button[data-voice-active="true"] .stage-microphone-icon{
-  opacity:var(--state-opacity-selected);
+  opacity:1;
 }
 
 /* =============================================================================

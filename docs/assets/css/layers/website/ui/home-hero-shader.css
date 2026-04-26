@@ -28,7 +28,7 @@
   --home-hero-shader-veil-opacity: 0.22;
   --home-hero-shader-veil-blur: 56px;
   --home-hero-shader-canvas-softness: 14px;
-  --home-hero-shader-transition: 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  --home-hero-shader-transition: 700ms var(--interaction-ease-standard);
 }
 
 /* =============================================================================

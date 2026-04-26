@@ -22,13 +22,13 @@
    02) ROOT TOKENS
 ============================================================================= */
 :root{
-  --account-sign-in-surface:color-mix(in srgb, var(--surface-color) 82%, transparent);
-  --account-sign-in-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-sign-in-surface:var(--panel-surface-unified);
+  --account-sign-in-border:var(--panel-border-unified);
   --account-sign-in-muted: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
   --account-sign-in-shell-inner-shadow: inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --account-sign-in-shell-highlight: linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
   --account-sign-in-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-sign-in-primary-shadow: var(--shadow-medium);
+  --account-sign-in-primary-shadow:var(--panel-shadow-unified);
   --account-sign-in-section-gap: var(--spacing-md);
   --account-sign-in-content-max-width: var(--account-control-width-max);
   --account-sign-in-content-max-width-wide: var(--account-control-width-max-wide);
@@ -41,14 +41,14 @@
   --account-sign-in-field-group-gap: var(--account-sign-in-content-gap-xs);
   --account-sign-in-actions-gap: var(--account-sign-in-content-gap-md);
   --account-sign-in-divider-gap: var(--account-sign-in-content-gap-md);
-  --account-sign-in-divider-padding-inline: 12px;
+  --account-sign-in-divider-padding-inline:var(--space-3);
   --account-sign-in-secondary-actions-gap: var(--account-sign-in-content-gap-sm);
   --account-sign-in-note-size: var(--body-1-size);
-  --account-sign-in-note-size-mobile: 0.94rem;
+  --account-sign-in-note-size-mobile:var(--type-body-sm-size);
   --account-sign-in-label-size: var(--body-3-size);
   --account-sign-in-action-label-size: var(--button-font-size);
   --account-sign-in-button-height: var(--account-button-height);
-  --account-sign-in-button-radius: var(--account-button-radius);
+  --account-sign-in-button-radius:var(--shape-control-radius);
   --account-sign-in-button-padding-x: var(--account-button-padding-x);
   --account-sign-in-button-font-size: var(--account-button-font-size);
   --account-sign-in-button-font-weight: var(--account-button-font-weight);
@@ -65,7 +65,7 @@
   --account-sign-in-field-letter-spacing: var(--account-field-letter-spacing);
 
   --account-sign-in-provider-button-height: var(--account-provider-button-height);
-  --account-sign-in-provider-button-radius: var(--account-provider-button-radius);
+  --account-sign-in-provider-button-radius:var(--shape-control-radius);
   --account-sign-in-provider-button-padding-x: var(--account-provider-button-padding-x);
 
   --account-sign-in-text-action-font-size: var(--account-text-action-font-size);
@@ -87,22 +87,22 @@
 }
 
 html[data-theme-effective="light"]{
-  --account-sign-in-surface:color-mix(in srgb, var(--surface-color) 88%, transparent);
+  --account-sign-in-surface:var(--panel-surface-unified);
   --account-sign-in-shell-inner-shadow:inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --account-sign-in-shell-highlight:linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 2.2%, transparent) 0%, transparent 22%);
   --account-sign-in-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-sign-in-primary-shadow: var(--shadow-medium);
+  --account-sign-in-primary-shadow:var(--panel-shadow-unified);
   --account-sign-in-input-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
   --account-sign-in-input-focus: color-mix(in srgb, var(--text-primary-color) 18%, transparent);
   --account-sign-in-divider-line:color-mix(in srgb, var(--text-primary-color) 16%, transparent);
 }
 
 html[data-theme-effective="dark"]{
-  --account-sign-in-surface:color-mix(in srgb, var(--surface-color) 82%, transparent);
+  --account-sign-in-surface:var(--panel-surface-unified);
   --account-sign-in-shell-inner-shadow:inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 4%, transparent);
   --account-sign-in-shell-highlight:linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
   --account-sign-in-header-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
-  --account-sign-in-primary-shadow: var(--shadow-strong);
+  --account-sign-in-primary-shadow:var(--panel-shadow-unified);
   --account-sign-in-divider-line:color-mix(in srgb, var(--text-primary-color) 16%, transparent);
 }
 
@@ -112,7 +112,7 @@ html[data-theme-effective="dark"]{
 
 
 .account-sign-in-drawer{
-  width: 100%;
+  width: var(--size-full);
 }
 
 .account-drawer-view-mount .account-sign-in-drawer,
@@ -129,7 +129,7 @@ html[data-theme-effective="dark"]{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto var(--account-sign-in-header-brand-margin-bottom) auto;
+  margin: var(--spacing-none) auto var(--account-sign-in-header-brand-margin-bottom) auto;
   pointer-events: none;
 }
 
@@ -148,11 +148,11 @@ html[data-theme-effective="dark"]{
   display: flex;
   flex-direction: column;
   gap: var(--account-sign-in-section-gap);
-  padding-inline: 0;
+  padding-inline: var(--spacing-none);
 }
 
 .account-sign-in-drawer-center-stage{
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-in-content-max-width);
   margin-inline: auto;
   display: flex;
@@ -165,14 +165,14 @@ html[data-theme-effective="dark"]{
 ============================================================================= */
 .account-sign-in-drawer-note,
 .account-sign-in-drawer-label{
-  margin: 0;
+  margin: var(--spacing-none);
   color: var(--account-sign-in-muted);
   letter-spacing: var(--tracking-copy);
 }
 
 .account-sign-in-drawer-note{
   font-size: var(--account-sign-in-note-size);
-  font-weight: 300;
+  font-weight: var(--type-body-regular-weight);
   line-height: var(--body-1-line-height);
   text-align: center;
 }
@@ -181,9 +181,9 @@ html[data-theme-effective="dark"]{
    05) FORM
 ============================================================================= */
 .account-sign-in-drawer-form{
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-in-content-max-width);
-  margin: 0 auto;
+  margin: var(--spacing-none) auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -192,7 +192,7 @@ html[data-theme-effective="dark"]{
 }
 
 .account-sign-in-drawer-field-group{
-  width: 100%;
+  width: var(--size-full);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -202,28 +202,25 @@ html[data-theme-effective="dark"]{
 
 .account-sign-in-drawer-label{
   font-size: var(--account-sign-in-label-size);
-  font-weight: 400;
-  line-height: 1.4;
+  font-weight: var(--type-body-regular-weight);
+  line-height: var(--type-body-sm-line-height);
 }
 
 .account-sign-in-drawer-input{
-  width: 100%;
+  width: var(--size-full);
   height: var(--account-sign-in-field-height);
-  padding: 0 var(--account-sign-in-field-padding-x);
+  padding: var(--spacing-none) var(--account-sign-in-field-padding-x);
   box-sizing: border-box;
-  border: var(--stroke-soft) solid var(--account-sign-in-input-border);
+  border: var(--border-width-hairline) solid var(--account-sign-in-input-border);
   border-radius: var(--account-sign-in-field-radius);
   background: var(--account-sign-in-input-surface);
   color: var(--text-primary-color);
   font-size: var(--account-sign-in-field-font-size);
-  font-weight: 400;
+  font-weight: var(--type-body-regular-weight);
   line-height: var(--account-sign-in-field-line-height);
   letter-spacing: var(--account-sign-in-field-letter-spacing);
   outline: none;
-  transition:
-    border-color var(--duration-fast) var(--ease-standard),
-    background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
+  transition:var(--interaction-transition-control);
   appearance: none;
 }
 
@@ -244,7 +241,7 @@ html[data-theme-effective="dark"]{
   align-items: stretch;
   justify-content: flex-start;
   gap: var(--account-sign-in-actions-gap);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-in-content-max-width);
   margin-inline: auto;
 }
@@ -256,28 +253,24 @@ html[data-theme-effective="dark"]{
   align-items: center;
   justify-content: center;
   height: var(--account-sign-in-button-height);
-  padding: 0 var(--account-sign-in-button-padding-x);
+  padding: var(--spacing-none) var(--account-sign-in-button-padding-x);
   box-sizing: border-box;
-  border: var(--stroke-soft) solid var(--control-border);
+  border: var(--border-width-hairline) solid var(--control-border-unified);
   border-radius: var(--account-sign-in-button-radius);
-  background: var(--control-bg);
+  background: var(--control-surface);
   color: var(--text-color);
   text-decoration: none;
-  transition:
-    opacity var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard),
-    background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
+  transition:var(--interaction-transition-control);
   backdrop-filter: blur(var(--glass-blur-sm));
   -webkit-backdrop-filter: blur(var(--glass-blur-sm));
 }
 
 .account-sign-in-drawer-action-label{
-  margin: 0;
+  margin: var(--spacing-none);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: var(--size-full);
   height: var(--account-sign-in-button-height);
   color: var(--text-color);
   font-size: var(--account-sign-in-button-font-size);
@@ -290,8 +283,8 @@ html[data-theme-effective="dark"]{
 .account-sign-in-drawer-action--primary:hover,
 .account-sign-in-drawer-action--primary:focus-visible{
   opacity: var(--hover-opacity-strong);
-  border-color: var(--control-border-strong);
-  background: var(--control-bg-hover);
+  border-color: var(--control-border-hover-unified);
+  background: var(--control-surface-hover);
   outline: none;
 }
 
@@ -303,7 +296,7 @@ html[data-theme-effective="dark"]{
   align-items: center;
   justify-content: center;
   gap: var(--account-sign-in-divider-gap);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-in-content-max-width);
   margin-inline: auto;
   align-self: stretch;
@@ -313,17 +306,17 @@ html[data-theme-effective="dark"]{
 
 .account-sign-in-drawer-divider-line{
   flex: 1 1 0;
-  min-width: 0;
-  height: var(--stroke-soft);
+  min-width: var(--spacing-none);
+  height: var(--border-width-hairline);
   background: var(--account-sign-in-divider-line);
 }
 
 .account-sign-in-drawer-divider-label{
   color: var(--account-sign-in-muted);
   font-size: var(--account-sign-in-divider-label-size);
-  font-weight: 400;
+  font-weight: var(--type-body-regular-weight);
   letter-spacing: var(--tracking-copy);
-  line-height: 1;
+  line-height: var(--control-line-height);
   text-align: center;
   text-transform: lowercase;
 }
@@ -337,7 +330,7 @@ html[data-theme-effective="dark"]{
   align-items: center;
   justify-content: flex-start;
   gap: var(--account-sign-in-secondary-actions-gap);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-in-content-max-width);
   margin-inline: auto;
 }
@@ -359,13 +352,13 @@ html[data-theme-effective="dark"]{
   min-width: var(--account-sign-in-back-control-size);
   height: var(--account-sign-in-back-control-size);
   min-height: var(--account-sign-in-back-control-size);
-  padding: 0;
-  border: 0;
+  padding: var(--spacing-none);
+  border: var(--spacing-none);
   background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0;
+  margin-top: var(--spacing-none);
 }
 
 .account-sign-in-drawer-back-icon{

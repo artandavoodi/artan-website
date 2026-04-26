@@ -17,17 +17,13 @@
 ============================================================================= */
 .ui-card,
 .ui-surface{
-  background:var(--surface-primary);
-  border:var(--stroke-soft) solid var(--border-color);
-  border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-soft);
-  backdrop-filter:blur(var(--glass-blur-md));
-  -webkit-backdrop-filter:blur(var(--glass-blur-md));
-  transition:
-    background-color var(--duration-base) var(--ease-standard),
-    border-color var(--duration-base) var(--ease-standard),
-    box-shadow var(--duration-base) var(--ease-standard),
-    transform var(--duration-base) var(--ease-standard);
+  background:var(--panel-surface-unified);
+  border:var(--border-width-hairline) solid var(--panel-border-unified);
+  border-radius:var(--shape-card-radius);
+  box-shadow:var(--panel-shadow-unified);
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  transition:var(--interaction-transition-control);
 }
 
 /* =============================================================================
@@ -35,17 +31,19 @@
 ============================================================================= */
 .ui-card--elevated,
 .ui-surface--elevated{
-  background:var(--surface-elevated);
-  box-shadow:var(--shadow-medium);
+  background:var(--panel-surface-unified);
+  border-radius:var(--panel-radius-unified);
+  box-shadow:var(--panel-shadow-unified);
 }
 
 /* =============================================================================
    04) GLASS SURFACE VARIANT
 ============================================================================= */
 .ui-surface--glass{
-  background:var(--surface-glass);
-  backdrop-filter:blur(var(--glass-blur-lg));
-  -webkit-backdrop-filter:blur(var(--glass-blur-lg));
+  background:var(--panel-surface-unified);
+  border-radius:var(--panel-radius-unified);
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
 }
 
 /* =============================================================================

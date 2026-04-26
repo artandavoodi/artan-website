@@ -16,50 +16,45 @@
    02) SHARED DRAWER SHELL
 ============================================================================= */
 .ui-drawer-shell{
-  width:min(100%, var(--drawer-width-md));
+  width:min(var(--size-full), var(--drawer-width-md));
   padding:var(--drawer-padding);
-  border-radius:var(--radius-xl);
-  border:var(--stroke-soft) solid var(--control-border);
-  background:var(--surface-elevated);
-  box-shadow:var(--shadow-strong);
-  backdrop-filter:blur(var(--glass-blur-lg));
-  -webkit-backdrop-filter:blur(var(--glass-blur-lg));
-  transition:
-    opacity var(--duration-base) var(--ease-standard),
-    transform var(--duration-base) var(--ease-standard),
-    background-color var(--duration-base) var(--ease-standard),
-    border-color var(--duration-base) var(--ease-standard),
-    box-shadow var(--duration-base) var(--ease-standard);
+  border-radius:var(--panel-radius-unified);
+  border:var(--border-width-hairline) solid var(--panel-border-unified);
+  background:var(--panel-surface-unified);
+  box-shadow:var(--panel-shadow-unified);
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  transition:var(--interaction-transition-control);
 }
 
 /* =============================================================================
    03) SHARED DRAWER WIDTH VARIANTS
 ============================================================================= */
 .ui-drawer-shell--sm{
-  width:min(100%, var(--drawer-width-sm));
+  width:min(var(--size-full), var(--drawer-width-sm));
 }
 
 .ui-drawer-shell--md{
-  width:min(100%, var(--drawer-width-md));
+  width:min(var(--size-full), var(--drawer-width-md));
 }
 
 .ui-drawer-shell--lg{
-  width:min(100%, var(--drawer-width-lg));
+  width:min(var(--size-full), var(--drawer-width-lg));
 }
 
 /* =============================================================================
    04) SHARED DRAWER PANEL STATES
 ============================================================================= */
 .ui-drawer-hidden{
-  opacity:0;
+  opacity:var(--overlay-opacity-closed);
   pointer-events:none;
-  transform:translateX(-1rem);
+  transform:translateX(calc(var(--space-4) * -1));
 }
 
 .ui-drawer-visible{
-  opacity:1;
+  opacity:var(--overlay-opacity-open);
   pointer-events:auto;
-  transform:translateX(0);
+  transform:translateX(var(--spacing-none));
 }
 
 /* =============================================================================

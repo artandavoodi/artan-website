@@ -14,16 +14,16 @@
     flex: 0 1 calc(45% - 16px);
     max-width: 220px;
     position: relative;
-    transition: transform 0.3s ease;
+    transition:transform var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 .gallery-item img {
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 50%;
+    border-radius:var(--control-radius-pill);
     object-fit: cover;
     border: 2px solid rgba(255,255,255,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:transform var(--interaction-motion-medium) var(--interaction-ease-standard), box-shadow var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 /* Hover effect */

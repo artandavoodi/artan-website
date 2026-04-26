@@ -72,7 +72,7 @@
   min-height:2.5rem;
   padding:0 0.95rem;
   border:1px solid var(--control-border);
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   background:transparent;
   color:var(--text-secondary-color);
   text-decoration:none;
@@ -80,7 +80,7 @@
   font-weight:500;
   letter-spacing:0.08em;
   text-transform:uppercase;
-  transition:color 220ms ease, border-color 220ms ease, background-color 220ms ease;
+  transition:color var(--interaction-motion-medium) var(--interaction-ease-standard), border-color var(--interaction-motion-medium) var(--interaction-ease-standard), background-color var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 .home-platform-notifications__action:hover,

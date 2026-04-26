@@ -38,20 +38,20 @@
 ============================================================================= */
 :root{
   --account-drawer-panel-width: var(--layout-account-drawer-panel-width);
-  --account-drawer-surface:color-mix(in srgb, var(--surface-color) 82%, transparent);
-  --account-drawer-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-drawer-surface:var(--panel-surface-unified);
+  --account-drawer-border:var(--panel-border-unified);
   --account-drawer-muted: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
   --account-drawer-backdrop: var(--overlay-backdrop);
 
-  --account-drawer-card-surface:color-mix(in srgb, var(--surface-color) 72%, transparent);
-  --account-drawer-card-border: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
-  --account-drawer-card-shadow: var(--shadow-soft);
+  --account-drawer-card-surface:var(--panel-surface-unified);
+  --account-drawer-card-border:var(--panel-border-unified);
+  --account-drawer-card-shadow:var(--panel-shadow-unified);
   --account-drawer-badge-surface: color-mix(in srgb, var(--text-primary-color) 5%, transparent);
   --account-drawer-badge-text: color-mix(in srgb, var(--text-primary-color) 72%, transparent);
 
-  --account-drawer-profile-surface:color-mix(in srgb, var(--surface-color) 76%, transparent);
-  --account-drawer-profile-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
-  --account-drawer-profile-shadow: var(--shadow-soft);
+  --account-drawer-profile-surface:var(--panel-surface-unified);
+  --account-drawer-profile-border:var(--panel-border-unified);
+  --account-drawer-profile-shadow:var(--panel-shadow-unified);
 
   --account-drawer-shell-inner-shadow: inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --account-drawer-shell-highlight: linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
@@ -135,8 +135,8 @@
   --account-drawer-back-control-size: var(--account-back-control-size);
   --account-drawer-back-icon-size: var(--account-back-icon-size);
 
-  --account-drawer-card-radius: var(--radius-md);
-  --account-drawer-primary-shadow: var(--shadow-medium);
+  --account-drawer-card-radius:var(--shape-card-radius);
+  --account-drawer-primary-shadow:var(--panel-shadow-unified);
 
   --account-drawer-close-size:var(--global-close-button-size);
   --account-drawer-close-color:var(--global-close-button-color);
@@ -170,35 +170,35 @@
 }
 
 html[data-theme-effective="light"]{
-  --account-drawer-surface:color-mix(in srgb, var(--surface-color) 88%, transparent);
-  --account-drawer-card-surface:color-mix(in srgb, var(--surface-color) 52%, transparent);
-  --account-drawer-card-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
-  --account-drawer-card-shadow: var(--shadow-soft);
+  --account-drawer-surface:var(--panel-surface-unified);
+  --account-drawer-card-surface:var(--panel-surface-unified);
+  --account-drawer-card-border:var(--panel-border-unified);
+  --account-drawer-card-shadow:var(--panel-shadow-unified);
   --account-drawer-badge-surface: color-mix(in srgb, var(--text-primary-color) 4%, transparent);
   --account-drawer-badge-text: color-mix(in srgb, var(--text-primary-color) 62%, transparent);
-  --account-drawer-profile-surface:color-mix(in srgb, var(--surface-color) 56%, transparent);
-  --account-drawer-profile-border: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
-  --account-drawer-profile-shadow: var(--shadow-soft);
+  --account-drawer-profile-surface:var(--panel-surface-unified);
+  --account-drawer-profile-border:var(--panel-border-unified);
+  --account-drawer-profile-shadow:var(--panel-shadow-unified);
   --account-drawer-shell-inner-shadow:inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --account-drawer-shell-highlight:linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 2.2%, transparent) 0%, transparent 22%);
   --account-drawer-header-divider: transparent;
-  --account-drawer-primary-shadow: var(--shadow-medium);
+  --account-drawer-primary-shadow:var(--panel-shadow-unified);
 }
 
 html[data-theme-effective="dark"]{
-  --account-drawer-surface:color-mix(in srgb, var(--surface-color) 82%, transparent);
-  --account-drawer-card-surface:color-mix(in srgb, var(--text-primary-color) 3%, transparent);
-  --account-drawer-card-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
-  --account-drawer-card-shadow: var(--shadow-medium);
+  --account-drawer-surface:var(--panel-surface-unified);
+  --account-drawer-card-surface:var(--panel-surface-unified);
+  --account-drawer-card-border:var(--panel-border-unified);
+  --account-drawer-card-shadow:var(--panel-shadow-unified);
   --account-drawer-badge-surface: color-mix(in srgb, var(--text-primary-color) 7%, transparent);
   --account-drawer-badge-text: color-mix(in srgb, var(--text-primary-color) 74%, transparent);
-  --account-drawer-profile-surface:color-mix(in srgb, var(--text-primary-color) 3.5%, transparent);
-  --account-drawer-profile-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
-  --account-drawer-profile-shadow: var(--shadow-medium);
+  --account-drawer-profile-surface:var(--panel-surface-unified);
+  --account-drawer-profile-border:var(--panel-border-unified);
+  --account-drawer-profile-shadow:var(--panel-shadow-unified);
   --account-drawer-shell-inner-shadow:inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 4%, transparent);
   --account-drawer-shell-highlight:linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
   --account-drawer-header-divider: transparent;
-  --account-drawer-primary-shadow: var(--shadow-strong);
+  --account-drawer-primary-shadow:var(--panel-shadow-unified);
 }
 
 /* =============================================================================
@@ -206,11 +206,11 @@ html[data-theme-effective="dark"]{
 ============================================================================= */
 .account-drawer{
   position: fixed;
-  inset: 0;
+  inset: var(--spacing-none);
   z-index: var(--z-overlay-surface);
   display: block;
   pointer-events: none;
-  opacity: var(--state-opacity-idle);
+  opacity: var(--overlay-opacity-closed);
   visibility: hidden;
 }
 
@@ -220,7 +220,7 @@ html[data-theme-effective="dark"]{
 body.account-drawer-open .account-drawer,
 body.account-drawer-closing .account-drawer{
   pointer-events: auto;
-  opacity: var(--state-opacity-selected);
+  opacity: var(--overlay-opacity-open);
   visibility: visible;
 }
 
@@ -238,24 +238,24 @@ body.account-drawer-closing{
 ============================================================================= */
 .account-drawer-backdrop{
   position: absolute;
-  inset: 0;
+  inset: var(--spacing-none);
   background: var(--account-drawer-backdrop);
-  backdrop-filter: blur(var(--glass-blur-sm));
-  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
-  opacity: var(--state-opacity-idle);
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  opacity: var(--overlay-opacity-closed);
   transition: none;
 }
 
 body.account-drawer-open .account-drawer-backdrop{
-  opacity: var(--state-opacity-selected);
+  opacity: var(--overlay-opacity-open);
 }
 
 body.account-drawer-closing .account-drawer-backdrop{
-  transition: opacity var(--duration-slow) var(--ease-standard);
+  transition: opacity var(--overlay-motion-duration) var(--overlay-motion-ease);
 }
 
 body.account-drawer-closing .account-drawer-backdrop{
-  opacity: var(--state-opacity-idle);
+  opacity: var(--overlay-opacity-closed);
 }
 
 /* =============================================================================
@@ -263,19 +263,17 @@ body.account-drawer-closing .account-drawer-backdrop{
 ============================================================================= */
 .account-drawer-shell{
   position: absolute;
-  inset: 0 auto 0 0;
+  inset: var(--spacing-none) auto var(--spacing-none) var(--spacing-none);
   width: var(--account-drawer-panel-width);
-  max-width: 100%;
-  height: 100%;
+  max-width: var(--size-full);
+  height: var(--size-full);
   padding: var(--account-drawer-shell-padding-y) var(--account-drawer-shell-padding-x);
   background-color: var(--account-drawer-surface);
   background-image: var(--account-drawer-shell-highlight);
-  border-right: var(--stroke-soft) solid var(--account-drawer-border);
+  border-right: var(--border-width-hairline) solid var(--account-drawer-border);
   box-shadow: var(--account-drawer-primary-shadow), var(--account-drawer-shell-inner-shadow);
   transform: none;
-  transition:
-    background-color var(--duration-base) var(--ease-standard),
-    border-color var(--duration-base) var(--ease-standard);
+  transition:var(--interaction-transition-control);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -283,8 +281,8 @@ body.account-drawer-closing .account-drawer-backdrop{
   overflow: visible;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  backdrop-filter: blur(var(--glass-blur-lg));
-  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
 }
 
 body.account-drawer-open .account-drawer-shell{
@@ -292,10 +290,7 @@ body.account-drawer-open .account-drawer-shell{
 }
 
 body.account-drawer-closing .account-drawer-shell{
-  transition:
-    transform var(--duration-slow) var(--ease-standard),
-    background-color var(--duration-base) var(--ease-standard),
-    border-color var(--duration-base) var(--ease-standard);
+  transition:var(--interaction-transition-control);
   transform: translateX(-100%);
 }
 
@@ -303,19 +298,19 @@ body.account-drawer-closing .account-drawer-shell{
    08) HEADER
 ============================================================================= */
 .account-drawer-header{
-  width: 100%;
+  width: var(--size-full);
   display: block;
-  padding: 0 0 var(--account-drawer-header-padding-bottom) 0;
-  border-bottom: 0;
+  padding: var(--spacing-none) var(--spacing-none) var(--account-drawer-header-padding-bottom) var(--spacing-none);
+  border-bottom: var(--spacing-none);
 }
 
 /* =============================================================================
    08A) HEADER TITLE STAGE
 ============================================================================= */
 .account-drawer-segment-header{
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-drawer-content-max-width);
-  margin: 0 auto;
+  margin: var(--spacing-none) auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -325,7 +320,7 @@ body.account-drawer-closing .account-drawer-shell{
 
 .account-drawer-segment-title{
   margin: var(--spacing-none);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-drawer-segment-title-max-width);
   color: var(--text-primary-color);
   font-size: var(--account-drawer-segment-title-size);
@@ -349,11 +344,7 @@ body.account-drawer-closing .account-drawer-shell{
   min-height:var(--account-drawer-close-size);
   color:var(--account-drawer-close-color);
   z-index:var(--z-overlay-control);
-  opacity:var(--state-opacity-selected);
-  transition:
-    opacity var(--duration-fast) var(--ease-standard),
-    color var(--account-drawer-close-duration) var(--account-drawer-close-ease),
-    transform var(--account-drawer-close-duration) var(--account-drawer-close-ease);
+  opacity:var(--overlay-opacity-open);
 }
 
 
@@ -361,12 +352,11 @@ body.account-drawer-closing .account-drawer-shell{
 .account-drawer-close:focus-visible,
 .account-drawer-close:active{
   color:var(--account-drawer-close-hover-color);
-  transform:none;
   outline:none;
 }
 
 body.account-drawer-closing .account-drawer-close{
-  opacity: var(--state-opacity-idle);
+  opacity: var(--overlay-opacity-closed);
   pointer-events: none;
 }
 
@@ -380,7 +370,7 @@ body.account-drawer-closing .account-drawer-close{
   align-items: stretch;
   justify-content: flex-start;
   gap: var(--account-drawer-section-gap);
-  padding-top: 0;
+  padding-top: var(--spacing-none);
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none;
@@ -417,7 +407,7 @@ body.account-drawer-closing .account-drawer-close{
   flex-direction: column;
   align-items: stretch;
   gap: var(--account-drawer-content-gap-md);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-drawer-content-max-width);
   margin-inline: auto;
 }
@@ -429,20 +419,16 @@ body.account-drawer-closing .account-drawer-close{
   align-items: center;
   justify-content: center;
   min-height: var(--account-drawer-button-height);
-  padding: 0 var(--account-drawer-button-padding-x);
+  padding: var(--spacing-none) var(--account-drawer-button-padding-x);
   box-sizing: border-box;
-  border: var(--stroke-soft) solid var(--control-border);
-  border-radius: var(--account-drawer-button-radius);
-  background: var(--control-bg);
+  border: var(--border-width-hairline) solid var(--control-border-unified);
+  border-radius: var(--shape-control-radius);
+  background: var(--control-surface);
   color: var(--text-color);
   text-decoration: none;
-  transition:
-    opacity var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard),
-    background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
-  backdrop-filter: blur(var(--glass-blur-sm));
-  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  transition:var(--interaction-transition-control);
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
 }
 
 .account-drawer-action-label{
@@ -450,7 +436,7 @@ body.account-drawer-closing .account-drawer-close{
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: var(--size-full);
   min-height: var(--account-drawer-button-height);
   color: var(--text-color);
   font-size: var(--account-drawer-button-font-size);
@@ -461,7 +447,7 @@ body.account-drawer-closing .account-drawer-close{
 }
 
 .account-drawer-action--primary{
-  background: var(--control-bg);
+  background: var(--control-surface);
   color: var(--text-color);
   border-color: var(--control-border);
   box-shadow: none;
@@ -470,13 +456,13 @@ body.account-drawer-closing .account-drawer-close{
 .account-drawer-action:hover,
 .account-drawer-action:focus-visible{
   opacity: var(--hover-opacity-strong);
-  border-color: var(--control-border-strong);
-  background: var(--control-bg-hover);
+  border-color: var(--control-border-hover-unified);
+  background: var(--control-surface-hover);
   outline: none;
 }
 
 .account-drawer-action:focus-visible{
-  box-shadow:0 0 0 3px color-mix(in srgb, var(--color-primary1) 16%, transparent);
+  box-shadow:var(--focus-ring-shadow);
   outline: none;
 }
 
@@ -515,8 +501,8 @@ body.account-drawer-closing .account-drawer-close{
   align-items: stretch;
   justify-content: flex-start;
   gap: var(--spacing-none);
-  width: 100%;
-  min-width: 0;
+  width: var(--size-full);
+  min-width: var(--spacing-none);
   overflow: hidden;
 }
 
@@ -526,8 +512,8 @@ body.account-drawer-closing .account-drawer-close{
 
 .account-drawer-inner-view{
   display: none !important;
-  width: 100%;
-  min-width: 0;
+  width: var(--size-full);
+  min-width: var(--spacing-none);
 }
 
 .account-drawer-inner-view[hidden]{
@@ -542,8 +528,8 @@ body.account-drawer-closing .account-drawer-close{
    16) INNER VIEW SHELL AUTHORITY
 ============================================================================= */
 .account-drawer-view-mount > .account-drawer-inner-view{
-  width: 100%;
-  max-width: 100%;
+  width: var(--size-full);
+  max-width: var(--size-full);
   margin: var(--spacing-none);
 }
 
@@ -554,7 +540,7 @@ body.account-drawer-closing .account-drawer-close{
   align-items: stretch;
   justify-content: flex-start;
   gap: var(--spacing-none);
-  width: 100%;
+  width: var(--size-full);
 }
 
 .account-drawer-auth[data-auth-surface]:not([data-auth-surface="entry"]) > .account-drawer-content-stage > .account-drawer-segment-header,
@@ -574,8 +560,8 @@ body.account-drawer-closing .account-drawer-close{
 .account-drawer-view-mount .account-forgot-password-drawer-content-stage,
 .account-drawer-view-mount .account-provider-apple-sheet-content-stage,
 .account-drawer-view-mount .account-provider-google-sheet-content-stage{
-  width: 100%;
-  max-width: 100%;
+  width: var(--size-full);
+  max-width: var(--size-full);
   margin: var(--spacing-none);
   padding-inline: var(--account-drawer-content-stage-padding-inline);
   box-sizing: border-box;
@@ -610,7 +596,7 @@ body.account-drawer-closing .account-drawer-close{
 .account-drawer-view-mount .account-provider-google-sheet-secondary-actions,
 .account-drawer-view-mount .account-sign-in-drawer-divider,
 .account-drawer-view-mount .account-sign-up-drawer-divider{
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-drawer-content-max-width);
   margin-inline: auto;
 }
@@ -653,7 +639,7 @@ body.account-drawer-closing .account-drawer-close{
   flex-direction: column !important;
   align-items: stretch !important;
   justify-content: flex-start !important;
-  width: 100% !important;
+  width: var(--size-full) !important;
 }
 
 .account-drawer-view-mount .account-sign-in-drawer-form,
@@ -714,7 +700,7 @@ body.account-drawer-closing .account-drawer-close{
 .account-drawer-view-mount .account-provider-apple-sheet-action,
 .account-drawer-view-mount .account-provider-google-sheet-action,
 .account-drawer-view-mount .account-drawer-identity-option{
-  width: 100%;
+  width: var(--size-full);
 }
 
 /* =============================================================================
@@ -738,11 +724,11 @@ body.account-drawer-closing .account-drawer-close{
   justify-content: flex-start;
   gap: var(--spacing-sm);
   padding: var(--account-drawer-entry-card-padding);
-  border: var(--stroke-soft) solid var(--account-drawer-card-border);
+  border: var(--border-width-hairline) solid var(--account-drawer-card-border);
   background: var(--account-drawer-card-surface);
   box-shadow: var(--account-drawer-card-shadow);
-  backdrop-filter: blur(var(--glass-blur-sm));
-  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
   border-radius: var(--account-drawer-card-radius);
 }
 
@@ -791,10 +777,10 @@ body.account-drawer-closing .account-drawer-close{
   flex-direction: column;
   align-items: stretch;
   gap: var(--account-drawer-content-gap-md);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-drawer-content-max-width);
   margin-inline: auto;
-  padding-inline: 0;
+  padding-inline: var(--spacing-none);
 }
 
 .account-drawer-identity-option{
@@ -805,21 +791,17 @@ body.account-drawer-closing .account-drawer-close{
   justify-content: center;
   text-align: center;
   min-height: var(--account-drawer-provider-button-height);
-  padding: 0 var(--account-drawer-provider-button-padding-x);
+  padding: var(--spacing-none) var(--account-drawer-provider-button-padding-x);
   box-sizing: border-box;
-  border: var(--stroke-soft) solid var(--control-border);
-  border-radius: var(--account-drawer-provider-button-radius);
-  background: var(--control-bg);
+  border: var(--border-width-hairline) solid var(--control-border-unified);
+  border-radius: var(--shape-control-radius);
+  background: var(--control-surface);
   color: var(--text-color);
   text-decoration: none;
   font: inherit;
-  transition:
-    opacity var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard),
-    background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
-  backdrop-filter: blur(var(--glass-blur-sm));
-  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  transition:var(--interaction-transition-control);
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
 }
 
 .account-drawer-identity-content{
@@ -862,8 +844,8 @@ body.account-drawer-closing .account-drawer-close{
 .account-drawer-identity-option:hover,
 .account-drawer-identity-option:focus-visible{
   opacity: var(--hover-opacity-strong);
-  border-color: var(--control-border-strong);
-  background: var(--control-bg-hover);
+  border-color: var(--control-border-hover-unified);
+  background: var(--control-surface-hover);
   outline: none;
 }
 
@@ -876,7 +858,7 @@ body.account-drawer-closing .account-drawer-close{
   flex-direction: column;
   align-items: center;
   gap: var(--account-drawer-content-gap-xs);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-drawer-content-max-width);
   margin-inline: auto;
 }
@@ -894,8 +876,8 @@ body.account-drawer-closing .account-drawer-close{
     appearance: none;
     -webkit-appearance: none;
     display: inline;
-    padding: 0;
-    border: 0;
+    padding: var(--spacing-none);
+    border: var(--spacing-none);
     background: transparent;
     color: var(--account-drawer-text-link-color);
     text-decoration: none;
@@ -906,8 +888,8 @@ body.account-drawer-closing .account-drawer-close{
     line-height: var(--account-drawer-text-link-line-height);
     opacity: var(--account-drawer-text-link-opacity);
     transition:
-      color var(--duration-base) var(--ease-standard),
-      opacity var(--duration-base) var(--ease-standard);
+      color var(--interaction-motion-medium) var(--interaction-ease-standard),
+      opacity var(--interaction-motion-medium) var(--interaction-ease-standard);
   }
 
 .account-drawer-support-link{
@@ -1062,14 +1044,14 @@ body.account-drawer-closing .account-drawer-close{
   }
 
   .account-drawer-header{
-    width: 100%;
+    width: var(--size-full);
     display: block;
-    padding: 0 0 var(--account-drawer-header-padding-bottom-mobile) 0;
+    padding: var(--spacing-none) var(--spacing-none) var(--account-drawer-header-padding-bottom-mobile) var(--spacing-none);
   }
 
   .account-drawer-body{
     gap: var(--account-drawer-body-gap-mobile);
-    padding-top: 0;
+    padding-top: var(--spacing-none);
   }
 
   .account-drawer-entry-card{

@@ -33,7 +33,7 @@
   --home-stage-composition-response-visual-height:calc(var(--home-interaction-panel-input-max-height) + var(--home-interaction-panel-submit-height) + (2 * var(--home-interaction-panel-padding)) + 0.32rem);
   --home-stage-composition-response-debug-height:var(--home-stage-composition-response-visual-height);
   --home-stage-composition-response-max-height:var(--home-stage-composition-response-visual-height);
-  --home-stage-composition-motion:620ms cubic-bezier(0.22,1,0.36,1);
+  --home-stage-composition-motion:620ms var(--interaction-ease-standard);
 }
 
 /* =============================================================================

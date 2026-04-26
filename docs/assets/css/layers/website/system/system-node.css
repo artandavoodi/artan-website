@@ -59,13 +59,13 @@
   height:auto;
   margin-inline:auto;
   color:var(--color-primary1);
-  transition: transform 2.2s cubic-bezier(0.22,1,0.36,1);
+  transition: transform 2.2s var(--interaction-ease-standard);
 }
 
 /* Subtle breathing loop */
 .system-node-core{
   transform-origin:center;
-  animation: systemNodeBreath 6s ease-in-out infinite;
+  animation: systemNodeBreath 6s var(--interaction-ease-standard) infinite;
 }
 
 @keyframes systemNodeBreath{

@@ -306,6 +306,20 @@
     return rect.height || el.offsetHeight || window.innerHeight || 0;
   }
 
+  function getRibbonActivationDistance() {
+    const rawValue = window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue('--institutional-menu-ribbon-activation-distance')
+      .trim();
+
+    const parsedValue = Number.parseFloat(rawValue);
+    if (Number.isFinite(parsedValue) && parsedValue > 0) {
+      return parsedValue;
+    }
+
+    return Math.max((window.innerHeight || 0) * 1.8, 720);
+  }
+
   /* =============================================================================
      10) SECONDARY TOGGLE BINDING
   ============================================================================= */
@@ -374,12 +388,8 @@
         } else {
           threshold = window.innerHeight || 0;
         }
-      } else if (isAboutPage()) {
-        threshold = essence ? getPageTop(essence) : Math.max(12, getPageTop(siteMain || hero || menu) + 12);
-      } else if (siteMain) {
-        threshold = Math.max(12, getPageTop(siteMain) + 12);
       } else {
-        threshold = 12;
+        threshold = getRibbonActivationDistance();
       }
 
       if (!Number.isFinite(threshold)) {

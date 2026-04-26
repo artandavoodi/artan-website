@@ -86,15 +86,12 @@
   min-height:2.5rem;
   padding:0 var(--spacing-md);
   border:1px solid color-mix(in srgb, var(--text-color) 12%, transparent);
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   background:transparent;
   color:var(--text-secondary-color);
   font:inherit;
   letter-spacing:inherit;
-  transition:
-    background-color var(--duration-fast) ease,
-    border-color var(--duration-fast) ease,
-    color var(--duration-fast) ease;
+  transition:var(--interaction-transition-control);
 }
 
 .profile-thought-composer__audience[data-profile-thought-audience-active="true"],

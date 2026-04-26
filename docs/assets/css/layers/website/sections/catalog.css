@@ -186,7 +186,7 @@ body.sitemap-page{
   min-height:var(--catalog-chip-min-height);
   padding:0 var(--catalog-chip-padding-x);
   border:1px solid var(--control-border);
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   background:var(--control-bg);
   color:var(--text-secondary-color);
   font-size:var(--catalog-chip-size);

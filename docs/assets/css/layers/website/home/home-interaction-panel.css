@@ -20,7 +20,7 @@
   --home-interaction-panel-width:var(--layout-home-interaction-panel-width);
   --home-interaction-panel-gap:var(--layout-home-interaction-panel-gap);
   --home-interaction-panel-padding:var(--layout-home-interaction-panel-padding);
-  --home-interaction-panel-radius:var(--layout-home-interaction-panel-radius);
+  --home-interaction-panel-radius:var(--control-radius);
   --home-interaction-panel-surface:color-mix(in srgb, var(--surface-color) 72%, transparent);
   --home-interaction-panel-border:var(--control-border);
   --home-interaction-panel-border-active:var(--control-border-strong);
@@ -32,7 +32,7 @@
   --home-interaction-panel-input-max-height:var(--layout-home-interaction-panel-input-max-height);
   --home-interaction-panel-input-padding-y:var(--layout-home-interaction-panel-input-padding-y);
   --home-interaction-panel-input-padding-x:var(--layout-home-interaction-panel-input-padding-x);
-  --home-interaction-panel-input-radius:var(--layout-home-interaction-panel-input-radius);
+  --home-interaction-panel-input-radius:var(--control-radius);
   --home-interaction-panel-input-surface:transparent;
   --home-interaction-panel-input-border:transparent;
   --home-interaction-panel-input-border-focus:transparent;
@@ -40,7 +40,7 @@
   --home-interaction-panel-input-placeholder:color-mix(in srgb, var(--text-secondary-color) 72%, transparent);
 
   --home-interaction-panel-control-size:var(--layout-home-interaction-panel-control-size);
-  --home-interaction-panel-control-radius:var(--layout-home-interaction-panel-control-radius);
+  --home-interaction-panel-control-radius:var(--control-radius-pill);
   --home-interaction-panel-control-border:var(--control-border);
   --home-interaction-panel-control-border-hover:var(--control-border-strong);
   --home-interaction-panel-control-bg:transparent;
@@ -56,7 +56,7 @@
 
   --home-interaction-panel-model-height:var(--layout-home-interaction-panel-model-height);
   --home-interaction-panel-model-padding-x:var(--layout-home-interaction-panel-model-padding-x);
-  --home-interaction-panel-model-radius:var(--layout-home-interaction-panel-model-radius);
+  --home-interaction-panel-model-radius:var(--control-radius);
   --home-interaction-panel-model-bg:var(--control-bg);
   --home-interaction-panel-model-border:var(--control-border);
   --home-interaction-panel-model-text:var(--text-primary-color);
@@ -68,7 +68,7 @@
 
   --home-interaction-panel-submit-height:var(--layout-home-interaction-panel-submit-height);
   --home-interaction-panel-submit-padding-x:var(--layout-home-interaction-panel-submit-padding-x);
-  --home-interaction-panel-submit-radius:var(--layout-home-interaction-panel-submit-radius);
+  --home-interaction-panel-submit-radius:var(--control-radius);
   --home-interaction-panel-submit-bg:var(--control-bg);
   --home-interaction-panel-submit-border:var(--control-border);
   --home-interaction-panel-submit-text:var(--text-primary-color);
@@ -98,7 +98,7 @@
   --home-interaction-panel-file-gap:var(--layout-home-interaction-panel-file-gap);
   --home-interaction-panel-file-chip-min-height:var(--layout-home-interaction-panel-file-chip-min-height);
   --home-interaction-panel-file-chip-padding-x:var(--layout-home-interaction-panel-file-chip-padding-x);
-  --home-interaction-panel-file-chip-radius:var(--layout-home-interaction-panel-file-chip-radius);
+  --home-interaction-panel-file-chip-radius:var(--control-radius-pill);
   --home-interaction-panel-file-chip-size:var(--layout-home-interaction-panel-file-chip-size);
   --home-interaction-panel-file-chip-weight:var(--layout-home-interaction-panel-file-chip-weight);
   --home-interaction-panel-file-chip-tracking:var(--layout-home-interaction-panel-file-chip-tracking);
@@ -110,7 +110,7 @@
   --home-interaction-panel-thinking-animation-duration:var(--layout-home-interaction-panel-thinking-animation-duration);
   --home-interaction-panel-thinking-animation-steps:var(--layout-home-interaction-panel-thinking-animation-steps);
   --home-interaction-panel-dot-width:var(--layout-home-interaction-panel-dot-width);
-  --home-interaction-panel-motion-fast:var(--layout-home-interaction-panel-motion-fast);
+  --home-interaction-panel-motion-fast:var(--interaction-motion-medium);
 }
 
 /* =============================================================================
@@ -123,15 +123,15 @@
   margin:var(--spacing-none) auto;
   padding:var(--home-interaction-panel-padding);
   border:var(--border-width-hairline) solid var(--home-interaction-panel-border);
-  border-radius:var(--home-interaction-panel-radius);
+  border-radius:var(--control-radius);
   background:var(--home-interaction-panel-surface);
   box-shadow:var(--home-interaction-panel-shadow);
   backdrop-filter:blur(var(--home-interaction-panel-blur)) saturate(var(--home-interaction-panel-saturate));
   -webkit-backdrop-filter:blur(var(--home-interaction-panel-blur)) saturate(var(--home-interaction-panel-saturate));
   transition:
-    border-color var(--home-interaction-panel-motion-fast) ease,
-    background-color var(--home-interaction-panel-motion-fast) ease,
-    box-shadow var(--home-interaction-panel-motion-fast) ease;
+    border-color var(--home-interaction-panel-motion-fast) var(--interaction-ease-standard),
+    background-color var(--home-interaction-panel-motion-fast) var(--interaction-ease-standard),
+    box-shadow var(--home-interaction-panel-motion-fast) var(--interaction-ease-standard);
 }
 
 .home-interaction-panel[data-home-interaction-mode="listening"],
@@ -158,7 +158,7 @@
   padding:var(--home-interaction-panel-input-padding-y) var(--home-interaction-panel-input-padding-x);
   box-sizing:border-box;
   border:var(--border-width-hairline) solid var(--home-interaction-panel-input-border);
-  border-radius:var(--home-interaction-panel-input-radius);
+  border-radius:var(--control-radius);
   background:var(--home-interaction-panel-input-surface);
   color:var(--home-interaction-panel-input-text);
   font:inherit;
@@ -169,9 +169,9 @@
   scrollbar-width:none;
   -ms-overflow-style:none;
   transition:
-    border-color var(--home-interaction-panel-motion-fast) ease,
-    background-color var(--home-interaction-panel-motion-fast) ease,
-    color var(--home-interaction-panel-motion-fast) ease;
+    border-color var(--home-interaction-panel-motion-fast) var(--interaction-ease-standard),
+    background-color var(--home-interaction-panel-motion-fast) var(--interaction-ease-standard),
+    color var(--home-interaction-panel-motion-fast) var(--interaction-ease-standard);
 }
 
 .home-interaction-panel__input::-webkit-scrollbar{
@@ -230,11 +230,7 @@
   box-sizing:border-box;
   text-decoration:none;
   outline:none;
-  transition:
-    color var(--home-interaction-panel-motion-fast) ease,
-    border-color var(--home-interaction-panel-motion-fast) ease,
-    background-color var(--home-interaction-panel-motion-fast) ease,
-    opacity var(--home-interaction-panel-motion-fast) ease;
+  transition:var(--interaction-transition-control);
 }
 
 .home-interaction-panel__attach,
@@ -246,7 +242,7 @@
   min-height:var(--home-interaction-panel-control-size);
   padding:var(--spacing-none);
   border:var(--border-width-hairline) solid var(--home-interaction-panel-control-border);
-  border-radius:var(--home-interaction-panel-control-radius);
+  border-radius:var(--control-radius-pill);
   background:var(--home-interaction-panel-control-bg);
   color:var(--home-interaction-panel-control-text);
 }
@@ -309,7 +305,7 @@
   min-height:var(--home-interaction-panel-model-height);
   padding:var(--spacing-none) var(--home-interaction-panel-model-padding-x);
   border:var(--border-width-hairline) solid var(--home-interaction-panel-model-border);
-  border-radius:var(--home-interaction-panel-model-radius);
+  border-radius:var(--control-radius);
   background:var(--home-interaction-panel-model-bg);
   color:var(--home-interaction-panel-model-text);
   gap:var(--home-interaction-panel-model-gap);
@@ -341,7 +337,7 @@
   min-height:var(--home-interaction-panel-control-size);
   padding:var(--spacing-none);
   border:var(--border-width-hairline) solid var(--home-interaction-panel-control-border);
-  border-radius:var(--home-interaction-panel-control-radius);
+  border-radius:var(--control-radius-pill);
   background:var(--home-interaction-panel-control-bg);
   color:var(--home-interaction-panel-control-text);
 }
@@ -365,7 +361,7 @@
   max-width:var(--size-full);
   padding:var(--spacing-none) var(--home-interaction-panel-file-chip-padding-x);
   border:var(--border-width-hairline) solid var(--home-interaction-panel-file-chip-border);
-  border-radius:var(--home-interaction-panel-file-chip-radius);
+  border-radius:var(--control-radius-pill);
   background:var(--home-interaction-panel-file-chip-bg);
   color:var(--home-interaction-panel-file-chip-text);
   overflow:hidden;
@@ -392,7 +388,7 @@
   min-height:var(--home-interaction-panel-control-size);
   padding:var(--spacing-none);
   border:var(--border-width-hairline) solid var(--home-interaction-panel-control-border);
-  border-radius:var(--home-interaction-panel-control-radius);
+  border-radius:var(--control-radius-pill);
   background:var(--home-interaction-panel-control-bg);
   color:var(--home-interaction-panel-control-text);
   opacity:var(--home-interaction-panel-voice-opacity-active);
@@ -412,7 +408,7 @@
   border-color:var(--home-interaction-panel-control-listening-border);
   background:var(--home-interaction-panel-control-listening-bg);
   color:var(--home-interaction-panel-control-text-hover);
-  animation:home-interaction-panel-voice-listening var(--home-interaction-panel-voice-animation-duration) ease-in-out infinite;
+  animation:home-interaction-panel-voice-listening var(--home-interaction-panel-voice-animation-duration) var(--interaction-ease-standard) infinite;
 }
 
 #stage #stage-microphone-button.home-interaction-panel__voice[data-voice-mode="thinking"]{
@@ -436,7 +432,7 @@
   width:var(--home-interaction-panel-icon-size);
   height:var(--home-interaction-panel-icon-size);
   opacity:var(--home-interaction-panel-icon-opacity);
-  transition:opacity var(--home-interaction-panel-motion-fast) ease;
+  transition:opacity var(--home-interaction-panel-motion-fast) var(--interaction-ease-standard);
 }
 
 .home-interaction-panel__voice-icon img{
@@ -458,7 +454,7 @@
   min-height:var(--home-interaction-panel-submit-height);
   padding:var(--spacing-none) var(--home-interaction-panel-submit-padding-x);
   border:var(--border-width-hairline) solid var(--home-interaction-panel-submit-border);
-  border-radius:var(--home-interaction-panel-submit-radius);
+  border-radius:var(--control-radius);
   background:var(--home-interaction-panel-submit-bg);
   color:var(--home-interaction-panel-submit-text);
   gap:var(--home-interaction-panel-submit-gap);

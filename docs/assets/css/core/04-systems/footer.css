@@ -105,7 +105,7 @@ html[data-theme-effective="dark"] .site-footer{
   letter-spacing:0.08em;
   text-transform:uppercase;
   opacity:0.85;
-  transition:opacity var(--duration-base) var(--ease-standard);
+  transition:opacity var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 #country-selector:hover{

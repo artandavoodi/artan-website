@@ -27,15 +27,15 @@ html[data-cursor-custom="true"] *::after{
   left:0;
   width:12px;
   height:12px;
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   pointer-events:none;
   z-index:2147483647;
   background-color:var(--cursor-accent-color, #917c6f);
   transform:translate3d(-50%, -50%, 0) scale(1);
   transition:
-    background-color 0.3s ease,
-    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.22s ease;
+    background-color var(--interaction-motion-medium) var(--interaction-ease-standard),
+    transform var(--interaction-motion-medium) var(--interaction-ease-standard),
+    opacity var(--interaction-motion-medium) var(--interaction-ease-standard);
   opacity:1;
   mix-blend-mode:normal;
   display:block;

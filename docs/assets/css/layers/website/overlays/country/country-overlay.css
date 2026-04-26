@@ -31,16 +31,16 @@
   --country-close-button-hover-color:var(--global-close-button-hover-color);
   --country-container-max: var(--site-rail-width, min(calc(100% - (var(--site-gutter, 24px) * 2)), var(--site-max-width, 1320px)));
   --country-container-pad:var(--layout-country-container-pad);
-  --country-motion-fast:var(--layout-country-motion-fast);
-  --country-motion-medium:var(--layout-country-motion-medium);
-  --country-motion-overlay:var(--layout-country-motion-overlay);
+  --country-motion-fast:var(--interaction-motion-fast);
+  --country-motion-medium:var(--interaction-motion-medium);
+  --country-motion-overlay:var(--overlay-motion-duration);
   --country-motion-inner-transform:var(--layout-country-motion-inner-transform);
   --country-motion-inner-opacity:var(--layout-country-motion-inner-opacity);
   --country-motion-close-transform:var(--layout-country-motion-close-transform);
   --country-motion-close-opacity:var(--layout-country-motion-close-opacity);
   --country-motion-item-transform:var(--layout-country-motion-item-transform);
   --country-motion-item-opacity:var(--layout-country-motion-item-opacity);
-  --country-motion-ease:var(--layout-country-motion-ease);
+  --country-motion-ease:var(--overlay-motion-ease);
   --country-overlay-blur:var(--layout-country-overlay-blur);
   --country-overlay-separator-bg:var(--text-secondary-color);
   --country-overlay-separator-opacity:var(--layout-country-overlay-separator-opacity);
@@ -104,7 +104,7 @@
 #country-overlay.country-overlay,
 .country-overlay{
   position: fixed;
-  inset: 0;
+  inset: var(--spacing-none);
   /* Glass + gradient wash (menu-overlay feel) */
   background:
     linear-gradient(90deg,
@@ -126,14 +126,14 @@
 
   overflow-y: auto;
   z-index: 200000;
-  padding: var(--country-overlay-padding-block) 0;
+  padding: var(--country-overlay-padding-block) var(--spacing-none);
   box-sizing: border-box;
 
-  opacity: var(--state-opacity-idle);
+  opacity: var(--overlay-opacity-closed);
   visibility: hidden;
   pointer-events: none;
 
-  border: 0;
+  border: var(--spacing-none);
 
   transition:opacity var(--country-motion-overlay) var(--country-motion-ease), visibility var(--country-motion-overlay) var(--country-motion-ease);
 }
@@ -142,9 +142,52 @@
 #country-overlay.country-overlay.active,
 .country-overlay.visible,
 .country-overlay.active{
-  opacity: var(--state-opacity-selected);
+  opacity: var(--overlay-opacity-open);
   visibility: visible;
   pointer-events: all;
+}
+
+
+/* =============================================================================
+   05) OPEN / CLOSE MOTION
+============================================================================= */
+#country-overlay .country-overlay-inner,
+.country-overlay .country-overlay-inner{
+  max-width: none;
+  width: var(--country-container-max);
+  direction: ltr;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--country-overlay-inner-gap);
+
+  padding: var(--spacing-none) var(--country-container-pad);
+
+  opacity: var(--overlay-opacity-closed);
+  transform: translateY(var(--country-overlay-inner-enter-y)) scale(var(--country-overlay-inner-enter-scale));
+
+  transition:
+    transform var(--country-motion-inner-transform) var(--country-motion-ease),
+    opacity var(--country-motion-inner-opacity) var(--country-motion-ease);
+
+  will-change: transform, opacity;
+}
+
+#country-overlay.visible .country-overlay-inner,
+#country-overlay.active .country-overlay-inner,
+.country-overlay.visible .country-overlay-inner,
+.country-overlay.active .country-overlay-inner{
+  opacity: var(--overlay-opacity-open);
+  transform: translateY(var(--spacing-none)) scale(var(--overlay-opacity-open));
+}
+#country-overlay.closing .country-overlay-inner,
+.country-overlay.closing .country-overlay-inner{
+  opacity: var(--overlay-opacity-closed);
+  transform: translateY(var(--country-overlay-inner-close-y)) scale(var(--country-overlay-inner-close-scale));
+
+  transition:
+    transform var(--country-motion-close-transform) var(--country-motion-ease),
+    opacity var(--country-motion-close-opacity) var(--country-motion-ease);
 }
 
 /* =============================================================================
@@ -161,47 +204,14 @@ body.country-selector-open{
 /* While country overlay is open, soften/hide stage circle behind it */
 body.country-open .stage-circle,
 body.country-active .stage-circle{
-  opacity:var(--state-opacity-idle) !important;
+  opacity:var(--overlay-opacity-closed) !important;
   filter:none !important;
-}
-
-/* =============================================================================
-   05) OPEN / CLOSE MOTION
-============================================================================= */
-#country-overlay .country-overlay-inner,
-.country-overlay .country-overlay-inner{
-  max-width: none;
-  width: var(--country-container-max);
-  direction: ltr;
-
-  display: flex;
-  flex-direction: column;
-  gap: var(--country-overlay-inner-gap);
-
-  padding: 0 var(--country-container-pad);
-
-  opacity: var(--state-opacity-idle);
-  transform: translateY(var(--country-overlay-inner-enter-y)) scale(var(--country-overlay-inner-enter-scale));
-
-  transition:
-    transform var(--country-motion-inner-transform) var(--country-motion-ease),
-    opacity var(--country-motion-inner-opacity) var(--country-motion-ease);
-
-  will-change: transform, opacity;
-}
-
-#country-overlay.visible .country-overlay-inner,
-#country-overlay.active .country-overlay-inner,
-.country-overlay.visible .country-overlay-inner,
-.country-overlay.active .country-overlay-inner{
-  opacity: var(--state-opacity-selected);
-  transform: translateY(var(--spacing-none)) scale(var(--state-opacity-selected));
 }
 
 /* Optional close phase (JS may add .closing) */
 #country-overlay.closing .country-overlay-inner,
 .country-overlay.closing .country-overlay-inner{
-  opacity: var(--state-opacity-idle);
+  opacity: var(--overlay-opacity-closed);
   transform: translateY(var(--country-overlay-inner-close-y)) scale(var(--country-overlay-inner-close-scale));
 
   transition:
@@ -228,8 +238,8 @@ body.country-active .stage-circle{
   font-size: var(--country-title-size);
   font-weight: var(--country-title-weight);
   text-align: left;
-  margin: 0;
-  padding: 0;
+  margin: var(--spacing-none);
+  padding: var(--spacing-none);
   line-height: var(--country-title-line-height);
   letter-spacing: var(--country-title-tracking);
 }
@@ -247,7 +257,7 @@ body.country-active .stage-circle{
   font-size: var(--country-region-title-size);
   font-weight: var(--country-region-title-weight);
   opacity:var(--country-heading-opacity);
-  margin: 0 0 var(--country-region-title-margin-bottom);
+  margin: var(--spacing-none) var(--spacing-none) var(--country-region-title-margin-bottom);
   text-align: left;
   letter-spacing: var(--country-title-tracking);
 }
@@ -256,8 +266,8 @@ body.country-active .stage-circle{
 #country-overlay .country-region hr.footer-separator,
 .country-overlay .country-overlay-inner hr.footer-separator,
 .country-overlay .country-region hr.footer-separator{
-  width: 100%;
-  margin: var(--country-separator-margin-top) 0 var(--country-separator-margin-bottom) 0;
+  width: var(--size-full);
+  margin: var(--country-separator-margin-top) var(--spacing-none) var(--country-separator-margin-bottom) var(--spacing-none);
   border: none;
   height: var(--country-separator-height);
   background-color:var(--country-overlay-separator-bg);
@@ -273,8 +283,8 @@ body.country-active .stage-circle{
   display: flex;
   flex-wrap: wrap;
   gap: var(--country-list-row-gap) var(--country-list-column-gap);
-  padding: 0;
-  margin: 0;
+  padding: var(--spacing-none);
+  margin: var(--spacing-none);
   justify-content: flex-start;
   align-items: flex-start;
   align-content: flex-start;
@@ -288,7 +298,7 @@ body.country-active .stage-circle{
   text-align: left;
 
   /* Stagger in */
-  opacity: var(--state-opacity-idle);
+  opacity: var(--overlay-opacity-closed);
   transform: translateY(var(--country-item-enter-y));
   transition:
     transform var(--country-motion-item-transform) var(--country-motion-ease),
@@ -299,8 +309,8 @@ body.country-active .stage-circle{
 #country-overlay.visible .country-list li,
 .country-overlay.active .country-list li,
 .country-overlay.visible .country-list li{
-  opacity: var(--state-opacity-selected);
-  transform: translateY(0);
+  opacity: var(--overlay-opacity-open);
+  transform: translateY(var(--spacing-none));
 }
 
 /* Subtle stagger (keeps it luxury but calm) */
@@ -361,8 +371,8 @@ body.country-active .stage-circle{
 .country-overlay .country-option{
   background: none;
   border: none;
-  padding: 0;
-  margin: 0;
+  padding: var(--spacing-none);
+  margin: var(--spacing-none);
   font: inherit;
 
   font-size: var(--country-option-size);
@@ -404,7 +414,7 @@ body.country-active .stage-circle{
 #country-overlay .country-list li:focus-within,
 .country-overlay .country-list li:hover,
 .country-overlay .country-list li:focus-within{
-  transform: translateY(0) !important;
+  transform: translateY(var(--spacing-none)) !important;
 }
 
 #country-overlay .country-option::before,
@@ -420,17 +430,15 @@ body.country-active .stage-circle{
 #country-overlay #country-overlay-close,
 .country-overlay #country-overlay-close{
   position: relative;
-  top: 0;
-  right: 0;
+  top: var(--spacing-none);
+  right: var(--spacing-none);
+  z-index:var(--z-overlay-modal);
 }
 
-/* Close button (inherits global close button markup) — menu-overlay feel */
+/* Close button inherits global close-button geometry, surface, hover, and motion. */
 #country-overlay .global-close-button,
 .country-overlay .global-close-button{
   color:var(--country-close-button-color);
-  transition:
-    color var(--global-close-button-duration) var(--global-close-button-ease),
-    transform var(--global-close-button-duration) var(--global-close-button-ease);
 }
 
 #country-overlay .global-close-button:hover,
@@ -438,20 +446,6 @@ body.country-active .stage-circle{
 .country-overlay .global-close-button:hover,
 .country-overlay .global-close-button:focus-visible{
   color:var(--country-close-button-hover-color);
-  transform:none;
-  outline:none;
-}
-
-/* Let the X-lines ‘soften’ on hover like the menu close */
-#country-overlay .global-close-button:hover .global-close-button__line,
-#country-overlay .global-close-button:hover span,
-#country-overlay .global-close-button:focus-visible .global-close-button__line,
-#country-overlay .global-close-button:focus-visible span,
-.country-overlay .global-close-button:hover .global-close-button__line,
-.country-overlay .global-close-button:hover span,
-.country-overlay .global-close-button:focus-visible .global-close-button__line,
-.country-overlay .global-close-button:focus-visible span{
-  transform:rotate(0deg);
 }
 
 /* =============================================================================

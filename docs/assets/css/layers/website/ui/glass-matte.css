@@ -19,7 +19,7 @@
   --glass-matte-opacity: 0.24;
   --glass-matte-surface-light: rgba(255, 255, 255, 0.08);
   --glass-matte-surface-dark: rgba(0, 0, 0, 0.14);
-  --glass-matte-transition: 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  --glass-matte-transition: 700ms var(--interaction-ease-standard);
 }
 
 /* =============================================================================

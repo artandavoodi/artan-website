@@ -16,7 +16,7 @@
   width:16.75rem;
   height:16.75rem;
   display:block;
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   overflow:visible;
   pointer-events:none;
   transform:translate(-50%, -50%);
@@ -33,7 +33,7 @@
   display:block;
   width:100%;
   height:100%;
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   pointer-events:none;
   opacity:0.72;
   mix-blend-mode:screen;

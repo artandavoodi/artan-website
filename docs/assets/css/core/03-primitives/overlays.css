@@ -3,8 +3,9 @@
    01) MODULE IDENTITY
    02) SHARED OVERLAY BACKDROP
    03) SHARED OVERLAY SURFACE
-   04) SHARED OVERLAY OPEN STATE HELPERS
-   05) END OF FILE
+   04) SHARED OVERLAY MOTION STATES
+   05) SHARED OVERLAY OPEN STATE HELPERS
+   06) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -17,45 +18,68 @@
 ============================================================================= */
 .ui-overlay-backdrop{
   background:var(--overlay-backdrop);
+  opacity:var(--overlay-opacity-closed);
+  pointer-events:none;
   backdrop-filter:blur(var(--glass-blur-sm));
   -webkit-backdrop-filter:blur(var(--glass-blur-sm));
   transition:
-    opacity var(--duration-base) var(--ease-standard),
-    background-color var(--duration-base) var(--ease-standard),
-    backdrop-filter var(--duration-base) var(--ease-standard);
+    opacity var(--overlay-motion-duration) var(--overlay-motion-ease),
+    background-color var(--overlay-motion-duration) var(--overlay-motion-ease),
+    backdrop-filter var(--overlay-motion-duration) var(--overlay-motion-ease);
 }
 
 /* =============================================================================
    03) SHARED OVERLAY SURFACE
 ============================================================================= */
 .ui-overlay-surface{
-  background:var(--surface-elevated);
-  border:var(--stroke-soft) solid var(--control-border);
-  border-radius:var(--radius-xl);
-  box-shadow:var(--shadow-strong);
-  backdrop-filter:blur(var(--glass-blur-lg));
-  -webkit-backdrop-filter:blur(var(--glass-blur-lg));
+  background:var(--panel-surface-unified);
+  border:var(--border-width-hairline) solid var(--panel-border-unified);
+  border-radius:var(--overlay-radius-unified);
+  box-shadow:var(--panel-shadow-unified);
+  opacity:var(--overlay-opacity-closed);
+  transform:var(--overlay-transform-closed);
+  pointer-events:none;
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
   transition:
-    opacity var(--duration-base) var(--ease-standard),
-    transform var(--duration-base) var(--ease-standard),
-    background-color var(--duration-base) var(--ease-standard),
-    border-color var(--duration-base) var(--ease-standard),
-    box-shadow var(--duration-base) var(--ease-standard);
+    opacity var(--overlay-motion-duration) var(--overlay-motion-ease),
+    transform var(--overlay-motion-duration) var(--overlay-motion-ease),
+    background-color var(--overlay-motion-duration) var(--overlay-motion-ease),
+    border-color var(--overlay-motion-duration) var(--overlay-motion-ease),
+    box-shadow var(--overlay-motion-duration) var(--overlay-motion-ease);
 }
 
 /* =============================================================================
-   04) SHARED OVERLAY OPEN STATE HELPERS
+   04) SHARED OVERLAY MOTION STATES
 ============================================================================= */
-.ui-overlay-hidden{
-  opacity:0;
-  pointer-events:none;
+.ui-overlay-surface.is-open,
+.ui-overlay-surface[aria-hidden="false"],
+.ui-overlay-visible.ui-overlay-surface{
+  opacity:var(--overlay-opacity-open);
+  transform:var(--overlay-transform-open);
+  pointer-events:auto;
 }
 
-.ui-overlay-visible{
-  opacity:1;
+.ui-overlay-backdrop.is-open,
+.ui-overlay-backdrop[aria-hidden="false"],
+.ui-overlay-visible.ui-overlay-backdrop{
+  opacity:var(--overlay-opacity-open);
   pointer-events:auto;
 }
 
 /* =============================================================================
-   05) END OF FILE
+   05) SHARED OVERLAY OPEN STATE HELPERS
+============================================================================= */
+.ui-overlay-hidden{
+  opacity:var(--overlay-opacity-closed);
+  pointer-events:none;
+}
+
+.ui-overlay-visible{
+  opacity:var(--overlay-opacity-open);
+  pointer-events:auto;
+}
+
+/* =============================================================================
+   06) END OF FILE
 ============================================================================= */

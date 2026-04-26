@@ -93,7 +93,7 @@
   gap:0.45rem;
   padding:0.34rem 0.72rem;
   border:1px solid var(--profile-header-verified-border);
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   background:var(--profile-header-verified-bg);
   color:var(--profile-header-verified-color);
 }
@@ -132,7 +132,7 @@
   width:4px;
   height:4px;
   margin-right:0.5rem;
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   background:color-mix(in srgb, var(--text-color) 32%, transparent);
   vertical-align:middle;
 }
@@ -193,7 +193,7 @@
 .profile-header__avatar-surface{
   width:7rem;
   height:7rem;
-  border-radius:50%;
+  border-radius:var(--control-radius-pill);
   display:flex;
   align-items:center;
   justify-content:center;

@@ -243,7 +243,7 @@ html[data-theme-effective="dark"] .home-featured-functions{
   gap: var(--home-featured-functions-track-gap);
   align-items: stretch;
   transform: translateX(var(--home-featured-functions-rail-offset));
-  transition: transform var(--layout-home-featured-functions-track-motion) ease;
+  transition:transform var(--layout-home-featured-functions-track-motion) var(--interaction-ease-standard);
   will-change: transform;
   direction: ltr;
   unicode-bidi: isolate;
@@ -273,7 +273,7 @@ html[data-theme-effective="dark"] .home-featured-functions{
   background-clip: padding-box;
   box-shadow: inset 0 1px 0 var(--home-featured-functions-card-surface-highlight-rest);
   flex: 0 0 auto;
-  transition: border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard);
+  transition:border-color var(--interaction-motion-medium) var(--interaction-ease-standard), box-shadow var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 .home-featured-functions-card:hover .home-featured-functions-card-visual,
@@ -427,7 +427,7 @@ html[data-theme-effective="dark"] .home-featured-functions{
   color: var(--home-featured-functions-card-summary-color);
   font-family: var(--font-family-sans, inherit);
   font-variation-settings: 'wght' var(--home-featured-functions-card-label-weight);
-  opacity: var(--state-opacity-selected);
+  opacity: 1;
   order: 2;
   text-align: center;
   text-wrap: balance;
@@ -624,10 +624,10 @@ html[data-theme-effective="dark"] .home-featured-functions-card-title{
   height: var(--home-featured-functions-dot-size);
   padding: 0;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--control-radius-pill);
   background: var(--home-featured-functions-dot-color);
   opacity: var(--home-featured-functions-dot-opacity);
-  transition: opacity var(--duration-base) var(--ease-standard);
+  transition:opacity var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 .home-featured-functions-dot[aria-current='true']{
@@ -639,14 +639,14 @@ html[data-theme-effective="dark"] .home-featured-functions-card-title{
    15) READY STATE
 ============================================================================= */
 .home-featured-functions:not(.home-featured-functions-ready) .home-featured-functions-track{
-  opacity: var(--state-opacity-idle);
+  opacity: 0;
 }
 
 .home-featured-functions.home-featured-functions-ready .home-featured-functions-track{
-  opacity: var(--state-opacity-selected);
+  opacity: 1;
   transition:
-    transform var(--layout-home-featured-functions-track-motion) ease,
-    opacity var(--layout-home-featured-functions-ready-opacity-motion) ease;
+    transform var(--layout-home-featured-functions-track-motion) var(--interaction-ease-standard),
+    opacity var(--layout-home-featured-functions-ready-opacity-motion) var(--interaction-ease-standard);
 }
 
 /* =============================================================================

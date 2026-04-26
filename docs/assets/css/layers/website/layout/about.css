@@ -108,7 +108,7 @@ html[data-theme-effective="light"]{
 .post:last-child{border-bottom:none;}
 .post-title{font-size:var(--layout-about-legacy-post-title-size);font-weight:var(--layout-about-legacy-post-title-weight);margin-bottom:var(--layout-about-legacy-post-title-margin-bottom);}
 .post-excerpt{font-size:var(--layout-about-legacy-post-excerpt-size);color:var(--about-legacy-body-color);margin-bottom:var(--layout-about-legacy-post-excerpt-margin-bottom);}
-.read-more{text-decoration:none;color:var(--about-legacy-link-color);font-weight:var(--font-weight-medium);transition:color var(--duration-fast);}
+.read-more{text-decoration:none;color:var(--about-legacy-link-color);font-weight:var(--font-weight-medium);transition:color var(--interaction-motion-medium) var(--interaction-ease-standard);}
 .read-more:hover{text-decoration:underline;color:var(--about-legacy-link-hover-color);}
 
 .section-comments{background-color:var(--about-legacy-comments-bg);padding:var(--layout-about-legacy-comments-padding-y) 0;}

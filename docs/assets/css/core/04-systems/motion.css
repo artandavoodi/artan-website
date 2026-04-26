@@ -20,8 +20,8 @@
   opacity:0;
   transform:translateY(56px);
   transition:
-    transform 1.55s cubic-bezier(0.22,1,0.36,1),
-    opacity 1.30s cubic-bezier(0.22,1,0.36,1);
+    transform 1.55s var(--interaction-ease-standard),
+    opacity 1.30s var(--interaction-ease-standard);
   will-change:transform, opacity;
 }
 

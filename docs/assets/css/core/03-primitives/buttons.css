@@ -25,35 +25,29 @@
   appearance:none;
   -webkit-appearance:none;
   min-height:var(--control-height-md);
-  padding:0 var(--control-padding-x-md);
-  border-radius:var(--radius-pill);
-  border:var(--stroke-soft) solid var(--control-border);
-  background:var(--control-bg);
-  color:var(--text-color);
-  font-family:var(--font-base);
-  font-size:var(--button-font-size);
-  font-weight:var(--button-font-weight);
-  letter-spacing:var(--button-letter-spacing);
-  line-height:var(--button-line-height);
+  padding:var(--spacing-none) var(--control-padding-x-md);
+  border-radius:var(--shape-control-radius);
+  border:var(--border-width-hairline) solid var(--control-border-unified);
+  background:var(--control-surface);
+  color:var(--control-text-unified);
+  font-family:var(--font-family);
+  font-size:var(--control-font-size);
+  font-weight:var(--control-font-weight);
+  letter-spacing:var(--control-tracking);
+  line-height:var(--control-line-height);
   text-align:center;
   text-decoration:none;
   display:inline-flex;
   flex:0 0 auto;
   align-items:center;
   justify-content:center;
-  min-width:0;
-  gap:0.55rem;
+  min-width:var(--spacing-none);
+  gap:var(--control-gap);
   white-space:nowrap;
   box-shadow:none;
   backdrop-filter:blur(var(--glass-blur-sm));
   -webkit-backdrop-filter:blur(var(--glass-blur-sm));
-  transition:
-    background-color var(--duration-base) var(--ease-standard),
-    border-color var(--duration-base) var(--ease-standard),
-    color var(--duration-base) var(--ease-standard),
-    opacity var(--duration-base) var(--ease-standard),
-    transform var(--duration-base) var(--ease-standard),
-    box-shadow var(--duration-base) var(--ease-standard);
+  transition:var(--interaction-transition-control);
 }
 
 /* =============================================================================
@@ -61,16 +55,17 @@
 ============================================================================= */
 .ui-button:hover,
 .ui-control:hover{
-  background:var(--control-bg-hover);
-  border-color:var(--control-border-strong);
+  background:var(--control-surface-hover);
+  border-color:var(--control-border-hover-unified);
+  color:var(--control-text-hover-unified);
   opacity:var(--hover-opacity-strong);
 }
 
 .ui-button:focus-visible,
 .ui-control:focus-visible{
   outline:none;
-  border-color:var(--control-border-strong);
-  box-shadow:0 0 0 3px rgba(145,124,111,0.16);
+  border-color:var(--control-border-hover-unified);
+  box-shadow:var(--focus-ring-shadow);
 }
 
 /* =============================================================================
@@ -83,7 +78,7 @@
 }
 
 .ui-button--primary:hover{
-  opacity:0.94;
+  opacity:var(--state-opacity-high);
 }
 
 /* =============================================================================
@@ -99,7 +94,7 @@
   background:var(--color-primary1);
   color:var(--text-color);
   border-color:transparent;
-  opacity:0.94;
+  opacity:var(--state-opacity-high);
 }
 
 /* =============================================================================
@@ -115,7 +110,7 @@
 .ui-button--ghost{
   background:transparent;
   border-color:transparent;
-  padding-inline:0;
+  padding-inline:var(--spacing-none);
   min-height:auto;
   backdrop-filter:none;
   -webkit-backdrop-filter:none;
@@ -128,8 +123,9 @@
 .ui-control--icon{
   width:var(--control-height-md);
   min-width:var(--control-height-md);
-  padding:0;
-  gap:0;
+  padding:var(--spacing-none);
+  gap:var(--spacing-none);
+  border-radius:var(--shape-icon-button-radius);
 }
 
 .ui-button--icon.ui-button--sm,
@@ -149,8 +145,8 @@
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:1.15rem;
-  height:1.15rem;
+  width:var(--close-control-line-width);
+  height:var(--close-control-line-width);
   flex:0 0 auto;
 }
 
@@ -159,8 +155,8 @@
 .ui-control__icon > svg,
 .ui-control__icon > img{
   display:block;
-  width:100%;
-  height:100%;
+  width:var(--size-full);
+  height:var(--size-full);
 }
 
 /* =============================================================================
@@ -169,13 +165,13 @@
 .ui-button--sm,
 .ui-control--sm{
   min-height:var(--control-height-sm);
-  padding:0 var(--control-padding-x-sm);
+  padding:var(--spacing-none) var(--control-padding-x-sm);
 }
 
 .ui-button--lg,
 .ui-control--lg{
   min-height:var(--control-height-lg);
-  padding:0 var(--control-padding-x-lg);
+  padding:var(--spacing-none) var(--control-padding-x-lg);
 }
 
 /* =============================================================================

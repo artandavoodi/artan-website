@@ -19,13 +19,13 @@
    02) ROOT TOKENS
 ============================================================================= */
 :root{
-  --account-provider-google-surface:color-mix(in srgb, var(--surface-color) 82%, transparent);
-  --account-provider-google-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-provider-google-surface:var(--panel-surface-unified);
+  --account-provider-google-border:var(--panel-border-unified);
   --account-provider-google-muted: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
   --account-provider-google-shell-inner-shadow: inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --account-provider-google-shell-highlight: linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
   --account-provider-google-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-provider-google-primary-shadow:0 18px 44px color-mix(in srgb, var(--shadow-color, #000000) 6%, transparent);
+  --account-provider-google-primary-shadow:var(--panel-shadow-unified);
   --account-provider-google-foreground: var(--text-color);
 
   --account-provider-google-content-max-width: var(--account-control-width-max);
@@ -40,7 +40,7 @@
   --account-provider-google-secondary-gap: var(--account-provider-google-content-gap-sm);
 
   --account-provider-google-button-height: var(--account-button-height);
-  --account-provider-google-button-radius: var(--account-button-radius);
+  --account-provider-google-button-radius:var(--shape-control-radius);
   --account-provider-google-button-padding-x: var(--account-button-padding-x);
   --account-provider-google-button-font-size: var(--account-button-font-size);
   --account-provider-google-button-font-weight: var(--account-button-font-weight);
@@ -48,10 +48,10 @@
   --account-provider-google-button-line-height: var(--account-button-line-height);
   --account-provider-google-button-hover-lift-y: var(--account-button-hover-lift-y);
   --account-provider-google-button-hover-scale: var(--account-button-hover-scale);
-  --account-provider-google-button-border: var(--control-border);
-  --account-provider-google-button-border-hover: var(--control-border-strong);
-  --account-provider-google-button-background: var(--control-bg);
-  --account-provider-google-button-background-hover: var(--control-bg-hover);
+  --account-provider-google-button-border:var(--control-border-unified);
+  --account-provider-google-button-border-hover:var(--control-border-hover-unified);
+  --account-provider-google-button-background:var(--control-surface);
+  --account-provider-google-button-background-hover:var(--control-surface-hover);
 
   --account-provider-google-text-action-font-size: var(--account-text-action-font-size);
   --account-provider-google-text-action-line-height: var(--account-text-action-line-height);
@@ -59,33 +59,33 @@
 
   --account-provider-google-back-control-size: var(--account-back-control-size);
   --account-provider-google-back-icon-size: var(--account-back-icon-size);
-  --account-provider-google-motion-fast:220ms;
+  --account-provider-google-motion-fast:var(--interaction-motion-medium);
   --account-provider-google-accent-hover:var(--color-primary1);
   --account-provider-google-header-brand-margin-bottom: var(--account-provider-google-content-gap-xl);
   --account-provider-google-header-brand-margin-bottom-mobile: var(--account-provider-google-content-gap-lg);
 }
 
 html[data-theme-effective="light"]{
-  --account-provider-google-surface:color-mix(in srgb, var(--surface-color) 88%, transparent);
+  --account-provider-google-surface:var(--panel-surface-unified);
   --account-provider-google-shell-inner-shadow:inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --account-provider-google-shell-highlight:linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 2.2%, transparent) 0%, transparent 22%);
   --account-provider-google-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-provider-google-primary-shadow:0 18px 44px color-mix(in srgb, var(--shadow-color, #000000) 5%, transparent);
+  --account-provider-google-primary-shadow:var(--panel-shadow-unified);
 }
 
 html[data-theme-effective="dark"]{
-  --account-provider-google-surface:color-mix(in srgb, var(--surface-color) 82%, transparent);
+  --account-provider-google-surface:var(--panel-surface-unified);
   --account-provider-google-shell-inner-shadow:inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 4%, transparent);
   --account-provider-google-shell-highlight:linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
   --account-provider-google-header-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
-  --account-provider-google-primary-shadow:0 18px 44px color-mix(in srgb, var(--shadow-color, #000000) 18%, transparent);
+  --account-provider-google-primary-shadow:var(--panel-shadow-unified);
 }
 
 /* =============================================================================
    03) INNER VIEW ROOT
 ============================================================================= */
 .account-provider-google-sheet{
-  width: 100%;
+  width: var(--size-full);
 }
 
 .account-drawer-view-mount .account-provider-google-sheet,
@@ -98,8 +98,8 @@ html[data-theme-effective="dark"]{
 }
 
 .account-provider-google-sheet-header-brand-icon{
-  width: 2.4rem;
-  height: 2.4rem;
+  width: var(--close-control-size);
+  height: var(--close-control-size);
   display: block;
   object-fit: contain;
 }
@@ -108,11 +108,11 @@ html[data-theme-effective="dark"]{
   display: flex;
   flex-direction: column;
   gap: var(--account-provider-google-section-gap);
-  padding-inline: 4.8rem;
+  padding-inline: var(--space-9);
 }
 
 .account-provider-google-sheet-center-stage{
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-provider-google-content-max-width);
   margin-inline: auto;
   display: flex;
@@ -125,12 +125,12 @@ html[data-theme-effective="dark"]{
    04) TYPOGRAPHY
 ============================================================================= */
 .account-provider-google-sheet-note{
-  margin: 0;
+  margin: var(--spacing-none);
   color: var(--account-provider-google-muted);
-  letter-spacing: -0.015em;
-  font-size: 1rem;
-  font-weight: 300;
-  line-height: 1.62;
+  letter-spacing: var(--type-body-tracking);
+  font-size: var(--control-font-size);
+  font-weight: var(--type-body-regular-weight);
+  line-height: var(--type-body-sm-line-height);
   text-align: center;
 }
 
@@ -142,7 +142,7 @@ html[data-theme-effective="dark"]{
   flex-direction: column;
   align-items: stretch;
   gap: var(--account-provider-google-actions-gap);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-provider-google-content-max-width);
   margin-inline: auto;
 }
@@ -154,28 +154,24 @@ html[data-theme-effective="dark"]{
   align-items: center;
   justify-content: center;
   height: var(--account-provider-google-button-height);
-  padding: 0 var(--account-provider-google-button-padding-x);
+  padding: var(--spacing-none) var(--account-provider-google-button-padding-x);
   box-sizing: border-box;
-  border: var(--stroke-soft) solid var(--account-provider-google-button-border);
+  border: var(--border-width-hairline) solid var(--account-provider-google-button-border);
   border-radius: var(--account-provider-google-button-radius);
   background: var(--account-provider-google-button-background);
   color: var(--account-provider-google-foreground);
   text-decoration: none;
-  transition:
-    opacity var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard),
-    background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
+  transition:var(--interaction-transition-control);
   backdrop-filter: blur(var(--glass-blur-sm));
   -webkit-backdrop-filter: blur(var(--glass-blur-sm));
 }
 
 .account-provider-google-sheet-action-label{
-  margin: 0;
+  margin: var(--spacing-none);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: var(--size-full);
   height: var(--account-provider-google-button-height);
   color: var(--account-provider-google-foreground);
   font-size: var(--account-provider-google-button-font-size);
@@ -201,7 +197,7 @@ html[data-theme-effective="dark"]{
   flex-direction: column;
   align-items: center;
   gap: var(--account-provider-google-secondary-gap);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-provider-google-content-max-width);
   margin-inline: auto;
 }
@@ -211,14 +207,14 @@ html[data-theme-effective="dark"]{
   color: var(--text-primary-color);
   text-decoration: underline;
   text-decoration-color: currentColor;
-  text-decoration-thickness: var(--stroke-soft);
+  text-decoration-thickness: var(--border-width-hairline);
   text-underline-offset: 0.14em;
   text-decoration-skip-ink: auto;
   font-size: var(--account-provider-google-text-action-font-size);
-  font-weight: 400;
+  font-weight: var(--type-body-regular-weight);
   letter-spacing: var(--account-provider-google-text-action-letter-spacing);
   line-height: var(--account-provider-google-text-action-line-height);
-  transition:color var(--account-provider-google-motion-fast) ease, text-decoration-color var(--account-provider-google-motion-fast) ease, opacity var(--account-provider-google-motion-fast) ease;
+  transition:color var(--account-provider-google-motion-fast) var(--interaction-ease-standard), text-decoration-color var(--account-provider-google-motion-fast) var(--interaction-ease-standard), opacity var(--account-provider-google-motion-fast) var(--interaction-ease-standard);
 }
 
 .account-provider-google-sheet-text-action:hover,
@@ -239,13 +235,13 @@ html[data-theme-effective="dark"]{
   min-width: var(--account-provider-google-back-control-size);
   height: var(--account-provider-google-back-control-size);
   min-height: var(--account-provider-google-back-control-size);
-  padding: 0;
-  border: 0;
+  padding: var(--spacing-none);
+  border: var(--spacing-none);
   background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0;
+  margin-top: var(--spacing-none);
   transition: none;
 }
 
@@ -279,7 +275,7 @@ html[data-theme-effective="dark"]{
 ============================================================================= */
 @media (max-width:768px){
   .account-provider-google-sheet-content-stage{
-    padding-inline: 1.8rem;
+    padding-inline: var(--radius-2xl);
   }
 
   .account-provider-google-sheet-header-brand-mark{
@@ -287,6 +283,6 @@ html[data-theme-effective="dark"]{
   }
 
   .account-provider-google-sheet-note{
-    font-size: 0.94rem;
+    font-size: var(--type-body-sm-size);
   }
 }

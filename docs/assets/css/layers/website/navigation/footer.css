@@ -19,27 +19,27 @@
 :root{
   --footer-text-color:var(--text-secondary-color);
   --footer-text-hover-color:var(--text-primary-color);
-  --footer-reveal-duration:1.2s;
-  --footer-motion-ease:cubic-bezier(0.22, 1, 0.36, 1);
-  --footer-interaction-duration:220ms;
-  --footer-outer-top-spacing:1.05rem;
-  --footer-inner-top-padding:1.05rem;
-  --footer-inner-bottom-padding:0.9rem;
-  --footer-brand-size:0.9rem;
+  --footer-reveal-duration:var(--interaction-motion-slow);
+  --footer-motion-ease:var(--overlay-motion-ease);
+  --footer-interaction-duration:var(--interaction-motion-medium);
+  --footer-outer-top-spacing:var(--space-4);
+  --footer-inner-top-padding:var(--space-4);
+  --footer-inner-bottom-padding:var(--space-3);
+  --footer-brand-size:var(--type-body-sm-size);
 }
 
 /* =============================================================================
    03) FOOTER INNER LAYOUT
 ============================================================================= */
 .site-footer{
-  width:100%;
-  font-size:var(--type-body-sm-size, 0.9rem);
-  font-weight:var(--type-body-regular-weight, 400);
-  line-height:var(--type-body-sm-line-height, 1.4);
-  letter-spacing:var(--type-body-tracking, normal);
-  margin:var(--footer-outer-top-spacing) 0 0 0;
-  padding:var(--footer-inner-top-padding) 0 var(--footer-inner-bottom-padding) 0;
-  border-top:var(--stroke-soft) solid var(--border-color);
+  width:var(--size-full);
+  font-size:var(--type-body-sm-size);
+  font-weight:var(--type-body-regular-weight);
+  line-height:var(--type-body-sm-line-height);
+  letter-spacing:var(--type-body-tracking);
+  margin:var(--footer-outer-top-spacing) var(--spacing-none) var(--spacing-none) var(--spacing-none);
+  padding:var(--footer-inner-top-padding) var(--spacing-none) var(--footer-inner-bottom-padding) var(--spacing-none);
+  border-top:var(--border-width-hairline) solid var(--border-color);
   background-color:transparent;
   color:var(--footer-text-color);
   text-align:initial;
@@ -52,13 +52,13 @@
    03) FOOTER INNER LAYOUT
 ============================================================================= */
 .footer-flex{
-  width: min(var(--site-rail-width), calc(100% - (var(--site-gutter) * 2)));
-  margin:0 auto;
-  padding:0;
+  width:min(var(--site-rail-width), calc(var(--size-full) - (var(--site-gutter) * 2)));
+  margin:var(--spacing-none) auto;
+  padding:var(--spacing-none);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:0.9rem;
+  gap:var(--space-3);
   flex-wrap:wrap;
   direction:ltr;
 }
@@ -71,7 +71,7 @@
   display:flex;
   align-items:center;
   justify-content:flex-start;
-  gap:0.5rem;
+  gap:var(--space-2);
   flex-wrap:wrap;
   direction:ltr;
 }
@@ -94,7 +94,7 @@
   display:inline-flex;
   align-items:center;
   justify-content:flex-end;
-  gap:0.5rem;
+  gap:var(--space-2);
   flex-wrap:wrap;
   direction:ltr;
   overflow:visible;
@@ -109,21 +109,18 @@
 .locale-button{
   display:inline-flex;
   align-items:center;
-  gap:0.35rem;
-  padding:0;
-  border:0;
+  gap:var(--control-gap);
+  padding:var(--spacing-none);
+  border:var(--spacing-none);
   background:transparent;
   color:var(--footer-text-color);
   font-family:inherit;
   font-size:inherit;
   font-weight:inherit;
-  line-height:inherit;
+  line-height:var(--control-line-height);
   letter-spacing:inherit;
-  line-height:1;
   transform:none;
-  transition:
-    color var(--footer-interaction-duration) ease,
-    opacity var(--footer-interaction-duration) ease;
+  transition:var(--interaction-transition-control);
 }
 
 .locale-button:hover,
@@ -148,12 +145,12 @@
 ============================================================================= */
 
 .site-footer{
-  opacity:0;
+  opacity:var(--overlay-opacity-closed);
   transition:opacity var(--footer-reveal-duration) var(--footer-motion-ease);
 }
 
 .site-footer.footer-visible{
-  opacity:1;
+  opacity:var(--overlay-opacity-open);
 }
 
 /* =============================================================================
@@ -162,11 +159,11 @@
 
 @media (max-width:768px){
   .site-footer{
-    padding:0.72rem 0 0.82rem 0;
+    padding:var(--space-3) var(--spacing-none) var(--space-3) var(--spacing-none);
   }
 
   .footer-flex{
-    gap:0.8rem;
+    gap:var(--space-3);
     flex-direction:column;
     align-items:center;
     justify-content:center;

@@ -48,7 +48,7 @@
   text-decoration:none;
   color:var(--text-color);
   font-weight:500;
-  transition:color var(--duration-fast) var(--ease-standard);
+  transition:color var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 .main-nav a:hover{

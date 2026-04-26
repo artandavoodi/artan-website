@@ -27,8 +27,8 @@
   min-width: var(--toggle-width);
   height: var(--toggle-height);
   min-height: var(--toggle-height);
-  padding:0;
-  border: 0;
+  padding:var(--spacing-none);
+  border: var(--spacing-none);
   background: transparent;
   color:var(--text-color);
   -webkit-tap-highlight-color: transparent;
@@ -60,12 +60,8 @@
   border-radius: var(--toggle-radius);
   background: var(--toggle-track-bg-off);
   overflow: hidden;
-  box-shadow:inset 0 0 0 0.0625rem color-mix(in srgb, var(--text-primary-color) 7%, transparent);
-  transition:
-    background-color var(--toggle-transition-duration) var(--toggle-transition-ease),
-    border-color var(--toggle-transition-duration) var(--toggle-transition-ease),
-    box-shadow var(--toggle-transition-duration) var(--toggle-transition-ease),
-    opacity var(--toggle-transition-duration) var(--toggle-transition-ease);
+  box-shadow:inset var(--spacing-none) var(--spacing-none) var(--spacing-none) var(--border-width-hairline) color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  transition:var(--interaction-transition-control);
 }
 
 /* =============================================================================
@@ -80,14 +76,11 @@
   display: block;
   width: var(--toggle-thumb-size);
   height: var(--toggle-thumb-size);
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   background: var(--toggle-thumb-bg);
   box-shadow: var(--toggle-thumb-shadow);
-  transform: translate(0, -50%);
-  transition:
-    transform var(--toggle-transition-duration) var(--toggle-transition-ease),
-    box-shadow var(--toggle-transition-duration) var(--toggle-transition-ease),
-    width var(--toggle-transition-duration) var(--toggle-transition-ease);
+  transform: translate(var(--spacing-none), -50%);
+  transition:var(--interaction-transition-control);
 }
 
 /* =============================================================================
@@ -97,15 +90,15 @@
 .na-toggle:hover .na-toggle__track,
 .ui-toggle:hover .ui-toggle__track{
   border-color:var(--toggle-track-border-hover-color);
-  box-shadow:inset 0 0 0 0.0625rem color-mix(in srgb, var(--text-primary-color) 11%, transparent);
+  box-shadow:inset var(--spacing-none) var(--spacing-none) var(--spacing-none) var(--border-width-hairline) color-mix(in srgb, var(--text-primary-color) 11%, transparent);
 }
 
 [data-na-toggle]:focus-visible [data-na-toggle-track],
 .na-toggle:focus-visible .na-toggle__track,
 .ui-toggle:focus-visible .ui-toggle__track{
   box-shadow:
-    inset 0 0 0 0.0625rem color-mix(in srgb, var(--text-primary-color) 10%, transparent),
-    0 0 0 var(--toggle-focus-ring-width) var(--toggle-focus-ring-color);
+    inset var(--spacing-none) var(--spacing-none) var(--spacing-none) var(--border-width-hairline) color-mix(in srgb, var(--text-primary-color) 10%, transparent),
+    var(--spacing-none) var(--spacing-none) var(--spacing-none) var(--toggle-focus-ring-width) var(--toggle-focus-ring-color);
 }
 
 [data-na-toggle][aria-checked="true"] [data-na-toggle-track],
@@ -138,7 +131,7 @@
 [data-na-toggle]:active [data-na-toggle-thumb],
 .na-toggle:active .na-toggle__thumb,
 .ui-toggle:active .ui-toggle__thumb{
-  width:calc(var(--toggle-thumb-size) + 0.1875rem);
+  width:calc(var(--toggle-thumb-size) + var(--spacing-2xs));
 }
 
 /* =============================================================================

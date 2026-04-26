@@ -21,14 +21,14 @@
    02) ROOT TOKENS
 ============================================================================= */
 :root{
-  --account-sign-up-surface:color-mix(in srgb, var(--surface-color) 82%, transparent);
-  --account-sign-up-border: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
+  --account-sign-up-surface:var(--panel-surface-unified);
+  --account-sign-up-border:var(--panel-border-unified);
   --account-sign-up-muted: color-mix(in srgb, var(--text-secondary-color) 86%, transparent);
   --account-sign-up-shell-inner-shadow: inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --account-sign-up-shell-highlight: linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
   --account-sign-up-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-sign-up-primary-shadow:0 18px 44px color-mix(in srgb, var(--shadow-color, #000000) 6%, transparent);
-  --account-sign-up-section-gap: 1.22rem;
+  --account-sign-up-primary-shadow:var(--panel-shadow-unified);
+  --account-sign-up-section-gap:var(--account-sign-up-content-gap-md);
   --account-sign-up-content-max-width: var(--account-control-width-max);
   --account-sign-up-content-max-width-wide: var(--account-control-width-max-wide);
   --account-sign-up-content-gap-xs: var(--account-content-gap-xs);
@@ -36,31 +36,31 @@
   --account-sign-up-content-gap-md: var(--account-content-gap-md);
   --account-sign-up-content-gap-lg: var(--account-content-gap-lg);
   --account-sign-up-content-gap-xl: var(--account-content-gap-xl);
-  --account-sign-up-content-stage-padding-inline: 4.8rem;
-  --account-sign-up-content-stage-padding-inline-mobile: 1.8rem;
+  --account-sign-up-content-stage-padding-inline:var(--space-9);
+  --account-sign-up-content-stage-padding-inline-mobile:var(--radius-2xl);
   --account-sign-up-form-gap: var(--account-sign-up-content-gap-md);
   --account-sign-up-field-group-gap: var(--account-sign-up-content-gap-xs);
   --account-sign-up-actions-gap: var(--account-sign-up-content-gap-md);
   --account-sign-up-divider-gap: var(--account-sign-up-content-gap-lg);
-  --account-sign-up-divider-padding-inline: 12px;
+  --account-sign-up-divider-padding-inline:var(--space-3);
   --account-sign-up-secondary-actions-gap: var(--account-sign-up-content-gap-sm);
-  --account-sign-up-note-size: 1rem;
-  --account-sign-up-note-size-mobile: 0.94rem;
+  --account-sign-up-note-size:var(--control-font-size);
+  --account-sign-up-note-size-mobile:var(--type-body-sm-size);
   --account-sign-up-label-size: 0.88rem;
   --account-sign-up-action-label-size: 0.94rem;
   --account-sign-up-divider-label-size: 0.82rem;
   --account-sign-up-text-action-size: 0.82rem;
-  --account-sign-up-motion-fast:180ms;
-  --account-sign-up-motion-medium:220ms;
+  --account-sign-up-motion-fast:var(--interaction-motion-fast);
+  --account-sign-up-motion-medium:var(--interaction-motion-medium);
   --account-sign-up-action-text:var(--text-primary-color);
-  --account-sign-up-action-border:var(--control-border);
-  --account-sign-up-action-hover-border:var(--control-border-strong);
-  --account-sign-up-action-hover-bg:var(--control-bg);
-  --account-sign-up-action-hover-opacity:0.92;
+  --account-sign-up-action-border:var(--control-border-unified);
+  --account-sign-up-action-hover-border:var(--control-border-hover-unified);
+  --account-sign-up-action-hover-bg:var(--control-surface-hover);
+  --account-sign-up-action-hover-opacity:var(--state-opacity-high);
   --account-sign-up-accent-hover:var(--color-primary1);
 
   --account-sign-up-button-height: var(--account-button-height);
-  --account-sign-up-button-radius: var(--account-button-radius);
+  --account-sign-up-button-radius:var(--shape-control-radius);
   --account-sign-up-button-padding-x: var(--account-button-padding-x);
   --account-sign-up-button-font-size: var(--account-button-font-size);
   --account-sign-up-button-font-weight: var(--account-button-font-weight);
@@ -77,7 +77,7 @@
   --account-sign-up-field-letter-spacing: var(--account-field-letter-spacing);
 
   --account-sign-up-provider-button-height: var(--account-provider-button-height);
-  --account-sign-up-provider-button-radius: var(--account-provider-button-radius);
+  --account-sign-up-provider-button-radius:var(--shape-control-radius);
   --account-sign-up-provider-button-padding-x: var(--account-provider-button-padding-x);
 
   --account-sign-up-text-action-font-size: var(--account-text-action-font-size);
@@ -98,22 +98,22 @@
 }
 
 html[data-theme-effective="light"]{
-  --account-sign-up-surface:color-mix(in srgb, var(--surface-color) 88%, transparent);
+  --account-sign-up-surface:var(--panel-surface-unified);
   --account-sign-up-shell-inner-shadow:inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 3%, transparent);
   --account-sign-up-shell-highlight:linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 2.2%, transparent) 0%, transparent 22%);
   --account-sign-up-header-divider: color-mix(in srgb, var(--text-primary-color) 6%, transparent);
-  --account-sign-up-primary-shadow:0 18px 44px color-mix(in srgb, var(--shadow-color, #000000) 5%, transparent);
+  --account-sign-up-primary-shadow:var(--panel-shadow-unified);
   --account-sign-up-input-border: color-mix(in srgb, var(--text-primary-color) 10%, transparent);
   --account-sign-up-input-focus: color-mix(in srgb, var(--text-primary-color) 18%, transparent);
   --account-sign-up-divider-line:color-mix(in srgb, var(--text-primary-color) 16%, transparent);
 }
 
 html[data-theme-effective="dark"]{
-  --account-sign-up-surface:color-mix(in srgb, var(--surface-color) 82%, transparent);
+  --account-sign-up-surface:var(--panel-surface-unified);
   --account-sign-up-shell-inner-shadow:inset -1px 0 0 color-mix(in srgb, var(--text-primary-color) 4%, transparent);
   --account-sign-up-shell-highlight:linear-gradient(180deg, color-mix(in srgb, var(--text-primary-color) 3%, transparent) 0%, transparent 22%);
   --account-sign-up-header-divider: color-mix(in srgb, var(--text-primary-color) 8%, transparent);
-  --account-sign-up-primary-shadow:0 18px 44px color-mix(in srgb, var(--shadow-color, #000000) 18%, transparent);
+  --account-sign-up-primary-shadow:var(--panel-shadow-unified);
   --account-sign-up-divider-line:color-mix(in srgb, var(--text-primary-color) 16%, transparent);
 }
 
@@ -127,7 +127,7 @@ html[data-theme-effective="dark"]{
 ============================================================================= */
 
 .account-sign-up-drawer{
-  width: 100%;
+  width: var(--size-full);
 }
 
 .account-drawer-view-mount .account-sign-up-drawer,
@@ -136,16 +136,16 @@ html[data-theme-effective="dark"]{
 }
 
 .account-sign-up-drawer-header-brand-mark{
-  width: 100%;
+  width: var(--size-full);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 0 var(--account-sign-up-header-brand-margin-bottom) 0;
+  margin: var(--spacing-none) var(--spacing-none) var(--account-sign-up-header-brand-margin-bottom) var(--spacing-none);
 }
  
 .account-sign-up-drawer-header-brand-icon{
-  width: 2.4rem;
-  height: 2.4rem;
+  width: var(--close-control-size);
+  height: var(--close-control-size);
   display: block;
   object-fit: contain;
 }
@@ -159,15 +159,15 @@ html[data-theme-effective="dark"]{
 
 .account-sign-up-drawer-note,
 .account-sign-up-drawer-label{
-  margin: 0;
+  margin: var(--spacing-none);
   color: var(--account-sign-up-muted);
-  letter-spacing: -0.015em;
+  letter-spacing: var(--type-body-tracking);
 }
 
 .account-sign-up-drawer-note{
   font-size: var(--account-sign-up-note-size);
-  font-weight: 300;
-  line-height: 1.62;
+  font-weight: var(--type-body-regular-weight);
+  line-height: var(--type-body-sm-line-height);
   text-align: center;
 }
 
@@ -179,7 +179,7 @@ html[data-theme-effective="dark"]{
 }
 
 .account-sign-up-drawer-center-stage{
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-up-content-max-width);
   margin-inline: auto;
   display: flex;
@@ -191,9 +191,9 @@ html[data-theme-effective="dark"]{
    05) FORM
 ============================================================================= */
 .account-sign-up-drawer-form{
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-up-content-max-width);
-  margin: 0 auto;
+  margin: var(--spacing-none) auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -202,7 +202,7 @@ html[data-theme-effective="dark"]{
 }
 
 .account-sign-up-drawer-field-group{
-  width: 100%;
+  width: var(--size-full);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -212,25 +212,25 @@ html[data-theme-effective="dark"]{
 
 .account-sign-up-drawer-label{
   font-size: var(--account-sign-up-label-size);
-  font-weight: 400;
-  line-height: 1.4;
+  font-weight: var(--type-body-regular-weight);
+  line-height: var(--type-body-sm-line-height);
 }
 
 .account-sign-up-drawer-input{
-  width: 100%;
+  width: var(--size-full);
   height: var(--account-sign-up-field-height);
-  padding: 0 var(--account-sign-up-field-padding-x);
+  padding: var(--spacing-none) var(--account-sign-up-field-padding-x);
   box-sizing: border-box;
-  border: 1px solid var(--account-sign-up-input-border);
+  border: var(--border-width-hairline) solid var(--account-sign-up-input-border);
   border-radius: var(--account-sign-up-field-radius);
   background: var(--account-sign-up-input-surface);
   color: var(--text-primary-color);
   font-size: var(--account-sign-up-field-font-size);
-  font-weight: 400;
+  font-weight: var(--type-body-regular-weight);
   line-height: var(--account-sign-up-field-line-height);
   letter-spacing: var(--account-sign-up-field-letter-spacing);
   outline: none;
-  transition:border-color var(--account-sign-up-motion-fast) ease, background-color var(--account-sign-up-motion-fast) ease, color var(--account-sign-up-motion-fast) ease;
+  transition:var(--interaction-transition-control);
   appearance: none;
 }
 
@@ -251,7 +251,7 @@ html[data-theme-effective="dark"]{
   align-items: stretch;
   justify-content: flex-start;
   gap: var(--account-sign-up-actions-gap);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-up-content-max-width);
   margin-inline: auto;
 }
@@ -263,22 +263,22 @@ html[data-theme-effective="dark"]{
   align-items: center;
   justify-content: center;
   height: var(--account-sign-up-button-height);
-  padding: 0 var(--account-sign-up-button-padding-x);
+  padding: var(--spacing-none) var(--account-sign-up-button-padding-x);
   box-sizing: border-box;
-  border:1px solid var(--account-sign-up-action-border);
+  border:var(--border-width-hairline) solid var(--account-sign-up-action-border);
   border-radius:var(--account-sign-up-button-radius);
-  background:transparent;
+  background:var(--control-surface);
   color:var(--account-sign-up-action-text);
   text-decoration: none;
-  transition:opacity var(--account-sign-up-motion-fast) ease, border-color var(--account-sign-up-motion-fast) ease, background-color var(--account-sign-up-motion-fast) ease, color var(--account-sign-up-motion-fast) ease;
+  transition:var(--interaction-transition-control);
 }
 
 .account-sign-up-drawer-action-label{
-  margin: 0;
+  margin: var(--spacing-none);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: var(--size-full);
   height: var(--account-sign-up-button-height);
   color:var(--account-sign-up-action-text);
   font-size: var(--account-sign-up-button-font-size);
@@ -304,7 +304,7 @@ html[data-theme-effective="dark"]{
   align-items: center;
   justify-content: center;
   gap: var(--account-sign-up-divider-gap);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-up-content-max-width);
   margin-inline: auto;
   align-self: stretch;
@@ -314,17 +314,17 @@ html[data-theme-effective="dark"]{
 
 .account-sign-up-drawer-divider-line{
   flex: 1 1 0;
-  min-width: 0;
-  height: 1px;
+  min-width: var(--spacing-none);
+  height: var(--border-width-hairline);
   background: var(--account-sign-up-divider-line);
 }
 
 .account-sign-up-drawer-divider-label{
   color: var(--account-sign-up-muted);
   font-size: var(--account-sign-up-divider-label-size);
-  font-weight: 400;
-  letter-spacing: -0.012em;
-  line-height: 1;
+  font-weight: var(--type-body-regular-weight);
+  letter-spacing: var(--type-body-tracking);
+  line-height: var(--control-line-height);
   text-align: center;
   text-transform: lowercase;
 }
@@ -338,7 +338,7 @@ html[data-theme-effective="dark"]{
   align-items: center;
   justify-content: flex-start;
   gap: var(--account-sign-up-secondary-actions-gap);
-  width: 100%;
+  width: var(--size-full);
   max-width: var(--account-sign-up-content-max-width);
   margin-inline: auto;
 }
@@ -348,14 +348,14 @@ html[data-theme-effective="dark"]{
   color: var(--text-primary-color);
   text-decoration: underline;
   text-decoration-color: currentColor;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: var(--border-width-hairline);
   text-underline-offset: 0.14em;
   text-decoration-skip-ink: auto;
   font-size: var(--account-sign-up-text-action-font-size);
-  font-weight: 400;
+  font-weight: var(--type-body-regular-weight);
   letter-spacing: var(--account-sign-up-text-action-letter-spacing);
   line-height: var(--account-sign-up-text-action-line-height);
-  transition:color var(--account-sign-up-motion-medium) ease, text-decoration-color var(--account-sign-up-motion-medium) ease, opacity var(--account-sign-up-motion-medium) ease;
+  transition:color var(--account-sign-up-motion-medium) var(--interaction-ease-standard), text-decoration-color var(--account-sign-up-motion-medium) var(--interaction-ease-standard), opacity var(--account-sign-up-motion-medium) var(--interaction-ease-standard);
 }
 
 .account-sign-up-drawer-text-action:hover,
@@ -376,13 +376,13 @@ html[data-theme-effective="dark"]{
   min-width: var(--account-sign-up-back-control-size);
   height: var(--account-sign-up-back-control-size);
   min-height: var(--account-sign-up-back-control-size);
-  padding: 0;
-  border: 0;
+  padding: var(--spacing-none);
+  border: var(--spacing-none);
   background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: var(--space-4);
 }
 
 .account-sign-up-drawer-back-icon{
@@ -415,5 +415,9 @@ html[data-theme-effective="dark"]{
 
   .account-sign-up-drawer-header-brand-mark{
     margin-bottom: var(--account-sign-up-header-brand-margin-bottom-mobile);
+  }
+
+  .account-sign-up-drawer-note{
+    font-size:var(--account-sign-up-note-size-mobile);
   }
 }

@@ -24,7 +24,7 @@
   --home-matte-blur: 20px;
   --home-matte-saturate: 1.1;
   --home-matte-transition-duration: 0.95s;
-  --home-matte-transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --home-matte-transition-ease: var(--interaction-ease-standard);
 
   --home-matte-opacity-top-light: 0.74;
   --home-matte-opacity-mid-light: 0.70;

@@ -85,8 +85,8 @@
   background-clip:text;
   animation:home-stage-interactive-text-sheen var(--home-stage-interactive-text-sheen-duration) linear infinite;
   transition:
-    opacity var(--home-stage-interactive-text-motion-fast) ease,
-    transform var(--home-stage-interactive-text-motion-fast) ease;
+    opacity var(--home-stage-interactive-text-motion-fast) var(--interaction-ease-standard),
+    transform var(--home-stage-interactive-text-motion-fast) var(--interaction-ease-standard);
 }
 
 /* =============================================================================
@@ -97,7 +97,7 @@
   grid-area:1 / 1;
   width:var(--home-stage-interactive-text-dot-size);
   height:var(--home-stage-interactive-text-dot-size);
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   background:var(--home-stage-interactive-text-dot-color);
   box-shadow:var(--home-stage-interactive-text-dot-glow);
   opacity:0;
@@ -122,7 +122,7 @@
 
 .home-stage-interactive-text[data-home-stage-interactive-text-switch="dot"] .home-stage-interactive-text__dot{
   display:block;
-  animation:home-stage-interactive-text-dot-breathe var(--home-stage-interactive-text-switch-duration) ease-in-out infinite;
+  animation:home-stage-interactive-text-dot-breathe var(--home-stage-interactive-text-switch-duration) var(--interaction-ease-standard) infinite;
 }
 
 @keyframes home-stage-interactive-text-sheen{

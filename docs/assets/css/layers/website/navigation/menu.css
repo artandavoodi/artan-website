@@ -35,7 +35,7 @@
   --menu-fg-muted:var(--text-secondary-color);
   --menu-accent: var(--color-primary1);
 
-  --menu-border-color:var(--menu-border, var(--control-border));
+  --menu-border-color:var(--menu-border, var(--control-border-unified));
   --menu-separator-color:var(--menu-sep, color-mix(in srgb, var(--menu-fg) 12%, transparent));
 
   --menu-glass:var(--menu-surface, color-mix(in srgb, var(--menu-bg) 52%, transparent));
@@ -69,7 +69,7 @@
   --menu-close-hover-color:var(--menu-accent);
   --menu-open-line-hover-color:var(--menu-accent);
   --menu-motion-line-fast:var(--nav-menu-motion-line-fast);
-  --menu-motion-overlay:var(--nav-menu-motion-overlay);
+  --menu-motion-overlay:var(--overlay-motion-duration);
   --menu-motion-filter:var(--nav-menu-motion-filter);
   --menu-motion-color:var(--nav-menu-motion-color);
   --menu-motion-background:var(--nav-menu-motion-background);
@@ -138,8 +138,8 @@
   --menu-close-opacity:var(--nav-menu-close-opacity);
   --menu-close-duration:var(--nav-menu-close-duration);
   --menu-close-hover-scale:var(--nav-menu-close-hover-scale);
-  --menu-opacity-hidden:var(--nav-menu-opacity-hidden);
-  --menu-opacity-visible:var(--nav-menu-opacity-visible);
+  --menu-opacity-hidden:var(--overlay-opacity-closed);
+  --menu-opacity-visible:var(--overlay-opacity-open);
   --menu-control-opacity:var(--nav-menu-control-opacity);
   --menu-control-active-opacity:var(--nav-menu-control-active-opacity);
   --menu-logo-opacity:var(--nav-menu-logo-opacity);
@@ -162,13 +162,13 @@
 ============================================================================= */
 
 #menu-overlay .menu-overlay-inner{
-  opacity:var(--state-opacity-idle);
+  opacity:var(--overlay-opacity-closed);
   transform:translateY(var(--menu-overlay-enter-y));
   transition:transform var(--menu-overlay-enter-duration) var(--menu-hover-ease), opacity var(--menu-overlay-enter-opacity-duration) ease;
 }
-#menu-overlay.active .menu-overlay-inner{ opacity:var(--state-opacity-selected); transform:translateY(0); }
+#menu-overlay.active .menu-overlay-inner{ opacity:var(--overlay-opacity-open); transform:translateY(var(--spacing-none)); }
 #menu-overlay.closing .menu-overlay-inner{
-  opacity:var(--state-opacity-idle);
+  opacity:var(--overlay-opacity-closed);
   transform:translateY(var(--menu-overlay-exit-y));
   transition:transform var(--menu-overlay-exit-duration) var(--menu-hover-ease), opacity var(--menu-overlay-exit-opacity-duration) ease;
 }
@@ -180,7 +180,7 @@ body.menu-active{ overflow: hidden; }
 /* Reveal rail items (separators + lanes) */
 #menu-overlay .menu-col-b-section-b .menu-sep,
 #menu-overlay .menu-col-b-section-b .menu-item{
-  opacity:var(--state-opacity-idle);
+  opacity:var(--overlay-opacity-closed);
   transform: none !important; /* prevent baseline drift / uneven top-bottom gaps */
   transition:opacity var(--menu-rail-reveal-duration) ease;
   will-change: opacity;
@@ -195,7 +195,7 @@ body.menu-active{ overflow: hidden; }
 
 #menu-overlay .menu-col-b-section-b .menu-sep.menu-animate-out,
 #menu-overlay .menu-col-b-section-b .menu-item.menu-animate-out{
-  opacity:var(--state-opacity-idle);
+  opacity:var(--overlay-opacity-closed);
   transform: none !important;
 }
 
@@ -212,7 +212,7 @@ body.menu-active{ overflow: hidden; }
   width:var(--menu-button-container-size);height:var(--menu-button-container-size);display:flex;justify-content:center;align-items:center;position:relative;order:1;
 }
 #menu-button{
-  position:relative;width:var(--menu-button-size);height:var(--menu-button-size);background:transparent;border:none;border-radius:50%;
+  position:relative;width:var(--menu-button-size);height:var(--menu-button-size);background:transparent;border:none;border-radius:var(--shape-icon-button-radius);
   display:flex;justify-content:center;align-items:center;transform-origin:center;
 }
 #menu-button .line{
@@ -246,8 +246,8 @@ body.menu-active{ overflow: hidden; }
 
 #menu-overlay.menu-overlay{
   position: fixed;
-  inset: 0;
-  z-index: 99999;
+  inset: var(--spacing-none);
+  z-index: var(--z-overlay-modal);
   display: none;
 
   color: var(--menu-fg);
@@ -267,7 +267,7 @@ body.menu-active{ overflow: hidden; }
   backdrop-filter:blur(var(--dialog-overlay-backdrop-blur));
   -webkit-backdrop-filter:blur(var(--dialog-overlay-backdrop-blur));
 
-  transition:opacity var(--menu-motion-overlay) ease, visibility var(--menu-motion-overlay) ease, color var(--menu-motion-overlay) ease;
+  transition:opacity var(--menu-motion-overlay) var(--overlay-motion-ease), visibility var(--menu-motion-overlay) var(--overlay-motion-ease), color var(--menu-motion-overlay) var(--overlay-motion-ease);
 }
 
 #menu-overlay.menu-overlay.is-open[aria-hidden="false"],
@@ -321,21 +321,21 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 #menu-overlay *{ box-sizing: border-box; }
 
 #menu-overlay img,
-#menu-overlay svg{ max-width: 100%; height: auto; }
+#menu-overlay svg{ max-width: var(--size-full); height: auto; }
 
 /* Screen-reader only (used to keep preview titles accessible while icons are visible) */
 .sr-only,
 #menu-overlay .sr-only{
   position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
+  width: var(--border-width-hairline) !important;
+  height: var(--border-width-hairline) !important;
+  padding: var(--spacing-none) !important;
+  margin: calc(var(--border-width-hairline) * -1) !important;
   overflow: hidden !important;
   clip: rect(0,0,0,0) !important;
   clip-path: inset(50%) !important;
   white-space: nowrap !important;
-  border: 0 !important;
+  border: var(--spacing-none) !important;
 }
 
 #menu-overlay .menu-typo-logo,
@@ -351,11 +351,11 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 ============================================================================= */
 
 #menu-overlay .menu-overlay-inner{
-  width: 100vw;
-  height: 100vh;
+  width: var(--viewport-width, 100vw);
+  height: var(--viewport-height, 100vh);
 
   border: none;
-  border-radius: 0;
+  border-radius: var(--radius-none);
   background: transparent;
 
   display: grid;
@@ -365,29 +365,29 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 
   position: relative;
 
-  --menu-vline-height: 100%;
+  --menu-vline-height: var(--size-full);
 }
 
 #menu-overlay .menu-wrapper{
   grid-column: 1 / -1;
   grid-row: 1;
-  height: 100%;
-  width: 100%;
+  height: var(--size-full);
+  width: var(--size-full);
   position: relative;
 }
 
 /* Wrapper-level pack toggle (must sit on the true viewport edge) */
 #menu-overlay .menu-pack-toggle{
   position: fixed;
-  left: 0;
+  left: var(--spacing-none);
   top: 50%;
   transform: translateY(-50%);
 
   width:var(--menu-pack-toggle-size);
   height:var(--menu-pack-toggle-size);
 
-  margin: 0;
-  padding: 0;
+  margin: var(--spacing-none);
+  padding: var(--spacing-none);
 
   border: none;
   background: transparent;
@@ -410,8 +410,8 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
   width:var(--menu-pack-toggle-icon-size);
   height:var(--menu-pack-toggle-icon-size);
   display: block;
-  margin: 0;
-  padding: 0;
+  margin: var(--spacing-none);
+  padding: var(--spacing-none);
   filter: var(--menu-icon-filter);
 
   transform: translateX(var(--menu-pack-toggle-nudge)) scale(1);
@@ -432,14 +432,14 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 
 /* Two main columns */
 #menu-overlay .menu-columns{
-  height: 100%;
-  width: 100%;
+  height: var(--size-full);
+  width: var(--size-full);
 
   display: grid;
   grid-template-columns: max-content 1fr;
   align-items: stretch;
 
-  column-gap: 0;
+  column-gap: var(--spacing-none);
 
   padding: var(--menu-vpad) var(--menu-gutter);
 }
@@ -449,10 +449,10 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 ============================================================================= */
 
 #menu-overlay .menu-col-a{
-  height: 100%;
+  height: var(--size-full);
   display: grid;
 
-  grid-template-columns: max-content 1px minmax(0, 1fr);
+  grid-template-columns: max-content var(--border-width-hairline) minmax(var(--spacing-none), 1fr);
   align-items: stretch;
 
   column-gap: var(--menu-g1);
@@ -460,7 +460,7 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 }
 
 #menu-overlay .menu-col-a-sep{
-  width: 1px;
+  width: var(--border-width-hairline);
   height: var(--menu-vline-height);
   align-self: center;
   background: var(--menu-separator-color);
@@ -468,7 +468,7 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 }
 
 #menu-overlay .menu-col-a-section-a{
-  height: 100%;
+  height: var(--size-full);
   display: grid;
   grid-template-rows: auto 1fr auto;
 
@@ -478,7 +478,7 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
   width: max-content;
   justify-self: start;
 
-  padding: 0;
+  padding: var(--spacing-none);
 }
 
 #menu-overlay .menu-controls{
@@ -555,7 +555,7 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
   content: "";
   width:var(--menu-theme-toggle-dot-size);
   height:var(--menu-theme-toggle-dot-size);
-  border-radius: 999px;
+  border-radius: var(--shape-control-radius);
   background: currentColor;
   opacity:var(--menu-control-active-opacity);
   display: block;
@@ -586,7 +586,7 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
   align-self: center;
   justify-self: center;
 
-  margin: 0;
+  margin: var(--spacing-none);
   width: fit-content;
   min-height:var(--menu-pack-split-min-height);
 
@@ -623,7 +623,7 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 }
 
 #menu-overlay #menu-pack-music{
-  opacity:var(--state-opacity-selected);
+  opacity:var(--overlay-opacity-open);
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
@@ -631,7 +631,7 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 }
 
 #menu-overlay #menu-pack-social{
-  opacity:var(--state-opacity-idle);
+  opacity:var(--overlay-opacity-closed);
   visibility: hidden;
   transform: translateY(0);
   pointer-events: none;
@@ -644,7 +644,7 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 #menu-overlay .menu-wrapper[data-pack-state="social"] #menu-pack-music,
 #menu-overlay .menu-pack-toggle.is-social ~ .menu-columns #menu-pack-music,
 #menu-overlay .menu-pack-toggle[aria-pressed="true"] ~ .menu-columns #menu-pack-music{
-  opacity:var(--state-opacity-idle);
+  opacity:var(--overlay-opacity-closed);
   visibility: hidden;
   transform:translateY(var(--menu-pack-shift-y));
   pointer-events: none;
@@ -657,7 +657,7 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 #menu-overlay .menu-wrapper[data-pack-state="social"] #menu-pack-social,
 #menu-overlay .menu-pack-toggle.is-social ~ .menu-columns #menu-pack-social,
 #menu-overlay .menu-pack-toggle[aria-pressed="true"] ~ .menu-columns #menu-pack-social{
-  opacity:var(--state-opacity-selected);
+  opacity:var(--overlay-opacity-open);
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
@@ -677,15 +677,15 @@ body.menu-active .stage-circle{ opacity:var(--menu-opacity-hidden) !important; f
 }
 
 #menu-overlay .menu-col-a-section-b{
-  height: 100%;
+  height: var(--size-full);
   display: grid;
   grid-template-rows: auto 1fr;
 
   align-items: start;
   justify-items: start;
 
-  padding: 0;
-  min-width: 0;
+  padding: var(--spacing-none);
+  min-width: var(--spacing-none);
   justify-self: start;
 }
 
@@ -827,7 +827,7 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 ============================================================================= */
 
 #menu-overlay .menu-col-b{
-  height: 100%;
+  height: var(--size-full);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 460px);
   align-items: stretch;
@@ -835,7 +835,7 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 }
 
 #menu-overlay .menu-col-b-section-a{
-  height: 100%;
+  height: var(--size-full);
   display: grid;
 
   align-items: end;
@@ -846,7 +846,7 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
   padding-bottom: 0;
   margin-bottom: 0;
 
-  min-width: 0;
+  min-width: var(--spacing-none);
   overflow: hidden;
 
   transform: translateX(0);
@@ -855,11 +855,11 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 
 #menu-overlay .menu-preview-title,
 #menu-overlay .menu-preview-sub{
-  min-width: 0;
-  max-width: 100%;
+  min-width: var(--spacing-none);
+  max-width: var(--size-full);
   overflow-wrap: anywhere;
-  margin-bottom: 0;
-  padding-bottom: 0;
+  margin-bottom: var(--spacing-none);
+  padding-bottom: var(--spacing-none);
 }
 
 /* Preview title becomes icon-led (text remains via .sr-only in HTML) */
@@ -886,8 +886,8 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 
 /* Section B (rail) — rotated as a block; children keep their own layout */
 #menu-overlay .menu-col-b-section-b{
-  height: 100%;
-  width: 100%;
+  height: var(--size-full);
+  width: var(--size-full);
 
   display: flex;
   align-items: stretch;
@@ -923,11 +923,11 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 
 #menu-overlay .menu-col-b-section-b .menu-list{
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: var(--spacing-none);
+  padding: var(--spacing-none);
 
-  height: 100%;
-  width: 100%;
+  height: var(--size-full);
+  width: var(--size-full);
 
   display: flex;
   align-items: stretch;
@@ -935,8 +935,8 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 }
 
 #menu-overlay .menu-col-b-section-b .menu-list .menu-sep{
-  flex: 0 0 1px;
-  height: 100%;
+  flex: 0 0 var(--border-width-hairline);
+  height: var(--size-full);
   background: var(--menu-separator-color);
   align-self: stretch;
   opacity: inherit;
@@ -945,7 +945,7 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 
 #menu-overlay .menu-col-b-section-b .menu-list .menu-item{
   position: relative;
-  height: 100%;
+  height: var(--size-full);
 
   /* Breathing lanes: flex expansion drives separator “movement” */
   flex:var(--menu-rail-flex-base);
@@ -970,8 +970,8 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 */
 #menu-overlay .menu-col-b-section-b .menu-link{
   position: absolute;
-  inset: 0;
-  height: 100%;
+  inset: var(--spacing-none);
+  height: var(--size-full);
 
   display: flex;
   align-items: center;
@@ -992,7 +992,7 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
   color: currentColor;
   line-height:var(--menu-rail-link-line-height);
 
-  opacity:var(--state-opacity-idle);
+  opacity:var(--overlay-opacity-closed);
 
   /* LOCKED LABEL ORIENTATION — DO NOT TOUCH */
   transform: rotate(180deg) scale(1);
@@ -1013,13 +1013,13 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 #menu-overlay .menu-link-icon{ display: none; }
 
 #menu-overlay .menu-col-b-section-b .menu-item.menu-animate-in .menu-link{ opacity:var(--menu-rail-link-opacity); }
-#menu-overlay .menu-col-b-section-b .menu-item.menu-animate-out .menu-link{ opacity:var(--state-opacity-idle); }
+#menu-overlay .menu-col-b-section-b .menu-item.menu-animate-out .menu-link{ opacity:var(--overlay-opacity-closed); }
 
 #menu-overlay .menu-col-b-section-b .menu-item:hover .menu-link,
 #menu-overlay .menu-col-b-section-b .menu-link:hover,
 #menu-overlay .menu-col-b-section-b .menu-link:focus-visible{
   transform:rotate(180deg) scale(var(--menu-rail-link-hover-scale));
-  opacity:var(--state-opacity-selected);
+  opacity:var(--overlay-opacity-open);
 }
 
 /* =============================================================================
@@ -1132,9 +1132,9 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 
   width:var(--menu-close-size);
   height:var(--menu-close-size);
-  border-radius: 999px;
+  border-radius: var(--shape-icon-button-radius);
 
-  border: 1px solid var(--menu-border-color);
+  border: var(--border-width-hairline) solid var(--menu-border-color);
   background: transparent;
   color: var(--menu-fg);
 
@@ -1143,12 +1143,12 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
 
   opacity:var(--menu-close-opacity);
 
-  transition:opacity var(--menu-close-duration) ease, transform var(--menu-close-duration) ease, border-color var(--menu-close-duration) ease;
+  transition:var(--interaction-transition-control);
 }
 
 #menu-overlay .menu-close:hover{
   transform:translateX(-50%) scale(var(--menu-close-hover-scale));
-  opacity:var(--state-opacity-selected);
+  opacity:var(--overlay-opacity-open);
   border-color:color-mix(in srgb, var(--menu-close-hover-color) 55%, var(--menu-border-color));
 }
 
@@ -1181,7 +1181,7 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
   }
 
   #menu-overlay .menu-pack-toggle{
-    left: 0;
+    left: var(--spacing-none);
     top: 50%;
     transform: translateY(-50%);
     width:var(--menu-pack-toggle-size);
@@ -1194,7 +1194,7 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
     gap:var(--menu-mobile-col-gap);
   }
   #menu-overlay .menu-col-a-sep{ display: none; }
-  #menu-overlay .menu-col-a-section-b{ padding-left: 0; }
+  #menu-overlay .menu-col-a-section-b{ padding-left: var(--spacing-none); }
 
   #menu-overlay .menu-packs-split{ padding-top:var(--menu-mobile-pack-padding-top); min-height:var(--menu-mobile-pack-min-height); }
 
@@ -1202,7 +1202,7 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
     grid-template-columns: 1fr;
     gap:var(--menu-mobile-col-gap);
   }
-  #menu-overlay .menu-col-b-section-a{ padding-right: 0; }
+  #menu-overlay .menu-col-b-section-a{ padding-right: var(--spacing-none); }
 
   /* On mobile: rail is normal, readable, no rotation */
   #menu-overlay .menu-col-b-section-b{ transform: none; }
@@ -1215,9 +1215,9 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
   }
 
   #menu-overlay .menu-col-b-section-b .menu-list .menu-sep{
-    width: 100%;
-    height: 1px;
-    flex: 0 0 1px;
+    width: var(--size-full);
+    height: var(--border-width-hairline);
+    flex: 0 0 var(--border-width-hairline);
   }
 
   #menu-overlay .menu-col-b-section-b .menu-list .menu-item{
@@ -1231,15 +1231,15 @@ body.menu-packs-unified #menu-overlay a[href*="github.com"],
     position: relative;
     inset: auto;
     height: auto;
-    width: 100%;
+    width: var(--size-full);
 
     writing-mode: horizontal-tb;
     text-orientation: initial;
 
-    padding: 0;
+    padding: var(--spacing-none);
 
     transform: none;
-    opacity:var(--state-opacity-selected);
+    opacity:var(--overlay-opacity-open);
 
     letter-spacing:var(--menu-mobile-rail-link-tracking);
     justify-content: flex-start;

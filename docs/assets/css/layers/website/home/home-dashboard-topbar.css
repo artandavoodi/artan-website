@@ -34,11 +34,7 @@
   -webkit-backdrop-filter:blur(8px) saturate(120%);
   pointer-events:none;
   z-index:0;
-  transition:
-    background 220ms ease,
-    border-color 220ms ease,
-    opacity 220ms ease,
-    transform 220ms ease;
+  transition:var(--interaction-transition-control);
 }
 
 /* =============================================================================
@@ -72,9 +68,7 @@
   color:var(--text-primary-color);
   text-decoration:none;
   line-height:0;
-  transition:
-    color 220ms ease,
-    opacity 220ms ease;
+  transition:color var(--interaction-motion-medium) var(--interaction-ease-standard), opacity var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 .home-dashboard-topbar__brand:hover,
@@ -150,10 +144,7 @@
   white-space:nowrap;
   font-variation-settings:"wght" 400;
   transform:none !important;
-  transition:
-    color 220ms ease,
-    opacity 220ms ease,
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:color var(--interaction-motion-medium) var(--interaction-ease-standard), opacity var(--interaction-motion-medium) var(--interaction-ease-standard), transform var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 .home-dashboard-topbar__action:hover,
@@ -188,7 +179,7 @@
   object-position:center;
   filter:var(--icon-image-filter, none);
   opacity:0.72;
-  transition:opacity 220ms ease;
+  transition:opacity var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 .home-dashboard-topbar__action:hover .home-dashboard-topbar__icon img,
@@ -233,7 +224,7 @@
   justify-content:center;
   width:1.5rem;
   height:1.5rem;
-  border-radius:999px;
+  border-radius:var(--control-radius-pill);
   overflow:hidden;
   flex:0 0 auto;
   border:1px solid color-mix(in srgb, var(--text-primary-color) 10%, transparent);

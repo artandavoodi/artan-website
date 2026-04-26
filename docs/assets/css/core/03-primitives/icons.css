@@ -53,35 +53,31 @@ html[data-theme-effective="dark"]{
   height:var(--control-height-md);
   min-width:var(--control-height-md);
   min-height:var(--control-height-md);
-  padding:0;
-  border-radius:50%;
-  border:var(--stroke-soft) solid transparent;
+  padding:var(--spacing-none);
+  border-radius:var(--shape-icon-button-radius);
+  border:var(--border-width-hairline) solid transparent;
   background:transparent;
-  color:var(--text-color);
+  color:var(--control-text-unified);
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  transition:
-    background-color var(--duration-base) var(--ease-standard),
-    border-color var(--duration-base) var(--ease-standard),
-    color var(--duration-base) var(--ease-standard),
-    opacity var(--duration-base) var(--ease-standard),
-    transform var(--duration-base) var(--ease-standard);
+  transition:var(--interaction-transition-control);
 }
 
 /* =============================================================================
    04) ICON BUTTON HOVER / FOCUS STATES
 ============================================================================= */
 .ui-icon-button:hover{
-  background:var(--control-bg-hover);
-  border-color:var(--control-border);
+  background:var(--control-surface-hover);
+  border-color:var(--control-border-hover-unified);
+  color:var(--control-text-hover-unified);
   transform:translateY(var(--hover-lift-y));
 }
 
 .ui-icon-button:focus-visible{
   outline:none;
-  border-color:var(--control-border-strong);
-  box-shadow:0 0 0 3px rgba(145,124,111,0.16);
+  border-color:var(--control-border-hover-unified);
+  box-shadow:var(--focus-ring-shadow);
 }
 
 /* =============================================================================

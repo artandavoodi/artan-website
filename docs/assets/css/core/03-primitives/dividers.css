@@ -17,11 +17,11 @@
    02) DIVIDER BASE
 ============================================================================= */
 .ui-divider{
-  width:100%;
-  height:0;
-  border:0;
-  border-top:var(--stroke-soft) solid var(--border-color);
-  margin:0;
+  width:var(--size-full);
+  height:var(--spacing-none);
+  border:var(--spacing-none);
+  border-top:var(--border-width-hairline) solid var(--border-color);
+  margin:var(--spacing-none);
 }
 
 /* =============================================================================
@@ -29,7 +29,7 @@
 ============================================================================= */
 .ui-divider--soft{
   border-top-color:var(--border-color);
-  opacity:0.72;
+  opacity:var(--state-opacity-muted);
 }
 
 /* =============================================================================
@@ -37,19 +37,19 @@
 ============================================================================= */
 .ui-divider--strong{
   border-top-width:var(--stroke-strong);
-  opacity:1;
+  opacity:var(--overlay-opacity-open);
 }
 
 /* =============================================================================
    05) DIVIDER DOT TOKEN HELPER
 ============================================================================= */
 .ui-divider-dot{
-  margin:0 0.55rem;
-  opacity:0.9;
+  margin:var(--spacing-none) var(--control-gap);
+  opacity:var(--state-opacity-high);
   user-select:none;
   display:inline-block;
-  line-height:1;
-  transform:translateY(-0.5px);
+  line-height:var(--control-line-height);
+  transform:translateY(calc(var(--border-width-hairline) * -0.5));
 }
 
 /* =============================================================================

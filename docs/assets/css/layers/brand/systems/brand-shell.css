@@ -28,7 +28,7 @@
   --brand-shell-rail-width: calc(100% - (var(--brand-shell-page-gutter) * 2));
   --brand-shell-section-gap: 2.4rem;
   --brand-shell-block-gap: 1.4rem;
-  --brand-shell-card-radius: 22px;
+  --brand-shell-card-radius: var(--control-radius);
   --brand-shell-card-border: var(--border-color);
   --brand-shell-card-bg: transparent;
 }
@@ -213,7 +213,7 @@
 .brand-note-block{
   padding: 1.2rem 1.25rem;
   border: 1px solid var(--border-color);
-  border-radius: 18px;
+  border-radius: var(--brand-shell-card-radius);
 }
 
 /* =============================================================================

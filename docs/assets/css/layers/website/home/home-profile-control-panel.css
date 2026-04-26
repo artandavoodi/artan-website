@@ -30,7 +30,7 @@
   --home-profile-control-panel-identity-padding-y:var(--layout-home-profile-control-panel-identity-padding-y);
   --home-profile-control-panel-identity-padding-x:var(--layout-home-profile-control-panel-identity-padding-x);
   --home-profile-control-panel-avatar-size:var(--layout-home-profile-control-panel-avatar-size);
-  --home-profile-control-panel-avatar-radius:var(--layout-home-profile-control-panel-avatar-radius);
+  --home-profile-control-panel-avatar-radius:var(--control-radius-pill);
   --home-profile-control-panel-avatar-fallback-size:var(--layout-home-profile-control-panel-avatar-fallback-size);
   --home-profile-control-panel-avatar-fallback-weight:var(--layout-home-profile-control-panel-avatar-fallback-weight);
   --home-profile-control-panel-avatar-fallback-tracking:var(--layout-home-profile-control-panel-avatar-fallback-tracking);
@@ -166,7 +166,7 @@
   justify-content:center;
   width:var(--home-profile-control-panel-avatar-size);
   height:var(--home-profile-control-panel-avatar-size);
-  border-radius:var(--home-profile-control-panel-avatar-radius);
+  border-radius:var(--control-radius-pill);
   overflow:hidden;
 }
 

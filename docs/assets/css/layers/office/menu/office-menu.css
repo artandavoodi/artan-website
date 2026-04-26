@@ -157,7 +157,7 @@
   color: var(--office-menu-text);
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  transition: border-color var(--office-menu-link-motion) ease, opacity var(--office-menu-link-motion) ease, color var(--office-menu-link-motion) ease, background-color var(--office-menu-link-motion) ease;
+  transition:border-color var(--office-menu-link-motion) var(--interaction-ease-standard), opacity var(--office-menu-link-motion) var(--interaction-ease-standard), color var(--office-menu-link-motion) var(--interaction-ease-standard), background-color var(--office-menu-link-motion) var(--interaction-ease-standard);
 }
 
 .office-menu__link {
@@ -208,7 +208,7 @@
   min-height: var(--office-menu-toggle-min-height);
   padding: var(--spacing-none) var(--office-menu-toggle-padding-x);
   border: 1px solid var(--office-menu-border);
-  border-radius: 999px;
+  border-radius: var(--control-radius-pill);
   background: transparent;
   color: var(--office-menu-text);
   font: inherit;

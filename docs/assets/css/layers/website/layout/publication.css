@@ -110,7 +110,7 @@
   border-radius:0;
   border:0;
   background:transparent;
-  transition:opacity .2s ease, transform .2s ease;
+  transition:opacity var(--interaction-motion-medium) var(--interaction-ease-standard), transform var(--interaction-motion-medium) var(--interaction-ease-standard);
 }
 
 .publication-link:hover{
@@ -185,5 +185,5 @@
 .publication-link:focus-visible{
   outline:1px solid var(--border-color);
   outline-offset:6px;
-  border-radius:10px;
+  border-radius:var(--control-radius);
 }

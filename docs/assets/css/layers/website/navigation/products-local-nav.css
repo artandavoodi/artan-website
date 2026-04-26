@@ -18,7 +18,7 @@
 ============================================================================= */
 :root{
   --products-local-nav-height:3.55rem;
-  --products-local-nav-transition:320ms cubic-bezier(0.22, 1, 0.36, 1);
+  --products-local-nav-transition:320ms var(--interaction-ease-standard);
   --products-local-nav-motion-fast:220ms;
   --products-local-nav-surface-bg:color-mix(in srgb, var(--bg-color) 32%, transparent);
   --products-local-nav-surface-border:color-mix(in srgb, var(--text-primary-color) 7%, transparent);
@@ -95,8 +95,8 @@ html[data-theme-effective="light"]{
   backdrop-filter:blur(var(--products-local-nav-surface-blur)) saturate(var(--products-local-nav-surface-saturate));
   -webkit-backdrop-filter:blur(var(--products-local-nav-surface-blur)) saturate(var(--products-local-nav-surface-saturate));
   transition:
-    background var(--products-local-nav-motion-fast) ease,
-    border-color var(--products-local-nav-motion-fast) ease,
+    background var(--products-local-nav-motion-fast) var(--interaction-ease-standard),
+    border-color var(--products-local-nav-motion-fast) var(--interaction-ease-standard),
     height var(--products-local-nav-transition);
   pointer-events: none;
   z-index: 0;
@@ -149,9 +149,9 @@ html[data-theme-effective="light"]{
   line-height:var(--website-local-nav-line-height);
   transform: none !important;
   transition:
-    color var(--products-local-nav-motion-fast) ease,
-    opacity var(--products-local-nav-motion-fast) ease,
-    transform var(--products-local-nav-motion-fast) cubic-bezier(0.22, 1, 0.36, 1);
+    color var(--products-local-nav-motion-fast) var(--interaction-ease-standard),
+    opacity var(--products-local-nav-motion-fast) var(--interaction-ease-standard),
+    transform var(--products-local-nav-motion-fast) var(--interaction-ease-standard);
 }
 
 /* =============================================================================
@@ -194,9 +194,9 @@ html[data-theme-effective="light"]{
   white-space: nowrap;
   transform: none !important;
   transition:
-    color var(--products-local-nav-motion-fast) ease,
-    opacity var(--products-local-nav-motion-fast) ease,
-    transform var(--products-local-nav-motion-fast) cubic-bezier(0.22, 1, 0.36, 1);
+    color var(--products-local-nav-motion-fast) var(--interaction-ease-standard),
+    opacity var(--products-local-nav-motion-fast) var(--interaction-ease-standard),
+    transform var(--products-local-nav-motion-fast) var(--interaction-ease-standard);
 }
 
 .products-local-nav__link::after {
