@@ -154,6 +154,15 @@ function requestProfileSetupFromShell() {
     detail: {
       source: 'home-platform-shell',
       reason: 'profile-incomplete',
+      action: 'profile-setup',
+    },
+  }));
+
+  document.dispatchEvent(new CustomEvent('account-drawer:open-request', {
+    detail: {
+      source: 'home-platform-shell',
+      state: 'guest',
+      surface: 'profile-setup',
     },
   }));
 }
@@ -607,6 +616,11 @@ function renderHomePlatformShellSubnav(destination, subdestination) {
     button.setAttribute('data-home-platform-subdestination', item.id);
     button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     button.classList.toggle('is-active', isActive);
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      void setHomePlatformSubdestination(item.id);
+    });
     subnavRoot.append(button);
   });
 }
@@ -820,6 +834,11 @@ function openHomePlatformShell(destination = HOME_PLATFORM_SHELL_STATE.activeDes
   root.hidden = false;
   root.setAttribute('aria-hidden', 'false');
   document.body.classList.add('home-platform-shell-open');
+
+  if (window.matchMedia?.('(max-width: 760px)').matches) {
+    HOME_PLATFORM_SHELL_STATE.railMode = 'expanded';
+  }
+
   syncHomePlatformRailMode(HOME_PLATFORM_SHELL_STATE.railMode);
 
   void setHomePlatformDestination(destination).then(() => {
@@ -978,12 +997,51 @@ function bindHomePlatformShellEvents() {
   });
 }
 
+function bindHomePlatformShellStaticControls() {
+  const root = getHomePlatformShellRoot();
+  if (!root) return;
+
+  const closeTrigger = root.querySelector('[data-home-platform-shell-close]');
+  if (closeTrigger instanceof HTMLElement && closeTrigger.dataset.homePlatformDirectBound !== 'true') {
+    closeTrigger.dataset.homePlatformDirectBound = 'true';
+    closeTrigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      closeHomePlatformShell();
+    });
+  }
+
+  const railToggleTrigger = root.querySelector('[data-home-platform-shell-rail-toggle]');
+  if (railToggleTrigger instanceof HTMLElement && railToggleTrigger.dataset.homePlatformDirectBound !== 'true') {
+    railToggleTrigger.dataset.homePlatformDirectBound = 'true';
+    railToggleTrigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleHomePlatformRailMode();
+    });
+  }
+
+  getHomePlatformShellNavItems().forEach((trigger) => {
+    if (!(trigger instanceof HTMLElement)) return;
+    if (trigger.dataset.homePlatformDirectBound === 'true') return;
+
+    trigger.dataset.homePlatformDirectBound = 'true';
+    trigger.addEventListener('click', (event) => {
+      const destination = trigger.getAttribute('data-home-platform-destination') || 'home';
+      event.preventDefault();
+      event.stopPropagation();
+      void setHomePlatformDestination(destination);
+    });
+  });
+}
+
 /* =============================================================================
 11) BOOT
 ============================================================================= */
 function bootHomePlatformShell() {
   if (!getHomePlatformShellRoot()) return;
   bindHomePlatformShellEvents();
+  bindHomePlatformShellStaticControls();
   HOME_PLATFORM_SHELL_STATE.railMode = loadHomePlatformRailMode();
   syncHomePlatformRailMode(HOME_PLATFORM_SHELL_STATE.railMode);
   syncHomePlatformCommunicationIndicators(HOME_PLATFORM_SHELL_STATE.snapshot);

@@ -76,6 +76,7 @@
   --home-platform-shell-rail-toggle-icon-size:var(--layout-home-platform-rail-toggle-icon-size);
   --home-platform-shell-rail-width-token:var(--layout-home-platform-rail-width);
   --home-platform-shell-subrail-width-token:var(--layout-home-platform-subrail-width);
+  --home-platform-shell-rail-compact-width:var(--layout-home-platform-rail-compact-width);
   --home-platform-shell-tablet-rail-min:var(--layout-home-platform-tablet-rail-min);
   --home-platform-shell-tablet-rail-max:var(--layout-home-platform-tablet-rail-max);
   --home-platform-shell-tablet-subrail-min:var(--layout-home-platform-tablet-subrail-min);
@@ -177,6 +178,7 @@
   min-height:var(--spacing-none);
   overflow:hidden;
   overscroll-behavior:contain;
+  pointer-events:auto;
   background:var(--home-platform-shell-surface);
   color:var(--text-primary-color);
   border-top:var(--border-width-hairline) solid var(--home-platform-shell-border);
@@ -284,19 +286,18 @@
 06) RAIL MODE STATES
 ============================================================================= */
 .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__main{
-  grid-template-columns:var(--home-platform-shell-subrail-width) minmax(var(--spacing-none), 1fr);
-}
-
-.home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail{
-  display:none;
+  grid-template-columns:
+    var(--home-platform-shell-rail-compact-width)
+    var(--home-platform-shell-subrail-width)
+    minmax(var(--spacing-none), 1fr);
 }
 
 .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__subrail{
-  grid-column:1;
+  grid-column:2;
 }
 
 .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__content{
-  grid-column:2;
+  grid-column:3;
 }
 
 .home-platform-shell__subrail[hidden]{
@@ -308,7 +309,7 @@
 }
 
 .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__subrail[hidden] + .home-platform-shell__content{
-  grid-column:1 / -1;
+  grid-column:2 / -1;
 }
 
 /* =============================================================================
@@ -316,6 +317,8 @@
 ============================================================================= */
 .home-platform-shell__rail,
 .home-platform-shell__subrail{
+  display:flex;
+  flex-direction:column;
   min-width:var(--spacing-none);
   min-height:var(--spacing-none);
   overflow:hidden;
@@ -332,10 +335,13 @@
 
 .home-platform-shell__rail-inner,
 .home-platform-shell__subrail-inner{
+  flex:1 1 auto;
   height:var(--size-full);
+  min-height:var(--spacing-none);
   overflow-x:hidden;
   overflow-y:auto;
   overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
   scrollbar-width:none;
   -ms-overflow-style:none;
   padding:var(--home-platform-shell-rail-padding-top) var(--home-platform-shell-rail-padding-right) var(--home-platform-shell-rail-padding-bottom) var(--home-platform-shell-rail-padding-left);
@@ -343,6 +349,11 @@
 
 .home-platform-shell__subrail-inner{
   padding-left:var(--home-platform-shell-subrail-padding-left);
+}
+
+.home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail-inner{
+  padding-right:var(--spacing-none);
+  padding-left:var(--spacing-none);
 }
 
 .home-platform-shell__group + .home-platform-shell__group{
@@ -472,6 +483,23 @@
   transform:none;
 }
 
+.home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__group-label,
+.home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__nav-text,
+.home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__nav-indicator{
+  display:none;
+}
+
+.home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__group + .home-platform-shell__group{
+  margin-top:var(--home-platform-shell-nav-gap);
+}
+
+.home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__nav-item{
+  justify-content:center;
+  gap:var(--spacing-none);
+  padding-right:var(--spacing-none);
+  padding-left:var(--spacing-none);
+}
+
 .home-platform-shell__nav-text{
   display:inline-flex;
   align-items:center;
@@ -539,10 +567,12 @@
 }
 
 .home-platform-shell__content-inner{
-  height:var(--size-full);
+  flex:1 1 auto;
+  min-height:var(--spacing-none);
   overflow-x:hidden;
   overflow-y:auto;
   overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
   scrollbar-width:none;
   -ms-overflow-style:none;
   padding:var(--home-platform-shell-content-inner-padding-top) var(--spacing-none) calc(var(--home-shell-footer-separator-offset) + var(--home-platform-shell-content-inner-footer-gap)) var(--home-platform-shell-content-inner-padding-left);
@@ -699,17 +729,50 @@
   }
 
   .home-platform-shell__main{
-    grid-template-columns:var(--grid-column-single);
+    display:flex;
+    flex-direction:column;
+    padding:var(--spacing-none) var(--home-platform-shell-inline-padding);
   }
 
   .home-platform-shell__rail,
   .home-platform-shell__subrail{
-    display:none;
+    display:flex;
+    flex:0 0 auto;
+    width:var(--size-full);
+    max-height:11rem;
+    border-right:var(--spacing-none);
+    border-bottom:var(--border-width-hairline) solid var(--panel-border-unified);
+  }
+
+  .home-platform-shell__subrail{
+    max-height:8.5rem;
+  }
+
+  .home-platform-shell__rail-inner,
+  .home-platform-shell__subrail-inner,
+  .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail-inner{
+    padding:0.95rem var(--spacing-none);
+  }
+
+  .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__group-label,
+  .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__nav-text{
+    display:inline-flex;
+  }
+
+  .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__nav-indicator{
+    display:inline-flex;
+  }
+
+  .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__nav-item{
+    justify-content:flex-start;
+    gap:var(--home-platform-shell-nav-item-gap);
+    padding:var(--home-platform-shell-nav-item-padding);
   }
 
   .home-platform-shell__content,
   .home-platform-shell__subrail[hidden] + .home-platform-shell__content{
-    grid-column:1 / -1;
+    flex:1 1 auto;
+    min-height:var(--spacing-none);
   }
 
   .home-platform-shell__content-header{

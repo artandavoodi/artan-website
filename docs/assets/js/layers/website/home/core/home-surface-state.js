@@ -92,16 +92,32 @@ function normalizeUserSnapshot(user = null) {
   }
 
   return {
-    uid: normalizeString(user.uid || ''),
-    email: normalizeString(user.email || ''),
-    displayName: normalizeString(user.displayName || user.display_name || ''),
-    photoURL: normalizeString(user.photoURL || user.photo_url || ''),
-    emailVerified: user.emailVerified === true,
+    uid: normalizeString(user.uid || user.id || ''),
+    email: normalizeString(user.email || user.user_metadata?.email || ''),
+    displayName: normalizeString(
+      user.displayName
+      || user.display_name
+      || user.user_metadata?.full_name
+      || user.user_metadata?.name
+      || ''
+    ),
+    photoURL: normalizeString(
+      user.photoURL
+      || user.photo_url
+      || user.user_metadata?.avatar_url
+      || user.user_metadata?.picture
+      || ''
+    ),
+    emailVerified: user.emailVerified === true || Boolean(user.email_confirmed_at),
     providerIds: Array.isArray(user.providerData)
       ? user.providerData
         .map((entry) => normalizeString(entry?.providerId || ''))
         .filter(Boolean)
-      : [],
+      : Array.isArray(user.identities)
+        ? user.identities
+          .map((entry) => normalizeString(entry?.provider || entry?.provider_id || ''))
+          .filter(Boolean)
+        : [],
   };
 }
 
@@ -112,11 +128,11 @@ function normalizeProfileSnapshot(profile = null) {
 
   return {
     username: normalizeString(profile.username || profile.username_normalized || profile.username_lower || '').toLowerCase(),
-    display_name: normalizeString(profile.display_name || ''),
+    display_name: normalizeString(profile.display_name || profile.public_display_name || ''),
     first_name: normalizeString(profile.first_name || ''),
     last_name: normalizeString(profile.last_name || ''),
     email: normalizeString(profile.email || ''),
-    photo_url: normalizeString(profile.photo_url || ''),
+    photo_url: normalizeString(profile.photo_url || profile.avatar_url || profile.public_avatar_url || ''),
     public_profile_enabled: profile.public_profile_enabled === true,
     public_profile_discoverable: profile.public_profile_discoverable === true,
     auth_email_verified: profile.auth_email_verified === true,
@@ -294,7 +310,9 @@ function syncSignedInAccountState(detail = null) {
   const runtimeAccount = readAccountFromRuntime();
   const user = normalizeUserSnapshot(detail?.user || runtimeAccount.user);
   const profile = normalizeProfileSnapshot(detail?.profile || HOME_SURFACE_STATE.account.profile);
-  const profileComplete = detail?.profileComplete === false ? false : !!(detail?.profileComplete || profile);
+  const profileComplete = detail?.profileComplete === false
+    ? false
+    : !!(detail?.profileComplete || detail?.profile?.profile_complete || profile?.username);
 
   HOME_SURFACE_STATE.account = {
     signedIn: !!user,

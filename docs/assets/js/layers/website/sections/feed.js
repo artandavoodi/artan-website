@@ -32,6 +32,12 @@ import {
   getPublicModels,
   loadPublicModelRegistry
 } from '../system/public-model-registry.js';
+import {
+  createFeedPost,
+  deleteFeedPost,
+  getCurrentFeedAuthor,
+  listFeedPosts
+} from '../system/feed-store.js';
 
 /* =============================================================================
    02) CONSTANTS
@@ -45,6 +51,12 @@ const FEED_PAGE_STATE = {
   config: null,
   root: null,
   isBound: false,
+  runtimePosts: [],
+  feedAuthor: null,
+  composerState: {
+    status: 'idle',
+    message: ''
+  },
   interactions: Object.create(null),
 };
 
@@ -88,11 +100,7 @@ function isVerifiedEntity(model = {}) {
 }
 
 function getCurrentUser() {
-  try {
-    return window.firebase?.auth?.()?.currentUser || null;
-  } catch (_) {
-    return null;
-  }
+  return FEED_PAGE_STATE.feedAuthor?.user || null;
 }
 
 function resolveFeedEntityType(model = {}) {
@@ -123,6 +131,31 @@ function getFeedInteractionState(postId = '') {
   }
 
   return FEED_PAGE_STATE.interactions[postId];
+}
+
+function setComposerState(status = 'idle', message = '') {
+  FEED_PAGE_STATE.composerState = {
+    status: normalizeString(status || 'idle') || 'idle',
+    message: normalizeString(message || '')
+  };
+}
+
+async function loadFeedRuntime() {
+  try {
+    const [feedAuthor, runtimePosts] = await Promise.all([
+      getCurrentFeedAuthor(),
+      listFeedPosts()
+    ]);
+
+    FEED_PAGE_STATE.feedAuthor = feedAuthor;
+    FEED_PAGE_STATE.runtimePosts = Array.isArray(runtimePosts) ? runtimePosts : [];
+    setComposerState('idle', '');
+  } catch (error) {
+    FEED_PAGE_STATE.feedAuthor = null;
+    FEED_PAGE_STATE.runtimePosts = [];
+    setComposerState('error', 'Feed publishing is not available right now.');
+    console.error('[feed] Runtime load failed.', error);
+  }
 }
 
 /* =============================================================================
@@ -214,12 +247,19 @@ function buildDerivedFeedPosts() {
 }
 
 function getRenderableFeedPosts() {
-  const configuredPosts = getFeedPosts();
-  if (configuredPosts.length) {
-    return configuredPosts;
+  const activeTab = getFeedTab();
+  const runtimePosts = Array.isArray(FEED_PAGE_STATE.runtimePosts) ? FEED_PAGE_STATE.runtimePosts : [];
+
+  if (activeTab === 'my-posts') {
+    return runtimePosts.filter((post) => post.ownedByCurrentUser);
   }
 
-  return buildDerivedFeedPosts();
+  const configuredPosts = getFeedPosts();
+  if (configuredPosts.length) {
+    return [...runtimePosts, ...configuredPosts];
+  }
+
+  return [...runtimePosts, ...buildDerivedFeedPosts()];
 }
 
 /* =============================================================================
@@ -292,6 +332,7 @@ function renderFeedPost(post = {}) {
         <button class="feed-post__action" type="button" data-feed-post-action="like" data-feed-post-id="${escapeHtml(post.id)}" aria-pressed="${interactionState.like ? 'true' : 'false'}">Like</button>
         <button class="feed-post__action" type="button" data-feed-post-action="save" data-feed-post-id="${escapeHtml(post.id)}" aria-pressed="${interactionState.save ? 'true' : 'false'}">Save</button>
         <a class="feed-post__action feed-post__action--link" href="${escapeHtml(post.publicRoute || post.href || '/pages/profiles/index.html')}">View</a>
+        ${post.ownedByCurrentUser ? `<button class="feed-post__action" type="button" data-feed-delete-post="${escapeHtml(post.feedPostId || post.id)}">Delete</button>` : ''}
         ${post.modelId ? `<button class="feed-post__action feed-post__action--primary" type="button" data-feed-post-model="${escapeHtml(post.modelId)}">${post.modelId === activeModelId ? 'Active on Homepage' : 'Interact'}</button>` : ''}
       </div>
     </article>
@@ -341,9 +382,10 @@ function renderFeedPage() {
             </label>
             <div class="catalog-action-row">
               <button class="feed-composer__action" type="button" data-feed-compose-action="${currentUser ? 'publish' : 'entry'}">
-                ${currentUser ? 'Publishing Runtime Pending' : 'Sign In to Publish'}
+                ${currentUser ? 'Publish' : 'Sign In to Publish'}
               </button>
             </div>
+            ${FEED_PAGE_STATE.composerState.message ? `<p class="catalog-panel__copy" data-feed-composer-status="${escapeHtml(FEED_PAGE_STATE.composerState.status)}">${escapeHtml(FEED_PAGE_STATE.composerState.message)}</p>` : ''}
           </article>
 
           <div class="catalog-panel feed-stream-panel">
@@ -447,6 +489,56 @@ function bindFeedEvents() {
         }));
       }
 
+      if (action === 'publish') {
+        const input = FEED_PAGE_STATE.root.querySelector('#feed-composer-input');
+        const postBody = input instanceof HTMLTextAreaElement ? normalizeString(input.value) : '';
+
+        if (!postBody) {
+          setComposerState('error', 'Write a post before publishing.');
+          renderFeedPage();
+          return;
+        }
+
+        setComposerState('saving', 'Publishing post...');
+        renderFeedPage();
+
+        void createFeedPost({
+          post_body: postBody,
+          source_surface: 'feed'
+        }).then(async () => {
+          if (input instanceof HTMLTextAreaElement) {
+            input.value = '';
+          }
+          await loadFeedRuntime();
+          setComposerState('success', 'Post published.');
+          renderFeedPage();
+        }).catch((error) => {
+          const code = normalizeString(error?.code || error?.message || '');
+          setComposerState('error', code === 'PROFILE_REQUIRED'
+            ? 'Complete your profile before publishing.'
+            : 'Post could not be published right now.');
+          console.error('[feed] Post publish failed.', error);
+          renderFeedPage();
+        });
+      }
+
+      return;
+    }
+
+    const deleteAction = event.target.closest('[data-feed-delete-post]');
+    if (deleteAction instanceof HTMLButtonElement && FEED_PAGE_STATE.root.contains(deleteAction)) {
+      const postId = normalizeString(deleteAction.getAttribute('data-feed-delete-post'));
+      if (!postId) return;
+
+      void deleteFeedPost(postId).then(async () => {
+        await loadFeedRuntime();
+        setComposerState('success', 'Post deleted.');
+        renderFeedPage();
+      }).catch((error) => {
+        setComposerState('error', 'Post could not be deleted right now.');
+        console.error('[feed] Post delete failed.', error);
+        renderFeedPage();
+      });
       return;
     }
 
@@ -507,7 +599,8 @@ async function initFeedPage() {
 
   const [config] = await Promise.all([
     fetchJson(FEED_SECTION_URL),
-    loadPublicModelRegistry()
+    loadPublicModelRegistry(),
+    loadFeedRuntime()
   ]);
 
   FEED_PAGE_STATE.config = config;

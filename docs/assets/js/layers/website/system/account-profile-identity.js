@@ -466,7 +466,6 @@ export async function reserveSupabaseUsernameProfile({
     username_normalized: payload.username_normalized,
     username_status: payload.username_status,
     username_route_ready: payload.username_route_ready === true,
-    public_route_ready: payload.public_route_ready === true,
     username_reserved_at: payload.username_reserved_at,
     public_username: payload.public_username,
     public_display_name: payload.public_display_name,

@@ -33,7 +33,7 @@ function getSupabaseClient() {
    03) TABLE CONTRACT
 ============================================================================= */
 const USERNAME_RESERVATIONS_TABLE = 'username_reservations';
-const USERNAME_RESERVATION_SELECT_FIELDS = 'id, auth_user_id, username, username_lower, profile_id, reservation_status, reserved_at, released_at';
+const USERNAME_RESERVATION_SELECT_FIELDS = 'id, auth_user_id, username, username_lower, profile_id, reservation_status, claimed_at, updated_at';
 
 /* =============================================================================
    04) ERROR HELPERS
@@ -172,8 +172,8 @@ export async function reserveUsername({
     auth_user_id:owner,
     profile_id:profileId,
     reservation_status:'active',
-    reserved_at:new Date().toISOString(),
-    released_at:null
+    claimed_at:new Date().toISOString(),
+    updated_at:new Date().toISOString()
   };
 
   try {

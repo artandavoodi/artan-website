@@ -87,6 +87,13 @@ function requestProfileSetup(source = 'home-profile-control-panel') {
   dispatchHomeProfileControlPanelEvent('account:profile-setup-open-request', {
     source,
     reason: 'profile-incomplete',
+    action: 'profile-setup',
+  });
+
+  dispatchHomeProfileControlPanelEvent('account-drawer:open-request', {
+    source,
+    state: 'guest',
+    surface: 'profile-setup',
   });
 }
 

@@ -333,12 +333,29 @@ html[data-theme-effective="dark"]{
   z-index: var(--z-overlay-modal);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   flex-direction: column;
+  box-sizing:border-box;
+  padding:calc(env(safe-area-inset-top, 0px) + 4.25rem) var(--cookie-consent-min-viewport-gap) calc(env(safe-area-inset-bottom, 0px) + var(--cookie-consent-min-viewport-gap));
   opacity:var(--cookie-consent-overlay-opacity-closed);
   visibility: hidden;
   pointer-events: none;
   gap:var(--cookie-consent-shell-gap);
+}
+
+body.home-page .cookie-consent{
+  z-index:calc(var(--z-raised) - 1);
+}
+
+body.home-page.home-platform-shell-open .cookie-consent,
+body.home-page.home-search-shell-open .cookie-consent{
+  opacity:var(--cookie-consent-overlay-opacity-closed);
+  visibility:hidden;
+  pointer-events:none;
+}
+
+#cookie-consent-mount[data-consent-surface="banner"] .cookie-consent-backdrop{
+  opacity:var(--spacing-none);
 }
 
 /* =============================================================================
@@ -348,7 +365,7 @@ body.cookie-consent-open .cookie-consent,
 body.cookie-consent-closing .cookie-consent{
   opacity:var(--cookie-consent-overlay-opacity-open);
   visibility: visible;
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 /* =============================================================================
@@ -371,6 +388,7 @@ body.cookie-consent-closing{
   backdrop-filter:blur(var(--cookie-consent-backdrop-blur));
   -webkit-backdrop-filter:blur(var(--cookie-consent-backdrop-blur));
   opacity:var(--cookie-consent-overlay-opacity-closed);
+  pointer-events:none;
   transition:opacity var(--cookie-consent-motion-backdrop) var(--cookie-consent-motion-ease);
 }
 
@@ -387,10 +405,12 @@ body.cookie-consent-closing .cookie-consent-backdrop{
 ============================================================================= */
 .cookie-consent-panel{
   position: relative;
+  pointer-events:auto;
   width: var(--cookie-consent-width);
   max-width: calc(100vw - (2 * var(--cookie-consent-min-viewport-gap)));
-  height: var(--cookie-consent-max-height);
-  min-height:var(--cookie-consent-panel-min-height);
+  height: auto;
+  max-height: min(31rem, calc(100vh - 8rem));
+  min-height:var(--spacing-none);
   display: flex;
   gap: var(--spacing-none);
   flex-direction: column;
@@ -1455,7 +1475,7 @@ body.cookie-consent-closing .cookie-consent-panel{
   }
 
   .cookie-consent-panel{
-    max-height: min(42rem, calc(100vh - var(--cookie-consent-mobile-min-viewport-gap)));
+    max-height: min(26rem, calc(100vh - 10rem));
     padding:var(--cookie-consent-mobile-panel-padding-y) var(--cookie-consent-mobile-panel-padding-x) 0 var(--cookie-consent-mobile-panel-padding-x);
     border-radius:var(--control-radius);
   }

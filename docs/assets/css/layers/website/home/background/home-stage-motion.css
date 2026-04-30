@@ -387,8 +387,8 @@
     transform var(--home-stage-motion-fast) var(--interaction-ease-standard),
     opacity var(--home-stage-motion-fast) var(--interaction-ease-standard);
   background-color:currentColor;
-  -webkit-mask-image:url("../../../../icons/core/media/unclassified/mic.svg");
-  mask-image:url("../../../../icons/core/media/unclassified/mic.svg");
+  -webkit-mask-image:url("/assets/icons/core/media/unclassified/mic.svg");
+  mask-image:url("/assets/icons/core/media/unclassified/mic.svg");
   -webkit-mask-repeat:no-repeat;
   mask-repeat:no-repeat;
   -webkit-mask-position:center;

@@ -183,6 +183,29 @@ function openHomeSearchShell(nodes) {
 }
 
 function openHomeProfileControlSurface() {
+  const snapshot = HOME_DASHBOARD_TOPBAR_STATE.snapshot || {};
+
+  if (!snapshot?.account?.signedIn) {
+    dispatchHomeTopbarEvent('account:entry-request', {
+      source: 'home-dashboard-topbar',
+    });
+    return;
+  }
+
+  if (snapshot?.account?.profileComplete === false) {
+    dispatchHomeTopbarEvent('account:profile-setup-open-request', {
+      source: 'home-dashboard-topbar',
+      reason: 'profile-incomplete',
+      action: 'profile-setup',
+    });
+    dispatchHomeTopbarEvent('account-drawer:open-request', {
+      source: 'home-dashboard-topbar',
+      state: 'guest',
+      surface: 'profile-setup',
+    });
+    return;
+  }
+
   openHomePlatformShellDestination('profile');
 }
 
@@ -219,12 +242,20 @@ function bindHomeDashboardTopbar() {
 
     const nodes = getHomeDashboardTopbarNodes();
 
+    if (trigger.matches('#home-dashboard-menu-trigger')) {
+      event.preventDefault();
+      openHomePlatformShellDestination('home');
+      return;
+    }
+
     if (trigger.matches('#home-dashboard-search-trigger')) {
+      event.preventDefault();
       openHomeSearchShell(nodes);
       return;
     }
 
     if (trigger.matches('#home-dashboard-profile-trigger')) {
+      event.preventDefault();
       openHomeProfileControlSurface();
       return;
     }
