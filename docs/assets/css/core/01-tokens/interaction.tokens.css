@@ -18,6 +18,7 @@
    16) FEEDBACK EFFECT TOKENS
    17) NAVIGATION EFFECT TOKENS
    18) CONTROL EFFECT TOKENS
+   18A) COMPOSER / PROMPT SURFACE TOKENS
    19) PROFILE EFFECT TOKENS
    20) PRODUCT EFFECT TOKENS
    21) MARKETING EFFECT TOKENS
@@ -523,6 +524,15 @@
   --button-hover-border-color:var(--hover-border-medium);
   --button-hover-text-color:var(--hover-text-color);
   --button-hover-transform:var(--hover-transform-lift-subtle);
+}
+
+/* =============================================================================
+   18A) COMPOSER / PROMPT SURFACE TOKENS
+============================================================================= */
+:root{
+  /* Shared prompt/composer surface shape for query panels, input shells, and AI interaction surfaces. */
+  --shape-composer-radius:1rem;
+  --control-radius-composer:var(--shape-composer-radius);
 }
 
 /* =============================================================================
