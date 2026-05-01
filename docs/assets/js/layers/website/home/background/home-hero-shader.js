@@ -268,7 +268,7 @@
       this.root = qs('#home-hero-shader');
       this.canvas = qs('#home-hero-shader-canvas');
       this.interaction = qs('#home-hero-shader-interaction');
-      this.stage = qs('#stage');
+      this.stage = qs('#home-background-shell');
       return Boolean(this.root && this.canvas);
     }
 
@@ -404,32 +404,9 @@
      06) MOUNT HELPERS
   ============================================================================= */
   function mountHomeHeroShaderFragment() {
-    const stage = qs('#stage');
+    const stage = qs('#home-background-shell');
     if (!stage) return null;
-    if (qs('#home-hero-shader', stage)) return qs('#home-hero-shader', stage);
-
-    const shell = document.createElement('div');
-    shell.innerHTML = `
-      <div class="home-hero-shader" id="home-hero-shader" aria-hidden="true">
-        <div class="home-hero-shader-canvas-shell" id="home-hero-shader-canvas-shell">
-          <canvas class="home-hero-shader-canvas" id="home-hero-shader-canvas"></canvas>
-        </div>
-        <div class="home-hero-shader-veil glass-matte glass-matte--soft" id="home-hero-shader-veil"></div>
-        <div class="home-hero-shader-matte glass-matte glass-matte--medium" id="home-hero-shader-matte"></div>
-        <div class="home-hero-shader-interaction" id="home-hero-shader-interaction"></div>
-      </div>
-    `.trim();
-
-    const fragment = shell.firstElementChild;
-    if (!fragment) return null;
-
-    const stageVideo = qs('.stage-video', stage);
-    if (stageVideo && stageVideo.parentNode) {
-      stageVideo.insertAdjacentElement('afterend', fragment);
-    } else {
-      stage.insertAdjacentElement('afterbegin', fragment);
-    }
-    return fragment;
+    return qs('#home-hero-shader', stage);
   }
 
   /* =============================================================================
@@ -475,7 +452,7 @@
     if (initialized) return;
 
     const fragment = mountHomeHeroShaderFragment();
-    const stage = qs('#stage');
+    const stage = qs('#home-background-shell');
     const hero = qs('#home-hero');
 
     if (!stage && !hero && !fragment) {

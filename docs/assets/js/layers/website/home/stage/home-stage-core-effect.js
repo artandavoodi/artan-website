@@ -49,10 +49,11 @@ const HOME_STAGE_CORE_EFFECT_SELECTORS = {
    ========================================================= */
 
 const HOME_STAGE_CORE_EFFECT_MODE_ENERGY = Object.freeze({
-  idle: 0.14,
-  listening: 0.86,
-  transcribing: 0.62,
-  thinking: 0.54,
+  idle: 0.24,
+  release: 0.2,
+  listening: 0.9,
+  transcribing: 0.68,
+  thinking: 0.6,
   responding: 1.0,
 });
 
@@ -219,7 +220,7 @@ function renderHomeStageCoreEffectFrame(timestamp) {
   }
 
   const elapsed = (timestamp - HOME_STAGE_CORE_EFFECT_STATE.startTime) / 1000;
-  HOME_STAGE_CORE_EFFECT_STATE.energy += (targetEnergy - HOME_STAGE_CORE_EFFECT_STATE.energy) * 0.08;
+  HOME_STAGE_CORE_EFFECT_STATE.energy += (targetEnergy - HOME_STAGE_CORE_EFFECT_STATE.energy) * 0.045;
 
   const energy = HOME_STAGE_CORE_EFFECT_STATE.energy;
   const cx = width / 2;
@@ -279,27 +280,30 @@ function renderHomeStageCoreEffectFrame(timestamp) {
   }
 
   const blobCount = 4;
-  for (let index = 0; index < blobCount; index += 1) {
-    const angle = elapsed * (0.9 + energy * 1.4 + listenBoost * 0.9 + transcribeBoost * 0.36) * (index % 2 === 0 ? 1 : -1) + index * (Math.PI / 2);
-    const wobble = Math.sin(elapsed * (1.4 + index * 0.2) + index) * (6 + energy * 10);
-    const orbX = cx + Math.cos(angle) * (orbitRadius + wobble * 0.35);
-    const orbY = cy + Math.sin(angle * (1.08 + thinkBoost * 0.08)) * (orbitRadius * 0.72 + wobble * 0.28);
-    const orbRadius = baseRadius * (0.48 + index * 0.05 + energy * 0.22);
+  const orbPalette = [
+    'rgba(96,190,255,1)',
+    'rgba(94,255,188,1)',
+    'rgba(255,108,196,1)',
+    'rgba(255,160,76,1)',
+  ];
 
-    const color = index % 3 === 0
-      ? 'rgba(255,255,255,1)'
-      : index % 3 === 1
-        ? 'rgba(145,124,111,1)'
-        : 'rgba(88,164,255,1)';
+  for (let index = 0; index < blobCount; index += 1) {
+    const angle = elapsed * (0.72 + energy * 1.08 + listenBoost * 0.72 + transcribeBoost * 0.28) * (index % 2 === 0 ? 1 : -1) + index * (Math.PI / 2);
+    const wobble = Math.sin(elapsed * (1.08 + index * 0.18) + index) * (7 + energy * 12);
+    const orbX = cx + Math.cos(angle) * (orbitRadius + wobble * 0.34);
+    const orbY = cy + Math.sin(angle * (1.06 + thinkBoost * 0.08)) * (orbitRadius * 0.74 + wobble * 0.3);
+    const orbRadius = baseRadius * (0.56 + index * 0.055 + energy * 0.24);
+    const orbAlpha = 0.18 + energy * 0.24 + responseBoost * 0.06 + listenBoost * 0.08 + transcribeBoost * 0.05;
+    const orbBlur = 24 + energy * 28 + listenBoost * 10 + transcribeBoost * 8 + responseBoost * 6;
 
     drawHomeStageCoreEffectOrb(
       context,
       orbX,
       orbY,
       orbRadius,
-      color,
-      0.08 + energy * 0.1 + responseBoost * 0.03 + listenBoost * 0.04 + transcribeBoost * 0.025,
-      14 + energy * 18 + listenBoost * 8 + transcribeBoost * 5
+      orbPalette[index],
+      Math.min(0.68, orbAlpha),
+      orbBlur
     );
   }
 
@@ -307,10 +311,10 @@ function renderHomeStageCoreEffectFrame(timestamp) {
     context,
     cx,
     cy,
-    baseRadius * (0.62 + energy * 0.18),
+    baseRadius * (0.68 + energy * 0.2),
     'rgba(255,255,255,1)',
-    0.12 + energy * 0.14,
-    10 + energy * 12
+    0.18 + energy * 0.18,
+    18 + energy * 18
   );
 
   HOME_STAGE_CORE_EFFECT_STATE.rafId = window.requestAnimationFrame(renderHomeStageCoreEffectFrame);
@@ -381,10 +385,8 @@ function bindHomeStageCoreEffectEvents() {
 
   document.addEventListener('neuroartan:home-stage-reset-requested', () => {
     HOME_STAGE_CORE_EFFECT_STATE.isResetting = true;
-    HOME_STAGE_CORE_EFFECT_STATE.energy = HOME_STAGE_CORE_EFFECT_MODE_ENERGY.idle;
     HOME_STAGE_CORE_EFFECT_STATE.targetEnergy = HOME_STAGE_CORE_EFFECT_MODE_ENERGY.idle;
-    HOME_STAGE_CORE_EFFECT_STATE.startTime = 0;
-    setHomeStageCoreEffectMode('idle');
+    setHomeStageCoreEffectMode('release');
     scheduleHomeStageCoreEffectResize();
 
     window.setTimeout(() => {
@@ -435,3 +437,16 @@ if (document.readyState === 'loading') {
 } else {
   bootHomeStageCoreEffect();
 }
+
+/**
+ * Fragment-mounted retry.
+ * The stage composition is injected after module evaluation, so the core effect
+ * must retry once the fragment system mounts the stage DOM.
+ */
+document.addEventListener('fragment:mounted', (event) => {
+  const includeName = event?.detail?.include;
+
+  if (!includeName || includeName === 'home-stage-composition' || includeName === 'home-stage-circle') {
+    bootHomeStageCoreEffect();
+  }
+});

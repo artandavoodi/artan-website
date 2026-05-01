@@ -19,7 +19,7 @@
 import {
   formatActiveModelResponse,
   getActiveModelRoutingContext
-} from '../../system/active-model.js';
+} from '../../../../system/active-model.js';
 
 /* =========================================================
    02. MODULE STATE
@@ -29,6 +29,10 @@ const HOME_STAGE_QUERY_ENGINE_STATE = {
   isBound: false,
   isBusy: false,
   activeQueryId: 0,
+};
+
+const HOME_STAGE_QUERY_ENGINE_TIMING = {
+  minimumThinkingDuration: 1250,
 };
 
 /* =========================================================
@@ -376,7 +380,7 @@ function handleHomeStageQuerySubmitted(event) {
     dispatchHomeStageMode('responding');
     dispatchHomeStageResponse(result.response || '', queryId);
     HOME_STAGE_QUERY_ENGINE_STATE.isBusy = false;
-  }, 420);
+  }, HOME_STAGE_QUERY_ENGINE_TIMING.minimumThinkingDuration);
 }
 
 /* =========================================================

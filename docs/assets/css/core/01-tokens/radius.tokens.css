@@ -14,12 +14,16 @@
    02) RADIUS TOKENS
 ============================================================================= */
 :root{
-  --radius-xs:8px;
-  --radius-sm:12px;
-  --radius-md:16px;
-  --radius-lg:22px;
-  --radius-xl:28px;
+  --radius-none:0;
+  --radius-xs:0.5rem;
+  --radius-sm:0.75rem;
+  --radius-md:1rem;
+  --radius-lg:1.375rem;
+  --radius-xl:1.75rem;
+  --radius-2xl:2.125rem;
+  --radius-dialog:1.9rem;
   --radius-pill:999px;
+  --radius-circle:50%;
 }
 
 /* =============================================================================

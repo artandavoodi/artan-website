@@ -195,6 +195,7 @@
 ============================================================================= */
 .home-platform-shell__chrome{
   position:relative;
+  z-index:3;
   display:flex;
   align-items:center;
   justify-content:flex-start;
@@ -317,12 +318,15 @@
 ============================================================================= */
 .home-platform-shell__rail,
 .home-platform-shell__subrail{
+  position:relative;
+  z-index:2;
   display:flex;
   flex-direction:column;
   min-width:var(--spacing-none);
   min-height:var(--spacing-none);
   overflow:hidden;
   background:var(--home-platform-shell-surface);
+  pointer-events:auto;
 }
 
 .home-platform-shell__rail{
@@ -342,8 +346,9 @@
   overflow-y:auto;
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
+  scrollbar-width:thin;
+  scrollbar-color:color-mix(in srgb, var(--text-primary-color) 24%, transparent) transparent;
+  -ms-overflow-style:auto;
   padding:var(--home-platform-shell-rail-padding-top) var(--home-platform-shell-rail-padding-right) var(--home-platform-shell-rail-padding-bottom) var(--home-platform-shell-rail-padding-left);
 }
 
@@ -393,9 +398,20 @@
 
 .home-platform-shell__rail-inner::-webkit-scrollbar,
 .home-platform-shell__subrail-inner::-webkit-scrollbar{
-  display:none;
-  width:var(--spacing-none);
-  height:var(--spacing-none);
+  display:block;
+  width:0.36rem;
+  height:0.36rem;
+}
+
+.home-platform-shell__rail-inner::-webkit-scrollbar-track,
+.home-platform-shell__subrail-inner::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.home-platform-shell__rail-inner::-webkit-scrollbar-thumb,
+.home-platform-shell__subrail-inner::-webkit-scrollbar-thumb{
+  border-radius:var(--radius-pill);
+  background:color-mix(in srgb, var(--text-primary-color) 24%, transparent);
 }
 
 /* =============================================================================
@@ -405,6 +421,8 @@
 .home-platform-shell__subnav-item{
   -webkit-appearance:none;
   appearance:none;
+  position:relative;
+  z-index:1;
   display:flex;
   align-items:center;
   justify-content:flex-start;
@@ -483,6 +501,14 @@
   transform:none;
 }
 
+.home-platform-shell__subnav-item{
+  z-index:2;
+}
+
+.home-platform-shell__subnav-item.is-active{
+  z-index:1;
+}
+
 .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__group-label,
 .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__nav-text,
 .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__nav-indicator{
@@ -522,6 +548,8 @@
 09) MIDDLE NAVIGATION LAYER
 ============================================================================= */
 .home-platform-shell__content{
+  position:relative;
+  z-index:1;
   min-width:var(--spacing-none);
   min-height:var(--spacing-none);
   max-width:var(--size-full);
@@ -529,6 +557,7 @@
   background:var(--home-platform-shell-surface);
   display:flex;
   flex-direction:column;
+  pointer-events:auto;
 }
 
 .home-platform-shell__content-header{
@@ -573,15 +602,25 @@
   overflow-y:auto;
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
+  scrollbar-width:thin;
+  scrollbar-color:color-mix(in srgb, var(--text-primary-color) 24%, transparent) transparent;
+  -ms-overflow-style:auto;
   padding:var(--home-platform-shell-content-inner-padding-top) var(--spacing-none) calc(var(--home-shell-footer-separator-offset) + var(--home-platform-shell-content-inner-footer-gap)) var(--home-platform-shell-content-inner-padding-left);
 }
 
 .home-platform-shell__content-inner::-webkit-scrollbar{
-  display:none;
-  width:var(--spacing-none);
-  height:var(--spacing-none);
+  display:block;
+  width:0.42rem;
+  height:0.42rem;
+}
+
+.home-platform-shell__content-inner::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.home-platform-shell__content-inner::-webkit-scrollbar-thumb{
+  border-radius:var(--radius-pill);
+  background:color-mix(in srgb, var(--text-primary-color) 24%, transparent);
 }
 
 .home-platform-destination,
@@ -684,6 +723,10 @@
   box-sizing:border-box;
 }
 
+.home-platform-shell :is(button, a, input, textarea, select, [role="button"]){
+  pointer-events:auto;
+}
+
 .home-platform-shell__main,
 .home-platform-shell__content,
 .home-platform-shell__content-inner,
@@ -732,26 +775,104 @@
     display:flex;
     flex-direction:column;
     padding:var(--spacing-none) var(--home-platform-shell-inline-padding);
+    overflow-x:hidden;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
   }
 
   .home-platform-shell__rail,
   .home-platform-shell__subrail{
     display:flex;
     flex:0 0 auto;
+    align-self:stretch;
     width:var(--size-full);
-    max-height:11rem;
+    min-width:var(--size-full);
+    max-height:none;
     border-right:var(--spacing-none);
     border-bottom:var(--border-width-hairline) solid var(--panel-border-unified);
   }
 
   .home-platform-shell__subrail{
-    max-height:8.5rem;
+    height:max-content;
+    min-height:max-content;
+    max-height:none;
+    overflow:visible;
   }
 
   .home-platform-shell__rail-inner,
   .home-platform-shell__subrail-inner,
   .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail-inner{
-    padding:0.95rem var(--spacing-none);
+    height:auto;
+    width:var(--size-full);
+    min-width:var(--spacing-none);
+    padding:0.75rem var(--spacing-none);
+    overflow-x:auto;
+    overflow-y:hidden;
+    scrollbar-width:thin;
+  }
+
+  .home-platform-shell__subrail-inner{
+    height:max-content;
+    min-height:max-content;
+    overflow:visible;
+  }
+
+  .home-platform-shell__rail-inner::-webkit-scrollbar,
+  .home-platform-shell__subrail-inner::-webkit-scrollbar{
+    display:block;
+    width:0.32rem;
+    height:0.32rem;
+  }
+
+  .home-platform-shell__group{
+    min-width:max-content;
+  }
+
+  .home-platform-shell__group + .home-platform-shell__group{
+    margin-top:0.72rem;
+  }
+
+  .home-platform-shell__group-label,
+  .home-platform-shell__subrail-header{
+    display:none;
+  }
+
+  .home-platform-shell__nav,
+  .home-platform-shell__subnav{
+    flex-direction:row;
+    align-items:center;
+    width:max-content;
+    min-width:var(--size-full);
+    gap:0.55rem;
+    pointer-events:auto;
+  }
+
+  .home-platform-shell__subnav{
+    flex-direction:column;
+    align-items:stretch;
+    width:var(--size-full);
+    min-width:var(--spacing-none);
+  }
+
+  .home-platform-shell__nav-item,
+  .home-platform-shell__subnav-item{
+    flex:0 0 auto;
+    width:max-content;
+    min-width:max-content;
+    max-width:max-content;
+    min-height:2.65rem;
+    padding:var(--spacing-none) 0.88rem;
+  }
+
+  .home-platform-shell__subnav-item{
+    justify-content:flex-start;
+    width:var(--size-full);
+    max-width:var(--size-full);
+  }
+
+  .home-platform-shell__nav-icon{
+    width:0.96rem;
+    height:0.96rem;
   }
 
   .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__group-label,
@@ -771,8 +892,9 @@
 
   .home-platform-shell__content,
   .home-platform-shell__subrail[hidden] + .home-platform-shell__content{
-    flex:1 1 auto;
+    flex:0 0 auto;
     min-height:var(--spacing-none);
+    overflow:visible;
   }
 
   .home-platform-shell__content-header{
@@ -780,6 +902,7 @@
   }
 
   .home-platform-shell__content-inner{
+    overflow:visible;
     padding:var(--home-platform-shell-mobile-content-inner-padding-top) var(--spacing-none) calc(var(--home-shell-footer-separator-offset) + var(--home-platform-shell-mobile-content-inner-footer-gap));
   }
 }

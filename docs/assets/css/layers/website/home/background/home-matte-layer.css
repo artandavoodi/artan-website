@@ -56,7 +56,7 @@
    02) HOME MATTE LAYER BASE
 ============================================================================= */
 
-#stage .home-hero-matte,
+.home-background-shell .home-hero-matte,
 .home-hero-matte{
   position: absolute;
   inset: 0;
@@ -95,7 +95,7 @@
 }
 
 @supports (height: 100dvh){
-  #stage .home-hero-matte,
+  .home-background-shell .home-hero-matte,
   .home-hero-matte{
     inset: 0;
   }
@@ -105,13 +105,13 @@
    03) HOME MATTE TOGGLE GATE
 ============================================================================= */
 
-html[data-homepage-theme-matte-atmosphere="false"] #stage .home-hero-matte,
+html[data-homepage-theme-matte-atmosphere="false"] .home-background-shell .home-hero-matte,
 html[data-homepage-theme-matte-atmosphere="false"] .home-hero-matte{
   opacity: 0;
   visibility: hidden;
 }
 
-html[data-homepage-theme-matte-atmosphere="true"] #stage .home-hero-matte,
+html[data-homepage-theme-matte-atmosphere="true"] .home-background-shell .home-hero-matte,
 html[data-homepage-theme-matte-atmosphere="true"] .home-hero-matte{
   opacity: 1;
   visibility: visible;

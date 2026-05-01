@@ -14,6 +14,7 @@
    02) PAGE AUTHORITIES
 ============================================================================= */
 import './404.js';
+import './about.js';
 import './profile.js';
 import './profile-private.js';
 import './profile-public.js';

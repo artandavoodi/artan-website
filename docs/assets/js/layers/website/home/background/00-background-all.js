@@ -12,7 +12,6 @@ import './home-hero-shader.js';
 import './home-essence-effect.js';
 import './home-hero-headlines.js';
 import './home-matte-layer.js';
-import './home-stage-motion.js';
 
 /* =========================================================
    02. END OF FILE

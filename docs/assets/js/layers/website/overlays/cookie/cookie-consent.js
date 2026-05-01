@@ -1425,12 +1425,6 @@
     if (coordinationBound) return;
     coordinationBound = true;
 
-    document.addEventListener('cookie-consent:open-request', () => {
-      document.dispatchEvent(new CustomEvent('account-drawer:close-request', {
-        detail: { source: MODULE_ID, reason: 'cookie-consent-open' }
-      }));
-    });
-
     document.addEventListener('cookie-consent:opened', () => {
       document.dispatchEvent(new CustomEvent('account-drawer:close-request', {
         detail: { source: MODULE_ID, reason: 'cookie-consent-opened' }

@@ -4,6 +4,7 @@
    02) STAGE CORE EFFECT CANVAS
    03) STAGE CORE EFFECT LAYER ORDER
    04) STAGE CORE EFFECT MODE STATE
+   05) STAGE CORE EFFECT SOFTNESS
 ============================================================================= */
 
 /* =============================================================================
@@ -21,6 +22,8 @@
   pointer-events:none;
   transform:translate(-50%, -50%);
   z-index:0;
+  filter:blur(20.8px) saturate(1.28);
+  -webkit-filter:blur(20.8px) saturate(1.28);
 }
 
 /* =============================================================================
@@ -35,9 +38,11 @@
   height:100%;
   border-radius:var(--control-radius-pill);
   pointer-events:none;
-  opacity:0.72;
+  opacity:0.92;
   mix-blend-mode:screen;
   transform:translate(-50%, -50%);
+  filter:blur(25.6px) saturate(1.36);
+  -webkit-filter:blur(25.6px) saturate(1.36);
 }
 
 /* =============================================================================
@@ -57,17 +62,44 @@
 }
 
 #stage-cognitive-core-shell[data-core-effect-mode="idle"] canvas[data-home-stage-core-effect="canvas"]{
-  opacity:0.42;
-}
-
-#stage-cognitive-core-shell[data-core-effect-mode="listening"] canvas[data-home-stage-core-effect="canvas"]{
   opacity:0.68;
 }
 
+#stage-cognitive-core-shell[data-core-effect-mode="release"] canvas[data-home-stage-core-effect="canvas"]{
+  opacity:0.62;
+}
+
+#stage-cognitive-core-shell[data-core-effect-mode="listening"] canvas[data-home-stage-core-effect="canvas"]{
+  opacity:0.96;
+}
+
+#stage-cognitive-core-shell[data-core-effect-mode="transcribing"] canvas[data-home-stage-core-effect="canvas"]{
+  opacity:0.9;
+}
+
 #stage-cognitive-core-shell[data-core-effect-mode="thinking"] canvas[data-home-stage-core-effect="canvas"]{
-  opacity:0.58;
+  opacity:0.86;
 }
 
 #stage-cognitive-core-shell[data-core-effect-mode="responding"] canvas[data-home-stage-core-effect="canvas"]{
-  opacity:0.76;
+  opacity:1;
+}
+
+/* =============================================================================
+   05) STAGE CORE EFFECT SOFTNESS
+============================================================================= */
+#stage-cognitive-core-shell[data-core-effect-mode="listening"] [data-home-stage-core-effect="mount"],
+#stage-cognitive-core-shell[data-core-effect-mode="transcribing"] [data-home-stage-core-effect="mount"],
+#stage-cognitive-core-shell[data-core-effect-mode="thinking"] [data-home-stage-core-effect="mount"],
+#stage-cognitive-core-shell[data-core-effect-mode="responding"] [data-home-stage-core-effect="mount"]{
+  filter:blur(27.2px) saturate(1.42);
+  -webkit-filter:blur(27.2px) saturate(1.42);
+}
+
+#stage-cognitive-core-shell[data-core-effect-mode="listening"] canvas[data-home-stage-core-effect="canvas"],
+#stage-cognitive-core-shell[data-core-effect-mode="transcribing"] canvas[data-home-stage-core-effect="canvas"],
+#stage-cognitive-core-shell[data-core-effect-mode="thinking"] canvas[data-home-stage-core-effect="canvas"],
+#stage-cognitive-core-shell[data-core-effect-mode="responding"] canvas[data-home-stage-core-effect="canvas"]{
+  filter:blur(32.8px) saturate(1.52);
+  -webkit-filter:blur(32.8px) saturate(1.52);
 }

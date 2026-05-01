@@ -15,6 +15,11 @@
 const HOME_STAGE_MOTION_STATE = {
   isBound: false,
   mode: 'idle',
+  releaseTimer: null,
+};
+
+const HOME_STAGE_MOTION_TIMING = {
+  releaseDuration: 720,
 };
 
 /* =========================================================
@@ -43,7 +48,7 @@ function normalizeHomeStageMotionMode(mode) {
   }
 
   const nextMode = mode.trim().toLowerCase();
-  const allowedModes = new Set(['idle', 'listening', 'transcribing', 'thinking', 'responding']);
+  const allowedModes = new Set(['idle', 'release', 'listening', 'transcribing', 'thinking', 'responding']);
 
   if (!nextMode) {
     return 'idle';
@@ -64,6 +69,15 @@ function clearHomeStageMotionTokens(node) {
   delete node.dataset.voiceState;
 }
 
+function clearHomeStageMotionReleaseTimer() {
+  if (!HOME_STAGE_MOTION_STATE.releaseTimer) {
+    return;
+  }
+
+  window.clearTimeout(HOME_STAGE_MOTION_STATE.releaseTimer);
+  HOME_STAGE_MOTION_STATE.releaseTimer = null;
+}
+
 /* =========================================================
    04. MODE APPLICATION
    ========================================================= */
@@ -71,6 +85,10 @@ function clearHomeStageMotionTokens(node) {
 function applyHomeStageMotionMode(mode) {
   const normalizedMode = normalizeHomeStageMotionMode(mode);
   const nodes = getHomeStageMotionNodes();
+
+  if (normalizedMode !== 'release') {
+    clearHomeStageMotionReleaseTimer();
+  }
 
   HOME_STAGE_MOTION_STATE.mode = normalizedMode;
   const isActiveMode = normalizedMode === 'listening' || normalizedMode === 'transcribing' || normalizedMode === 'thinking' || normalizedMode === 'responding';
@@ -133,10 +151,36 @@ function applyHomeStageMotionMode(mode) {
       }
       break;
     }
+    case 'release': {
+      if (nodes.stageShell) {
+        nodes.stageShell.dataset.voicePulse = 'release';
+        nodes.stageShell.dataset.voiceOrbit = 'release';
+        nodes.stageShell.dataset.voiceGlow = 'release';
+      }
+      if (nodes.microphoneButton) {
+        nodes.microphoneButton.dataset.voicePulse = 'release';
+      }
+      break;
+    }
     default: {
       break;
     }
   }
+}
+
+function releaseHomeStageMotionToIdle() {
+  if (HOME_STAGE_MOTION_STATE.mode === 'idle') {
+    applyHomeStageMotionMode('idle');
+    return;
+  }
+
+  applyHomeStageMotionMode('release');
+  clearHomeStageMotionReleaseTimer();
+
+  HOME_STAGE_MOTION_STATE.releaseTimer = window.setTimeout(() => {
+    HOME_STAGE_MOTION_STATE.releaseTimer = null;
+    applyHomeStageMotionMode('idle');
+  }, HOME_STAGE_MOTION_TIMING.releaseDuration);
 }
 
 /* =========================================================
@@ -149,11 +193,18 @@ function bindHomeStageMotionEvents() {
   });
 
   document.addEventListener('neuroartan:home-stage-voice-deactivated', () => {
-    applyHomeStageMotionMode('idle');
+    releaseHomeStageMotionToIdle();
   });
 
   document.addEventListener('neuroartan:home-stage-voice-mode', (event) => {
-    applyHomeStageMotionMode(event?.detail?.mode ?? 'idle');
+    const nextMode = event?.detail?.mode ?? 'idle';
+
+    if (normalizeHomeStageMotionMode(nextMode) === 'idle') {
+      releaseHomeStageMotionToIdle();
+      return;
+    }
+
+    applyHomeStageMotionMode(nextMode);
   });
 
   document.addEventListener('neuroartan:home-stage-voice-transcript', (event) => {
@@ -167,7 +218,7 @@ function bindHomeStageMotionEvents() {
   });
 
   document.addEventListener('neuroartan:home-stage-reset-requested', () => {
-    applyHomeStageMotionMode('idle');
+    releaseHomeStageMotionToIdle();
   });
 }
 

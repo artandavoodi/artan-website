@@ -8,6 +8,7 @@
    01. SHELL AUTHORITY IMPORTS
    ========================================================= */
 
+import './home-entry-runtime.js';
 import './home-dashboard-topbar.js';
 import './home-workspace-panel.js';
 import './home-profile-control-panel.js';

@@ -34,7 +34,7 @@
 /* =============================================================================
    02) HOST MOUNT LAYER
 ============================================================================= */
-#stage .home-hero-shader,
+.home-background-shell .home-hero-shader,
 #home-hero-shader{
   position: absolute;
   inset: 0;

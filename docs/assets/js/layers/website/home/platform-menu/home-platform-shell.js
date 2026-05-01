@@ -48,6 +48,7 @@ const HOME_PLATFORM_DESTINATIONS = new Set([
 
 const HOME_PLATFORM_CONFIG_URL = '/assets/data/platform/home-platform-shell.json';
 const HOME_PLATFORM_RAIL_STORAGE_KEY = 'neuroartan.home.platformShell.railMode';
+const HOME_PLATFORM_HASH_PREFIX = '#home-platform-';
 
 /* =============================================================================
 03) DOM HELPERS
@@ -101,11 +102,44 @@ function getHomePlatformShellRailToggleIcon() {
 }
 
 function getHomePlatformShellNavItems() {
-  return Array.from(document.querySelectorAll('[data-home-platform-destination]'));
+  return Array.from(document.querySelectorAll('#home-platform-shell .home-platform-shell__nav-item[data-home-platform-destination]'));
 }
 
 function getHomePlatformShellIndicatorNodes() {
   return Array.from(document.querySelectorAll('[data-home-platform-nav-indicator]'));
+}
+
+function getRenderedHomePlatformDestination() {
+  const root = getHomePlatformShellRoot();
+  const destination = normalizeString(root?.getAttribute('data-home-platform-destination') || '');
+  return HOME_PLATFORM_DESTINATIONS.has(destination) ? destination : '';
+}
+
+function buildHomePlatformSubdestinationHash(destination, subdestination) {
+  return `${HOME_PLATFORM_HASH_PREFIX}${destination}-${subdestination}`;
+}
+
+async function resolveHomePlatformHash(hashValue = window.location.hash) {
+  const hash = normalizeString(hashValue);
+  if (!hash.startsWith(HOME_PLATFORM_HASH_PREFIX)) {
+    return null;
+  }
+
+  await ensureHomePlatformConfig();
+
+  const routeKey = hash.slice(HOME_PLATFORM_HASH_PREFIX.length);
+  for (const destinationConfig of HOME_PLATFORM_SHELL_STATE.config) {
+    for (const subdestinationConfig of destinationConfig.subdestinations) {
+      if (`${destinationConfig.id}-${subdestinationConfig.id}` === routeKey) {
+        return {
+          destination: destinationConfig.id,
+          subdestination: subdestinationConfig.id,
+        };
+      }
+    }
+  }
+
+  return null;
 }
 
 function getHomePlatformShellChromeRoots() {
@@ -121,6 +155,18 @@ function hideRoot(node) {
   if (!node) return;
   node.hidden = true;
   node.setAttribute('aria-hidden', 'true');
+}
+
+function getEventElementTarget(target) {
+  if (target instanceof Element) {
+    return target;
+  }
+
+  if (target?.parentElement instanceof Element) {
+    return target.parentElement;
+  }
+
+  return null;
 }
 
 function requestMicrophoneInteraction() {
@@ -165,6 +211,33 @@ function requestProfileSetupFromShell() {
       surface: 'profile-setup',
     },
   }));
+}
+
+function closeBlockingGlobalOverlays() {
+  document.dispatchEvent(new CustomEvent('neuroartan:cookie-consent-close-requested', {
+    detail: {
+      source: 'home-platform-shell',
+    },
+  }));
+
+  [
+    'account-drawer:close-request',
+    'account-sign-in-drawer:close-request',
+    'account-sign-up-drawer:close-request',
+    'account-email-auth-drawer:close-request',
+    'account-provider-google-sheet:close-request',
+    'account-profile-setup-drawer:close-request',
+  ].forEach((eventName) => {
+    document.dispatchEvent(new CustomEvent(eventName, {
+      detail: {
+        source: 'home-platform-shell',
+      },
+    }));
+  });
+
+  const countryLanguageApi = window.NEUROARTAN_COUNTRY_LANGUAGE || window.ARTAN_COUNTRY_LANGUAGE;
+  countryLanguageApi?.closeCountryOverlay?.();
+  countryLanguageApi?.closeLanguageDropdown?.();
 }
 
 function fetchHomePlatformJson(path) {
@@ -608,19 +681,28 @@ function renderHomePlatformShellSubnav(destination, subdestination) {
   }
 
   items.forEach((item) => {
-    const button = document.createElement('button');
+    const button = document.createElement('a');
     const isActive = item.id === subdestination;
-    button.type = 'button';
+    button.href = buildHomePlatformSubdestinationHash(destination, item.id);
     button.className = 'home-platform-shell__subnav-item';
     button.textContent = item.label;
+    button.setAttribute('data-home-platform-destination', destination);
     button.setAttribute('data-home-platform-subdestination', item.id);
-    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    if (isActive) {
+      button.setAttribute('aria-current', 'page');
+    }
     button.classList.toggle('is-active', isActive);
-    button.addEventListener('click', (event) => {
+    const routeSubdestination = (event) => {
       event.preventDefault();
       event.stopPropagation();
-      void setHomePlatformSubdestination(item.id);
-    });
+      getHomePlatformShellRoot()?.setAttribute('data-home-platform-last-subnav-intent', item.id);
+      void routeHomePlatformSubdestination(destination, item.id);
+    };
+    button.addEventListener('focus', routeSubdestination);
+    button.addEventListener('pointerdown', routeSubdestination);
+    button.addEventListener('mousedown', routeSubdestination);
+    button.addEventListener('pointerup', routeSubdestination);
+    button.addEventListener('click', routeSubdestination);
     subnavRoot.append(button);
   });
 }
@@ -799,19 +881,35 @@ async function setHomePlatformDestination(destination, subdestination = '') {
 }
 
 async function setHomePlatformSubdestination(subdestination) {
-  const destination = HOME_PLATFORM_SHELL_STATE.activeDestination;
-  const destinationConfig = getHomePlatformDestinationConfig(destination);
-  if (!destinationConfig) {
+  const destination = getRenderedHomePlatformDestination() || HOME_PLATFORM_SHELL_STATE.activeDestination;
+  await routeHomePlatformSubdestination(destination, subdestination);
+}
+
+async function routeHomePlatformSubdestination(destination, subdestination) {
+  const resolvedDestination = HOME_PLATFORM_DESTINATIONS.has(destination)
+    ? destination
+    : (getRenderedHomePlatformDestination() || HOME_PLATFORM_SHELL_STATE.activeDestination);
+
+  if (!resolvedDestination) {
     return;
   }
 
-  const nextSubdestination = getHomePlatformSubdestinationConfig(destination, subdestination)
-    ? subdestination
-    : resolveDefaultSubdestination(destination);
+  await setHomePlatformDestination(resolvedDestination, subdestination);
+}
 
-  HOME_PLATFORM_SHELL_STATE.activeSubdestination = nextSubdestination;
-  renderHomePlatformShellSubnav(destination, nextSubdestination);
-  await renderHomePlatformShellContent(destination, nextSubdestination);
+async function routeHomePlatformHash(hashValue = window.location.hash) {
+  const resolvedRoute = await resolveHomePlatformHash(hashValue);
+  if (!resolvedRoute) {
+    return false;
+  }
+
+  const root = getHomePlatformShellRoot();
+  if (root?.hidden) {
+    openHomePlatformShell(resolvedRoute.destination);
+  }
+
+  await setHomePlatformDestination(resolvedRoute.destination, resolvedRoute.subdestination);
+  return true;
 }
 
 /* =============================================================================
@@ -826,11 +924,7 @@ function openHomePlatformShell(destination = HOME_PLATFORM_SHELL_STATE.activeDes
   if (!root) return;
 
   closeConflictingHomeChrome();
-  document.dispatchEvent(new CustomEvent('neuroartan:cookie-consent-close-requested', {
-    detail: {
-      source: 'home-platform-shell',
-    },
-  }));
+  closeBlockingGlobalOverlays();
   root.hidden = false;
   root.setAttribute('aria-hidden', 'false');
   document.body.classList.add('home-platform-shell-open');
@@ -885,12 +979,101 @@ function toggleHomePlatformShell(destination = 'home') {
 /* =============================================================================
 10) EVENT BINDING
 ============================================================================= */
+function activateHomePlatformNavTrigger(target) {
+  const eventTarget = getEventElementTarget(target);
+  const navTrigger = eventTarget
+    ? eventTarget.closest('#home-platform-shell .home-platform-shell__nav-item[data-home-platform-destination]')
+    : null;
+
+  if (!navTrigger) {
+    return false;
+  }
+
+  const destination = navTrigger.getAttribute('data-home-platform-destination') || 'home';
+  if (destination === HOME_PLATFORM_SHELL_STATE.activeDestination && destination === getRenderedHomePlatformDestination()) {
+    return true;
+  }
+
+  void setHomePlatformDestination(destination);
+  return true;
+}
+
+function resolveHomePlatformSubnavTriggerFromPoint(event) {
+  const root = getHomePlatformShellRoot();
+  if (!root || root.hidden || typeof document.elementsFromPoint !== 'function') {
+    return null;
+  }
+
+  const clientX = Number(event?.clientX);
+  const clientY = Number(event?.clientY);
+  if (!Number.isFinite(clientX) || !Number.isFinite(clientY)) {
+    return null;
+  }
+
+  const elementsAtPoint = document.elementsFromPoint(clientX, clientY);
+  for (const element of elementsAtPoint) {
+    if (!(element instanceof Element)) continue;
+    const trigger = element.closest('#home-platform-shell .home-platform-shell__subnav-item[data-home-platform-subdestination]');
+    if (trigger) {
+      return trigger;
+    }
+  }
+
+  return null;
+}
+
+function activateHomePlatformSubnavTrigger(target, event = null) {
+  const eventTarget = getEventElementTarget(target);
+  const subnavTrigger = (
+    eventTarget
+      ? eventTarget.closest('#home-platform-shell .home-platform-shell__subnav-item[data-home-platform-subdestination]')
+      : null
+  ) || resolveHomePlatformSubnavTriggerFromPoint(event);
+
+  if (!subnavTrigger) {
+    return false;
+  }
+
+  const subdestination = subnavTrigger.getAttribute('data-home-platform-subdestination') || '';
+  const destination = subnavTrigger.getAttribute('data-home-platform-destination')
+    || getRenderedHomePlatformDestination()
+    || HOME_PLATFORM_SHELL_STATE.activeDestination;
+  if (
+    destination === HOME_PLATFORM_SHELL_STATE.activeDestination
+    && subdestination === HOME_PLATFORM_SHELL_STATE.activeSubdestination
+  ) {
+    return true;
+  }
+
+  void routeHomePlatformSubdestination(destination, subdestination);
+  return true;
+}
+
+function handleHomePlatformShellActivationEvent(event) {
+  if (activateHomePlatformSubnavTrigger(event.target, event) || activateHomePlatformNavTrigger(event.target)) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+}
+
 function bindHomePlatformShellEvents() {
   if (HOME_PLATFORM_SHELL_STATE.isBound) return;
   HOME_PLATFORM_SHELL_STATE.isBound = true;
 
+  window.addEventListener('pointerdown', handleHomePlatformShellActivationEvent, true);
+  window.addEventListener('mousedown', handleHomePlatformShellActivationEvent, true);
+  window.addEventListener('click', handleHomePlatformShellActivationEvent, true);
+  document.addEventListener('pointerdown', handleHomePlatformShellActivationEvent, true);
+  document.addEventListener('mousedown', handleHomePlatformShellActivationEvent, true);
+  document.addEventListener('click', handleHomePlatformShellActivationEvent, true);
+
   document.addEventListener('click', (event) => {
-    const menuTrigger = event.target.closest('#home-dashboard-menu-trigger');
+    const eventTarget = getEventElementTarget(event.target);
+    if (!eventTarget) {
+      return;
+    }
+
+    const menuTrigger = eventTarget.closest('#home-dashboard-menu-trigger');
     if (menuTrigger) {
       event.preventDefault();
       event.stopPropagation();
@@ -898,54 +1081,44 @@ function bindHomePlatformShellEvents() {
       return;
     }
 
-    const closeTrigger = event.target.closest('[data-home-platform-shell-close]');
+    const closeTrigger = eventTarget.closest('[data-home-platform-shell-close]');
     if (closeTrigger) {
       event.preventDefault();
       closeHomePlatformShell();
       return;
     }
 
-    const railToggleTrigger = event.target.closest('[data-home-platform-shell-rail-toggle]');
+    const railToggleTrigger = eventTarget.closest('[data-home-platform-shell-rail-toggle]');
     if (railToggleTrigger) {
       event.preventDefault();
       toggleHomePlatformRailMode();
       return;
     }
 
-    const navTrigger = event.target.closest(
-      '#home-platform-shell .home-platform-shell__nav-item[data-home-platform-destination]'
-    );
-    if (navTrigger) {
-      const destination = navTrigger.getAttribute('data-home-platform-destination') || 'home';
+    if (activateHomePlatformNavTrigger(eventTarget)) {
       event.preventDefault();
-      void setHomePlatformDestination(destination);
       return;
     }
 
-    const subnavTrigger = event.target.closest(
-      '#home-platform-shell-subnav .home-platform-shell__subnav-item[data-home-platform-subdestination]'
-    );
-    if (subnavTrigger) {
-      const subdestination = subnavTrigger.getAttribute('data-home-platform-subdestination') || '';
+    if (activateHomePlatformSubnavTrigger(eventTarget, event)) {
       event.preventDefault();
-      void setHomePlatformSubdestination(subdestination);
       return;
     }
 
-    const detailLink = event.target.closest('[data-home-platform-detail-href]');
+    const detailLink = eventTarget.closest('[data-home-platform-detail-href]');
     if (detailLink instanceof HTMLAnchorElement) {
       closeHomePlatformShell();
       return;
     }
 
-    const detailAction = event.target.closest('[data-home-platform-detail-action]');
+    const detailAction = eventTarget.closest('[data-home-platform-detail-action]');
     if (detailAction) {
       event.preventDefault();
       handleHomePlatformDetailAction(detailAction.getAttribute('data-home-platform-detail-action') || '');
       return;
     }
 
-    const shellActionTrigger = event.target.closest(
+    const shellActionTrigger = eventTarget.closest(
       '#home-platform-shell .home-workspace-panel__item, ' +
       '#home-platform-shell .home-profile-control-panel__item'
     );
@@ -979,6 +1152,10 @@ function bindHomePlatformShellEvents() {
 
   document.addEventListener('home:platform-shell-close-request', () => {
     closeHomePlatformShell();
+  });
+
+  window.addEventListener('hashchange', () => {
+    void routeHomePlatformHash();
   });
 
   subscribeHomeSurfaceState((snapshot) => {

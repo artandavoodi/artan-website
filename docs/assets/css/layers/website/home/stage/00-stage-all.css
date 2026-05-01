@@ -7,7 +7,7 @@
 /* =============================================================================
    01) STAGE AUTHORITY IMPORTS
 ============================================================================= */
-@import url('./home-stage-composition.css');
+@import url('./home-stage-motion.css');
 @import url('./home-stage-interactive-text.css');
 @import url('./home-stage-core-effect.css');
 @import url('./home-stage-response.css');

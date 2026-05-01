@@ -13,6 +13,15 @@
 /* =============================================================================
    02) STAGE REGION COMPOSITION
 ============================================================================= */
+:root{
+  --home-composition-topbar-clearance:3.55rem;
+  --home-composition-footer-clearance:3.25rem;
+  --home-composition-shell-block-padding:2.35rem;
+  --home-composition-circle-to-text-gap:1.85rem;
+  --home-composition-text-to-panel-gap:1.45rem;
+  --home-composition-panel-to-response-gap:1rem;
+}
+
 /* =============================================================================
    00C) HOME STAGE CORE GEOMETRY
 ============================================================================= */
@@ -21,6 +30,7 @@
   height:var(--home-stage-motion-core-height);
   max-width:100%;
   max-height:100%;
+  min-height:0;
   pointer-events:auto;
   position:relative;
   display:flex;
@@ -30,56 +40,6 @@
   gap:var(--home-layout-stage-center-gap, 24px);
 }
 
-#stage-center-core:has(#stage-cognitive-core-shell[data-voice-active="true"]){
-  width:var(--home-stage-motion-core-active-width);
-  height:var(--home-stage-motion-core-active-height);
-}
-
-#stage-center-core:has(#stage-cognitive-core-shell[data-voice-active="true"]) #stage-glass-vessel{
-  width:var(--home-stage-motion-vessel-active-size);
-  height:var(--home-stage-motion-vessel-active-size);
-}
-
-#stage-glass-vessel{
-  width:var(--home-stage-motion-vessel-size);
-  height:var(--home-stage-motion-vessel-size);
-  position:absolute;
-  left:50%;
-  top:50%;
-  border-radius:var(--control-radius-pill);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0;
-  pointer-events:none;
-  isolation:isolate;
-  transform:translate(-50%, -50%);
-  z-index:4;
-}
-
-#stage-cognitive-core-shell{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  pointer-events:none;
-  z-index:5;
-  transform:translate(-50%, -50%);
-}
-
-#stage #stage-microphone{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto var(--home-stage-motion-mic-margin-bottom);
-  position:relative;
-  z-index:6;
-  pointer-events:auto;
-}
 
 #stage .stage-region{
   width:100%;
@@ -89,10 +49,15 @@
 }
 
 #stage-intro{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+  height:calc(100dvh - var(--home-composition-topbar-clearance) - var(--home-composition-footer-clearance));
+  max-height:calc(100dvh - var(--home-composition-topbar-clearance) - var(--home-composition-footer-clearance));
+  margin-block:var(--home-composition-topbar-clearance) var(--home-composition-footer-clearance);
+  display:grid;
+  place-items:center;
+  padding-block:var(--home-composition-shell-block-padding);
+  box-sizing:border-box;
+  overflow:hidden;
+  contain:layout paint;
 }
 
 #stage-top{
@@ -101,10 +66,6 @@
 
 #stage-center{
   align-self:center;
-}
-
-#stage-center-core > :not(#stage-microphone):not(#home-interaction-panel-mount):not(#home-interaction-response-panel-mount){
-  pointer-events:none;
 }
 
 #home-stage-interactive-text-mount,
@@ -117,7 +78,15 @@
 }
 
 #home-stage-interactive-text-mount{
-  margin-top:0;
+  margin-top:var(--home-composition-circle-to-text-gap);
+}
+
+#home-interaction-panel-mount{
+  margin-top:var(--home-composition-text-to-panel-gap);
+}
+
+#home-interaction-response-panel-mount{
+  margin-top:var(--home-composition-panel-to-response-gap);
 }
 
 #home-interaction-panel-mount,

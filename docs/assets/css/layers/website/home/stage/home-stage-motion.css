@@ -1,125 +1,23 @@
 /* =============================================================================
-   00A) HOME STAGE CIRCLE TOKENS
-============================================================================= */
-:root{
-  --stage-circle-mobile:520px;
-  --stage-circle-tablet:600px;
-  --stage-circle-desktop:720px;
-  --stage-circle-wide:840px;
-  --stage-circle-max-desktop:1200px;
-  --home-stage-circle-motion:620ms;
-  --home-stage-circle-blur:var(--layout-home-circle-blur);
-  --home-stage-circle-halo-scale:var(--layout-home-circle-halo-scale);
-  --home-stage-circle-halo-opacity:var(--layout-home-circle-halo-opacity);
-  --home-stage-circle-start-scale:var(--layout-home-circle-start-scale);
-  --home-stage-circle-mid-scale:var(--layout-home-circle-mid-scale);
-  --home-stage-circle-breathe-duration:var(--layout-home-circle-breathe-duration);
-  --home-stage-halo-start-opacity:var(--layout-home-halo-start-opacity);
-  --home-stage-halo-breathe-duration:var(--layout-home-halo-breathe-duration);
-}
-
-/* =============================================================================
-   00B) HOME STAGE CIRCLE ATMOSPHERE
-============================================================================= */
-.stage-circle{
-  position:fixed;
-  inset:0;
-  width:100vw;
-  height:100vh;
-  border-radius:0;
-  margin:0;
-  background:transparent;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:2;
-  overflow:hidden;
-  isolation:isolate;
-  pointer-events:none;
-  opacity:0;
-  visibility:hidden;
-}
-
-.stage-circle::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%, -50%);
-  width:min(var(--stage-circle-desktop, 720px), 86vh, 92vw, var(--stage-circle-max-desktop, 1200px));
-  height:min(var(--stage-circle-desktop, 720px), 86vh, 92vw, var(--stage-circle-max-desktop, 1200px));
-  border-radius:var(--control-radius-pill);
-  background:radial-gradient(
-    circle at center,
-    color-mix(in srgb, var(--color-primary1) 100%, transparent) 0%,
-    color-mix(in srgb, var(--color-primary1) 80%, transparent) 12%,
-    color-mix(in srgb, var(--color-primary1) 70%, transparent) 20%,
-    color-mix(in srgb, var(--color-primary1) 60%, transparent) 28%,
-    color-mix(in srgb, var(--color-primary1) 40%, transparent) 40%,
-    color-mix(in srgb, var(--color-primary1) 35%, transparent) 46%,
-    color-mix(in srgb, var(--color-primary1) 30%, transparent) 52%,
-    color-mix(in srgb, var(--color-primary1) 25%, transparent) 58%,
-    color-mix(in srgb, var(--color-primary1) 20%, transparent) 64%,
-    color-mix(in srgb, var(--color-primary1) 15%, transparent) 70%,
-    color-mix(in srgb, var(--color-primary1) 12%, transparent) 74%,
-    color-mix(in srgb, var(--color-primary1) 10%, transparent) 78%,
-    color-mix(in srgb, var(--color-primary1) 8%, transparent) 82%,
-    color-mix(in srgb, var(--color-primary1) 6%, transparent) 86%,
-    color-mix(in srgb, var(--color-primary1) 4%, transparent) 90%,
-    color-mix(in srgb, var(--color-primary1) 2.5%, transparent) 94%,
-    color-mix(in srgb, var(--color-primary1) 1.2%, transparent) 97%,
-    transparent 100%
-  );
-  filter:blur(var(--home-stage-circle-blur));
-  -webkit-filter:blur(var(--home-stage-circle-blur));
-  opacity:0;
-  z-index:2;
-  animation:dial-breathe var(--home-stage-circle-breathe-duration) var(--interaction-ease-standard) infinite;
-}
-
-.stage-circle::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%, -50%);
-  width:calc(min(var(--stage-circle-desktop, 720px), 86vh, 92vw, var(--stage-circle-max-desktop, 1200px)) * var(--home-stage-circle-halo-scale));
-  height:calc(min(var(--stage-circle-desktop, 720px), 86vh, 92vw, var(--stage-circle-max-desktop, 1200px)) * var(--home-stage-circle-halo-scale));
-  border-radius:var(--control-radius-pill);
-  background:radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 12%, transparent), transparent 75%);
-  opacity:0;
-  z-index:2;
-  animation:halo-breathe var(--home-stage-halo-breathe-duration) var(--interaction-ease-standard) infinite;
-}
-
-@keyframes dial-breathe{
-  0%{transform:translate(-50%, -50%) scale(var(--home-stage-circle-start-scale));}
-  35%{transform:translate(-50%, -50%) scale(var(--home-stage-circle-mid-scale));}
-  100%{transform:translate(-50%, -50%) scale(var(--home-stage-circle-start-scale));}
-}
-
-@keyframes halo-breathe{
-  0%{opacity:var(--home-stage-halo-start-opacity);}
-  50%{opacity:1;}
-  100%{opacity:var(--home-stage-halo-start-opacity);}
-}
-
-/* =============================================================================
    00) FILE INDEX
    01) STAGE CORE TOKENS
    02) STAGE CORE SOVEREIGN BASELINE
    03) GLASS VESSEL SURFACES
    04) COGNITIVE CORE SURFACES
    05) STAGE CORE SIZE STATES
+   05A) STAGE CORE TOP MASK
    06) STAGE MICROPHONE BASELINE
    07) STAGE MICROPHONE MOTION FIELDS
    08) ACTIVE VOICE MODE MOTION
    09) LISTENING MODE MOTION
-   10) THINKING MODE MOTION
-   11) RESPONDING MODE MOTION
-   12) ACTIVE MICROPHONE STATE
-   13) MOBILE REFINEMENTS
-   14) KEYFRAMES
+   10) TRANSCRIBING MODE MOTION
+   11) THINKING MODE MOTION
+   12) RESPONDING MODE MOTION
+   13) INTELLIGENT CORE LAYER MOTION
+   13A) IDLE INNER COLOR BREATHING
+   14) ACTIVE MICROPHONE STATE
+   15) MOBILE REFINEMENTS
+   16) KEYFRAMES
 ============================================================================= */
 
 /* =============================================================================
@@ -173,6 +71,15 @@
   --home-stage-motion-mic-ring-border:var(--layout-home-stage-motion-mic-ring-border);
   --home-stage-motion-mic-ring-offset:var(--layout-home-stage-motion-mic-ring-offset);
   --home-stage-motion-active-color:var(--layout-home-stage-motion-active-color);
+  --home-stage-motion-accent-green:rgba(94, 255, 188, 0.72);
+  --home-stage-motion-accent-orange:rgba(255, 160, 76, 0.68);
+  --home-stage-motion-accent-red:rgba(255, 82, 114, 0.58);
+  --home-stage-motion-accent-violet:rgba(168, 118, 255, 0.74);
+  --home-stage-motion-accent-pink:rgba(255, 108, 196, 0.66);
+  --home-stage-motion-accent-blue:rgba(96, 190, 255, 0.72);
+  --home-stage-motion-orb-blur:30px;
+  --home-stage-motion-orb-active-blur:38px;
+  --home-stage-motion-reset-transition:980ms;
   --home-stage-motion-mode-core-opacity:var(--layout-home-stage-motion-mode-core-opacity);
   --home-stage-motion-mode-ring-opacity:var(--layout-home-stage-motion-mode-ring-opacity);
   --home-stage-motion-listening-core-duration:var(--layout-home-stage-motion-listening-core-duration);
@@ -226,15 +133,108 @@
    02) STAGE CORE SOVEREIGN BASELINE
 ============================================================================= */
 #stage-center-core{
+  width:var(--home-stage-motion-core-width);
+  height:var(--home-stage-motion-core-height);
+  max-width:100%;
+  max-height:100%;
+  min-height:0;
+  pointer-events:auto;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:var(--home-layout-stage-center-gap, 24px);
   transition:
     width var(--home-stage-motion-transition),
     height var(--home-stage-motion-transition);
 }
 
+#stage-center-core:has(#stage-cognitive-core-shell[data-voice-active="true"]){
+  width:var(--home-stage-motion-core-active-width);
+  height:var(--home-stage-motion-core-active-height);
+}
+
+#stage-center-core:has(#stage-cognitive-core-shell[data-voice-active="true"]) #stage-glass-vessel{
+  width:var(--home-stage-motion-vessel-active-size);
+  height:var(--home-stage-motion-vessel-active-size);
+}
+
+/* =============================================================================
+   05A) STAGE CORE TOP MASK
+============================================================================= */
+#stage-center-core::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:var(--home-stage-motion-vessel-size);
+  height:var(--home-stage-motion-vessel-size);
+  border-radius:var(--control-radius-pill);
+  transform:translate(-50%, -50%);
+  z-index:50;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 28% 30%, rgba(255,255,255,0.18), transparent 32%),
+    color-mix(in srgb, var(--bg-color) 10%, transparent);
+  backdrop-filter:blur(28px) saturate(1.34);
+  -webkit-backdrop-filter:blur(28px) saturate(1.34);
+  opacity:0.32;
+  transition:
+    width var(--home-stage-motion-transition),
+    height var(--home-stage-motion-transition),
+    opacity var(--home-stage-motion-fast) var(--interaction-ease-standard),
+    backdrop-filter var(--home-stage-motion-transition);
+}
+
+#stage-center-core:has(#stage-cognitive-core-shell[data-voice-active="true"])::after{
+  width:var(--home-stage-motion-vessel-active-size);
+  height:var(--home-stage-motion-vessel-active-size);
+  opacity:0.28;
+}
+
 #stage-glass-vessel{
+  width:var(--home-stage-motion-vessel-size);
+  height:var(--home-stage-motion-vessel-size);
+  position:absolute;
+  left:50%;
+  top:50%;
+  border-radius:var(--control-radius-pill);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0;
+  pointer-events:none;
+  isolation:isolate;
+  transform:translate(-50%, -50%);
+  z-index:4;
   transition:
     width var(--home-stage-motion-transition),
     height var(--home-stage-motion-transition);
+}
+
+#stage-cognitive-core-shell{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  z-index:5;
+  transform:translate(-50%, -50%);
+}
+
+#stage #stage-microphone{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto var(--home-stage-motion-mic-margin-bottom);
+  position:relative;
+  z-index:6;
+  pointer-events:auto;
 }
 
 /* =============================================================================
@@ -286,49 +286,174 @@
   opacity:1;
   transform:translate(-50%, -50%) scale(1);
   transition:
-    opacity var(--home-stage-motion-fast) var(--interaction-ease-standard),
-    transform var(--home-stage-motion-transition);
+    opacity var(--home-stage-motion-reset-transition) var(--interaction-ease-standard),
+    filter var(--home-stage-motion-reset-transition) var(--interaction-ease-standard),
+    background var(--home-stage-motion-reset-transition) var(--interaction-ease-standard),
+    border-color var(--home-stage-motion-reset-transition) var(--interaction-ease-standard),
+    box-shadow var(--home-stage-motion-reset-transition) var(--interaction-ease-standard);
 }
 
 #stage-cognitive-core-signal{
   width:var(--home-stage-motion-core-signal-size);
   aspect-ratio:1 / 1;
-  background:radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 10%, transparent) 0%, color-mix(in srgb, var(--color-primary1) 5%, transparent) 48%, transparent 100%);
-  filter:blur(var(--home-stage-motion-core-signal-blur));
-  -webkit-filter:blur(var(--home-stage-motion-core-signal-blur));
+  background:
+    radial-gradient(circle at 30% 28%, var(--home-stage-motion-accent-pink) 0%, transparent 26%),
+    radial-gradient(circle at 70% 32%, var(--home-stage-motion-accent-blue) 0%, transparent 30%),
+    radial-gradient(circle at 44% 74%, var(--home-stage-motion-accent-green) 0%, transparent 34%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 78%, transparent) 0%, color-mix(in srgb, var(--color-primary1) 46%, transparent) 48%, transparent 100%);
+  filter:blur(var(--home-stage-motion-orb-blur)) saturate(1.28);
+  -webkit-filter:blur(var(--home-stage-motion-orb-blur)) saturate(1.28);
 }
 
 #stage-cognitive-core-ring{
   width:var(--home-stage-motion-core-ring-size);
   aspect-ratio:1 / 1;
-  border:1px solid var(--home-stage-motion-core-ring-border);
+  border:1px solid color-mix(in srgb, var(--home-stage-motion-accent-violet) 62%, var(--home-stage-motion-core-ring-border));
   box-sizing:border-box;
+  box-shadow:
+    0 0 30px rgba(168,118,255,0.22),
+    inset 0 0 24px rgba(96,190,255,0.18);
+  filter:blur(1.4px) saturate(1.24);
 }
 
 #stage-cognitive-core-pulse{
   width:var(--home-stage-motion-core-pulse-size);
   aspect-ratio:1 / 1;
-  background:radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 12%, transparent) 0%, color-mix(in srgb, var(--color-primary1) 6%, transparent) 44%, transparent 100%);
-  filter:blur(var(--home-stage-motion-core-pulse-blur));
-  -webkit-filter:blur(var(--home-stage-motion-core-pulse-blur));
+  background:
+    radial-gradient(circle at 35% 36%, var(--home-stage-motion-accent-orange) 0%, transparent 28%),
+    radial-gradient(circle at 66% 64%, var(--home-stage-motion-accent-violet) 0%, transparent 34%),
+    radial-gradient(circle at 50% 50%, var(--home-stage-motion-accent-red) 0%, transparent 42%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 76%, transparent) 0%, color-mix(in srgb, var(--color-primary1) 40%, transparent) 44%, transparent 100%);
+  filter:blur(var(--home-stage-motion-orb-active-blur)) saturate(1.42);
+  -webkit-filter:blur(var(--home-stage-motion-orb-active-blur)) saturate(1.42);
 }
 
 #stage-cognitive-core-shell[data-core-state="idle"] #stage-cognitive-core-signal{
-  opacity:var(--home-stage-motion-core-idle-signal-opacity);
+  opacity:0.72;
+  background:
+    radial-gradient(circle at 30% 32%, color-mix(in srgb, var(--color-primary1) 68%, transparent) 0%, transparent 42%),
+    radial-gradient(circle at 66% 60%, color-mix(in srgb, var(--color-primary1) 38%, transparent) 0%, transparent 46%),
+    radial-gradient(circle at 44% 72%, color-mix(in srgb, var(--home-stage-motion-accent-blue) 18%, transparent) 0%, transparent 36%),
+    radial-gradient(circle at 70% 34%, color-mix(in srgb, var(--home-stage-motion-accent-green) 14%, transparent) 0%, transparent 34%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 58%, transparent) 0%, transparent 78%);
+  filter:blur(20px) saturate(1.38);
+  -webkit-filter:blur(20px) saturate(1.38);
+  animation:stage-core-idle-color-breathe 7.4s var(--interaction-ease-standard) infinite;
 }
 
 #stage-cognitive-core-shell[data-core-state="idle"] #stage-cognitive-core-ring{
-  opacity:var(--home-stage-motion-core-idle-ring-opacity);
+  opacity:0.58;
+  border-color:color-mix(in srgb, var(--color-primary1) 72%, var(--home-stage-motion-core-ring-border));
+  box-shadow:0 0 32px color-mix(in srgb, var(--color-primary1) 26%, transparent), inset 0 0 22px color-mix(in srgb, var(--color-primary1) 16%, transparent);
+  filter:blur(0.8px) saturate(1.22);
 }
 
 #stage-cognitive-core-shell[data-core-state="idle"] #stage-cognitive-core-pulse{
-  opacity:var(--home-stage-motion-core-idle-pulse-opacity);
+  opacity:0.66;
+  background:
+    radial-gradient(circle at 38% 40%, color-mix(in srgb, var(--color-primary1) 56%, transparent) 0%, transparent 42%),
+    radial-gradient(circle at 64% 60%, color-mix(in srgb, var(--color-primary1) 30%, transparent) 0%, transparent 46%),
+    radial-gradient(circle at 34% 68%, color-mix(in srgb, var(--home-stage-motion-accent-pink) 14%, transparent) 0%, transparent 34%),
+    radial-gradient(circle at 72% 44%, color-mix(in srgb, var(--home-stage-motion-accent-violet) 16%, transparent) 0%, transparent 36%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 52%, transparent) 0%, transparent 80%);
+  filter:blur(28px) saturate(1.42);
+  -webkit-filter:blur(28px) saturate(1.42);
+  animation:stage-core-idle-pulse-color-breathe 8.6s var(--interaction-ease-standard) infinite;
 }
 
-#stage-cognitive-core-shell[data-voice-active="true"] #stage-cognitive-core-signal,
-#stage-cognitive-core-shell[data-voice-active="true"] #stage-cognitive-core-ring,
+#stage-cognitive-core-shell[data-voice-active="true"] #stage-cognitive-core-signal{
+  opacity:1;
+  filter:blur(var(--home-stage-motion-orb-blur)) saturate(1.42);
+  -webkit-filter:blur(var(--home-stage-motion-orb-blur)) saturate(1.42);
+}
+
+#stage-cognitive-core-shell[data-voice-active="true"] #stage-cognitive-core-ring{
+  opacity:0.96;
+  filter:blur(1.6px) saturate(1.28);
+}
+
 #stage-cognitive-core-shell[data-voice-active="true"] #stage-cognitive-core-pulse{
   opacity:1;
+  filter:blur(var(--home-stage-motion-orb-active-blur)) saturate(1.52);
+  -webkit-filter:blur(var(--home-stage-motion-orb-active-blur)) saturate(1.52);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="listening"] #stage-cognitive-core-signal{
+  background:
+    radial-gradient(circle at 28% 32%, var(--home-stage-motion-accent-blue) 0%, transparent 32%),
+    radial-gradient(circle at 68% 58%, var(--home-stage-motion-accent-green) 0%, transparent 36%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 82%, transparent) 0%, transparent 72%);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="transcribing"] #stage-cognitive-core-signal{
+  background:
+    radial-gradient(circle at 26% 42%, var(--home-stage-motion-accent-orange) 0%, transparent 28%),
+    radial-gradient(circle at 72% 38%, var(--home-stage-motion-accent-pink) 0%, transparent 32%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 78%, transparent) 0%, transparent 72%);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="thinking"] #stage-cognitive-core-signal{
+  background:
+    radial-gradient(circle at 30% 34%, var(--home-stage-motion-accent-violet) 0%, transparent 34%),
+    radial-gradient(circle at 66% 64%, var(--home-stage-motion-accent-blue) 0%, transparent 38%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 70%, transparent) 0%, transparent 76%);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="responding"] #stage-cognitive-core-signal{
+  background:
+    radial-gradient(circle at 26% 32%, var(--home-stage-motion-accent-pink) 0%, transparent 34%),
+    radial-gradient(circle at 68% 42%, var(--home-stage-motion-accent-orange) 0%, transparent 32%),
+    radial-gradient(circle at 48% 72%, var(--home-stage-motion-accent-green) 0%, transparent 36%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 84%, transparent) 0%, transparent 74%);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="listening"] #stage-cognitive-core-ring{
+  border-color:color-mix(in srgb, var(--home-stage-motion-accent-blue) 72%, var(--home-stage-motion-core-ring-border));
+  box-shadow:0 0 28px rgba(96,190,255,0.24), inset 0 0 18px rgba(94,255,188,0.18);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="transcribing"] #stage-cognitive-core-ring{
+  border-color:color-mix(in srgb, var(--home-stage-motion-accent-orange) 72%, var(--home-stage-motion-core-ring-border));
+  box-shadow:0 0 30px rgba(255,160,76,0.24), inset 0 0 18px rgba(255,108,196,0.18);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="thinking"] #stage-cognitive-core-ring{
+  border-color:color-mix(in srgb, var(--home-stage-motion-accent-violet) 76%, var(--home-stage-motion-core-ring-border));
+  box-shadow:0 0 32px rgba(168,118,255,0.26), inset 0 0 20px rgba(96,190,255,0.16);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="responding"] #stage-cognitive-core-ring{
+  border-color:color-mix(in srgb, var(--home-stage-motion-accent-pink) 76%, var(--home-stage-motion-core-ring-border));
+  box-shadow:0 0 34px rgba(255,108,196,0.26), inset 0 0 20px rgba(94,255,188,0.18);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="listening"] #stage-cognitive-core-pulse{
+  background:
+    radial-gradient(circle at 35% 36%, var(--home-stage-motion-accent-blue) 0%, transparent 34%),
+    radial-gradient(circle at 66% 64%, var(--home-stage-motion-accent-green) 0%, transparent 38%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 70%, transparent) 0%, transparent 74%);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="transcribing"] #stage-cognitive-core-pulse{
+  background:
+    radial-gradient(circle at 35% 36%, var(--home-stage-motion-accent-orange) 0%, transparent 34%),
+    radial-gradient(circle at 66% 64%, var(--home-stage-motion-accent-pink) 0%, transparent 38%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 70%, transparent) 0%, transparent 74%);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="thinking"] #stage-cognitive-core-pulse{
+  background:
+    radial-gradient(circle at 34% 38%, var(--home-stage-motion-accent-violet) 0%, transparent 36%),
+    radial-gradient(circle at 68% 62%, var(--home-stage-motion-accent-blue) 0%, transparent 38%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 62%, transparent) 0%, transparent 76%);
+}
+
+#stage-cognitive-core-shell[data-voice-mode="responding"] #stage-cognitive-core-pulse{
+  background:
+    radial-gradient(circle at 30% 34%, var(--home-stage-motion-accent-pink) 0%, transparent 34%),
+    radial-gradient(circle at 70% 40%, var(--home-stage-motion-accent-orange) 0%, transparent 34%),
+    radial-gradient(circle at 48% 72%, var(--home-stage-motion-accent-green) 0%, transparent 38%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary1) 72%, transparent) 0%, transparent 76%);
 }
 
 /* =============================================================================
@@ -450,12 +575,14 @@
    08) ACTIVE VOICE MODE MOTION
 ============================================================================= */
 #stage-cognitive-core-shell[data-voice-mode="listening"]::before,
+#stage-cognitive-core-shell[data-voice-mode="transcribing"]::before,
 #stage-cognitive-core-shell[data-voice-mode="thinking"]::before,
 #stage-cognitive-core-shell[data-voice-mode="responding"]::before{
   opacity:var(--home-stage-motion-mode-core-opacity);
 }
 
 #stage-cognitive-core-shell[data-voice-mode="listening"]::after,
+#stage-cognitive-core-shell[data-voice-mode="transcribing"]::after,
 #stage-cognitive-core-shell[data-voice-mode="thinking"]::after,
 #stage-cognitive-core-shell[data-voice-mode="responding"]::after{
   opacity:var(--home-stage-motion-mode-ring-opacity);
@@ -483,7 +610,23 @@
 }
 
 /* =============================================================================
-   10) THINKING MODE MOTION
+   10) TRANSCRIBING MODE MOTION
+============================================================================= */
+#stage-cognitive-core-shell[data-voice-mode="transcribing"]::before{
+  animation:stage-voice-core-transcribe 2.8s var(--interaction-ease-standard) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="transcribing"]::after{
+  animation:stage-voice-ring-transcribing 3.6s var(--interaction-ease-standard) infinite;
+}
+
+#stage-microphone-button[data-voice-mode="transcribing"]::before,
+#stage-microphone-button[data-voice-mode="transcribing"]::after{
+  animation:stage-mic-pulse-transcribing 2.2s var(--interaction-ease-standard) infinite;
+}
+
+/* =============================================================================
+   11) THINKING MODE MOTION
 ============================================================================= */
 #stage-cognitive-core-shell[data-voice-mode="thinking"]::before{
   animation:stage-voice-core-think var(--home-stage-motion-thinking-core-duration) var(--interaction-ease-standard) infinite;
@@ -499,7 +642,7 @@
 }
 
 /* =============================================================================
-   11) RESPONDING MODE MOTION
+   12) RESPONDING MODE MOTION
 ============================================================================= */
 #stage-cognitive-core-shell[data-voice-mode="responding"]::before{
   animation:stage-voice-core-respond var(--home-stage-motion-responding-core-duration) var(--interaction-ease-standard) infinite;
@@ -515,7 +658,65 @@
 }
 
 /* =============================================================================
-   12) ACTIVE MICROPHONE STATE
+   13) INTELLIGENT CORE LAYER MOTION
+============================================================================= */
+#stage-cognitive-core-shell[data-voice-mode="listening"] #stage-cognitive-core-signal{
+  animation:stage-core-signal-listening 4.8s var(--interaction-ease-standard) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="listening"] #stage-cognitive-core-ring{
+  animation:stage-core-ring-listening 5.6s linear infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="listening"] #stage-cognitive-core-pulse{
+  animation:stage-core-pulse-listening 3.8s var(--interaction-ease-standard) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="transcribing"] #stage-cognitive-core-signal{
+  animation:stage-core-signal-transcribing 2.4s var(--interaction-ease-standard) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="transcribing"] #stage-cognitive-core-ring{
+  animation:stage-core-ring-transcribing 2.8s linear infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="transcribing"] #stage-cognitive-core-pulse{
+  animation:stage-core-pulse-transcribing 2.2s var(--interaction-ease-standard) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="thinking"] #stage-cognitive-core-signal{
+  animation:stage-core-signal-thinking 6.2s var(--interaction-ease-standard) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="thinking"] #stage-cognitive-core-ring{
+  animation:stage-core-ring-thinking 7.4s linear infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="thinking"] #stage-cognitive-core-pulse{
+  animation:stage-core-pulse-thinking 5.8s var(--interaction-ease-standard) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="responding"] #stage-cognitive-core-signal{
+  animation:stage-core-signal-responding 3.4s var(--interaction-ease-standard) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="responding"] #stage-cognitive-core-ring{
+  animation:stage-core-ring-responding 4.2s var(--interaction-ease-standard) infinite;
+}
+
+#stage-cognitive-core-shell[data-voice-mode="responding"] #stage-cognitive-core-pulse{
+  animation:stage-core-pulse-responding 2.8s var(--interaction-ease-standard) infinite;
+}
+
+/* =============================================================================
+   13A) IDLE INNER COLOR BREATHING
+============================================================================= */
+#stage-cognitive-core-shell[data-core-state="idle"] #stage-cognitive-core-ring{
+  animation:stage-core-idle-ring-breathe 9.2s var(--interaction-ease-standard) infinite;
+}
+
+/* =============================================================================
+   14) ACTIVE MICROPHONE STATE
 ============================================================================= */
 #stage-microphone-button[data-voice-active="true"]{
   color:var(--home-stage-motion-active-color);
@@ -528,7 +729,7 @@
 }
 
 /* =============================================================================
-   13) MOBILE REFINEMENTS
+   15) MOBILE REFINEMENTS
 ============================================================================= */
 @media (max-width:820px){
   :root{
@@ -548,7 +749,7 @@
 }
 
 /* =============================================================================
-   14) KEYFRAMES
+   16) KEYFRAMES
 ============================================================================= */
 @keyframes stage-voice-core-breathe{
   0%{transform:translate(-50%,-50%) scale(var(--home-stage-motion-key-core-listen-start-scale));opacity:var(--home-stage-motion-key-core-listen-start-opacity);}
@@ -602,4 +803,116 @@
   0%{transform:translate(-50%,-50%) scale(var(--home-stage-motion-key-mic-respond-start-scale));opacity:var(--home-stage-motion-key-mic-respond-start-opacity);}
   50%{transform:translate(-50%,-50%) scale(var(--home-stage-motion-key-mic-respond-mid-scale));opacity:var(--home-stage-motion-key-mic-respond-mid-opacity);}
   100%{transform:translate(-50%,-50%) scale(var(--home-stage-motion-key-mic-respond-start-scale));opacity:var(--home-stage-motion-key-mic-respond-start-opacity);}
+}
+
+@keyframes stage-voice-core-transcribe{
+  0%{transform:translate(-50%,-50%) scale(0.985);opacity:0.42;}
+  38%{transform:translate(-50%,-50%) scale(1.035);opacity:0.72;}
+  72%{transform:translate(-50%,-50%) scale(1.005);opacity:0.58;}
+  100%{transform:translate(-50%,-50%) scale(0.985);opacity:0.42;}
+}
+
+@keyframes stage-voice-ring-transcribing{
+  0%{transform:translate(-50%,-50%) scale(0.96) rotate(0deg);opacity:0.2;}
+  45%{transform:translate(-50%,-50%) scale(1.08) rotate(96deg);opacity:0.48;}
+  100%{transform:translate(-50%,-50%) scale(0.96) rotate(180deg);opacity:0.2;}
+}
+
+@keyframes stage-mic-pulse-transcribing{
+  0%{transform:translate(-50%,-50%) scale(0.96);opacity:0.22;}
+  50%{transform:translate(-50%,-50%) scale(1.18);opacity:0.54;}
+  100%{transform:translate(-50%,-50%) scale(0.96);opacity:0.22;}
+}
+
+@keyframes stage-core-signal-listening{
+  0%{transform:translate(-50%,-50%) scale(0.98);opacity:0.64;}
+  50%{transform:translate(-50%,-50%) scale(1.08);opacity:0.96;}
+  100%{transform:translate(-50%,-50%) scale(0.98);opacity:0.64;}
+}
+
+@keyframes stage-core-ring-listening{
+  0%{transform:translate(-50%,-50%) scale(0.98) rotate(0deg);opacity:0.52;}
+  50%{transform:translate(-50%,-50%) scale(1.12) rotate(180deg);opacity:0.86;}
+  100%{transform:translate(-50%,-50%) scale(0.98) rotate(360deg);opacity:0.52;}
+}
+
+@keyframes stage-core-pulse-listening{
+  0%{transform:translate(-50%,-50%) scale(0.92);opacity:0.44;}
+  52%{transform:translate(-50%,-50%) scale(1.18);opacity:0.84;}
+  100%{transform:translate(-50%,-50%) scale(0.92);opacity:0.44;}
+}
+
+@keyframes stage-core-signal-transcribing{
+  0%{transform:translate(-50%,-50%) scale(0.98);opacity:0.62;}
+  34%{transform:translate(-50%,-50%) scale(1.02);opacity:0.98;}
+  68%{transform:translate(-50%,-50%) scale(1.06);opacity:0.74;}
+  100%{transform:translate(-50%,-50%) scale(0.98);opacity:0.62;}
+}
+
+@keyframes stage-core-ring-transcribing{
+  0%{transform:translate(-50%,-50%) scale(0.95) rotate(0deg);opacity:0.5;}
+  50%{transform:translate(-50%,-50%) scale(1.05) rotate(92deg);opacity:0.9;}
+  100%{transform:translate(-50%,-50%) scale(0.95) rotate(184deg);opacity:0.5;}
+}
+
+@keyframes stage-core-pulse-transcribing{
+  0%{transform:translate(-50%,-50%) scale(0.9);opacity:0.42;}
+  50%{transform:translate(-50%,-50%) scale(1.12);opacity:0.86;}
+  100%{transform:translate(-50%,-50%) scale(0.9);opacity:0.42;}
+}
+
+@keyframes stage-core-signal-thinking{
+  0%{transform:translate(-50%,-50%) scale(0.94);opacity:0.54;}
+  42%{transform:translate(-50%,-50%) scale(1.04);opacity:0.88;}
+  72%{transform:translate(-50%,-50%) scale(0.99);opacity:0.7;}
+  100%{transform:translate(-50%,-50%) scale(0.94);opacity:0.54;}
+}
+
+@keyframes stage-core-ring-thinking{
+  0%{transform:translate(-50%,-50%) scale(0.94) rotate(0deg);opacity:0.44;}
+  50%{transform:translate(-50%,-50%) scale(1.1) rotate(180deg);opacity:0.76;}
+  100%{transform:translate(-50%,-50%) scale(0.94) rotate(360deg);opacity:0.44;}
+}
+
+@keyframes stage-core-pulse-thinking{
+  0%{transform:translate(-50%,-50%) scale(0.9);opacity:0.34;}
+  50%{transform:translate(-50%,-50%) scale(1.24);opacity:0.68;}
+  100%{transform:translate(-50%,-50%) scale(0.9);opacity:0.34;}
+}
+
+@keyframes stage-core-signal-responding{
+  0%{transform:translate(-50%,-50%) scale(0.98);opacity:0.68;}
+  45%{transform:translate(-50%,-50%) scale(1.14);opacity:1;}
+  100%{transform:translate(-50%,-50%) scale(0.98);opacity:0.68;}
+}
+
+@keyframes stage-core-ring-responding{
+  0%{transform:translate(-50%,-50%) scale(0.96);opacity:0.56;}
+  45%{transform:translate(-50%,-50%) scale(1.18);opacity:0.94;}
+  100%{transform:translate(-50%,-50%) scale(0.96);opacity:0.56;}
+}
+
+@keyframes stage-core-pulse-responding{
+  0%{transform:translate(-50%,-50%) scale(0.88);opacity:0.48;}
+  52%{transform:translate(-50%,-50%) scale(1.32);opacity:0.92;}
+  100%{transform:translate(-50%,-50%) scale(0.88);opacity:0.48;}
+}
+
+@keyframes stage-core-idle-color-breathe{
+  0%{transform:translate(-50%,-50%) scale(0.96);opacity:0.58;filter:blur(22px) saturate(1.22);}
+  38%{transform:translate(-50%,-50%) scale(1.04);opacity:0.76;filter:blur(18px) saturate(1.44);}
+  68%{transform:translate(-50%,-50%) scale(1.01);opacity:0.68;filter:blur(24px) saturate(1.32);}
+  100%{transform:translate(-50%,-50%) scale(0.96);opacity:0.58;filter:blur(22px) saturate(1.22);}
+}
+
+@keyframes stage-core-idle-pulse-color-breathe{
+  0%{transform:translate(-50%,-50%) scale(0.92);opacity:0.46;filter:blur(32px) saturate(1.2);}
+  46%{transform:translate(-50%,-50%) scale(1.08);opacity:0.72;filter:blur(26px) saturate(1.48);}
+  100%{transform:translate(-50%,-50%) scale(0.92);opacity:0.46;filter:blur(32px) saturate(1.2);}
+}
+
+@keyframes stage-core-idle-ring-breathe{
+  0%{opacity:0.42;filter:blur(1.2px) saturate(1.08);}
+  50%{opacity:0.66;filter:blur(0.8px) saturate(1.28);}
+  100%{opacity:0.42;filter:blur(1.2px) saturate(1.08);}
 }

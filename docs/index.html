@@ -10,9 +10,9 @@
      08) CUSTOM CURSOR
      09) HIDDEN SITE NAME
      10) LANDING STAGE
-     10A) STAGE BACKGROUND VIDEO
-     10B) STAGE COGNITIVE CORE SHELL
-     10C) STAGE INTERACTIVE TEXT MOUNT
+     10A) HOME BACKGROUND SHELL MOUNT
+     10B) RESERVED
+     10C) RESERVED
      10D) RESERVED
      11) MAIN CONTENT
      11A) ACCOUNT DRAWER MOUNT
@@ -26,7 +26,8 @@
      11I) PROFILE SHELL MOUNT
      11J) HOME SHELL
      11K) HOME DASHBOARD TOPBAR MOUNT
-     11L) HOME PLATFORM SHELL MOUNT
+     11L) HOME STAGE COMPOSITION MOUNT
+     11M) HOME PLATFORM SHELL MOUNT
      11M) HOME NAVIGATION DRAWER MOUNT
      11N) HOME WORKSPACE PANEL MOUNT
      11O) HOME PROFILE CONTROL PANEL MOUNT
@@ -37,8 +38,8 @@
      11T) HOME FOOTER MOUNT
      12) COUNTRY OVERLAY MOUNT
      12A) COOKIE CONSENT MOUNT
-     13) HOME HERO SHADER SYSTEM
-     13A) HOME HERO SHADER MOUNT
+     13) RESERVED
+     13A) RESERVED
      14) CORE SCRIPT
 ============================================================================= -->
 <!DOCTYPE html>
@@ -204,20 +205,9 @@
      10) LANDING STAGE
 ============================================================================= -->
 <!-- =============================================================================
-     10A) STAGE BACKGROUND VIDEO
+     10A) HOME BACKGROUND SHELL MOUNT
 ============================================================================= -->
-  <div class="stage-video" aria-hidden="true">
-    <div class="stage-video-overlay" aria-hidden="true"></div>
-
-    <video class="stage-video-media" autoplay muted playsinline preload="auto">
-      <source src="assets/video/core/video-1.webm" type="video/webm">
-    </video>
-  </div>
-
-<!-- =============================================================================
-     10B) STAGE COMPOSITION MOUNT
-============================================================================= -->
-<div data-include="home-stage-composition"></div>
+<div id="home-background-shell-mount" data-include="home-background-shell" aria-hidden="true"></div>
 
 <!-- =============================================================================
      11) MAIN CONTENT
@@ -285,6 +275,11 @@
   <div class="home-shell__topbar" id="home-dashboard-topbar-mount" data-include="home-dashboard-topbar"></div>
 
   <!-- =============================================================================
+       11L) HOME STAGE COMPOSITION MOUNT
+  ============================================================================= -->
+  <div class="home-shell__composition" id="home-stage-composition-mount" data-include="home-stage-composition"></div>
+
+  <!-- =============================================================================
        11M) HOME PLATFORM SHELL MOUNT
   ============================================================================= -->
   <div
@@ -332,6 +327,7 @@
     id="home-interaction-settings-panel-mount"
     data-include="home-interaction-settings-panel"></div>
 
+
   <!-- =============================================================================
        11T) HOME FOOTER MOUNT
   ============================================================================= -->
@@ -357,17 +353,6 @@
      data-consent-surface="banner"
      data-consent-settings="available"
      aria-hidden="true"></div>
-
- 
-<!-- =============================================================================
-     13) HOME HERO SHADER SYSTEM
-============================================================================= -->
-<div id="home-hero-shader-system" aria-hidden="true"></div>
-
-<!-- =============================================================================
-     13A) HOME HERO SHADER MOUNT
-============================================================================= -->
-<div id="home-hero-shader-mount" aria-hidden="true"></div>
 
 <!-- =============================================================================
      14) CORE SCRIPT

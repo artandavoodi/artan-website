@@ -1,25 +1,24 @@
 /* =========================================================
    00. FILE INDEX
-   01. STAGE AUTHORITY IMPORTS
-   01A. STAGE INTERFACE
-   01B. STAGE SERVICES
+   01. UI LAYER AUTHORITIES
+   01A. UI EFFECTS
+   01B. UI PAGES
    02. END OF FILE
    ========================================================= */
 
 /* =========================================================
-   01A. STAGE INTERFACE
+   01. UI LAYER AUTHORITIES
    ========================================================= */
-import './home-stage-motion.js';
-import './home-stage-interactive-text.js';
-import './home-stage-core-effect.js';
-import './home-stage-voice.js';
-import './home-interaction-panel.js';
-import './home-interaction-response-panel.js';
 
 /* =========================================================
-   01B. STAGE SERVICES
+   01A. UI EFFECTS
    ========================================================= */
-import './services/00-services-all.js';
+import './effects/00-effects-all.js';
+
+/* =========================================================
+   01B. UI PAGES
+   ========================================================= */
+import './pages/00-ui-pages-all.js';
 
 /* =========================================================
    02. END OF FILE
