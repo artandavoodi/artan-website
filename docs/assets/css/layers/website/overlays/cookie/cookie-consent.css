@@ -43,8 +43,10 @@
   --cookie-consent-shadow:var(--panel-shadow-unified);
   --cookie-consent-width: min(36rem, calc(100vw - (2 * var(--cookie-consent-min-viewport-gap))));
   --cookie-consent-min-viewport-gap:var(--dialog-overlay-viewport-gap);
-  --cookie-consent-footer-links-max-width: 100%;
-  --cookie-consent-max-height:calc(100dvh - (2 * var(--cookie-consent-min-viewport-gap)));
+  --cookie-consent-viewport-gap-top:var(--home-shell-topbar-height, var(--dialog-overlay-viewport-gap));
+  --cookie-consent-viewport-gap-bottom:var(--home-shell-footer-separator-offset, var(--dialog-overlay-viewport-gap));
+  --cookie-consent-footer-links-max-width:100%;
+  --cookie-consent-max-height:calc(100dvh - var(--cookie-consent-viewport-gap-top) - var(--cookie-consent-viewport-gap-bottom));
   --cookie-consent-radius:var(--dialog-radius-unified);
   --cookie-consent-card-radius:var(--shape-card-radius);
   --cookie-consent-pill-radius:var(--control-radius);
@@ -337,7 +339,7 @@ html[data-theme-effective="dark"]{
   justify-content:center;
   flex-direction:column;
   box-sizing:border-box;
-  padding:calc(env(safe-area-inset-top, 0px) + var(--cookie-consent-min-viewport-gap)) var(--cookie-consent-min-viewport-gap) calc(env(safe-area-inset-bottom, 0px) + var(--cookie-consent-min-viewport-gap));
+  padding:calc(env(safe-area-inset-top, 0px) + var(--cookie-consent-viewport-gap-top)) var(--cookie-consent-min-viewport-gap) calc(env(safe-area-inset-bottom, 0px) + var(--cookie-consent-viewport-gap-bottom));
   opacity:var(--cookie-consent-overlay-opacity-closed);
   visibility:hidden;
   pointer-events:none;
@@ -405,9 +407,9 @@ body.cookie-consent-closing .cookie-consent-backdrop{
   pointer-events:auto;
   width:var(--cookie-consent-width);
   max-width:calc(100vw - (2 * var(--cookie-consent-min-viewport-gap)));
-  height:auto;
+  height:var(--cookie-consent-max-height);
   max-height:var(--cookie-consent-max-height);
-  min-height:var(--spacing-none);
+  min-height:var(--cookie-consent-max-height);
   display:flex;
   gap:var(--spacing-none);
   flex-direction:column;
@@ -513,7 +515,7 @@ body.cookie-consent-closing .cookie-consent-panel{
 .cookie-consent-body{
   position:relative;
   min-height:var(--spacing-none);
-  flex:1 1 auto;
+  flex:1 1 0;
   padding-bottom:var(--spacing-none);
   overflow-y:auto;
   overflow-x:hidden;
@@ -1088,13 +1090,13 @@ body.cookie-consent-closing .cookie-consent-panel{
    20) LEARNING CARDS
 ============================================================================= */
 .cookie-consent-panel > .cookie-consent-learning-layer{
-  position: relative;
-  z-index: 2;
+  display:contents;
 }
 
 .cookie-consent-learning-layer{
-  position: relative;
-  width: var(--size-full);
+  width:var(--size-full);
+  max-width:var(--size-full);
+  min-height:var(--spacing-none);
 }
 
 .cookie-consent-education{
@@ -1458,6 +1460,8 @@ body.cookie-consent-closing .cookie-consent-panel{
   :root{
     --cookie-consent-width: min(39rem, calc(100vw - (2 * var(--cookie-consent-mobile-min-viewport-gap))));
     --cookie-consent-min-viewport-gap:var(--cookie-consent-mobile-min-viewport-gap);
+    --cookie-consent-viewport-gap-top:var(--home-shell-topbar-height, var(--cookie-consent-mobile-min-viewport-gap));
+    --cookie-consent-viewport-gap-bottom:var(--home-shell-footer-separator-offset, var(--cookie-consent-mobile-min-viewport-gap));
     --cookie-consent-footer-links-max-width: min(var(--size-full), 31rem);
     --cookie-consent-toggle-track-width: 2.5rem;
     --cookie-consent-toggle-track-height: 1.3rem;
@@ -1472,9 +1476,9 @@ body.cookie-consent-closing .cookie-consent-panel{
   }
 
   .cookie-consent-panel{
-    max-height: min(26rem, calc(100vh - 10rem));
+    max-height:var(--cookie-consent-max-height);
     padding:var(--cookie-consent-mobile-panel-padding-y) var(--cookie-consent-mobile-panel-padding-x) 0 var(--cookie-consent-mobile-panel-padding-x);
-    border-radius:var(--control-radius);
+    border-radius:var(--cookie-consent-radius);
   }
 
   .cookie-consent-header{
