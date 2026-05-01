@@ -88,7 +88,10 @@ function renderAvatar(root, state) {
 function renderPaneState(root, navigationState) {
   root.querySelectorAll('[data-profile-settings-pane-target]').forEach((button) => {
     const pane = button.getAttribute('data-profile-settings-pane-target') || '';
-    button.dataset.profileSettingsActive = pane === navigationState.settingsPane ? 'true' : 'false';
+    const active = pane === navigationState.settingsPane;
+    button.dataset.profileSettingsActive = active ? 'true' : 'false';
+    button.setAttribute('aria-selected', active ? 'true' : 'false');
+    button.setAttribute('aria-current', active ? 'page' : 'false');
   });
 
   root.querySelectorAll('[data-profile-settings-pane]').forEach((pane) => {
@@ -129,6 +132,8 @@ function renderSettings(state = getProfileRuntimeState(), navigationState = getP
     setValue(root, 'public_primary_link', state.profile?.public_primary_link || '');
     setValue(root, 'public_profile_enabled', state.visibility.publicEnabled);
     setValue(root, 'public_profile_discoverable', state.visibility.discoverable);
+    setValue(root, 'avatar_url', state.avatarUrl || state.profile?.avatar_url || state.profile?.photo_url || '');
+    setValue(root, 'cover_url', state.coverUrl || '');
 
     setText(
       root,
@@ -165,6 +170,7 @@ function renderSettings(state = getProfileRuntimeState(), navigationState = getP
     renderStatus(root, 'identity', saveState);
     renderStatus(root, 'route', saveState);
     renderStatus(root, 'visibility', saveState);
+    renderStatus(root, 'media', saveState);
   });
 }
 

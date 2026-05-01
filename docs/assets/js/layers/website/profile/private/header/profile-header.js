@@ -16,7 +16,7 @@ import { getProfileRuntimeState, subscribeProfileRuntime } from '../shell/profil
    ============================================================================= */
 
 function getProfileHeaderRoots() {
-  return Array.from(document.querySelectorAll('[data-profile-header]'));
+  return Array.from(document.querySelectorAll('[data-profile-header][data-profile-surface="private"]'));
 }
 
 function setText(root, selector, value) {
@@ -248,7 +248,7 @@ function initProfileHeader() {
   subscribeProfileRuntime(renderProfileHeader);
 
   document.addEventListener('fragment:mounted', (event) => {
-    if (event?.detail?.name !== 'profile-private-header' && event?.detail?.name !== 'profile-public-header') return;
+    if (event?.detail?.name !== 'profile-private-header') return;
     renderProfileHeader();
   });
 

@@ -12,10 +12,6 @@
    ============================================================================= */
 :root{
   --profile-settings-muted-color:var(--text-secondary-color);
-  --profile-settings-nav-color:var(--text-secondary-color);
-  --profile-settings-nav-hover-color:var(--text-color);
-  --profile-settings-nav-opacity:0.72;
-  --profile-settings-nav-hover-opacity:1;
   --profile-settings-status-color:var(--text-secondary-color);
   --profile-settings-status-success-color:var(--status-success-color, var(--text-color));
   --profile-settings-status-error-color:var(--status-danger-color, var(--color-primary7));
@@ -91,23 +87,12 @@
 }
 
 .profile-settings__nav-item{
-  min-height:3rem;
-  padding:0.86rem 1rem;
-  border-radius:var(--control-radius-pill);
-  border:1px solid transparent;
-  background:transparent;
-  color:var(--profile-settings-nav-color);
-  opacity:var(--profile-settings-nav-opacity);
-  transition:var(--interaction-transition-control);
+  flex:0 0 auto;
 }
 
 .profile-settings__nav-item[data-profile-settings-active="true"],
 .profile-settings__nav-item:hover,
 .profile-settings__nav-item:focus-visible{
-  background:var(--control-bg);
-  border-color:var(--control-border);
-  color:var(--profile-settings-nav-hover-color);
-  opacity:var(--profile-settings-nav-hover-opacity);
   outline:none;
 }
 
@@ -250,7 +235,7 @@
 
 .profile-settings__media-label{
   margin:0;
-  color:var(--profile-settings-nav-hover-color);
+  color:var(--text-color);
 }
 
 @media (max-width:820px){

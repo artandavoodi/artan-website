@@ -31,6 +31,7 @@ import './account-status/profile-private-account-status.js';
 import './media/profile-private-media.js';
 import './organization/profile-private-organization.js';
 import './models/profile-private-models.js';
+import './posts/profile-posts.js';
 import './settings/profile-private-settings.js';
 import './status/profile-private-status.js';
 

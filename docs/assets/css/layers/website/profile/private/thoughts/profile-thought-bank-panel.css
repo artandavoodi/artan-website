@@ -1,0 +1,4 @@
+.profile-thought-bank{
+  display:grid;
+  gap:var(--spacing-lg);
+}

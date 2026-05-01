@@ -49,6 +49,10 @@
     return document.getElementById('account-phone-auth-number');
   }
 
+  function getCodeInput() {
+    return document.getElementById('account-phone-auth-code');
+  }
+
   /* =============================================================================
      04) STATE VISIBILITY HELPERS
   ============================================================================= */
@@ -98,7 +102,9 @@
 
   function requestPhoneAuthSubmit() {
     const phoneInput = getPhoneInput();
+    const codeInput = getCodeInput();
     const phone = phoneInput?.value?.trim() || '';
+    const code = codeInput?.value?.trim() || '';
 
     if (!phone) {
       phoneInput?.setCustomValidity('Enter your phone number.');
@@ -111,7 +117,8 @@
     document.dispatchEvent(new CustomEvent('account:phone-auth-submit-request', {
       detail: {
         source: 'account-phone-auth-drawer',
-        phone
+        phone,
+        code
       }
     }));
   }

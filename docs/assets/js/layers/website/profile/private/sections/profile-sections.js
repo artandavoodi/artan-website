@@ -17,7 +17,7 @@ import { getProfileNavigationState, subscribeProfileNavigation } from '../naviga
    ============================================================================= */
 
 function getProfileSectionsRoots() {
-  return Array.from(document.querySelectorAll('[data-profile-sections]'));
+  return Array.from(document.querySelectorAll('[data-profile-sections][data-profile-surface="private"]'));
 }
 
 function setText(root, selector, value) {
@@ -65,40 +65,6 @@ function capitalizeWords(value) {
     .join(' ');
 }
 
-function renderPublicLinks(root, state) {
-  const container = root.querySelector('[data-profile-public-links-list]');
-  const emptyCopy = root.querySelector('[data-profile-public-links-empty]');
-
-  if (!(container instanceof HTMLElement)) return;
-
-  clearNode(container);
-
-  if (!state.publicLinksAvailable) {
-    if (emptyCopy instanceof HTMLElement) {
-      emptyCopy.hidden = false;
-    }
-    return;
-  }
-
-  if (emptyCopy instanceof HTMLElement) {
-    emptyCopy.hidden = true;
-  }
-
-  state.publicLinks.forEach((link) => {
-    const anchor = document.createElement('a');
-    anchor.className = 'ui-button ui-button--ghost profile-panel__link-chip';
-    anchor.href = link.url;
-    anchor.textContent = link.label;
-
-    if (/^https?:\/\//i.test(link.url)) {
-      anchor.target = '_blank';
-      anchor.rel = 'noreferrer';
-    }
-
-    container.appendChild(anchor);
-  });
-}
-
 function renderPrivateSections(root, state, navigationState) {
   root.dataset.profileViewerState = state.viewerState;
   root.dataset.profileStateKey = state.stateKey;
@@ -109,31 +75,6 @@ function renderPrivateSections(root, state, navigationState) {
   });
 }
 
-function renderPublicSections(root, state) {
-  root.dataset.profileViewerState = 'public';
-  root.dataset.profileStateKey = state.stateKey;
-
-  setText(root, '[data-profile-overview-copy]', state.summary);
-  setText(root, '[data-profile-overview-badge]', state.stateBadgeLabel);
-  renderBadges(root, '[data-profile-route-badge-list]', state.routeBadges);
-
-  setText(root, '[data-profile-identity-display-name]', state.displayName);
-  setText(root, '[data-profile-identity-username]', state.username.normalized ? `@${state.username.normalized}` : '@username');
-  setText(root, '[data-profile-route-path]', state.publicRouteDisplay || 'neuroartan.com/username');
-  setText(root, '[data-profile-identity-label]', state.identityLabel);
-
-  renderPublicLinks(root, state);
-
-  setText(root, '[data-profile-public-route-outcome]', state.routeOutcomeValue);
-  setText(root, '[data-profile-public-visibility]', state.visibilityState);
-  setText(root, '[data-profile-public-discoverable]', state.publicProfileDiscoverable ? 'Yes' : 'No');
-  setText(root, '[data-profile-public-route-url]', state.publicRouteUrl || 'https://neuroartan.com/username');
-
-  setText(root, '[data-profile-continuity-badge]', state.continuityState);
-  setText(root, '[data-profile-continuity-copy]', state.continuityCopy);
-  renderBadges(root, '[data-profile-continuity-badges]', state.continuityBadges);
-}
-
 /* =============================================================================
    03) PROFILE SECTIONS RENDER
    ============================================================================= */
@@ -141,11 +82,6 @@ function renderPublicSections(root, state) {
 function renderProfileSections(state = getProfileRuntimeState(), navigationState = getProfileNavigationState()) {
   getProfileSectionsRoots().forEach((root) => {
     const surface = root.getAttribute('data-profile-surface');
-
-    if (surface === 'public') {
-      renderPublicSections(root, state);
-      return;
-    }
 
     renderPrivateSections(root, state, navigationState);
   });
@@ -162,7 +98,8 @@ function initProfileSections() {
   subscribeProfileNavigation(render);
 
   document.addEventListener('fragment:mounted', (event) => {
-    if (event?.detail?.name !== 'profile-private-sections' && event?.detail?.name !== 'profile-public-sections') return;
+    const name = event?.detail?.name || '';
+    if (name !== 'profile-private-sections' && name !== 'profile-private-workspace') return;
     render();
   });
 

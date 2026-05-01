@@ -71,7 +71,7 @@ function bindModelCreation(root) {
       if (status) status.textContent = 'Model created in Supabase.';
     } catch (error) {
       if (status) {
-        status.textContent = error?.code === 'PROFILE_REQUIRED'
+        status.textContent = error?.code === 'PROFILE_REQUIRED' || error?.code === 'PROFILE_COMPLETE_REQUIRED'
           ? 'Complete your profile before creating a model.'
           : error?.code === 'AUTH_REQUIRED'
             ? 'Sign in before creating a model.'

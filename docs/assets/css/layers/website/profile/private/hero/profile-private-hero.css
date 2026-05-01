@@ -105,6 +105,8 @@
   border:1px solid var(--profile-private-hero-cover-border);
   border-radius:var(--profile-private-hero-cover-radius);
   background:var(--profile-private-hero-cover-bg);
+  background-size:cover;
+  background-position:center;
   overflow:hidden;
   isolation:isolate;
   transition:
@@ -185,6 +187,14 @@
   font-weight:var(--profile-private-hero-avatar-initials-weight);
   line-height:var(--profile-private-hero-avatar-initials-line-height);
   letter-spacing:var(--profile-private-hero-avatar-initials-tracking);
+}
+
+.profile-private-hero__avatar-image{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
 }
 
 .profile-private-hero__media-action{

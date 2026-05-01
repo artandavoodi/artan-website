@@ -1,0 +1,54 @@
+<!-- =============================================================================
+     01) PRIVATE PROFILE POSTS
+     02) POST COMPOSER
+     03) POST STREAM
+============================================================================= -->
+<section class="profile-posts" data-profile-posts aria-labelledby="profile-posts-title">
+  <article class="profile-posts__composer ui-card ui-surface--glass">
+    <header class="profile-posts__header">
+      <div>
+        <h2 class="profile-posts__title" id="profile-posts-title">Posts</h2>
+        <p class="profile-posts__copy" data-profile-posts-policy-copy>
+          Create profile posts as structured records. Public publishing stays governed by route readiness.
+        </p>
+      </div>
+    </header>
+
+    <form class="profile-posts__form" data-profile-post-form novalidate>
+      <div class="profile-posts__field-grid">
+        <label class="profile-posts__field profile-posts__field--full">
+          <span class="profile-posts__label">Post title</span>
+          <input class="ui-field" type="text" name="title" maxlength="120" placeholder="Post title">
+        </label>
+
+        <label class="profile-posts__field">
+          <span class="profile-posts__label">Visibility</span>
+          <select class="ui-field" name="visibility" data-profile-post-visibility></select>
+        </label>
+
+        <label class="profile-posts__field profile-posts__field--full">
+          <span class="profile-posts__label">Post body</span>
+          <textarea class="ui-field profile-posts__textarea" rows="7" name="body" maxlength="4000" placeholder="Write a profile post."></textarea>
+        </label>
+      </div>
+
+      <div class="profile-posts__footer">
+        <p class="profile-posts__status" data-profile-post-status aria-live="polite"></p>
+        <button class="ui-button ui-button--secondary" type="submit">Save Post</button>
+      </div>
+    </form>
+  </article>
+
+  <article class="profile-posts__stream ui-card ui-surface--glass">
+    <header class="profile-posts__stream-header">
+      <div>
+        <h3 class="profile-posts__stream-title">User posts</h3>
+        <p class="profile-posts__copy">Private and public-ready post records attached to this profile.</p>
+      </div>
+      <span class="ui-badge ui-badge--outline" data-profile-post-count>0 posts</span>
+    </header>
+
+    <div class="profile-posts__list" data-profile-post-list></div>
+    <p class="profile-posts__empty" data-profile-post-empty>No posts have been created yet.</p>
+  </article>
+</section>

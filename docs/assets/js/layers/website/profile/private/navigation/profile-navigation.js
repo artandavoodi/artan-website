@@ -20,7 +20,7 @@ const RUNTIME = (window.__NEUROARTAN_PROFILE_NAVIGATION__ ||= {
    02) CONSTANTS
    ============================================================================= */
 
-const VALID_SECTIONS = new Set(['overview', 'thought-bank', 'dashboard', 'settings']);
+const VALID_SECTIONS = new Set(['overview', 'posts', 'thoughts', 'dashboard', 'models', 'organizations', 'settings']);
 const VALID_SETTINGS_PANES = new Set(['identity', 'route', 'visibility', 'media']);
 
 function isPrivateProfileSurface() {
@@ -29,7 +29,18 @@ function isPrivateProfileSurface() {
 
 function normalizeSection(value) {
   const normalized = String(value || '').trim().toLowerCase();
-  return VALID_SECTIONS.has(normalized) ? normalized : 'overview';
+
+  switch (normalized) {
+    case 'posts':
+      return 'posts';
+    case 'thoughts':
+    case 'thought-bank':
+      return 'thoughts';
+    case 'edit-profile':
+      return 'settings';
+    default:
+      return VALID_SECTIONS.has(normalized) ? normalized : 'overview';
+  }
 }
 
 function normalizeSettingsPane(value) {

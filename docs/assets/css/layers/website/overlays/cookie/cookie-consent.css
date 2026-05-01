@@ -44,7 +44,7 @@
   --cookie-consent-width: min(36rem, calc(100vw - (2 * var(--cookie-consent-min-viewport-gap))));
   --cookie-consent-min-viewport-gap:var(--dialog-overlay-viewport-gap);
   --cookie-consent-footer-links-max-width: 100%;
-  --cookie-consent-max-height: min(46rem, calc(100vh - 3rem));
+  --cookie-consent-max-height:calc(100dvh - (2 * var(--cookie-consent-min-viewport-gap)));
   --cookie-consent-radius:var(--dialog-radius-unified);
   --cookie-consent-card-radius:var(--shape-card-radius);
   --cookie-consent-pill-radius:var(--control-radius);
@@ -265,6 +265,7 @@
   --cookie-consent-mobile-learning-title-size:var(--dialog-consent-learning-title-size-mobile);
   --cookie-consent-mobile-learning-copy-size:var(--dialog-consent-learning-copy-size-mobile);
   --cookie-consent-settings-intro-margin-bottom:var(--dialog-consent-settings-intro-margin-bottom);
+  --cookie-consent-z-index:400000;
   --cookie-consent-strong-weight:var(--dialog-consent-strong-weight);
 }
 
@@ -328,23 +329,23 @@ html[data-theme-effective="dark"]{
    03) BASE OVERLAY SHELL
 ============================================================================= */
 .cookie-consent{
-  position: fixed;
-  inset: var(--spacing-none);
-  z-index: var(--z-overlay-modal);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-direction: column;
+  position:fixed;
+  inset:var(--spacing-none);
+  z-index:var(--cookie-consent-z-index);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
   box-sizing:border-box;
-  padding:calc(env(safe-area-inset-top, 0px) + 4.25rem) var(--cookie-consent-min-viewport-gap) calc(env(safe-area-inset-bottom, 0px) + var(--cookie-consent-min-viewport-gap));
+  padding:calc(env(safe-area-inset-top, 0px) + var(--cookie-consent-min-viewport-gap)) var(--cookie-consent-min-viewport-gap) calc(env(safe-area-inset-bottom, 0px) + var(--cookie-consent-min-viewport-gap));
   opacity:var(--cookie-consent-overlay-opacity-closed);
-  visibility: hidden;
-  pointer-events: none;
+  visibility:hidden;
+  pointer-events:none;
   gap:var(--cookie-consent-shell-gap);
 }
 
 body.home-page .cookie-consent{
-  z-index:calc(var(--z-raised) - 1);
+  z-index:var(--cookie-consent-z-index);
 }
 
 body.home-page.home-platform-shell-open .cookie-consent,
@@ -352,10 +353,6 @@ body.home-page.home-search-shell-open .cookie-consent{
   opacity:var(--cookie-consent-overlay-opacity-closed);
   visibility:hidden;
   pointer-events:none;
-}
-
-#cookie-consent-mount[data-consent-surface="banner"] .cookie-consent-backdrop{
-  opacity:var(--spacing-none);
 }
 
 /* =============================================================================
@@ -404,22 +401,22 @@ body.cookie-consent-closing .cookie-consent-backdrop{
    07) PANEL
 ============================================================================= */
 .cookie-consent-panel{
-  position: relative;
+  position:relative;
   pointer-events:auto;
-  width: var(--cookie-consent-width);
-  max-width: calc(100vw - (2 * var(--cookie-consent-min-viewport-gap)));
-  height: auto;
-  max-height: min(31rem, calc(100vh - 8rem));
+  width:var(--cookie-consent-width);
+  max-width:calc(100vw - (2 * var(--cookie-consent-min-viewport-gap)));
+  height:auto;
+  max-height:var(--cookie-consent-max-height);
   min-height:var(--spacing-none);
-  display: flex;
-  gap: var(--spacing-none);
-  flex-direction: column;
-  overflow: hidden;
+  display:flex;
+  gap:var(--spacing-none);
+  flex-direction:column;
+  overflow:hidden;
   padding:var(--cookie-consent-panel-padding-y) var(--cookie-consent-panel-padding-x) var(--spacing-none) var(--cookie-consent-panel-padding-x);
-  border: var(--border-width-hairline) solid var(--cookie-consent-border);
-  border-radius: var(--cookie-consent-radius);
-  background: var(--cookie-consent-surface);
-  box-shadow: var(--cookie-consent-shadow);
+  border:var(--border-width-hairline) solid var(--cookie-consent-border);
+  border-radius:var(--cookie-consent-radius);
+  background:var(--cookie-consent-surface);
+  box-shadow:var(--cookie-consent-shadow);
   backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
   -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
   transform:var(--cookie-consent-panel-transform-closed);
@@ -514,21 +511,21 @@ body.cookie-consent-closing .cookie-consent-panel{
    10) BODY
 ============================================================================= */
 .cookie-consent-body{
-  position: relative;
-  min-height: var(--spacing-none);
-  flex: 1 1 0;
-  padding-bottom: var(--spacing-none);
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  position:relative;
+  min-height:var(--spacing-none);
+  flex:1 1 auto;
+  padding-bottom:var(--spacing-none);
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
   padding-top:var(--cookie-consent-body-padding-top);
   padding-left:var(--cookie-consent-body-padding-inline);
   padding-right:var(--cookie-consent-body-padding-inline);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-none);
-  background: transparent;
+  display:flex;
+  flex-direction:column;
+  gap:var(--spacing-none);
+  background:transparent;
 }
 
 .cookie-consent-body::-webkit-scrollbar{
@@ -1450,7 +1447,7 @@ body.cookie-consent-closing .cookie-consent-panel{
 ============================================================================= */
 @media (max-width:1024px){
   .cookie-consent-panel{
-    max-height: min(44rem, calc(100vh - 2.4rem));
+    max-height:var(--cookie-consent-max-height);
   }
 }
 

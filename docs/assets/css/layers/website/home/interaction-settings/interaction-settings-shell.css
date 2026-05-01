@@ -27,7 +27,7 @@
   --home-interaction-settings-panel-bottom:calc(var(--home-shell-footer-separator-offset, var(--footer-height, 5rem)) + var(--site-gutter));
   --home-interaction-settings-panel-height:var(--layout-interaction-settings-panel-height);
 
-  --home-interaction-settings-panel-radius:var(--panel-radius-unified);
+  --home-interaction-settings-panel-radius:var(--control-radius-composer);
   --home-interaction-settings-panel-padding:var(--home-platform-shell-padding, var(--layout-interaction-settings-panel-padding));
   --home-interaction-settings-panel-gap:var(--home-platform-shell-gap, var(--layout-interaction-settings-panel-gap));
   --home-interaction-settings-panel-surface:var(--panel-surface-unified);
@@ -38,10 +38,10 @@
 
   --home-interaction-settings-panel-body-gap:var(--layout-interaction-settings-panel-body-gap);
   --home-interaction-settings-panel-nav-width:var(--layout-interaction-settings-panel-nav-width);
-  --home-interaction-settings-panel-nav-radius:var(--control-radius);
+  --home-interaction-settings-panel-nav-radius:var(--control-radius-composer);
   --home-interaction-settings-panel-nav-bg:var(--panel-surface-unified);
   --home-interaction-settings-panel-nav-border:var(--panel-border-unified);
-  --home-interaction-settings-panel-content-radius:var(--control-radius);
+  --home-interaction-settings-panel-content-radius:var(--control-radius-composer);
   --home-interaction-settings-panel-content-bg:var(--panel-surface-unified);
   --home-interaction-settings-panel-content-border:var(--panel-border-unified);
 
@@ -54,10 +54,10 @@
   --home-interaction-settings-panel-nav-font-size:var(--layout-interaction-settings-panel-nav-font-size);
   --home-interaction-settings-panel-nav-font-weight:var(--layout-interaction-settings-panel-nav-font-weight);
   --home-interaction-settings-panel-nav-line-height:var(--layout-interaction-settings-panel-nav-line-height);
-  --home-interaction-settings-panel-nav-item-radius:var(--control-radius);
+  --home-interaction-settings-panel-nav-item-radius:var(--control-radius-composer);
   --home-interaction-settings-panel-nav-item-padding:var(--home-platform-shell-nav-item-padding, var(--layout-interaction-settings-panel-nav-item-padding));
 
-  --home-interaction-settings-panel-control-radius:var(--control-radius);
+  --home-interaction-settings-panel-control-radius:var(--control-radius-composer);
   --home-interaction-settings-panel-control-padding:var(--home-platform-shell-nav-item-padding, var(--home-interaction-settings-panel-nav-item-padding));
   --home-interaction-settings-panel-control-bg:var(--control-bg);
   --home-interaction-settings-panel-control-bg-active:var(--control-bg-hover);
@@ -109,7 +109,7 @@
   --home-interaction-settings-toggle-radius:var(--control-radius-pill);
   --home-interaction-settings-status-padding-y:var(--layout-interaction-settings-status-padding-y);
   --home-interaction-settings-status-padding-x:var(--layout-interaction-settings-status-padding-x);
-  --home-interaction-settings-status-radius:var(--control-radius);
+  --home-interaction-settings-status-radius:var(--control-radius-composer);
   --home-interaction-settings-status-line-height:var(--layout-interaction-settings-status-line-height);
 }
 
@@ -149,7 +149,7 @@
   max-height:var(--home-interaction-settings-panel-height);
   padding:var(--home-interaction-settings-panel-padding);
   border:var(--border-width-hairline) solid var(--home-interaction-settings-panel-border);
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-settings-panel-radius);
   background:var(--home-interaction-settings-panel-surface);
   box-shadow:var(--home-interaction-settings-panel-shadow);
   backdrop-filter:blur(var(--home-interaction-settings-panel-blur)) saturate(var(--home-interaction-settings-panel-saturate));
@@ -231,7 +231,7 @@
   min-height:var(--spacing-none);
   padding:var(--home-interaction-settings-panel-padding);
   border:var(--border-width-hairline) solid var(--home-interaction-settings-panel-nav-border);
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-settings-panel-nav-radius);
   background:var(--home-interaction-settings-panel-nav-bg);
   overflow:auto;
   overscroll-behavior:contain;
@@ -251,7 +251,7 @@
   width:var(--size-full);
   padding:var(--home-interaction-settings-panel-nav-item-padding);
   border:var(--border-width-hairline) solid var(--home-interaction-settings-panel-control-border);
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-settings-panel-nav-item-radius);
   background:transparent;
   color:var(--home-interaction-settings-panel-nav-color);
   font-size:var(--home-interaction-settings-panel-nav-font-size);
@@ -284,7 +284,7 @@
   min-height:var(--spacing-none);
   padding:var(--home-interaction-settings-panel-padding);
   border:var(--border-width-hairline) solid var(--home-interaction-settings-panel-content-border);
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-settings-panel-content-radius);
   background:var(--home-interaction-settings-panel-content-bg);
   overflow:auto;
   overscroll-behavior:contain;
@@ -343,7 +343,7 @@
   gap:var(--home-interaction-settings-option-gap);
   padding:var(--home-interaction-settings-option-padding-y) var(--home-interaction-settings-panel-control-padding);
   border:var(--border-width-hairline) solid var(--home-interaction-settings-panel-control-border);
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-settings-panel-control-radius);
   background:var(--home-interaction-settings-panel-control-bg);
   color:var(--home-interaction-settings-panel-control-text);
   text-align:left;
@@ -387,7 +387,7 @@
   width:var(--size-full);
   padding:var(--home-interaction-settings-row-padding-y) var(--home-interaction-settings-panel-control-padding);
   border:var(--border-width-hairline) solid var(--home-interaction-settings-panel-control-border);
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-settings-panel-control-radius);
   background:var(--home-interaction-settings-panel-control-bg);
   color:var(--home-interaction-settings-panel-control-text);
   font-size:var(--home-interaction-settings-option-label-size);
@@ -426,7 +426,7 @@
   width:var(--size-full);
   padding:var(--home-interaction-settings-toggle-row-padding-y) var(--home-interaction-settings-panel-control-padding);
   border:var(--border-width-hairline) solid var(--home-interaction-settings-panel-control-border);
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-settings-panel-control-radius);
   background:var(--home-interaction-settings-panel-control-bg);
   color:var(--home-interaction-settings-panel-control-text);
   text-align:left;
@@ -502,7 +502,7 @@
 .home-interaction-settings-panel__status{
   margin:var(--spacing-none);
   padding:var(--home-interaction-settings-status-padding-y) var(--home-interaction-settings-status-padding-x);
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-settings-status-radius);
   background:var(--home-interaction-settings-panel-status-bg);
   color:var(--home-interaction-settings-panel-muted-color);
   font-size:var(--home-interaction-settings-option-description-size);

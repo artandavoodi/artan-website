@@ -69,6 +69,7 @@ function getFragmentPaths() {
     'profile-private-sidebar': assetPath('/assets/fragments/layers/website/profile/private/sidebar/profile-sidebar.html'),
     'profile-private-workspace': assetPath('/assets/fragments/layers/website/profile/private/workspace/profile-workspace.html'),
     'profile-private-overview-panel': assetPath('/assets/fragments/layers/website/profile/private/overview/profile-overview-panel.html'),
+    'profile-private-posts': assetPath('/assets/fragments/layers/website/profile/private/posts/profile-posts.html'),
     'profile-private-thought-bank-panel': assetPath('/assets/fragments/layers/website/profile/private/thoughts/profile-thought-bank-panel.html'),
     'profile-private-thought-composer-panel': assetPath('/assets/fragments/layers/website/profile/private/thoughts/profile-thought-composer-panel.html'),
     'profile-private-thought-stream-panel': assetPath('/assets/fragments/layers/website/profile/private/thoughts/profile-thought-stream-panel.html'),

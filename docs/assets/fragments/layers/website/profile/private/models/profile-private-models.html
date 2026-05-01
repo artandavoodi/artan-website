@@ -4,7 +4,7 @@
      03) MODEL ACTIONS
 ============================================================================= -->
 <section class="profile-private-models" data-profile-private-models aria-labelledby="profile-private-models-title">
-  <div class="profile-private-models__surface">
+  <div class="profile-private-models__surface ui-card ui-surface--glass">
     <header class="profile-private-models__header">
       <p class="profile-private-models__eyebrow">Model Layer</p>
       <h2 class="profile-private-models__title" id="profile-private-models-title">Models and cognitive systems</h2>
@@ -14,19 +14,19 @@
     </header>
 
     <div class="profile-private-models__grid">
-      <article class="profile-private-models__card" data-profile-model-card="saved">
+      <article class="profile-private-models__card ui-card" data-profile-model-card="saved">
         <span class="profile-private-models__label">Saved models</span>
         <strong class="profile-private-models__value" data-profile-saved-models-count>0</strong>
         <p class="profile-private-models__note">Saved models will appear here after model registry activation.</p>
       </article>
 
-      <article class="profile-private-models__card" data-profile-model-card="owned">
+      <article class="profile-private-models__card ui-card" data-profile-model-card="owned">
         <span class="profile-private-models__label">Owned models</span>
         <strong class="profile-private-models__value" data-profile-owned-models-count>0</strong>
         <p class="profile-private-models__note">Owned models will be linked to personal or organization spaces.</p>
       </article>
 
-      <article class="profile-private-models__card" data-profile-model-card="training">
+      <article class="profile-private-models__card ui-card" data-profile-model-card="training">
         <span class="profile-private-models__label">Training sources</span>
         <strong class="profile-private-models__value" data-profile-training-sources-count>0</strong>
         <p class="profile-private-models__note">Training-source controls remain locked until profile persistence is complete.</p>
@@ -35,7 +35,7 @@
 
     <footer class="profile-private-models__footer">
       <span class="profile-private-models__status" data-profile-model-status>Model controls are staged for the next account layer.</span>
-      <button class="profile-private-models__button" type="button" data-profile-action="create-model" disabled>
+      <button class="profile-private-models__button ui-button ui-button--secondary" type="button" data-profile-action="create-model" disabled>
         Create model
       </button>
     </footer>

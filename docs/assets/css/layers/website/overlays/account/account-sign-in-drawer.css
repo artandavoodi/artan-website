@@ -232,6 +232,22 @@ html[data-theme-effective="dark"]{
   border-color: var(--account-sign-in-input-focus);
 }
 
+.account-sign-in-drawer-submit-status{
+  margin: var(--spacing-none);
+  color: var(--account-sign-in-muted);
+  font-size: var(--body-3-size);
+  line-height: var(--type-body-sm-line-height);
+  text-align: center;
+}
+
+.account-sign-in-drawer-submit-status[data-account-sign-in-submit-status="error"]{
+  color: var(--status-error-color);
+}
+
+.account-sign-in-drawer-submit-status[data-account-sign-in-submit-status="success"]{
+  color: var(--status-success-color);
+}
+
 /* =============================================================================
    06) ACTIONS
 ============================================================================= */

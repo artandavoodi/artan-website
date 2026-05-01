@@ -133,6 +133,18 @@ function formatFieldLabel(value) {
   }
 }
 
+function getStructuredProfileFlag(profile = null, key = '') {
+  const normalizedKey = normalizeString(key);
+  const flags = Array.isArray(profile?.public_feature_flags) ? profile.public_feature_flags : [];
+  const match = flags.find((entry) => {
+    if (typeof entry === 'string') return entry === normalizedKey;
+    return normalizeString(entry?.key || entry?.name || '') === normalizedKey;
+  });
+
+  if (!match || typeof match === 'string') return '';
+  return normalizeString(match.value || match.url || match.href || '');
+}
+
 function buildInitials(displayName, email = '') {
   const base = normalizeString(displayName || email || '');
   if (!base) return 'N';
@@ -244,6 +256,7 @@ function buildPrivateProfileState(user = null, profile = null) {
   const publicRouteDisplay = buildPublicProfileDisplay(username.normalized);
   const publicViewAvailable = visibility.publicEnabled === true && visibility.routeStatus === 'ready' && Boolean(username.normalized);
   const avatarUrl = normalizeString(profile?.avatar_url || profile?.photo_url || user?.photoURL || '');
+  const coverUrl = normalizeString(profile?.cover_url || profile?.header_image_url || getStructuredProfileFlag(profile, 'profile_cover_url'));
   const avatarHasImage = Boolean(avatarUrl);
   const stateKey = !user
     ? 'guest'
@@ -293,6 +306,7 @@ function buildPrivateProfileState(user = null, profile = null) {
     publicViewAvailable,
     profileRecordState: profile ? 'Canonical record active' : 'Canonical record pending',
     avatarUrl: avatarHasImage ? avatarUrl : '',
+    coverUrl,
     avatarHasImage,
     avatarState: normalizeString(profile?.avatar_state || '') || (avatarHasImage ? 'active' : 'empty'),
     avatarInitials: buildInitials(displayName || normalizeString(profile?.first_name || ''), email),
@@ -672,13 +686,31 @@ export function requestProfileAction(action, detail = {}) {
       requestPrivateNavigation('overview');
       return;
     case 'open-thought-bank':
-      requestPrivateNavigation('thought-bank');
+      requestPrivateNavigation('thoughts');
       return;
     case 'open-dashboard':
       requestPrivateNavigation('dashboard');
       return;
     case 'open-settings':
       requestPrivateNavigation('settings', detail?.settingsPane || 'identity');
+      return;
+    case 'home':
+      window.location.href = '/index.html';
+      return;
+    case 'explore':
+      window.location.href = '/index.html#search';
+      return;
+    case 'library':
+      window.location.href = '/pages/knowledge-research/index.html';
+      return;
+    case 'workspace':
+      requestPrivateNavigation('overview');
+      return;
+    case 'edit-avatar':
+      requestPrivateNavigation('settings', 'media');
+      return;
+    case 'edit-cover':
+      requestPrivateNavigation('settings', 'media');
       return;
     case 'view-public':
       if (state.publicViewAvailable && state.publicRoutePath) {
@@ -722,7 +754,8 @@ function bindActionDelegation() {
 
     event.preventDefault();
     requestProfileAction(trigger.getAttribute('data-profile-action') || '', {
-      target: trigger
+      target: trigger,
+      settingsPane: trigger.getAttribute('data-profile-settings-pane') || ''
     });
   });
 }

@@ -1487,7 +1487,10 @@ export function buildProfilePayload({
   const authProviderPrimary = normalizeString(values.auth_provider || existingProfile?.auth_provider_primary || '');
   const authProviderLinks = resolveAuthProviderLinks(user, existingProfile, authProviderPrimary);
   const avatarUrl = normalizeString(
-    user?.photoURL
+    values.avatar_url
+    || values.photo_url
+    || values.public_avatar_url
+    || user?.photoURL
     || userMetadata.avatar_url
     || userMetadata.picture
     || existingProfile?.avatar_url

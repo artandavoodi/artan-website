@@ -1,0 +1,18 @@
+{
+  "visibility": [
+    {
+      "key": "private",
+      "label": "Private draft",
+      "summary": "Owner-only post records stored in the private profile surface."
+    },
+    {
+      "key": "public",
+      "label": "Public route",
+      "summary": "Posts staged for publication after public route readiness is complete."
+    }
+  ],
+  "limits": {
+    "titleMaxLength": 120,
+    "bodyMaxLength": 4000
+  }
+}

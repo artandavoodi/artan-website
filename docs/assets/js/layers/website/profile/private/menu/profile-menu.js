@@ -31,7 +31,9 @@ function bindProfileMenu(root) {
   root.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-profile-action]');
     if (!trigger) return;
+    if (trigger instanceof HTMLAnchorElement) return;
 
+    event.preventDefault();
     document.dispatchEvent(new CustomEvent('profile:action-request', {
       detail: {
         source: MODULE_ID,

@@ -12,10 +12,14 @@
    02. PUBLIC PROFILE CORE
    ============================================================================= */
 
-/* Public profile core imports will be registered here after public-profile fragments are normalized. */
+@import url('./shell/profile-shell.css');
+@import url('./header/profile-header.css');
+@import url('./menu/profile-menu.css');
+@import url('./sections/profile-sections.css');
+@import url('./footer/profile-footer.css');
 
 /* =============================================================================
    03. PUBLIC PROFILE MODULAR FRAGMENTS
    ============================================================================= */
 
-/* Public profile modular imports will be registered here after public-profile fragments are normalized. */
+/* Public profile modules intentionally keep route rendering separate from the private owner workspace. */

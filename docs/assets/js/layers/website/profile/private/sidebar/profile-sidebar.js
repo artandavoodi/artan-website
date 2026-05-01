@@ -71,7 +71,10 @@ function renderSidebar(state = getProfileRuntimeState(), navigationState = getPr
 
     root.querySelectorAll('[data-profile-nav-section]').forEach((button) => {
       const section = button.getAttribute('data-profile-nav-section') || '';
-      button.dataset.profileNavActive = section === navigationState.section ? 'true' : 'false';
+      const pane = button.getAttribute('data-profile-nav-pane') || '';
+      const active = section === navigationState.section
+        && (!pane || pane === navigationState.settingsPane);
+      button.dataset.profileNavActive = active ? 'true' : 'false';
     });
 
     const publicButton = root.querySelector('[data-profile-action="view-public"]');

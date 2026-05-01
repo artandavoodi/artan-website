@@ -56,6 +56,24 @@
               placeholder="Phone number"
             >
           </div>
+          <div class="account-phone-auth-drawer-field-group" data-account-phone-auth-code-group hidden>
+            <input
+              id="account-phone-auth-code"
+              name="code"
+              type="text"
+              class="account-phone-auth-drawer-input"
+              autocomplete="one-time-code"
+              inputmode="numeric"
+              data-i18n-placeholder-key="account_phone_auth_code_placeholder"
+              placeholder="Verification code"
+            >
+          </div>
+          <p
+            class="account-phone-auth-drawer-submit-status"
+            data-account-phone-auth-submit-status="idle"
+            aria-live="polite"
+            hidden
+          ></p>
         </div>
       </form>
 

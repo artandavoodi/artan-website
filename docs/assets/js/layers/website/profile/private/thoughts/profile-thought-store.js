@@ -141,7 +141,7 @@ function normalizeComposerText(value) {
 }
 
 function buildStorageKey(runtimeState = STORE.runtimeState || getProfileRuntimeState()) {
-  const uid = normalizeString(runtimeState?.user?.uid || '');
+  const uid = normalizeString(runtimeState?.user?.id || runtimeState?.user?.uid || '');
   const username = normalizeString(runtimeState?.username?.normalized || '');
   const email = normalizeString(runtimeState?.email || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const identity = uid || username || email || 'guest';

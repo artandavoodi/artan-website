@@ -20,7 +20,7 @@
   --home-interaction-response-panel-padding:0.18rem 0.18rem 0.18rem;
   --home-interaction-response-panel-content-max-width:42rem;
   --home-interaction-response-panel-content-align:left;
-  --home-interaction-response-panel-radius:var(--control-radius);
+  --home-interaction-response-panel-radius:var(--control-radius-composer);
   --home-interaction-response-panel-surface:transparent;
   --home-interaction-response-panel-text:var(--text-primary-color);
   --home-interaction-response-panel-muted:var(--text-secondary-color);
@@ -42,7 +42,7 @@
   margin:var(--home-interaction-response-panel-margin-top) auto var(--home-interaction-response-panel-margin-bottom);
   padding:var(--home-interaction-response-panel-padding);
   border:0;
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-response-panel-radius);
   background:var(--home-interaction-response-panel-surface);
   color:var(--home-interaction-response-panel-text);
   text-align:var(--home-interaction-response-panel-content-align);
@@ -69,7 +69,7 @@
   scrollbar-width:thin;
   scrollbar-color:var(--home-interaction-response-panel-scrollbar) transparent;
   outline:none;
-  border-radius:var(--control-radius);
+  border-radius:var(--home-interaction-response-panel-radius);
   scroll-padding-bottom:var(--home-interaction-response-panel-footer-clearance);
 }
 

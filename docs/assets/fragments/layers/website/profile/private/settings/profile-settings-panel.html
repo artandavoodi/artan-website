@@ -15,11 +15,31 @@
       </div>
     </div>
 
-    <div class="profile-settings__nav" role="tablist" aria-label="Profile settings sections">
-      <button class="profile-settings__nav-item" type="button" data-profile-settings-pane-target="identity">Identity</button>
-      <button class="profile-settings__nav-item" type="button" data-profile-settings-pane-target="route">Route</button>
-      <button class="profile-settings__nav-item" type="button" data-profile-settings-pane-target="visibility">Visibility</button>
-      <button class="profile-settings__nav-item" type="button" data-profile-settings-pane-target="media">Media</button>
+    <div class="profile-settings__nav home-dashboard-topbar__nav" role="tablist" aria-label="Profile settings sections">
+      <button class="profile-settings__nav-item home-dashboard-topbar__action home-dashboard-topbar__action--nav" type="button" role="tab" data-profile-settings-pane-target="identity">
+        <span class="home-dashboard-topbar__icon" aria-hidden="true">
+          <img class="ui-icon-theme-aware" src="/assets/icons/core/identity/profile/user.svg" alt="">
+        </span>
+        <span class="home-dashboard-topbar__label">Identity</span>
+      </button>
+      <button class="profile-settings__nav-item home-dashboard-topbar__action home-dashboard-topbar__action--nav" type="button" role="tab" data-profile-settings-pane-target="route">
+        <span class="home-dashboard-topbar__icon" aria-hidden="true">
+          <img class="ui-icon-theme-aware" src="/assets/icons/core/navigation/unclassified/route.svg" alt="">
+        </span>
+        <span class="home-dashboard-topbar__label">Route</span>
+      </button>
+      <button class="profile-settings__nav-item home-dashboard-topbar__action home-dashboard-topbar__action--nav" type="button" role="tab" data-profile-settings-pane-target="visibility">
+        <span class="home-dashboard-topbar__icon" aria-hidden="true">
+          <img class="ui-icon-theme-aware" src="/assets/icons/core/identity/access/visibility-on.svg" alt="">
+        </span>
+        <span class="home-dashboard-topbar__label">Visibility</span>
+      </button>
+      <button class="profile-settings__nav-item home-dashboard-topbar__action home-dashboard-topbar__action--nav" type="button" role="tab" data-profile-settings-pane-target="media">
+        <span class="home-dashboard-topbar__icon" aria-hidden="true">
+          <img class="ui-icon-theme-aware" src="/assets/icons/core/media/unclassified/image.svg" alt="">
+        </span>
+        <span class="home-dashboard-topbar__label">Media</span>
+      </button>
     </div>
   </article>
 
@@ -158,9 +178,29 @@
       <div class="profile-settings__pane-header">
         <div>
           <h3 class="profile-settings__pane-title">Media &amp; Avatar</h3>
-          <p class="profile-settings__pane-copy">Image upload remains delegated to the canonical account/profile setup flow until the dedicated media system is connected here.</p>
+          <p class="profile-settings__pane-copy">Profile image sources are saved to the canonical private profile record. Header image is stored as a structured profile media flag.</p>
         </div>
       </div>
+
+      <form class="profile-settings__form" data-profile-save-form data-profile-save-scope="media" novalidate>
+        <div class="profile-settings__field-grid">
+          <label class="profile-settings__field profile-settings__field--full">
+            <span class="profile-settings__label">Profile image URL</span>
+            <input class="ui-field" type="url" name="avatar_url" placeholder="https://">
+          </label>
+
+          <label class="profile-settings__field profile-settings__field--full">
+            <span class="profile-settings__label">Header image URL</span>
+            <input class="ui-field" type="url" name="cover_url" placeholder="https://">
+          </label>
+        </div>
+
+        <div class="profile-settings__status" data-profile-save-status="media" aria-live="polite"></div>
+
+        <div class="profile-settings__actions">
+          <button class="ui-button ui-button--secondary" type="submit" data-profile-save-submit="media">Save Images</button>
+        </div>
+      </form>
 
       <div class="profile-settings__media">
         <div class="profile-settings__media-preview">
@@ -177,11 +217,6 @@
           </div>
         </div>
 
-        <div class="profile-settings__actions">
-          <button class="ui-button ui-button--secondary" type="button" data-profile-action="change-avatar">
-            Open Image Setup
-          </button>
-        </div>
       </div>
     </section>
   </div>

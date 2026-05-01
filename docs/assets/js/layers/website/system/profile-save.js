@@ -49,7 +49,7 @@ const RUNTIME = (window.__NEUROARTAN_PROFILE_SAVE__ ||= {
 const PROFILE_COLLECTION = 'profiles';
 const USERNAME_RESERVATION_COLLECTION = 'username_reservations';
 const SUPABASE_PROFILE_SELECT_FIELDS = '*';
-const SAVE_SCOPES = Object.freeze(['identity', 'route', 'visibility']);
+const SAVE_SCOPES = Object.freeze(['identity', 'route', 'visibility', 'media']);
 
 /* =============================================================================
    04) SUPABASE HELPERS
@@ -325,6 +325,14 @@ function getExistingProfileSeed(existingProfile = null, user = null) {
     || ''
   );
 
+  const publicFeatureFlags = Array.isArray(existingProfile?.public_feature_flags)
+    ? existingProfile.public_feature_flags
+    : [];
+  const coverFlag = publicFeatureFlags.find((entry) => {
+    if (!entry || typeof entry !== 'object') return false;
+    return normalizeString(entry.key || entry.name || '') === 'profile_cover_url';
+  });
+
   return {
     email: normalizeEmail(existingProfile?.email || user?.email || user?.user_metadata?.email || ''),
     first_name: normalizeString(existingProfile?.first_name || ''),
@@ -338,8 +346,33 @@ function getExistingProfileSeed(existingProfile = null, user = null) {
     public_summary: normalizeString(existingProfile?.public_summary || ''),
     public_primary_link: normalizeString(existingProfile?.public_primary_link || ''),
     public_profile_enabled: existingProfile?.public_profile_enabled === true,
-    public_profile_discoverable: existingProfile?.public_profile_discoverable === true
+    public_profile_discoverable: existingProfile?.public_profile_discoverable === true,
+    avatar_url: normalizeString(existingProfile?.avatar_url || existingProfile?.photo_url || user?.user_metadata?.avatar_url || user?.user_metadata?.picture || ''),
+    cover_url: normalizeString(coverFlag?.value || coverFlag?.url || ''),
+    public_feature_flags: publicFeatureFlags
   };
+}
+
+function upsertProfileMediaFlag(flags = [], key = '', value = '') {
+  const normalizedKey = normalizeString(key);
+  if (!normalizedKey) return Array.isArray(flags) ? flags.slice() : [];
+
+  const nextFlags = (Array.isArray(flags) ? flags : [])
+    .filter((entry) => {
+      if (!entry || typeof entry !== 'object') return true;
+      return normalizeString(entry.key || entry.name || '') !== normalizedKey;
+    });
+
+  const normalizedValue = normalizeString(value);
+  if (normalizedValue) {
+    nextFlags.push({
+      key: normalizedKey,
+      value: normalizedValue,
+      scope: 'profile_media'
+    });
+  }
+
+  return nextFlags;
 }
 
 function readCheckboxValue(formData, name) {
@@ -375,6 +408,18 @@ function buildScopedValues(scope, form, existingProfile = null, user = null) {
         public_profile_enabled: readCheckboxValue(formData, 'public_profile_enabled'),
         public_profile_discoverable: readCheckboxValue(formData, 'public_profile_discoverable')
       };
+    case 'media': {
+      const avatarUrl = normalizeString(formData.get('avatar_url') || '');
+      const coverUrl = normalizeString(formData.get('cover_url') || '');
+
+      return {
+        ...seed,
+        avatar_url: avatarUrl,
+        photo_url: avatarUrl,
+        public_avatar_url: avatarUrl,
+        public_feature_flags: upsertProfileMediaFlag(seed.public_feature_flags, 'profile_cover_url', coverUrl)
+      };
+    }
     default:
       return seed;
   }

@@ -409,6 +409,38 @@ import {
     field.addEventListener('change', clear);
   }
 
+  function setInlineStatus(selector, state = 'idle', message = '') {
+    const node = document.querySelector(selector);
+    if (!(node instanceof HTMLElement)) return;
+
+    node.textContent = message;
+    node.hidden = !message;
+    node.setAttribute(selector.includes('phone') ? 'data-account-phone-auth-submit-status' : 'data-account-sign-in-submit-status', state || 'idle');
+  }
+
+  function clearSignInStatus() {
+    setInlineStatus('[data-account-sign-in-submit-status]', 'idle', '');
+  }
+
+  function emitSignInStatus(state, message) {
+    setInlineStatus('[data-account-sign-in-submit-status]', state, message);
+  }
+
+  function clearPhoneAuthStatus() {
+    setInlineStatus('[data-account-phone-auth-submit-status]', 'idle', '');
+  }
+
+  function emitPhoneAuthStatus(state, message) {
+    setInlineStatus('[data-account-phone-auth-submit-status]', state, message);
+  }
+
+  function setPhoneVerificationVisible(isVisible) {
+    const group = document.querySelector('[data-account-phone-auth-code-group]');
+    if (group instanceof HTMLElement) {
+      group.hidden = !isVisible;
+    }
+  }
+
   function clearFormErrors(form) {
     if (!(form instanceof HTMLFormElement)) return;
 
@@ -486,6 +518,18 @@ import {
 
     if (code.startsWith('auth/requests-from-referer-') || message.includes('requests-from-referer-')) {
       return `Firebase Auth is blocking ${window.location.origin}. Add this origin to the authorized domains or API referrer allowlist for neuroartan-core.`;
+    }
+
+    if (code === 'invalid_credentials' || message.includes('invalid login credentials')) {
+      return 'The email address or password is not correct.';
+    }
+
+    if (message.includes('email not confirmed')) {
+      return 'Verify your email address before signing in.';
+    }
+
+    if (message.includes('phone') && (message.includes('disabled') || message.includes('not enabled'))) {
+      return 'Phone sign-in is not enabled in the authentication backend yet.';
     }
 
     switch (code) {
@@ -1099,28 +1143,34 @@ import {
     const password = normalizeString(passwordField?.value || '');
 
     clearFormErrors(form);
+    clearSignInStatus();
 
     if (!identity) {
+      emitSignInStatus('error', 'Enter your email or username.');
       setFieldError(identityField, 'Enter your email or username.');
       return;
     }
 
     if (!password) {
+      emitSignInStatus('error', 'Enter your password.');
       setFieldError(passwordField, 'Enter your password.');
       return;
     }
 
     if (isPhoneIdentity(identity) && !identity.includes('@')) {
-      setFieldError(identityField, 'Phone sign-in is not live yet. Use your email address for now.');
+      emitSignInStatus('error', 'Use Continue with phone for phone sign-in.');
+      setFieldError(identityField, 'Use Continue with phone for phone sign-in.');
       return;
     }
 
     setFormBusy(form, true);
+    emitSignInStatus('saving', 'Checking your account...');
 
     try {
       const email = await resolveEmailIdentity(identity);
 
       if (!email) {
+        emitSignInStatus('error', 'Use your email address or an existing username.');
         setFieldError(identityField, 'Use your email address or an existing username.');
         return;
       }
@@ -1142,6 +1192,7 @@ import {
         }
 
         if (data?.user) {
+          emitSignInStatus('success', 'Signed in. Opening your private profile...');
           await handleSignedInState(data.user);
         }
         return;
@@ -1150,12 +1201,14 @@ import {
       const { auth } = await ensureFirebaseReadyOrThrow();
       const credential = await auth.signInWithEmailAndPassword(email, password);
       if (credential?.user) {
+        emitSignInStatus('success', 'Signed in. Opening your private profile...');
         await handleSignedInState(credential.user);
       }
     } catch (error) {
       clearFlowState();
       const message = mapFirebaseError(error, 'Unable to sign in right now.');
       if (message) {
+        emitSignInStatus('error', message);
         setFieldError(passwordField || identityField, message);
       }
       console.error('Email sign-in error:', error);
@@ -1187,14 +1240,86 @@ import {
   /* =============================================================================
      19) PHONE AND PASSWORD RECOVERY FLOW
   ============================================================================= */
-  function handlePhoneAuthRequest(detail = {}) {
+  async function handlePhoneAuthRequest(detail = {}) {
     const form = document.querySelector('[data-account-phone-auth-form="true"]');
     const phoneField = form instanceof HTMLFormElement
       ? getFieldFromForm(form, '#account-phone-auth-number')
       : null;
+    const codeField = form instanceof HTMLFormElement
+      ? getFieldFromForm(form, '#account-phone-auth-code')
+      : null;
+    const phone = normalizeString(detail.phone || phoneField?.value || '');
+    const code = normalizeString(detail.code || codeField?.value || '');
 
-    setFieldError(phoneField, 'Phone authentication is not live yet.');
-    console.warn('Phone auth request is not implemented:', detail);
+    if (!(form instanceof HTMLFormElement)) return;
+
+    clearFormErrors(form);
+    clearPhoneAuthStatus();
+
+    if (!phone) {
+      emitPhoneAuthStatus('error', 'Enter your phone number.');
+      setFieldError(phoneField, 'Enter your phone number.');
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      const message = 'Phone sign-in requires the Supabase authentication backend.';
+      emitPhoneAuthStatus('error', message);
+      setFieldError(phoneField, message);
+      return;
+    }
+
+    setFormBusy(form, true);
+
+    try {
+      setFlowState({
+        resolveProfile: true,
+        redirectToProfile: true
+      });
+
+      if (!code) {
+        emitPhoneAuthStatus('saving', 'Sending verification code...');
+        const { error } = await supabase.auth.signInWithOtp({ phone });
+        if (error) {
+          throw error;
+        }
+
+        setPhoneVerificationVisible(true);
+        emitPhoneAuthStatus('success', 'Verification code sent. Enter the code to continue.');
+        window.setTimeout(() => {
+          codeField?.focus();
+        }, 0);
+        return;
+      }
+
+      emitPhoneAuthStatus('saving', 'Verifying phone code...');
+      const { data, error } = await supabase.auth.verifyOtp({
+        phone,
+        token: code,
+        type: 'sms'
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.user) {
+        emitPhoneAuthStatus('success', 'Signed in. Opening your private profile...');
+        await handleSignedInState(data.user);
+        return;
+      }
+
+      throw createUsernameError('AUTHENTICATED_USER_REQUIRED');
+    } catch (error) {
+      clearFlowState();
+      const message = mapFirebaseError(error, 'Unable to continue with phone right now.');
+      emitPhoneAuthStatus('error', message);
+      setFieldError(code ? codeField : phoneField, message);
+      console.error('Phone auth error:', error);
+    } finally {
+      setFormBusy(form, false);
+    }
   }
 
   async function handleForgotPasswordSubmit(detail = {}) {

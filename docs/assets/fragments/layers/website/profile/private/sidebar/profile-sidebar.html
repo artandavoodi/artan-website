@@ -10,15 +10,10 @@
       <p class="profile-sidebar__summary" data-profile-sidebar-summary>Owner environment for identity, thoughts, route state, and profile settings.</p>
     </div>
 
-    <nav class="profile-sidebar__nav" aria-label="Private profile sections">
+    <nav class="profile-sidebar__nav" aria-label="Private profile controls">
       <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-overview" data-profile-nav-section="overview">
         <span class="profile-sidebar__nav-title">Overview</span>
         <span class="profile-sidebar__nav-copy" data-profile-nav-copy="overview">Identity, account state, route readiness</span>
-      </button>
-
-      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-thought-bank" data-profile-nav-section="thought-bank">
-        <span class="profile-sidebar__nav-title">Thought Bank</span>
-        <span class="profile-sidebar__nav-copy" data-profile-nav-copy="thought-bank">Private and public writing surfaces</span>
       </button>
 
       <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-dashboard" data-profile-nav-section="dashboard">
@@ -26,9 +21,24 @@
         <span class="profile-sidebar__nav-copy" data-profile-nav-copy="dashboard">Continuity and route intelligence</span>
       </button>
 
-      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-settings" data-profile-nav-section="settings">
-        <span class="profile-sidebar__nav-title">Settings</span>
-        <span class="profile-sidebar__nav-copy" data-profile-nav-copy="settings">Identity, public route, visibility, media</span>
+      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-settings" data-profile-settings-pane="identity" data-profile-nav-section="settings" data-profile-nav-pane="identity">
+        <span class="profile-sidebar__nav-title">Edit Profile</span>
+        <span class="profile-sidebar__nav-copy" data-profile-nav-copy="settings">Name, date of birth, gender, private identity</span>
+      </button>
+
+      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-settings" data-profile-settings-pane="route" data-profile-nav-section="settings" data-profile-nav-pane="route">
+        <span class="profile-sidebar__nav-title">Public Route</span>
+        <span class="profile-sidebar__nav-copy">Username, public name, summary, primary link</span>
+      </button>
+
+      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-settings" data-profile-settings-pane="visibility" data-profile-nav-section="settings" data-profile-nav-pane="visibility">
+        <span class="profile-sidebar__nav-title">Privacy Settings</span>
+        <span class="profile-sidebar__nav-copy">Public visibility, discovery, profile exposure</span>
+      </button>
+
+      <button class="profile-sidebar__nav-item" type="button" data-profile-action="open-settings" data-profile-settings-pane="media" data-profile-nav-section="settings" data-profile-nav-pane="media">
+        <span class="profile-sidebar__nav-title">Profile Images</span>
+        <span class="profile-sidebar__nav-copy">Profile image and header image sources</span>
       </button>
     </nav>
 
