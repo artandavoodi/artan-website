@@ -1,0 +1,27 @@
+<!-- =============================================================================
+     01) MODEL VOICE TRAINING PANEL
+============================================================================= -->
+<section class="model-creation-panel model-creation-panel--voice" data-model-creation-panel="voice">
+  <header class="model-creation-panel__header">
+    <p class="model-creation-panel__eyebrow">Voice Training</p>
+    <h2 class="model-creation-panel__title">Voice samples and transcript readiness</h2>
+    <p class="model-creation-panel__copy">Prepare voice-training records without claiming voice synthesis or model training is complete.</p>
+  </header>
+
+  <div class="model-creation-panel__grid" data-voice-training-form>
+    <label class="model-creation-field">
+      <span>Voice sample</span>
+      <input class="model-creation-field__control" name="voice_file" type="file" accept="audio/*,video/*">
+    </label>
+    <label class="model-creation-field">
+      <span>Consent / status</span>
+      <select class="model-creation-field__control" name="voice_status" data-voice-status-select></select>
+    </label>
+    <label class="model-creation-field model-creation-field--full">
+      <span>Transcript</span>
+      <textarea class="model-creation-field__control" name="voice_transcript" rows="4"></textarea>
+    </label>
+  </div>
+  <button class="model-creation__button" type="button" data-add-voice-sample>Add Voice Sample</button>
+  <div class="model-creation-panel__list" data-voice-sample-list></div>
+</section>

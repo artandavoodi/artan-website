@@ -1,0 +1,120 @@
+{
+  "version": "2026-05-02",
+  "canonical_status": "advanced_model_creation_control_surface",
+  "storage_key": "neuroartan.modelCreation.draft.v1",
+  "panels": [
+    {
+      "id": "identity",
+      "label": "Identity",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-identity-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-creation-state.js"
+    },
+    {
+      "id": "profile-link",
+      "label": "Profile Link",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-profile-link-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-creation-state.js"
+    },
+    {
+      "id": "provider",
+      "label": "Provider",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-provider-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-provider-router.js"
+    },
+    {
+      "id": "training",
+      "label": "Training",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-training-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-training-workflow.js"
+    },
+    {
+      "id": "voice",
+      "label": "Voice",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-voice-training-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-voice-training.js"
+    },
+    {
+      "id": "style",
+      "label": "Style",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-style-training-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-style-training.js"
+    },
+    {
+      "id": "memory",
+      "label": "Memory",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-memory-sources-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-memory-sources.js"
+    },
+    {
+      "id": "attachments",
+      "label": "Files",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-attachments-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-attachments.js"
+    },
+    {
+      "id": "evaluation",
+      "label": "Evaluation",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-evaluation-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-evaluation.js"
+    },
+    {
+      "id": "deployment",
+      "label": "Deployment",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-deployment-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-deployment.js"
+    },
+    {
+      "id": "versioning",
+      "label": "Versioning",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-versioning-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-versioning.js"
+    },
+    {
+      "id": "safety",
+      "label": "Safety",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-safety-visibility-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-creation-validation.js"
+    },
+    {
+      "id": "next-action",
+      "label": "Next Action",
+      "fragment": "/assets/fragments/layers/website/model-creation/model-next-action-panel.html",
+      "module": "/assets/js/layers/website/model-creation/model-next-action.js"
+    }
+  ],
+  "visibility_options": [
+    {
+      "value": "private",
+      "label": "Private"
+    },
+    {
+      "value": "limited",
+      "label": "Limited"
+    },
+    {
+      "value": "public",
+      "label": "Public"
+    }
+  ],
+  "interaction_options": [
+    {
+      "value": "private",
+      "label": "Private interaction"
+    },
+    {
+      "value": "public_read",
+      "label": "Public read"
+    },
+    {
+      "value": "public_interact",
+      "label": "Public interaction"
+    }
+  ],
+  "defaults": {
+    "model_visibility": "private",
+    "provider_mode": "manual",
+    "training_stage": "draft",
+    "deployment_status": "draft",
+    "release_version": "0.1.0"
+  }
+}

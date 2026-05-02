@@ -185,12 +185,24 @@
       <form class="profile-settings__form" data-profile-save-form data-profile-save-scope="media" novalidate>
         <div class="profile-settings__field-grid">
           <label class="profile-settings__field profile-settings__field--full">
-            <span class="profile-settings__label">Profile image URL</span>
+            <span class="profile-settings__label">Upload profile image</span>
+            <input class="ui-field" type="file" name="avatar_file" accept="image/*">
+            <span class="profile-settings__hint">Uploads to the canonical profile media storage path when Supabase Storage is available.</span>
+          </label>
+
+          <label class="profile-settings__field profile-settings__field--full">
+            <span class="profile-settings__label">Profile image URL fallback</span>
             <input class="ui-field" type="url" name="avatar_url" placeholder="https://">
           </label>
 
           <label class="profile-settings__field profile-settings__field--full">
-            <span class="profile-settings__label">Header image URL</span>
+            <span class="profile-settings__label">Upload header image</span>
+            <input class="ui-field" type="file" name="cover_file" accept="image/*">
+            <span class="profile-settings__hint">Stores the header asset as structured profile media and keeps public/private profile rendering separated.</span>
+          </label>
+
+          <label class="profile-settings__field profile-settings__field--full">
+            <span class="profile-settings__label">Header image URL fallback</span>
             <input class="ui-field" type="url" name="cover_url" placeholder="https://">
           </label>
         </div>

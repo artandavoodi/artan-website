@@ -1,0 +1,298 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IMPORTS
+   02) PAGE SHELL
+   03) COCKPIT SHARED TOKENS
+   04) COCKPIT SHELL
+   05) SHARED MODULE SYSTEM
+   06) SHARED FORM SYSTEM
+   07) RESPONSIVE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IMPORTS
+============================================================================= */
+@import url('./development-cockpit-shell.css');
+@import url('./prompt-composer.css');
+@import url('./terminal-scan-generator.css');
+@import url('./file-target-selector.css');
+@import url('./patch-instruction-generator.css');
+@import url('./github-commit-message-generator.css');
+@import url('./open-file-next-workflow.css');
+@import url('./provider-router.css');
+@import url('./daily-execution-log.css');
+
+/* =============================================================================
+   02) PAGE SHELL
+============================================================================= */
+.development-cockpit-page-shell{
+  min-height:var(--section-min-height-stable);
+  padding:var(--site-header-height) var(--spacing-none) var(--spacing-4xl);
+}
+
+.development-cockpit-page-rail{
+  width:var(--site-rail-measure);
+  max-width:var(--site-max-width);
+  margin:var(--spacing-none) auto;
+}
+
+/* =============================================================================
+   03) COCKPIT SHARED TOKENS
+============================================================================= */
+.development-cockpit{
+  --cockpit-surface:var(--panel-surface-unified);
+  --cockpit-border:var(--panel-border-unified);
+  --cockpit-radius:var(--panel-radius-unified);
+  --cockpit-card-radius:var(--shape-card-radius);
+  --cockpit-shadow:var(--panel-shadow-unified);
+  --cockpit-blur:var(--panel-blur-unified);
+  --cockpit-gap:var(--spacing-lg);
+  --cockpit-gap-large:var(--spacing-2xl);
+  --cockpit-text:var(--text-primary-color);
+  --cockpit-muted:var(--text-secondary-color);
+  --cockpit-control-surface:var(--control-surface);
+  --cockpit-control-hover:var(--control-surface-hover);
+  --cockpit-control-active:var(--control-surface-active);
+  --cockpit-control-border:var(--control-border-unified);
+  --cockpit-motion:var(--interaction-transition-control);
+}
+
+/* =============================================================================
+   04) COCKPIT SHELL
+============================================================================= */
+.development-cockpit{
+  display:grid;
+  gap:var(--cockpit-gap-large);
+  color:var(--cockpit-text);
+}
+
+.development-cockpit__header{
+  display:grid;
+  gap:var(--spacing-md);
+  padding:var(--spacing-2xl);
+  border:var(--border-width-hairline) solid var(--cockpit-border);
+  border-radius:var(--cockpit-radius);
+  background:var(--cockpit-surface);
+  box-shadow:var(--cockpit-shadow);
+  backdrop-filter:blur(var(--cockpit-blur));
+}
+
+.development-cockpit__header-grid{
+  display:grid;
+  grid-template-columns:minmax(0, var(--grid-column-single)) minmax(0, 0.42fr);
+  gap:var(--cockpit-gap-large);
+  align-items:end;
+}
+
+.development-cockpit__intro,
+.development-cockpit__status{
+  display:grid;
+  gap:var(--spacing-sm);
+}
+
+.development-cockpit__eyebrow,
+.cockpit-module__eyebrow{
+  margin:var(--spacing-none);
+  color:var(--cockpit-muted);
+  font-size:var(--font-size-eyebrow);
+  font-weight:var(--font-weight-semibold);
+  letter-spacing:var(--tracking-wide);
+  text-transform:uppercase;
+}
+
+.development-cockpit__title{
+  margin:var(--spacing-none);
+  color:var(--cockpit-text);
+  font-size:var(--font-size-h2);
+  line-height:var(--line-height-heading);
+  font-weight:var(--font-weight-semibold);
+  letter-spacing:var(--tracking-tight);
+}
+
+.development-cockpit__description,
+.development-cockpit__status span{
+  margin:var(--spacing-none);
+  color:var(--cockpit-muted);
+  font-size:var(--font-size-body-2);
+  line-height:var(--line-height-body);
+}
+
+.development-cockpit__status{
+  padding:var(--spacing-lg);
+  border:var(--border-width-hairline) solid var(--cockpit-control-border);
+  border-radius:var(--cockpit-card-radius);
+  background:var(--cockpit-control-surface);
+}
+
+.development-cockpit__status strong{
+  color:var(--cockpit-text);
+  font-size:var(--font-size-title-3);
+  font-weight:var(--font-weight-semibold);
+}
+
+.development-cockpit__module-nav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--spacing-sm);
+}
+
+.development-cockpit__module-nav button{
+  min-height:var(--control-height-sm);
+  padding:var(--spacing-none) var(--control-padding-x-md);
+  border:var(--border-width-hairline) solid var(--cockpit-control-border);
+  border-radius:var(--control-radius-pill);
+  background:var(--cockpit-control-surface);
+  color:var(--cockpit-muted);
+  font:inherit;
+  font-size:var(--font-size-button-sm);
+  cursor:pointer;
+  transition:var(--cockpit-motion);
+}
+
+.development-cockpit__module-nav button:hover,
+.development-cockpit__module-nav button:focus-visible,
+.development-cockpit__module-nav button[aria-current="true"]{
+  color:var(--cockpit-text);
+  border-color:var(--control-border-hover-unified);
+  background:var(--cockpit-control-hover);
+  outline:none;
+}
+
+.development-cockpit__grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, var(--grid-column-single)));
+  gap:var(--cockpit-gap);
+}
+
+/* =============================================================================
+   05) SHARED MODULE SYSTEM
+============================================================================= */
+.cockpit-module{
+  display:grid;
+  gap:var(--spacing-lg);
+  min-width:0;
+  padding:var(--spacing-xl);
+  border:var(--border-width-hairline) solid var(--cockpit-border);
+  border-radius:var(--cockpit-card-radius);
+  background:var(--cockpit-surface);
+  box-shadow:var(--cockpit-shadow);
+  backdrop-filter:blur(var(--cockpit-blur));
+}
+
+.cockpit-module__header{
+  display:grid;
+  gap:var(--spacing-xs);
+}
+
+.cockpit-module__title{
+  margin:var(--spacing-none);
+  color:var(--cockpit-text);
+  font-size:var(--font-size-title-1);
+  line-height:var(--line-height-heading);
+  font-weight:var(--font-weight-semibold);
+}
+
+/* =============================================================================
+   06) SHARED FORM SYSTEM
+============================================================================= */
+.cockpit-module__form,
+.cockpit-field{
+  display:grid;
+  gap:var(--spacing-sm);
+}
+
+.cockpit-field span{
+  color:var(--cockpit-muted);
+  font-size:var(--font-size-field-label);
+  font-weight:var(--font-weight-medium);
+}
+
+.cockpit-field input,
+.cockpit-field select,
+.cockpit-field textarea{
+  width:var(--size-full);
+  min-height:var(--input-height-md);
+  padding:var(--spacing-sm) var(--input-padding-x-md);
+  border:var(--border-width-hairline) solid var(--field-border);
+  border-radius:var(--input-radius-md);
+  background:var(--field-bg);
+  color:var(--text-primary-color);
+  font:inherit;
+  font-size:var(--font-size-field-input);
+  line-height:var(--line-height-body-tight);
+  transition:var(--cockpit-motion);
+}
+
+.cockpit-field textarea{
+  resize:vertical;
+}
+
+.cockpit-field input:focus,
+.cockpit-field select:focus,
+.cockpit-field textarea:focus{
+  border-color:var(--control-border-hover-unified);
+  outline:none;
+  box-shadow:var(--focus-ring-soft-shadow);
+}
+
+.cockpit-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:var(--button-height-md);
+  padding:var(--spacing-none) var(--button-padding-x-lg);
+  border:var(--border-width-hairline) solid var(--control-border-unified);
+  border-radius:var(--button-radius-md);
+  background:var(--control-surface);
+  color:var(--text-primary-color);
+  font:inherit;
+  font-size:var(--font-size-button-md);
+  font-weight:var(--button-font-weight);
+  cursor:pointer;
+  transition:var(--cockpit-motion);
+}
+
+.cockpit-button:hover,
+.cockpit-button:focus-visible{
+  background:var(--control-surface-hover);
+  border-color:var(--control-border-hover-unified);
+  outline:none;
+}
+
+.cockpit-output{
+  display:block;
+  min-height:var(--control-height-lg);
+  padding:var(--spacing-md);
+  border:var(--border-width-hairline) solid var(--cockpit-control-border);
+  border-radius:var(--cockpit-card-radius);
+  background:var(--cockpit-control-surface);
+  color:var(--cockpit-text);
+  white-space:pre-wrap;
+  line-height:var(--line-height-body);
+}
+
+.cockpit-output--code{
+  font-family:var(--font-mono);
+  font-size:var(--font-size-code-block);
+}
+
+/* =============================================================================
+   07) RESPONSIVE
+============================================================================= */
+@media (max-width:900px){
+  .development-cockpit__header-grid,
+  .development-cockpit__grid{
+    grid-template-columns:var(--grid-column-single);
+  }
+}
+
+@media (max-width:640px){
+  .development-cockpit-page-shell{
+    padding-top:var(--site-header-height);
+  }
+
+  .development-cockpit__header,
+  .cockpit-module{
+    padding:var(--spacing-lg);
+  }
+}

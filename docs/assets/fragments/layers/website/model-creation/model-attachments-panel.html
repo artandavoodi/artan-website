@@ -1,0 +1,23 @@
+<!-- =============================================================================
+     01) MODEL ATTACHMENTS PANEL
+============================================================================= -->
+<section class="model-creation-panel model-creation-panel--attachments" data-model-creation-panel="attachments">
+  <header class="model-creation-panel__header">
+    <p class="model-creation-panel__eyebrow">Attachments</p>
+    <h2 class="model-creation-panel__title">File and image intake</h2>
+    <p class="model-creation-panel__copy">Prepare attachment records. Storage upload remains Supabase-ready and does not expose credentials.</p>
+  </header>
+
+  <div class="model-creation-panel__grid" data-attachment-form>
+    <label class="model-creation-field">
+      <span>Attachment type</span>
+      <select class="model-creation-field__control" name="attachment_type" data-attachment-type-select></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Attachment file</span>
+      <input class="model-creation-field__control" name="attachment_file" type="file">
+    </label>
+  </div>
+  <button class="model-creation__button" type="button" data-add-attachment>Add Attachment</button>
+  <div class="model-creation-panel__list" data-attachment-list></div>
+</section>

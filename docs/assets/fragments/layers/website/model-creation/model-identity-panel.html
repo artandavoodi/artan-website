@@ -1,0 +1,33 @@
+<!-- =============================================================================
+     01) MODEL IDENTITY PANEL
+============================================================================= -->
+<section class="model-creation-panel model-creation-panel--identity" data-model-creation-panel="identity">
+  <header class="model-creation-panel__header">
+    <p class="model-creation-panel__eyebrow">Identity</p>
+    <h2 class="model-creation-panel__title">Model identity and purpose</h2>
+    <p class="model-creation-panel__copy">Define the canonical model record before provider routing, source intake, or public visibility.</p>
+  </header>
+
+  <div class="model-creation-panel__grid">
+    <label class="model-creation-field">
+      <span>Model name</span>
+      <input class="model-creation-field__control" name="model_name" data-model-field="model_name" type="text" autocomplete="off" required>
+    </label>
+    <label class="model-creation-field">
+      <span>Model type</span>
+      <select class="model-creation-field__control" name="model_type" data-model-field="model_type" data-model-type-select required></select>
+    </label>
+    <label class="model-creation-field model-creation-field--full">
+      <span>Model purpose</span>
+      <textarea class="model-creation-field__control" name="model_purpose" data-model-field="model_purpose" rows="4"></textarea>
+    </label>
+    <label class="model-creation-field">
+      <span>Visibility</span>
+      <select class="model-creation-field__control" name="model_visibility" data-model-field="model_visibility" data-model-visibility-select required></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Interaction state</span>
+      <select class="model-creation-field__control" name="interaction_state" data-model-field="interaction_state" data-model-interaction-select></select>
+    </label>
+  </div>
+</section>

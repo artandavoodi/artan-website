@@ -9,6 +9,7 @@
 ============================================================================= */
 @import url('./continuity-actions.css');
 @import url('./interaction-state.css');
+@import url('./model-create.css');
 @import url('./model-overview.css');
 @import url('./model-runtime.css');
 @import url('./model-sources.css');

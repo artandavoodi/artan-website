@@ -90,6 +90,11 @@
   --home-platform-shell-tablet-subrail-min:var(--layout-home-platform-tablet-subrail-min);
   --home-platform-shell-tablet-subrail-max:var(--layout-home-platform-tablet-subrail-max);
   --home-platform-shell-mobile-inline-padding-fallback:var(--layout-home-platform-mobile-inline-padding-fallback);
+  --home-platform-shell-mobile-rail-inner-padding-y:var(--layout-home-platform-mobile-rail-inner-padding-y);
+  --home-platform-shell-mobile-nav-gap:var(--layout-home-platform-mobile-nav-gap);
+  --home-platform-shell-mobile-nav-item-min-height:var(--layout-home-platform-mobile-nav-item-min-height);
+  --home-platform-shell-mobile-nav-item-padding-x:var(--layout-home-platform-mobile-nav-item-padding-x);
+  --home-platform-shell-mobile-nav-icon-size:var(--layout-home-platform-mobile-nav-icon-size);
   --home-platform-shell-rail-padding-top:var(--layout-home-platform-rail-padding-top);
   --home-platform-shell-rail-padding-right:var(--layout-home-platform-rail-padding-right);
   --home-platform-shell-rail-padding-bottom:var(--layout-home-platform-rail-padding-bottom);
@@ -139,6 +144,7 @@
   --home-platform-shell-content-title-weight:var(--layout-home-platform-content-title-weight);
   --home-platform-shell-content-title-line-height:var(--layout-home-platform-content-title-line-height);
   --home-platform-shell-content-title-tracking:var(--layout-home-platform-content-title-tracking);
+  --home-platform-shell-content-title-color:var(--layout-home-platform-content-title-color, var(--text-primary-color));
   --home-platform-shell-content-copy-max-width:var(--layout-home-platform-content-copy-max-width);
   --home-platform-shell-content-copy-size:var(--layout-home-platform-content-copy-size);
   --home-platform-shell-content-copy-weight:var(--layout-home-platform-content-copy-weight);
@@ -634,7 +640,7 @@ html[data-theme-effective="light"]{
 
 .home-platform-shell__content-title{
   margin:var(--spacing-none);
-  color:var(--text-primary-color);
+  color:var(--home-platform-shell-content-title-color);
   font-size:var(--home-platform-shell-content-title-size);
   font-weight:var(--home-platform-shell-content-title-weight);
   line-height:var(--home-platform-shell-content-title-line-height);
@@ -861,7 +867,7 @@ html[data-theme-effective="light"]{
     height:auto;
     width:var(--size-full);
     min-width:var(--spacing-none);
-    padding:0.75rem var(--spacing-none);
+    padding:var(--home-platform-shell-mobile-rail-inner-padding-y) var(--spacing-none);
     overflow-x:auto;
     overflow-y:hidden;
     scrollbar-width:none;
@@ -901,7 +907,7 @@ html[data-theme-effective="light"]{
     align-items:center;
     width:max-content;
     min-width:var(--size-full);
-    gap:0.55rem;
+    gap:var(--home-platform-shell-mobile-nav-gap);
     pointer-events:auto;
   }
 
@@ -918,8 +924,8 @@ html[data-theme-effective="light"]{
     width:max-content;
     min-width:max-content;
     max-width:max-content;
-    min-height:2.65rem;
-    padding:var(--spacing-none) 0.88rem;
+    min-height:var(--home-platform-shell-mobile-nav-item-min-height);
+    padding:var(--spacing-none) var(--home-platform-shell-mobile-nav-item-padding-x);
   }
 
   .home-platform-shell__subnav-item{
@@ -929,8 +935,8 @@ html[data-theme-effective="light"]{
   }
 
   .home-platform-shell__nav-icon{
-    width:0.96rem;
-    height:0.96rem;
+    width:var(--home-platform-shell-mobile-nav-icon-size);
+    height:var(--home-platform-shell-mobile-nav-icon-size);
   }
 
   .home-platform-shell[data-home-platform-rail="collapsed"] .home-platform-shell__rail .home-platform-shell__group-label,

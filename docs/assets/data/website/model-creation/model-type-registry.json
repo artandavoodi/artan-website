@@ -1,0 +1,47 @@
+{
+  "version": "2026-05-02",
+  "types": [
+    {
+      "id": "cloud_hosted",
+      "label": "Cloud-hosted model",
+      "status": "adapter-ready",
+      "description": "A provider-routed model that uses an online model endpoint without storing credentials in public files."
+    },
+    {
+      "id": "local_gguf",
+      "label": "Local GGUF model",
+      "status": "scaffolded",
+      "description": "A local runtime track for GGUF or compatible model references."
+    },
+    {
+      "id": "manual_external",
+      "label": "Manual external model",
+      "status": "operational-manual",
+      "description": "A copy/paste workflow for external model tools where direct automation is unavailable."
+    },
+    {
+      "id": "fine_tuned_provider",
+      "label": "Fine-tuned provider model",
+      "status": "adapter-ready",
+      "description": "A future provider-tuned route with dataset and training provenance tracking."
+    },
+    {
+      "id": "retrieval_augmented",
+      "label": "Retrieval-augmented model",
+      "status": "scaffolded",
+      "description": "A model route shaped by profile-linked retrieval sources and readiness records."
+    },
+    {
+      "id": "owned_foundation_future",
+      "label": "Future owned/foundation model",
+      "status": "future-research",
+      "description": "A future company-owned infrastructure track, not claimed as available in the current website runtime."
+    },
+    {
+      "id": "scratch_research",
+      "label": "Scratch/from-zero research model",
+      "status": "future-research",
+      "description": "A planning and requirements track for future research compute, datasets, and architecture decisions."
+    }
+  ]
+}

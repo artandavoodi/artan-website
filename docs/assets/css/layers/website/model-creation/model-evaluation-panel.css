@@ -1,0 +1,6 @@
+/* =============================================================================
+   00) MODEL EVALUATION PANEL OWNER
+============================================================================= */
+.model-creation-panel--evaluation{
+  border-color:var(--home-panel-card-border);
+}

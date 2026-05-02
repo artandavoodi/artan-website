@@ -1,0 +1,39 @@
+<!-- =============================================================================
+     01) MODEL PROVIDER PANEL
+============================================================================= -->
+<section class="model-creation-panel model-creation-panel--provider" data-model-creation-panel="provider">
+  <header class="model-creation-panel__header">
+    <p class="model-creation-panel__eyebrow">Provider</p>
+    <h2 class="model-creation-panel__title">Cloud, local, or manual routing</h2>
+    <p class="model-creation-panel__copy">Select a provider mode without exposing credentials in the public frontend.</p>
+  </header>
+
+  <div class="model-creation-panel__grid">
+    <label class="model-creation-field">
+      <span>Provider mode</span>
+      <select class="model-creation-field__control" name="provider_mode" data-model-field="provider_mode" data-provider-mode-select></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Provider</span>
+      <select class="model-creation-field__control" name="provider_id" data-model-field="provider_id" data-provider-select></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Cloud model name</span>
+      <input class="model-creation-field__control" name="cloud_model_name" data-model-field="cloud_model_name" type="text">
+    </label>
+    <label class="model-creation-field">
+      <span>Credential status</span>
+      <input class="model-creation-field__control" name="credential_status" data-model-field="credential_status" type="text">
+    </label>
+    <label class="model-creation-field">
+      <span>Local runtime type</span>
+      <input class="model-creation-field__control" name="local_runtime_type" data-model-field="local_runtime_type" type="text">
+    </label>
+    <label class="model-creation-field">
+      <span>Local model reference</span>
+      <input class="model-creation-field__control" name="local_model_ref" data-model-field="local_model_ref" type="text">
+    </label>
+  </div>
+
+  <div class="model-creation-panel__list" data-provider-route-summary></div>
+</section>

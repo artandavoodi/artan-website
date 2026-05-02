@@ -59,6 +59,18 @@ export function mountHomePlatformDestination(root) {
           { label: 'Continuity History', href: '/pages/continuity-history/index.html' }
         ]
       )}
+
+      ${renderLinkGroup(
+        'Creation Workflows',
+        'Build',
+        'Model creation, templates, prompt center, and development cockpit routes remain linked from one operational lane.',
+        [
+          { label: 'Create Model', href: '/pages/models/create/index.html' },
+          { label: 'Templates', href: '/pages/templates/index.html' },
+          { label: 'Prompt Center', href: '/pages/prompt-center/index.html' },
+          { label: 'Development Cockpit', href: '/pages/development-cockpit/index.html' }
+        ]
+      )}
     </div>
   `;
 }

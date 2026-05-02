@@ -63,6 +63,15 @@ function renderStatus(root, scope, saveState) {
   node.textContent = state.message || '';
 }
 
+function renderSaveStatuses(saveState = getPrivateProfileSaveState()) {
+  getSettingsRoots().forEach((root) => {
+    renderStatus(root, 'identity', saveState);
+    renderStatus(root, 'route', saveState);
+    renderStatus(root, 'visibility', saveState);
+    renderStatus(root, 'media', saveState);
+  });
+}
+
 function renderAvatar(root, state) {
   const image = root.querySelector('[data-profile-settings-avatar-image]');
   const placeholder = root.querySelector('[data-profile-settings-avatar-placeholder]');
@@ -183,7 +192,7 @@ function initProfileSettings() {
 
   subscribeProfileRuntime(render);
   subscribeProfileNavigation(render);
-  subscribePrivateProfileSaveState(render);
+  subscribePrivateProfileSaveState(renderSaveStatuses);
 
   document.addEventListener('click', (event) => {
     const trigger = event.target instanceof Element

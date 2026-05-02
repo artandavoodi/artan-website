@@ -1,0 +1,35 @@
+<!-- =============================================================================
+     01) MODEL STYLE TRAINING PANEL
+============================================================================= -->
+<section class="model-creation-panel model-creation-panel--style" data-model-creation-panel="style">
+  <header class="model-creation-panel__header">
+    <p class="model-creation-panel__eyebrow">Style Training</p>
+    <h2 class="model-creation-panel__title">Tone, style, and response preferences</h2>
+    <p class="model-creation-panel__copy">Capture explicit style examples and constraints so the model does not become generic.</p>
+  </header>
+
+  <div class="model-creation-panel__grid" data-style-training-form>
+    <label class="model-creation-field">
+      <span>Style label</span>
+      <select class="model-creation-field__control" name="style_label" data-style-label-select></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Tone</span>
+      <select class="model-creation-field__control" name="tone" data-tone-select></select>
+    </label>
+    <label class="model-creation-field model-creation-field--full">
+      <span>Sample text</span>
+      <textarea class="model-creation-field__control" name="style_sample" rows="4"></textarea>
+    </label>
+    <label class="model-creation-field">
+      <span>Preferred communication notes</span>
+      <input class="model-creation-field__control" name="preferred_style" type="text">
+    </label>
+    <label class="model-creation-field">
+      <span>Forbidden style notes</span>
+      <input class="model-creation-field__control" name="forbidden_style" type="text">
+    </label>
+  </div>
+  <button class="model-creation__button" type="button" data-add-style-sample>Add Style Sample</button>
+  <div class="model-creation-panel__list" data-style-sample-list></div>
+</section>

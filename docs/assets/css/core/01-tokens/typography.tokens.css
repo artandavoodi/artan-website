@@ -6,8 +6,8 @@
    04) FONT-SIZE SCALE TOKENS
    05) SEMANTIC DISPLAY TOKENS
    06) SEMANTIC HEADLINE TOKENS
-   07) SEMANTIC TITLE TOKENS
-   08) SEMANTIC BODY TOKENS
+   07) SEMANTIC TITLE / SECTION TITLE TOKENS
+   08) SEMANTIC BODY / DESCRIPTION TOKENS
    09) SEMANTIC EDITORIAL TOKENS
    10) SEMANTIC UI TEXT TOKENS
    11) SEMANTIC NAVIGATION TOKENS
@@ -82,10 +82,16 @@
   --font-size-h5:1rem;
   --font-size-h6:0.9rem;
 
-  /* Title scale: component-level titles below page-level headings. */
+/* Title scale: component-level titles below page-level headings. */
   --font-size-title-1:1.25rem;
   --font-size-title-2:1.08rem;
   --font-size-title-3:0.98rem;
+
+  /* Section title scale: recurring major section titles such as Updates, Insights & Research, Core Capabilities, platform content titles, and search section titles. */
+  --font-size-section-title:2.08rem;
+  --font-size-section-title-wide:2.3rem;
+  --font-size-section-title-tablet:1.82rem;
+  --font-size-section-title-mobile:1.56rem;
 
   /* Subtitle scale: supporting title copy, panel intros, and section descriptors. */
   --font-size-subtitle-1:1rem;
@@ -246,7 +252,7 @@
 }
 
 /* =============================================================================
-   07) SEMANTIC TITLE TOKENS
+   07) SEMANTIC TITLE / SECTION TITLE TOKENS
 ============================================================================= */
 :root{
   /* Title 1: primary component title below page heading level. */
@@ -261,6 +267,13 @@
   --title-3-size:var(--font-size-title-3);
   --title-3-line-height:var(--line-height-heading-relaxed);
 
+  /* Section Title: reusable major section title used across About, platform content panels, search shell titles, model creation titles, and future equivalent section headers. */
+  --section-title-size:var(--font-size-section-title);
+  --section-title-size-wide:var(--font-size-section-title-wide);
+  --section-title-size-tablet:var(--font-size-section-title-tablet);
+  --section-title-size-mobile:var(--font-size-section-title-mobile);
+  --section-title-line-height:var(--line-height-heading-tight);
+
   /* Subtitle 1: larger supporting sentence below title or heading. */
   --subtitle-1-size:var(--font-size-subtitle-1);
   --subtitle-1-line-height:var(--line-height-body-tight);
@@ -271,7 +284,7 @@
 }
 
 /* =============================================================================
-   08) SEMANTIC BODY TOKENS
+   08) SEMANTIC BODY / DESCRIPTION TOKENS
 ============================================================================= */
 :root{
   /* Body 1: primary readable body copy and long-form content. */
@@ -289,6 +302,14 @@
   /* Body 4: smallest body copy for dense system panels and restrained notes. */
   --body-4-size:var(--font-size-body-4);
   --body-4-line-height:var(--line-height-body-tight);
+
+  /* Description 1: standard descriptive copy below section titles and panel titles. */
+  --description-1-size:var(--body-2-size);
+  --description-1-line-height:var(--body-2-line-height);
+
+  /* Description 2: compact descriptive copy for cards, panels, and dense modules. */
+  --description-2-size:var(--body-3-size);
+  --description-2-line-height:var(--body-3-line-height);
 }
 
 /* =============================================================================
@@ -650,6 +671,11 @@
   --subtitle-1-weight:var(--font-weight-body);
   --subtitle-2-weight:var(--font-weight-body);
 
+  /* Section title and description weights. */
+  --section-title-weight:var(--font-weight-light);
+  --description-1-weight:var(--body-2-weight);
+  --description-2-weight:var(--body-3-weight);
+
   /* Body weights. */
   --body-1-weight:var(--font-weight-body);
   --body-2-weight:var(--font-weight-body);
@@ -774,16 +800,19 @@
   --headline-5-tracking:var(--tracking-heading);
   --headline-6-tracking:var(--tracking-heading);
 
-  /* Title, subtitle, body, and editorial tracking. */
+  /* Title, section title, subtitle, body, description, and editorial tracking. */
   --title-1-tracking:var(--tracking-heading);
   --title-2-tracking:var(--tracking-heading);
   --title-3-tracking:var(--tracking-heading);
+  --section-title-tracking:-0.03em;
   --subtitle-1-tracking:var(--tracking-copy);
   --subtitle-2-tracking:var(--tracking-copy);
   --body-1-tracking:var(--tracking-copy);
   --body-2-tracking:var(--tracking-copy);
   --body-3-tracking:var(--tracking-copy);
   --body-4-tracking:var(--tracking-copy);
+  --description-1-tracking:var(--body-2-tracking);
+  --description-2-tracking:var(--body-3-tracking);
   --editorial-title-tracking:var(--tracking-heading);
   --editorial-heading-tracking:var(--tracking-heading);
   --editorial-subheading-tracking:var(--tracking-heading);
@@ -881,6 +910,7 @@
   --overline-transform:var(--text-transform-uppercase);
   --label-1-transform:var(--text-transform-none);
   --label-2-transform:var(--text-transform-none);
+  --section-title-transform:var(--text-transform-none);
   --nav-primary-transform:var(--text-transform-none);
   --nav-secondary-transform:var(--text-transform-none);
   --nav-local-label-transform:var(--text-transform-none);
@@ -906,6 +936,7 @@
 
     --font-size-title-1:1.14rem;
     --font-size-title-2:1rem;
+    --font-size-section-title:var(--font-size-section-title-tablet);
 
     --font-size-body-1:0.98rem;
     --font-size-body-2:0.94rem;
@@ -928,6 +959,7 @@
 
     --font-size-title-1:1.06rem;
     --font-size-title-2:0.96rem;
+    --font-size-section-title:var(--font-size-section-title-mobile);
 
     --font-size-body-1:0.96rem;
     --font-size-body-2:0.92rem;

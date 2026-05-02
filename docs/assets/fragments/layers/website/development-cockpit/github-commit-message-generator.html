@@ -1,0 +1,27 @@
+<!-- =============================================================================
+     01) GITHUB COMMIT MESSAGE MODULE
+     02) INSTITUTIONAL COMMIT FORMAT
+     03) GENERATED MESSAGE OUTPUT
+============================================================================= -->
+<article class="cockpit-module github-commit-message-generator" data-cockpit-module="github-commit-message-generator">
+  <header class="cockpit-module__header">
+    <p class="cockpit-module__eyebrow">GitHub Commit Message Generator</p>
+    <h3 class="cockpit-module__title">Prepare scoped institutional commit messages</h3>
+  </header>
+  <form class="cockpit-module__form" data-commit-message-form>
+    <label class="cockpit-field">
+      <span>Layer</span>
+      <input name="layer" type="text" placeholder="website/system">
+    </label>
+    <label class="cockpit-field">
+      <span>Change</span>
+      <input name="change" type="text" placeholder="add Supabase-ready profile media storage owner">
+    </label>
+    <label class="cockpit-field">
+      <span>Verification note</span>
+      <textarea name="verification" rows="3" placeholder="Syntax checked; browser storage flow still needs Supabase bucket review."></textarea>
+    </label>
+    <button class="cockpit-button cockpit-button--primary" type="submit">Generate message</button>
+  </form>
+  <output class="cockpit-output cockpit-output--code" data-commit-message-output>Generate a commit message after verification.</output>
+</article>

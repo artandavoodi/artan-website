@@ -1,0 +1,27 @@
+<!-- =============================================================================
+     01) FILE TARGET SELECTOR MODULE
+     02) REPOSITORY SCOPE BINDING
+     03) OPEN-FILE HANDOFF OUTPUT
+============================================================================= -->
+<article class="cockpit-module file-target-selector" data-cockpit-module="file-target-selector">
+  <header class="cockpit-module__header">
+    <p class="cockpit-module__eyebrow">File Target Selector</p>
+    <h3 class="cockpit-module__title">Bind work to exact files</h3>
+  </header>
+  <form class="cockpit-module__form" data-file-target-form>
+    <label class="cockpit-field">
+      <span>Repository</span>
+      <select name="repository" data-file-target-repository-select></select>
+    </label>
+    <label class="cockpit-field">
+      <span>Target path</span>
+      <input name="target" type="text" placeholder="docs/assets/js/layers/website/system/model-store.js">
+    </label>
+    <label class="cockpit-field">
+      <span>Reason</span>
+      <textarea name="reason" rows="3" placeholder="This file owns canonical Supabase model creation."></textarea>
+    </label>
+    <button class="cockpit-button cockpit-button--primary" type="submit">Prepare target</button>
+  </form>
+  <output class="cockpit-output" data-file-target-output>Choose a repository and exact target path.</output>
+</article>

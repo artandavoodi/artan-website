@@ -60,6 +60,15 @@
           "module": "/assets/js/layers/website/home/platform-menu/workspace/model-overview.js"
         },
         {
+          "id": "model-create",
+          "label": "Create Model",
+          "detail_title": "Create Model",
+          "detail_copy": "Open the canonical model-design and training control surface for profile-linked continuity models.",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/workspace/model-create.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/workspace/model-create.css",
+          "module": "/assets/js/layers/website/home/platform-menu/workspace/model-create.js"
+        },
+        {
           "id": "model-sources",
           "label": "Sources",
           "detail_title": "Source Connections",

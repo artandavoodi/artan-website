@@ -13,33 +13,47 @@
       </p>
     </header>
 
-    <div class="profile-private-media__grid">
-      <article class="profile-private-media__card" data-profile-media-card="avatar">
-        <div class="profile-private-media__preview profile-private-media__preview--avatar" data-profile-avatar-preview>
-          <span data-profile-avatar-preview-initials>NA</span>
-        </div>
-        <div class="profile-private-media__copy">
-          <strong>Profile image</strong>
-          <span data-profile-avatar-status>Not uploaded</span>
-        </div>
-        <button class="profile-private-media__button" type="button" data-profile-action="upload-avatar">
-          Add image
-        </button>
-      </article>
+    <form class="profile-private-media__form" data-profile-save-form data-profile-save-scope="media">
+      <div class="profile-private-media__grid">
+        <article class="profile-private-media__card" data-profile-media-card="avatar">
+          <div class="profile-private-media__preview profile-private-media__preview--avatar" data-profile-avatar-preview>
+            <img class="profile-private-media__preview-image" data-profile-avatar-preview-image alt="" hidden>
+            <span data-profile-avatar-preview-initials>NA</span>
+          </div>
+          <div class="profile-private-media__copy">
+            <strong>Profile image</strong>
+            <span data-profile-avatar-status>Not uploaded</span>
+            <span data-profile-avatar-file-status>No file selected</span>
+          </div>
+          <input class="sr-only" type="file" name="avatar_file" accept="image/*" data-profile-media-file="avatar">
+          <button class="profile-private-media__button" type="button" data-profile-media-trigger="avatar">
+            Choose image
+          </button>
+        </article>
 
-      <article class="profile-private-media__card" data-profile-media-card="cover">
-        <div class="profile-private-media__preview profile-private-media__preview--cover" data-profile-cover-preview>
-          <span>Cover pending</span>
-        </div>
-        <div class="profile-private-media__copy">
-          <strong>Cover image</strong>
-          <span data-profile-cover-status>Not uploaded</span>
-        </div>
-        <button class="profile-private-media__button" type="button" data-profile-action="upload-cover">
-          Add cover
+        <article class="profile-private-media__card" data-profile-media-card="cover">
+          <div class="profile-private-media__preview profile-private-media__preview--cover" data-profile-cover-preview>
+            <img class="profile-private-media__preview-image" data-profile-cover-preview-image alt="" hidden>
+            <span data-profile-cover-preview-label>Cover pending</span>
+          </div>
+          <div class="profile-private-media__copy">
+            <strong>Cover image</strong>
+            <span data-profile-cover-status>Not uploaded</span>
+            <span data-profile-cover-file-status>No file selected</span>
+          </div>
+          <input class="sr-only" type="file" name="cover_file" accept="image/*" data-profile-media-file="cover">
+          <button class="profile-private-media__button" type="button" data-profile-media-trigger="cover">
+            Choose cover
+          </button>
+        </article>
+      </div>
+
+      <div class="profile-private-media__actions">
+        <button class="profile-private-media__button profile-private-media__button--primary" type="submit">
+          Save media
         </button>
-      </article>
-    </div>
+      </div>
+    </form>
 
     <footer class="profile-private-media__footer">
       <span class="profile-private-media__status" data-profile-media-status>Media controls are prepared for the next profile stage.</span>

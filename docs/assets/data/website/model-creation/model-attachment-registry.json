@@ -1,0 +1,14 @@
+{
+  "version": "2026-05-02",
+  "attachment_types": [
+    { "id": "document", "label": "Document" },
+    { "id": "image", "label": "Image" },
+    { "id": "audio", "label": "Audio" },
+    { "id": "archive", "label": "Archive" }
+  ],
+  "storage_states": [
+    { "id": "local_draft", "label": "Local draft" },
+    { "id": "supabase_pending", "label": "Supabase storage pending" },
+    { "id": "uploaded", "label": "Uploaded" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "version": "2026-05-02",
+  "sample_statuses": [
+    { "id": "pending", "label": "Pending" },
+    { "id": "added", "label": "Added" },
+    { "id": "consent_required", "label": "Consent required" },
+    { "id": "approved", "label": "Approved" }
+  ],
+  "readiness_states": [
+    { "id": "not_started", "label": "Not started" },
+    { "id": "samples_pending", "label": "Samples pending" },
+    { "id": "samples_added", "label": "Samples added" },
+    { "id": "review_required", "label": "Review required" }
+  ]
+}

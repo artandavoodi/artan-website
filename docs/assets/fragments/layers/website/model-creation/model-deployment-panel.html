@@ -1,0 +1,29 @@
+<!-- =============================================================================
+     01) MODEL DEPLOYMENT PANEL
+============================================================================= -->
+<section class="model-creation-panel model-creation-panel--deployment" data-model-creation-panel="deployment">
+  <header class="model-creation-panel__header">
+    <p class="model-creation-panel__eyebrow">Deployment</p>
+    <h2 class="model-creation-panel__title">Runtime and deployment state</h2>
+    <p class="model-creation-panel__copy">Prepare deployment state while keeping cloud, local, and manual runtime boundaries explicit.</p>
+  </header>
+
+  <div class="model-creation-panel__grid">
+    <label class="model-creation-field">
+      <span>Environment</span>
+      <select class="model-creation-field__control" name="deployment_environment" data-model-field="deployment_environment" data-deployment-environment-select></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Deployment status</span>
+      <select class="model-creation-field__control" name="deployment_status" data-model-field="deployment_status" data-deployment-status-select></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Endpoint / route placeholder</span>
+      <input class="model-creation-field__control" name="deployment_endpoint" data-model-field="deployment_endpoint" type="text">
+    </label>
+    <label class="model-creation-field">
+      <span>Activation state</span>
+      <input class="model-creation-field__control" name="activation_state" data-model-field="activation_state" type="text">
+    </label>
+  </div>
+</section>

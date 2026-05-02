@@ -1,0 +1,6 @@
+/* =============================================================================
+   00) MODEL NEXT ACTION PANEL OWNER
+============================================================================= */
+.model-creation-panel--next-action{
+  border-color:var(--home-panel-card-border);
+}

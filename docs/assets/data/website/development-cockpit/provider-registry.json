@@ -1,0 +1,30 @@
+{
+  "version": "2026-05-02",
+  "canonicalStatus": "website_internal_development_registry",
+  "providers": [
+    {
+      "id": "openai-codex-cloud",
+      "label": "Codex Cloud",
+      "mode": "cloud",
+      "runtime": "codex",
+      "status": "available_when_authenticated",
+      "description": "Cloud execution for repository-aware implementation work when credentials and workspace access are available."
+    },
+    {
+      "id": "local-codex",
+      "label": "Local Codex",
+      "mode": "local",
+      "runtime": "codex-local",
+      "status": "available_on_workstation",
+      "description": "Local execution for filesystem audits, patch generation, verification commands, and browser review."
+    },
+    {
+      "id": "manual-review",
+      "label": "Manual Review",
+      "mode": "manual",
+      "runtime": "human",
+      "status": "always_available",
+      "description": "Human-controlled workflow for sensitive files, policy decisions, and final approval boundaries."
+    }
+  ]
+}

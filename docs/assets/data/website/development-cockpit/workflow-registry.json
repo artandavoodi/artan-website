@@ -1,0 +1,29 @@
+{
+  "version": "2026-05-02",
+  "workflows": [
+    {
+      "id": "audit-owner-chain",
+      "label": "Audit Owner Chain",
+      "phase": "audit",
+      "description": "Map the real owner files before implementation and identify duplicate ownership or orphaned modules."
+    },
+    {
+      "id": "patch-owner-file",
+      "label": "Patch Owner File",
+      "phase": "implementation",
+      "description": "Apply the smallest source-level edit to the owning file without local compensation."
+    },
+    {
+      "id": "verify-runtime",
+      "label": "Verify Runtime",
+      "phase": "verification",
+      "description": "Run syntax checks, browser checks, or route-level verification against the changed surface."
+    },
+    {
+      "id": "prepare-handoff",
+      "label": "Prepare Handoff",
+      "phase": "continuity",
+      "description": "Record changed files, remaining blockers, and the next exact file to open."
+    }
+  ]
+}

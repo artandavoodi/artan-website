@@ -1,0 +1,39 @@
+<!-- =============================================================================
+     01) MODEL EVALUATION PANEL
+============================================================================= -->
+<section class="model-creation-panel model-creation-panel--evaluation" data-model-creation-panel="evaluation">
+  <header class="model-creation-panel__header">
+    <p class="model-creation-panel__eyebrow">Evaluation</p>
+    <h2 class="model-creation-panel__title">Testing and correction records</h2>
+    <p class="model-creation-panel__copy">Capture test prompts, observed responses, expected behavior, and next correction without inventing fake scores.</p>
+  </header>
+
+  <div class="model-creation-panel__grid" data-evaluation-form>
+    <label class="model-creation-field model-creation-field--full">
+      <span>Test prompt</span>
+      <textarea class="model-creation-field__control" name="test_prompt" rows="3"></textarea>
+    </label>
+    <label class="model-creation-field model-creation-field--full">
+      <span>Expected behavior</span>
+      <textarea class="model-creation-field__control" name="expected_behavior" rows="3"></textarea>
+    </label>
+    <label class="model-creation-field model-creation-field--full">
+      <span>Observed response</span>
+      <textarea class="model-creation-field__control" name="observed_response" rows="3"></textarea>
+    </label>
+    <label class="model-creation-field">
+      <span>Status</span>
+      <select class="model-creation-field__control" name="evaluation_status" data-evaluation-status-select></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Score</span>
+      <select class="model-creation-field__control" name="evaluation_score" data-evaluation-score-select></select>
+    </label>
+    <label class="model-creation-field model-creation-field--full">
+      <span>Next correction</span>
+      <input class="model-creation-field__control" name="next_correction" type="text">
+    </label>
+  </div>
+  <button class="model-creation__button" type="button" data-add-evaluation>Add Evaluation</button>
+  <div class="model-creation-panel__list" data-evaluation-list></div>
+</section>

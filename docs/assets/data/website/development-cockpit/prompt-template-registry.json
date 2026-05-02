@@ -1,0 +1,23 @@
+{
+  "version": "2026-05-02",
+  "templates": [
+    {
+      "id": "owner-correct-fix",
+      "label": "Owner-Correct Fix",
+      "description": "Build a bounded Codex task that audits first and fixes only the root owner.",
+      "template": "Audit {scope} first. Identify the real owner chain, preserve modularity, remove duplicate ownership, and implement {objective} from the owner source only. Verify with {verification}."
+    },
+    {
+      "id": "feature-foundation",
+      "label": "Feature Foundation",
+      "description": "Create modular feature scaffolding without pretending backend completeness.",
+      "template": "Create a modular, data-driven foundation for {scope}. Use sovereign HTML, CSS, JS, and JSON owners. Use existing global tokens. If backend capability is unavailable, expose a graceful pending state and document the blocker."
+    },
+    {
+      "id": "review-production-readiness",
+      "label": "Production Readiness Review",
+      "description": "Inspect a surface for operational readiness and implementation drift.",
+      "template": "Review {scope} for production readiness. Prioritize broken behavior, duplicate ownership, missing data binding, token drift, and unverified backend assumptions. Return findings with exact files and verification gaps."
+    }
+  ]
+}

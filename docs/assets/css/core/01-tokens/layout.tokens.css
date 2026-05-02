@@ -445,6 +445,11 @@
   --layout-home-platform-tablet-subrail-min:11rem;
   --layout-home-platform-tablet-subrail-max:13rem;
   --layout-home-platform-mobile-inline-padding-fallback:0.85rem;
+  --layout-home-platform-mobile-rail-inner-padding-y:var(--space-3);
+  --layout-home-platform-mobile-nav-gap:var(--space-2);
+  --layout-home-platform-mobile-nav-item-min-height:var(--layout-home-platform-nav-item-min-height);
+  --layout-home-platform-mobile-nav-item-padding-x:var(--layout-home-platform-nav-item-padding-x);
+  --layout-home-platform-mobile-nav-icon-size:var(--layout-home-platform-nav-icon-size);
   --layout-home-platform-rail-padding-top:1.45rem;
   --layout-home-platform-rail-padding-right:1.5rem;
   --layout-home-platform-rail-padding-bottom:2.2rem;
@@ -490,10 +495,16 @@
   --layout-home-platform-tablet-content-padding-left:1.5rem;
   --layout-home-platform-mobile-content-header-padding-top:1rem;
   --layout-home-platform-mobile-content-header-padding-bottom:0.85rem;
-  --layout-home-platform-content-title-size:1.75rem;
-  --layout-home-platform-content-title-weight:400;
-  --layout-home-platform-content-title-line-height:1.1;
-  --layout-home-platform-content-title-tracking:-0.03em;
+  /* Shared platform section title token.
+     Consumes the semantic Section Title typography scale.
+     Used for About section titles, homepage platform content titles, search shell section titles, model creation titles, and future equivalent section headers.
+     Temporarily color-marked red for visual mapping during title normalization. */
+  --layout-home-platform-content-title-size:var(--section-title-size);
+  --layout-home-platform-content-title-weight:var(--section-title-weight);
+  --layout-home-platform-content-title-line-height:var(--section-title-line-height);
+  --layout-home-platform-content-title-tracking:var(--section-title-tracking);
+  --layout-home-platform-content-title-transform:var(--section-title-transform);
+  --layout-home-platform-content-title-color:red;
   --layout-home-platform-content-copy-max-width:42rem;
   --layout-home-platform-content-copy-size:0.98rem;
   --layout-home-platform-content-copy-weight:400;
@@ -520,6 +531,38 @@
   --layout-home-platform-state-action-tracking:0.08em;
   --layout-home-platform-embedded-section-gap:0.75rem;
   --layout-home-platform-embedded-stack-gap:0.45rem;
+  --layout-home-platform-destination-grid-gap:0.72rem;
+  --layout-home-platform-destination-grid-count:3;
+  --layout-home-platform-destination-grid-count-compact:2;
+  --layout-home-platform-destination-card-gap:0.7rem;
+  --layout-home-platform-destination-card-inner-gap:0.5rem;
+  --layout-home-platform-destination-card-padding-y:1rem;
+  --layout-home-platform-destination-card-padding-x:1.05rem;
+  --layout-home-platform-destination-label-size:0.72rem;
+  --layout-home-platform-destination-label-weight:500;
+  --layout-home-platform-destination-label-tracking:0.08em;
+  --layout-home-platform-destination-title-size:1rem;
+  --layout-home-platform-destination-title-weight:500;
+  --layout-home-platform-destination-title-line-height:1.35;
+  --layout-home-platform-destination-copy-size:0.84rem;
+  --layout-home-platform-destination-copy-line-height:1.6;
+  --layout-home-platform-destination-link-size:0.84rem;
+  --layout-home-platform-destination-link-line-height:1.55;
+  --layout-home-platform-destination-workspace-copy-size:0.88rem;
+  --layout-home-platform-destination-workspace-copy-line-height:1.55;
+  --layout-home-platform-destination-list-gap:0.45rem;
+  --layout-home-platform-destination-action-gap:0.65rem;
+  --layout-home-platform-destination-action-min-height:2.5rem;
+  --layout-home-platform-destination-action-padding-x:0.95rem;
+  --layout-home-platform-destination-action-size:0.76rem;
+  --layout-home-platform-destination-action-weight:500;
+  --layout-home-platform-destination-action-tracking:0.08em;
+  --layout-home-platform-destination-state-size:0.88rem;
+  --layout-home-platform-destination-state-line-height:1.5;
+  --layout-home-platform-destination-field-gap:0.45rem;
+  --layout-home-platform-destination-field-min-height:2.65rem;
+  --layout-home-platform-destination-field-padding-y:0.72rem;
+  --layout-home-platform-destination-field-padding-x:0.82rem;
 }
 
 /* =============================================================================

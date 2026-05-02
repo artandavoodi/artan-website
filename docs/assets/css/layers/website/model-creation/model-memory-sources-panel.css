@@ -1,0 +1,6 @@
+/* =============================================================================
+   00) MODEL MEMORY SOURCES PANEL OWNER
+============================================================================= */
+.model-creation-panel--memory{
+  border-color:var(--home-panel-card-border);
+}

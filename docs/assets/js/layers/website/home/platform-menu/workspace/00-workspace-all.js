@@ -10,6 +10,7 @@
 
 import './continuity-actions.js';
 import './interaction-state.js';
+import './model-create.js';
 import './model-overview.js';
 import './model-runtime.js';
 import './model-sources.js';

@@ -1,0 +1,15 @@
+{
+  "version": "2026-05-02",
+  "safety_states": [
+    { "id": "draft", "label": "Draft" },
+    { "id": "private_safe", "label": "Private safe" },
+    { "id": "public_review_required", "label": "Public review required" },
+    { "id": "public_ready", "label": "Public ready" },
+    { "id": "blocked", "label": "Blocked" }
+  ],
+  "visibility_states": [
+    { "id": "private", "label": "Private" },
+    { "id": "limited", "label": "Limited" },
+    { "id": "public", "label": "Public" }
+  ]
+}

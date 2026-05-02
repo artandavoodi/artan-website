@@ -1,0 +1,45 @@
+{
+  "version": "2026-05-02",
+  "modules": [
+    {
+      "id": "prompt-composer",
+      "label": "Prompt Composer",
+      "fragment": "/assets/fragments/layers/website/development-cockpit/prompt-composer.html"
+    },
+    {
+      "id": "terminal-scan-generator",
+      "label": "Terminal Scan Generator",
+      "fragment": "/assets/fragments/layers/website/development-cockpit/terminal-scan-generator.html"
+    },
+    {
+      "id": "file-target-selector",
+      "label": "File Target Selector",
+      "fragment": "/assets/fragments/layers/website/development-cockpit/file-target-selector.html"
+    },
+    {
+      "id": "patch-instruction-generator",
+      "label": "Patch Instruction Generator",
+      "fragment": "/assets/fragments/layers/website/development-cockpit/patch-instruction-generator.html"
+    },
+    {
+      "id": "github-commit-message-generator",
+      "label": "GitHub Commit Message Generator",
+      "fragment": "/assets/fragments/layers/website/development-cockpit/github-commit-message-generator.html"
+    },
+    {
+      "id": "open-file-next-workflow",
+      "label": "Open File Next Workflow",
+      "fragment": "/assets/fragments/layers/website/development-cockpit/open-file-next-workflow.html"
+    },
+    {
+      "id": "provider-router",
+      "label": "Provider Router",
+      "fragment": "/assets/fragments/layers/website/development-cockpit/provider-router.html"
+    },
+    {
+      "id": "daily-execution-log",
+      "label": "Daily Execution Log",
+      "fragment": "/assets/fragments/layers/website/development-cockpit/daily-execution-log.html"
+    }
+  ]
+}

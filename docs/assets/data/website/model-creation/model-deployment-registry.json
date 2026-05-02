@@ -1,0 +1,17 @@
+{
+  "version": "2026-05-02",
+  "environments": [
+    { "id": "draft", "label": "Draft workspace" },
+    { "id": "private_runtime", "label": "Private runtime" },
+    { "id": "public_route", "label": "Public route" },
+    { "id": "local_runtime", "label": "Local runtime" },
+    { "id": "manual_transfer", "label": "Manual transfer" }
+  ],
+  "deployment_states": [
+    { "id": "draft", "label": "Draft" },
+    { "id": "pending", "label": "Pending" },
+    { "id": "ready", "label": "Ready" },
+    { "id": "active", "label": "Active" },
+    { "id": "blocked", "label": "Blocked" }
+  ]
+}

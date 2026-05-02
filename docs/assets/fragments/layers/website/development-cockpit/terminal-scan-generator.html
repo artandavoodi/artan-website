@@ -1,0 +1,35 @@
+<!-- =============================================================================
+     01) TERMINAL SCAN GENERATOR MODULE
+     02) DATA-DRIVEN COMMAND CONTROLS
+     03) GENERATED COMMAND OUTPUT
+============================================================================= -->
+<article class="cockpit-module terminal-scan-generator" data-cockpit-module="terminal-scan-generator">
+  <header class="cockpit-module__header">
+    <p class="cockpit-module__eyebrow">Terminal Scan Generator</p>
+    <h3 class="cockpit-module__title">Prepare precise repository scans</h3>
+  </header>
+  <form class="cockpit-module__form" data-terminal-scan-form>
+    <label class="cockpit-field">
+      <span>Scan template</span>
+      <select name="template" data-scan-template-select></select>
+    </label>
+    <label class="cockpit-field">
+      <span>Repository scope</span>
+      <select name="repository" data-repository-scope-select></select>
+    </label>
+    <label class="cockpit-field">
+      <span>Query</span>
+      <input name="query" type="text" placeholder="profile-save">
+    </label>
+    <label class="cockpit-field">
+      <span>Path override</span>
+      <input name="path" type="text" placeholder="docs/assets/js/layers/website">
+    </label>
+    <label class="cockpit-field">
+      <span>Depth</span>
+      <input name="depth" type="number" min="1" max="12" value="5">
+    </label>
+    <button class="cockpit-button cockpit-button--primary" type="submit">Generate command</button>
+  </form>
+  <output class="cockpit-output cockpit-output--code" data-terminal-scan-output>Generate a scan command from the registry.</output>
+</article>

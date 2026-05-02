@@ -19,6 +19,7 @@ import {
   getProfileRuntimeState,
   subscribeProfileRuntime
 } from '../shell/profile-runtime.js';
+import { subscribePrivateProfileSaveState } from '../../../system/profile-save.js';
 
 /* =============================================================================
    03) DOM HELPERS
@@ -31,6 +32,22 @@ function setText(root, selector, value) {
   const node = root?.querySelector(selector);
   if (!node) return;
   node.textContent = value || '';
+}
+
+function setImage(root, selector, src, alt = '') {
+  const image = root?.querySelector(selector);
+  if (!(image instanceof HTMLImageElement)) return;
+
+  if (src) {
+    image.hidden = false;
+    image.src = src;
+    image.alt = alt;
+    return;
+  }
+
+  image.hidden = true;
+  image.removeAttribute('src');
+  image.alt = '';
 }
 
 function getInitials(profile = {}) {
@@ -58,11 +75,21 @@ function renderProfilePrivateMedia(state = getProfileRuntimeState()) {
 
   const profile = state.profile || {};
   const avatarUrl = String(profile.avatar_url || profile.photo_url || '').trim();
-  const coverUrl = String(profile.cover_url || '').trim();
+  const coverUrl = String(state.coverUrl || profile.cover_url || '').trim();
 
   setText(root, '[data-profile-avatar-preview-initials]', getInitials(profile));
+  setImage(root, '[data-profile-avatar-preview-image]', avatarUrl, `${state.displayName || 'Profile'} avatar`);
+  setImage(root, '[data-profile-cover-preview-image]', coverUrl, `${state.displayName || 'Profile'} cover`);
   setText(root, '[data-profile-avatar-status]', avatarUrl ? 'Uploaded' : 'Not uploaded');
   setText(root, '[data-profile-cover-status]', coverUrl ? 'Uploaded' : 'Not uploaded');
+  const initials = root.querySelector('[data-profile-avatar-preview-initials]');
+  if (initials instanceof HTMLElement) {
+    initials.hidden = Boolean(avatarUrl);
+  }
+  const coverLabel = root.querySelector('[data-profile-cover-preview-label]');
+  if (coverLabel instanceof HTMLElement) {
+    coverLabel.hidden = Boolean(coverUrl);
+  }
   setText(
     root,
     '[data-profile-media-status]',
@@ -75,21 +102,55 @@ function renderProfilePrivateMedia(state = getProfileRuntimeState()) {
 /* =============================================================================
    05) MEDIA ACTIONS
 ============================================================================= */
+function updateSelectedFileStatus(root, fileInput) {
+  const mediaType = fileInput?.dataset?.profileMediaFile || '';
+  const file = fileInput?.files?.[0] || null;
+  const fileName = file?.name || 'No file selected';
+  const statusSelector = mediaType === 'cover'
+    ? '[data-profile-cover-file-status]'
+    : '[data-profile-avatar-file-status]';
+  setText(root, statusSelector, fileName);
+
+  if (!file || typeof URL === 'undefined') return;
+
+  const previewUrl = URL.createObjectURL(file);
+  if (mediaType === 'cover') {
+    setImage(root, '[data-profile-cover-preview-image]', previewUrl, fileName);
+    const coverLabel = root.querySelector('[data-profile-cover-preview-label]');
+    if (coverLabel instanceof HTMLElement) coverLabel.hidden = true;
+    return;
+  }
+
+  setImage(root, '[data-profile-avatar-preview-image]', previewUrl, fileName);
+  const initials = root.querySelector('[data-profile-avatar-preview-initials]');
+  if (initials instanceof HTMLElement) initials.hidden = true;
+}
+
+function renderProfilePrivateMediaSaveState(state = {}) {
+  const root = getMediaRoot();
+  if (!root) return;
+
+  const mediaState = state.media || {};
+  setText(root, '[data-profile-media-status]', mediaState.message || 'Media controls are ready.');
+}
+
 function bindProfilePrivateMediaActions() {
   const root = getMediaRoot();
   if (!root || root.dataset.profilePrivateMediaBound === 'true') return;
 
   root.dataset.profilePrivateMediaBound = 'true';
   root.addEventListener('click', (event) => {
-    const trigger = event.target.closest('[data-profile-action]');
+    const trigger = event.target.closest('[data-profile-media-trigger]');
     if (!trigger) return;
 
-    document.dispatchEvent(new CustomEvent('profile:action-request', {
-      detail: {
-        source: MODULE_ID,
-        action: trigger.dataset.profileAction || ''
-      }
-    }));
+    const target = root.querySelector(`[data-profile-media-file="${trigger.dataset.profileMediaTrigger}"]`);
+    target?.click();
+  });
+
+  root.addEventListener('change', (event) => {
+    const fileInput = event.target.closest('[data-profile-media-file]');
+    if (!fileInput) return;
+    updateSelectedFileStatus(root, fileInput);
   });
 }
 
@@ -100,6 +161,7 @@ function initProfilePrivateMedia() {
   bindProfilePrivateMediaActions();
   renderProfilePrivateMedia();
   subscribeProfileRuntime(renderProfilePrivateMedia);
+  subscribePrivateProfileSaveState(renderProfilePrivateMediaSaveState);
 }
 
 if (document.readyState === 'loading') {

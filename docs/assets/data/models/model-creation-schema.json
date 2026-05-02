@@ -1,0 +1,88 @@
+{
+  "version": "2026-05-02",
+  "canonicalStatus": "supabase_canonical_model_creation_projection",
+  "fields": [
+    {
+      "name": "model_name",
+      "label": "Model name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "description",
+      "label": "Purpose",
+      "type": "textarea",
+      "required": false
+    },
+    {
+      "name": "model_visibility",
+      "label": "Visibility",
+      "type": "select",
+      "required": true,
+      "options": [
+        {
+          "value": "private",
+          "label": "Private"
+        },
+        {
+          "value": "public",
+          "label": "Public"
+        },
+        {
+          "value": "limited",
+          "label": "Limited"
+        }
+      ]
+    },
+    {
+      "name": "provider",
+      "label": "Provider preference",
+      "type": "select",
+      "required": false,
+      "options": [
+        {
+          "value": "unassigned",
+          "label": "Unassigned"
+        },
+        {
+          "value": "openai",
+          "label": "OpenAI"
+        },
+        {
+          "value": "local",
+          "label": "Local runtime"
+        },
+        {
+          "value": "external",
+          "label": "External provider"
+        }
+      ]
+    },
+    {
+      "name": "interaction_state",
+      "label": "Interaction mode",
+      "type": "select",
+      "required": true,
+      "options": [
+        {
+          "value": "private",
+          "label": "Private interaction"
+        },
+        {
+          "value": "public_read",
+          "label": "Public read"
+        },
+        {
+          "value": "public_interact",
+          "label": "Public interaction"
+        }
+      ]
+    }
+  ],
+  "nextStates": [
+    "identity_saved",
+    "sources_pending",
+    "training_pending",
+    "runtime_pending"
+  ]
+}

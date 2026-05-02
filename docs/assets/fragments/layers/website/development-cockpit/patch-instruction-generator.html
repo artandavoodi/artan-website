@@ -1,0 +1,27 @@
+<!-- =============================================================================
+     01) PATCH INSTRUCTION MODULE
+     02) ROOT CAUSE / OWNER INPUTS
+     03) PATCH HANDOFF OUTPUT
+============================================================================= -->
+<article class="cockpit-module patch-instruction-generator" data-cockpit-module="patch-instruction-generator">
+  <header class="cockpit-module__header">
+    <p class="cockpit-module__eyebrow">Patch Instruction Generator</p>
+    <h3 class="cockpit-module__title">Turn audit findings into patch instructions</h3>
+  </header>
+  <form class="cockpit-module__form" data-patch-instruction-form>
+    <label class="cockpit-field">
+      <span>Owner file</span>
+      <input name="owner" type="text" placeholder="/Users/artan/Documents/Neuroartan/website/docs/...">
+    </label>
+    <label class="cockpit-field">
+      <span>Root cause</span>
+      <textarea name="rootCause" rows="3" placeholder="The UI control emits action requests, but no storage owner consumes file input."></textarea>
+    </label>
+    <label class="cockpit-field">
+      <span>Required correction</span>
+      <textarea name="correction" rows="3" placeholder="Create storage adapter and route media form saves through profile-save."></textarea>
+    </label>
+    <button class="cockpit-button cockpit-button--primary" type="submit">Generate instructions</button>
+  </form>
+  <output class="cockpit-output" data-patch-instruction-output>Enter owner, root cause, and correction.</output>
+</article>

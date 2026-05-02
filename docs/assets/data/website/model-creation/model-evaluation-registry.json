@@ -1,0 +1,15 @@
+{
+  "version": "2026-05-02",
+  "statuses": [
+    { "id": "draft", "label": "Draft" },
+    { "id": "pending", "label": "Pending" },
+    { "id": "passed", "label": "Passed" },
+    { "id": "needs_correction", "label": "Needs correction" }
+  ],
+  "score_options": [
+    { "id": "unscored", "label": "Unscored" },
+    { "id": "low", "label": "Low fidelity" },
+    { "id": "medium", "label": "Medium fidelity" },
+    { "id": "high", "label": "High fidelity" }
+  ]
+}

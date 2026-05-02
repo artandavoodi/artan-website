@@ -1,0 +1,25 @@
+{
+  "version": "2026-05-02",
+  "templates": [
+    {
+      "id": "find-owner-files",
+      "label": "Find Owner Files",
+      "command": "rg -n \"{query}\" {path}"
+    },
+    {
+      "id": "list-feature-tree",
+      "label": "List Feature Tree",
+      "command": "find {path} -maxdepth {depth} -type f | sort"
+    },
+    {
+      "id": "syntax-check-js",
+      "label": "Syntax Check JS",
+      "command": "find {path} -name '*.js' -print0 | xargs -0 -n1 node --check"
+    },
+    {
+      "id": "dirty-worktree",
+      "label": "Dirty Worktree",
+      "command": "git status --short --untracked-files=all"
+    }
+  ]
+}

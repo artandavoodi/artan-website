@@ -1,0 +1,29 @@
+{
+  "version": "2026-05-02",
+  "canonicalStatus": "supabase_ready_profile_schema_projection",
+  "privateFields": [
+    "email",
+    "first_name",
+    "last_name",
+    "display_name",
+    "date_of_birth",
+    "gender",
+    "avatar_storage_path",
+    "cover_storage_path"
+  ],
+  "publicFields": [
+    "username",
+    "public_display_name",
+    "public_identity_label",
+    "public_summary",
+    "public_primary_link",
+    "public_avatar_url",
+    "public_profile_enabled",
+    "public_profile_discoverable"
+  ],
+  "storage": {
+    "bucket": "profile-media",
+    "avatarPathPattern": "{auth_user_id}/profile/avatar/{timestamp}-{filename}",
+    "coverPathPattern": "{auth_user_id}/profile/cover/{timestamp}-{filename}"
+  }
+}

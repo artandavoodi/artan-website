@@ -1,0 +1,31 @@
+<!-- =============================================================================
+     01) MODEL MEMORY SOURCES PANEL
+============================================================================= -->
+<section class="model-creation-panel model-creation-panel--memory" data-model-creation-panel="memory">
+  <header class="model-creation-panel__header">
+    <p class="model-creation-panel__eyebrow">Memory Sources</p>
+    <h2 class="model-creation-panel__title">Source and memory intake</h2>
+    <p class="model-creation-panel__copy">Register model-owned memory sources with status, privacy, and inclusion control.</p>
+  </header>
+
+  <div class="model-creation-panel__grid" data-memory-source-form>
+    <label class="model-creation-field">
+      <span>Source type</span>
+      <select class="model-creation-field__control" name="source_type" data-source-type-select></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Privacy class</span>
+      <select class="model-creation-field__control" name="privacy_class" data-privacy-class-select></select>
+    </label>
+    <label class="model-creation-field">
+      <span>Source title</span>
+      <input class="model-creation-field__control" name="source_title" type="text">
+    </label>
+    <label class="model-creation-field">
+      <span>Path or link</span>
+      <input class="model-creation-field__control" name="source_ref" type="text">
+    </label>
+  </div>
+  <button class="model-creation__button" type="button" data-add-memory-source>Add Memory Source</button>
+  <div class="model-creation-panel__list" data-memory-source-list></div>
+</section>

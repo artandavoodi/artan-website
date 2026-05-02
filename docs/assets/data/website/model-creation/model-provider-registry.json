@@ -1,0 +1,53 @@
+{
+  "version": "2026-05-02",
+  "modes": [
+    {
+      "id": "cloud",
+      "label": "Cloud",
+      "status": "adapter-ready",
+      "description": "Online provider routing for high-velocity reasoning, code, and continuity workflows without public credential exposure."
+    },
+    {
+      "id": "local",
+      "label": "Local",
+      "status": "scaffolded",
+      "description": "Local GGUF or compatible runtime references for offline fallback and future sovereignty."
+    },
+    {
+      "id": "manual",
+      "label": "Manual",
+      "status": "operational-manual",
+      "description": "Prompt export, response paste-back, verification, and next-action extraction."
+    }
+  ],
+  "providers": [
+    {
+      "id": "openai",
+      "mode": "cloud",
+      "label": "OpenAI",
+      "credential_status": "server-required",
+      "capability_notes": "Cloud route for high-quality reasoning and coding. Public frontend must not hold API keys."
+    },
+    {
+      "id": "gemini",
+      "mode": "cloud",
+      "label": "Gemini",
+      "credential_status": "server-required",
+      "capability_notes": "Cloud route for multimodal and reasoning experiments through a future secure adapter."
+    },
+    {
+      "id": "local_gguf",
+      "mode": "local",
+      "label": "Local GGUF Runtime",
+      "credential_status": "local-only",
+      "capability_notes": "Local model route for manually configured runtime and model file references."
+    },
+    {
+      "id": "manual_transfer",
+      "mode": "manual",
+      "label": "Manual Provider Transfer",
+      "credential_status": "not-required",
+      "capability_notes": "Manual copy/paste workflow for providers that cannot be connected yet."
+    }
+  ]
+}

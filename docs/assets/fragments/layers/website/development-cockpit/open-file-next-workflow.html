@@ -1,0 +1,23 @@
+<!-- =============================================================================
+     01) OPEN FILE NEXT MODULE
+     02) CONTINUITY HANDOFF
+     03) NEXT-FILE OUTPUT
+============================================================================= -->
+<article class="cockpit-module open-file-next-workflow" data-cockpit-module="open-file-next-workflow">
+  <header class="cockpit-module__header">
+    <p class="cockpit-module__eyebrow">Open File Next</p>
+    <h3 class="cockpit-module__title">Create a precise next-file handoff</h3>
+  </header>
+  <form class="cockpit-module__form" data-open-file-next-form>
+    <label class="cockpit-field">
+      <span>Next file</span>
+      <input name="file" type="text" placeholder="/Users/artan/Documents/Neuroartan/website/docs/...">
+    </label>
+    <label class="cockpit-field">
+      <span>Next action</span>
+      <textarea name="action" rows="3" placeholder="Review media upload status handling and Supabase bucket policy."></textarea>
+    </label>
+    <button class="cockpit-button cockpit-button--primary" type="submit">Generate handoff</button>
+  </form>
+  <output class="cockpit-output" data-open-file-next-output>Prepare the next exact file to open.</output>
+</article>

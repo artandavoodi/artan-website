@@ -33,6 +33,7 @@ import {
   reserveSupabaseUsernameProfile,
   reserveUsernameProfile
 } from './account-profile-identity.js';
+import { uploadProfileImage } from './profile-image-storage.js';
 
 /* =============================================================================
    02) MODULE STATE
@@ -266,7 +267,8 @@ function createDefaultState() {
   return {
     identity: createScopeState(),
     route: createScopeState(),
-    visibility: createScopeState()
+    visibility: createScopeState(),
+    media: createScopeState()
   };
 }
 
@@ -379,9 +381,26 @@ function readCheckboxValue(formData, name) {
   return formData.get(name) === 'on';
 }
 
+function readUploadableFile(source, name) {
+  const file = source?.get?.(name) || source?.[name] || null;
+  return typeof File !== 'undefined' && file instanceof File && file.size > 0 ? file : null;
+}
+
+function getFormDataSnapshot(form) {
+  if (typeof FormData !== 'undefined' && form instanceof FormData) {
+    return form;
+  }
+
+  if (form instanceof HTMLFormElement) {
+    return new FormData(form);
+  }
+
+  return new FormData();
+}
+
 function buildScopedValues(scope, form, existingProfile = null, user = null) {
   const seed = getExistingProfileSeed(existingProfile, user);
-  const formData = new FormData(form);
+  const formData = getFormDataSnapshot(form);
 
   switch (scope) {
     case 'identity':
@@ -409,8 +428,8 @@ function buildScopedValues(scope, form, existingProfile = null, user = null) {
         public_profile_discoverable: readCheckboxValue(formData, 'public_profile_discoverable')
       };
     case 'media': {
-      const avatarUrl = normalizeString(formData.get('avatar_url') || '');
-      const coverUrl = normalizeString(formData.get('cover_url') || '');
+      const avatarUrl = normalizeString(formData.get('avatar_url') || seed.avatar_url || '');
+      const coverUrl = normalizeString(formData.get('cover_url') || seed.cover_url || '');
 
       return {
         ...seed,
@@ -423,6 +442,70 @@ function buildScopedValues(scope, form, existingProfile = null, user = null) {
     default:
       return seed;
   }
+}
+
+async function resolveMediaUploadValues({
+  scope = '',
+  values = {},
+  form = null,
+  user = null,
+  supabase = getSupabaseClient()
+} = {}) {
+  if (scope !== 'media') return values;
+
+  const formData = typeof FormData !== 'undefined' && form instanceof FormData
+    ? form
+    : form instanceof HTMLFormElement
+      ? new FormData(form)
+      : null;
+  const avatarFile = readUploadableFile(formData, 'avatar_file') || readUploadableFile(values, 'avatar_file');
+  const coverFile = readUploadableFile(formData, 'cover_file') || readUploadableFile(values, 'cover_file');
+
+  if (!avatarFile && !coverFile) {
+    return values;
+  }
+
+  if (!supabase) {
+    const error = new Error('PROFILE_IMAGE_STORAGE_UNAVAILABLE');
+    error.code = 'PROFILE_IMAGE_STORAGE_UNAVAILABLE';
+    throw error;
+  }
+
+  const nextValues = { ...values };
+
+  if (avatarFile) {
+    const upload = await uploadProfileImage({
+      file: avatarFile,
+      user,
+      kind: 'avatar',
+      supabase
+    });
+
+    nextValues.avatar_url = upload.publicUrl;
+    nextValues.photo_url = upload.publicUrl;
+    nextValues.public_avatar_url = upload.publicUrl;
+    nextValues.avatar_storage_path = upload.storagePath;
+    nextValues.profile_image_storage_bucket = upload.bucket;
+  }
+
+  if (coverFile) {
+    const upload = await uploadProfileImage({
+      file: coverFile,
+      user,
+      kind: 'cover',
+      supabase
+    });
+
+    nextValues.cover_url = upload.publicUrl;
+    nextValues.cover_storage_path = upload.storagePath;
+    nextValues.public_feature_flags = upsertProfileMediaFlag(
+      upsertProfileMediaFlag(nextValues.public_feature_flags, 'profile_cover_url', upload.publicUrl),
+      'profile_cover_storage_path',
+      upload.storagePath
+    );
+  }
+
+  return nextValues;
 }
 
 /* =============================================================================
@@ -468,6 +551,10 @@ function messageForProfileSaveError(code) {
       return 'The supplied date of birth does not meet the current eligibility requirement.';
     case 'AUTH_REQUIRED':
       return 'Sign in before editing the private profile surface.';
+    case 'PROFILE_IMAGE_STORAGE_UNAVAILABLE':
+      return 'Profile image storage is not configured for this environment.';
+    case 'PROFILE_IMAGE_UPLOAD_FAILED':
+      return 'Profile image upload failed. Review the storage bucket and access policy.';
     default:
       return 'Profile settings could not be saved right now.';
   }
@@ -554,6 +641,9 @@ export async function persistProfileWithSupabase(scope, values, existingProfile,
     public_modules: payload.public_modules || [],
     public_feature_flags: payload.public_feature_flags || [],
     photo_url: payload.photo_url || payload.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
+    avatar_storage_path: values.avatar_storage_path || payload.avatar_storage_path || currentProfile?.avatar_storage_path || '',
+    cover_storage_path: values.cover_storage_path || payload.cover_storage_path || currentProfile?.cover_storage_path || '',
+    profile_image_storage_bucket: values.profile_image_storage_bucket || payload.profile_image_storage_bucket || currentProfile?.profile_image_storage_bucket || '',
     email: payload.email || normalizeEmail(user.email || ''),
     first_name: payload.first_name || '',
     last_name: payload.last_name || '',
@@ -639,6 +729,8 @@ async function handleSaveRequest(form) {
   const scope = normalizeString(form?.dataset?.profileSaveScope || '');
   if (!SAVE_SCOPES.includes(scope)) return;
 
+  const submittedFormData = getFormDataSnapshot(form);
+
   setScopeState(scope, {
     status: 'saving',
     code: '',
@@ -663,7 +755,14 @@ async function handleSaveRequest(form) {
 
       const policy = await loadProfileIdentityPolicy();
       const existingProfile = await getSupabaseProfileByAuthUserId(supabase, user.id || user.uid);
-      const values = buildScopedValues(scope, form, existingProfile, user);
+      const values = await resolveMediaUploadValues({
+        scope,
+        values: buildScopedValues(scope, submittedFormData, existingProfile, user),
+        form:submittedFormData,
+        existingProfile,
+        user,
+        supabase
+      });
 
       await persistProfileWithSupabase(scope, values, existingProfile, user, policy, supabase);
     } else {
@@ -690,7 +789,14 @@ async function handleSaveRequest(form) {
         uid: user.uid,
         profileCollection: PROFILE_COLLECTION
       });
-      const values = buildScopedValues(scope, form, existingProfile, user);
+      const values = await resolveMediaUploadValues({
+        scope,
+        values: buildScopedValues(scope, submittedFormData, existingProfile, user),
+        form:submittedFormData,
+        existingProfile,
+        user,
+        supabase: null
+      });
 
       await persistProfileWithFirebase(scope, values, existingProfile, user, policy, firestore);
     }
@@ -745,13 +851,19 @@ export async function savePrivateProfileScope({
   }
 
   const resolvedPolicy = policy || await loadProfileIdentityPolicy();
+  const resolvedValues = await resolveMediaUploadValues({
+    scope: normalizedScope,
+    values,
+    user,
+    supabase
+  });
 
   if (supabase) {
-    return persistProfileWithSupabase(normalizedScope, values, existingProfile, user, resolvedPolicy, supabase);
+    return persistProfileWithSupabase(normalizedScope, resolvedValues, existingProfile, user, resolvedPolicy, supabase);
   }
 
   if (firestore) {
-    return persistProfileWithFirebase(normalizedScope, values, existingProfile, user, resolvedPolicy, firestore);
+    return persistProfileWithFirebase(normalizedScope, resolvedValues, existingProfile, user, resolvedPolicy, firestore);
   }
 
   const error = new Error('PROFILE_STORE_UNAVAILABLE');

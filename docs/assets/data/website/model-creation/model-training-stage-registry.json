@@ -1,0 +1,18 @@
+{
+  "version": "2026-05-02",
+  "stages": [
+    { "id": "draft", "label": "Draft", "description": "Model identity is being designed." },
+    { "id": "profile_linked", "label": "Profile Linked", "description": "Owner profile linkage is present." },
+    { "id": "intake_started", "label": "Intake Started", "description": "Initial source and memory intake has begun." },
+    { "id": "voice_samples_pending", "label": "Voice Samples Pending", "description": "Voice samples are required before voice readiness improves." },
+    { "id": "voice_samples_added", "label": "Voice Samples Added", "description": "Voice samples exist in the draft state." },
+    { "id": "style_samples_added", "label": "Style Samples Added", "description": "Style and tone samples exist in the draft state." },
+    { "id": "memory_sources_added", "label": "Memory Sources Added", "description": "Memory or source records exist in the draft state." },
+    { "id": "dataset_prepared", "label": "Dataset Prepared", "description": "A training dataset is prepared for future backend processing." },
+    { "id": "evaluation_pending", "label": "Evaluation Pending", "description": "Evaluation prompts exist but are not complete." },
+    { "id": "evaluation_complete", "label": "Evaluation Complete", "description": "Evaluation records have a reviewed state." },
+    { "id": "deployment_pending", "label": "Deployment Pending", "description": "Deployment route is configured but inactive." },
+    { "id": "active", "label": "Active", "description": "Model is ready for active use after backend verification." },
+    { "id": "archived", "label": "Archived", "description": "Model is retained but not active." }
+  ]
+}

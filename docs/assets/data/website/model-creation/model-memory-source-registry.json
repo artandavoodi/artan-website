@@ -1,0 +1,21 @@
+{
+  "version": "2026-05-02",
+  "source_types": [
+    { "id": "document", "label": "Document" },
+    { "id": "reflection", "label": "Reflection" },
+    { "id": "voice_transcript", "label": "Voice transcript" },
+    { "id": "external_profile", "label": "External profile" },
+    { "id": "link", "label": "Link" },
+    { "id": "archive", "label": "Archive" }
+  ],
+  "privacy_classes": [
+    { "id": "private", "label": "Private" },
+    { "id": "limited", "label": "Limited" },
+    { "id": "public_safe", "label": "Public-safe" }
+  ],
+  "inclusion_states": [
+    { "id": "included", "label": "Included" },
+    { "id": "excluded", "label": "Excluded" },
+    { "id": "review", "label": "Review" }
+  ]
+}

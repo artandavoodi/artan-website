@@ -1,0 +1,150 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) PAGE SHELL
+   03) MODEL CREATE SURFACE
+   04) FORM SYSTEM
+   05) RESPONSIVE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/layers/website/models/model-create.css */
+
+/* =============================================================================
+   02) PAGE SHELL
+============================================================================= */
+.model-create-page-shell{
+  min-height:var(--section-min-height-stable);
+  padding:var(--site-header-height) var(--spacing-none) var(--spacing-4xl);
+}
+
+.model-create-page-rail{
+  width:var(--site-rail-measure);
+  max-width:var(--content-max-width-md);
+  margin:var(--spacing-none) auto;
+}
+
+/* =============================================================================
+   03) MODEL CREATE SURFACE
+============================================================================= */
+.model-create{
+  display:grid;
+  gap:var(--spacing-xl);
+  padding:var(--spacing-xl);
+  border:var(--border-width-hairline) solid var(--panel-border-unified);
+  border-radius:var(--panel-radius-unified);
+  background:var(--panel-surface-unified);
+  box-shadow:var(--panel-shadow-unified);
+  color:var(--text-primary-color);
+}
+
+.model-create__header{
+  display:grid;
+  gap:var(--spacing-sm);
+}
+
+.model-create__eyebrow,
+.model-create__title,
+.model-create__description{
+  margin:var(--spacing-none);
+}
+
+.model-create__eyebrow{
+  color:var(--text-secondary-color);
+  font-size:var(--font-size-eyebrow);
+  font-weight:var(--eyebrow-weight);
+  letter-spacing:var(--eyebrow-tracking);
+  text-transform:uppercase;
+}
+
+.model-create__title{
+  color:var(--text-primary-color);
+  font-size:var(--font-size-h2);
+  line-height:var(--headline-2-line-height);
+  font-weight:var(--headline-2-weight);
+}
+
+.model-create__description,
+.model-create__status{
+  color:var(--text-secondary-color);
+  font-size:var(--body-2-size);
+  line-height:var(--body-2-line-height);
+}
+
+/* =============================================================================
+   04) FORM SYSTEM
+============================================================================= */
+.model-create__form,
+.model-create__fields,
+.model-create__field{
+  display:grid;
+  gap:var(--spacing-md);
+}
+
+.model-create__field span{
+  color:var(--text-secondary-color);
+  font-size:var(--font-size-field-label);
+  font-weight:var(--field-label-weight);
+  letter-spacing:var(--field-label-tracking);
+}
+
+.model-create__field input,
+.model-create__field select,
+.model-create__field textarea{
+  width:var(--size-full);
+  min-height:var(--input-height-md);
+  padding:var(--spacing-sm) var(--input-padding-x-md);
+  border:var(--border-width-hairline) solid var(--field-border);
+  border-radius:var(--input-radius-md);
+  background:var(--field-bg);
+  color:var(--text-primary-color);
+  font:inherit;
+  font-size:var(--font-size-field-input);
+  line-height:var(--line-height-body-tight);
+}
+
+.model-create__field textarea{
+  resize:vertical;
+}
+
+.model-create__button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:var(--button-height-md);
+  padding:var(--spacing-none) var(--button-padding-x-lg);
+  border:var(--border-width-hairline) solid var(--control-border-unified);
+  border-radius:var(--button-radius-md);
+  background:var(--control-surface);
+  color:var(--text-primary-color);
+  font:inherit;
+  font-size:var(--font-size-button-md);
+  font-weight:var(--button-font-weight);
+  cursor:pointer;
+  transition:var(--interaction-transition-control);
+}
+
+.model-create__button:hover,
+.model-create__button:focus-visible{
+  background:var(--control-surface-hover);
+  border-color:var(--control-border-hover-unified);
+  outline:none;
+}
+
+.model-create__status{
+  padding:var(--spacing-md);
+  border:var(--border-width-hairline) solid var(--control-border-unified);
+  border-radius:var(--shape-card-radius);
+  background:var(--control-surface);
+}
+
+/* =============================================================================
+   05) RESPONSIVE
+============================================================================= */
+@media (max-width:820px){
+  .model-create{
+    padding:var(--spacing-lg);
+  }
+}

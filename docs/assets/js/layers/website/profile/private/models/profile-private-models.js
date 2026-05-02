@@ -48,7 +48,9 @@ async function renderModels() {
 
   const trainedModels = models.filter((model) => model.training_state === 'trained' || model.readiness_state === 'ready');
   const sourceCount = models.reduce((total, model) => total + (Number(model.source_count) || 0), 0);
-  const canCreateModel = state.viewerState === 'authenticated' && state.completion?.complete === true && backend.supabaseConfigured;
+  const authenticated = state.viewerState === 'authenticated';
+  const profileComplete = state.completion?.complete === true;
+  const canCreateModel = authenticated;
 
   setText(root, '[data-profile-saved-models-count]', String(models.length));
   setText(root, '[data-profile-owned-models-count]', String(trainedModels.length));
@@ -56,8 +58,12 @@ async function renderModels() {
   setText(
     root,
     '[data-profile-model-status]',
-    canCreateModel
-      ? 'Model registry is connected. Create and manage models from the workspace model layer.'
+    authenticated
+      ? profileComplete && backend.supabaseConfigured
+        ? 'Model registry is connected. Create and manage models from the canonical model creation control panel.'
+        : profileComplete
+          ? 'Open model creation to prepare a model draft. Canonical save requires the Supabase models table and policies.'
+          : 'Open model creation after completing the private profile identity and username requirements.'
       : state.viewerState !== 'authenticated'
         ? 'Sign in to activate model registry access.'
         : 'Complete your profile before creating or registering models.'
@@ -77,7 +83,7 @@ function bindModelActions() {
     if (!trigger || trigger.disabled) return;
 
     event.preventDefault();
-    window.location.href = '/index.html#workspace/model-overview';
+    window.location.href = '/pages/models/create/index.html';
   });
 }
 

@@ -1,0 +1,6 @@
+/* =============================================================================
+   00) MODEL SAFETY VISIBILITY PANEL OWNER
+============================================================================= */
+.model-creation-panel--safety{
+  border-color:var(--home-panel-card-border);
+}

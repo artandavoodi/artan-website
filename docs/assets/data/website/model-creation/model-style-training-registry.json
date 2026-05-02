@@ -1,0 +1,16 @@
+{
+  "version": "2026-05-02",
+  "tone_options": [
+    { "id": "direct", "label": "Direct" },
+    { "id": "analytical", "label": "Analytical" },
+    { "id": "reflective", "label": "Reflective" },
+    { "id": "concise", "label": "Concise" },
+    { "id": "institutional", "label": "Institutional" }
+  ],
+  "style_labels": [
+    { "id": "reasoning", "label": "Reasoning rhythm" },
+    { "id": "language", "label": "Language pattern" },
+    { "id": "decision", "label": "Decision framing" },
+    { "id": "voice", "label": "Voice and tone" }
+  ]
+}
