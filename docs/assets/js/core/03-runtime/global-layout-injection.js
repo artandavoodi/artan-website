@@ -86,7 +86,7 @@ const FRAGMENT_PATHS = {
   'home-hero-matte': assetPath('/assets/fragments/layers/website/home/background/home-hero-matte.html'),
   'home-stage-composition': assetPath('/assets/fragments/layers/website/home/stage/home-stage-composition.html'),
   'home-stage-circle': assetPath('/assets/fragments/layers/website/home/stage/home-stage-circle.html'),
-  'home-featured-functions': assetPath('/assets/fragments/layers/website/home/featured-functions/home-featured-functions.html'),
+  'about-featured-functions': assetPath('/assets/fragments/layers/website/about/featured-functions/about-featured-functions.html'),
   'scroll-to-top': assetPath('/assets/fragments/core/scroll-to-top/scroll-to-top.html'),
   'footer': assetPath('/assets/fragments/layers/website/footer/footer.html'),
   'home-platform-shell': assetPath('/assets/fragments/layers/website/home/platform-menu/home-platform-shell.html'),

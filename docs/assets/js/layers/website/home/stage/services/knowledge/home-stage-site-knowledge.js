@@ -10,7 +10,7 @@
    08. MODULE BOOT
    ========================================================= */
 
-import { formatActiveModelResponse } from '../../../../system/active-model.js';
+import { formatActiveModelResponse } from '../../../../system/model/active-model.js';
 
 /* =========================================================
    01. MODULE STATE

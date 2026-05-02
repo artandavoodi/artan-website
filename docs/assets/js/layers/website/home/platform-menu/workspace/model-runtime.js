@@ -1,8 +1,8 @@
 import {
   getActiveModelRoutingContext,
   getActiveModelState,
-} from '../../../system/active-model.js';
-import { getModelStoreBackendState } from '../../../system/model-store.js';
+} from '../../../system/model/active-model.js';
+import { getModelStoreBackendState } from '../../../system/model/model-store.js';
 
 function syncModelRuntime(root) {
   const summary = root.querySelector('[data-model-runtime-summary]');

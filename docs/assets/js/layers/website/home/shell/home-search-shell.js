@@ -18,7 +18,7 @@ import {
   activatePublicModel,
   getActiveModelState,
   subscribeActiveModelState
-} from '../../system/active-model.js';
+} from '../../system/model/active-model.js';
 import {
   createSpeechInputController,
   hasSpeechInputSupport
@@ -26,7 +26,7 @@ import {
 import {
   getPublicModels,
   loadPublicModelRegistry
-} from '../../system/public-model-registry.js';
+} from '../../system/model/public-model-registry.js';
 
 /* =========================================================
    02. MODULE STATE

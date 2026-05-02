@@ -19,7 +19,7 @@
 import {
   getActiveModelState,
   subscribeActiveModelState,
-} from '../../system/active-model.js';
+} from '../../system/model/active-model.js';
 
 /* =========================================================
    02. MODULE STATE

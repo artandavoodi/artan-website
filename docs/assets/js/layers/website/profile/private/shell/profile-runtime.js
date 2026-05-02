@@ -25,7 +25,7 @@ import {
   normalizeGenderValue,
   normalizeString,
   normalizeUsername
-} from '../../../system/account-profile-identity.js';
+} from '../../../system/account/identity/account-profile-identity.js';
 
 /* =============================================================================
    02) MODULE STATE

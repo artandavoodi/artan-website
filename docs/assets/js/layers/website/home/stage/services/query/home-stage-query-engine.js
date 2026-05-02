@@ -19,7 +19,7 @@
 import {
   formatActiveModelResponse,
   getActiveModelRoutingContext
-} from '../../../../system/active-model.js';
+} from '../../../../system/model/active-model.js';
 
 /* =========================================================
    02. MODULE STATE

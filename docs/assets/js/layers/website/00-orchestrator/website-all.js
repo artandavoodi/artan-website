@@ -58,7 +58,7 @@ import '../system/00-system-all.js';
 /* =============================================================================
    08) WEBSITE LAYER AUTHORITIES · PAGES
 ============================================================================= */
-import '../pages/00-pages-all.js';
+import '../pages/00-orchestrator/00-pages-all.js';
 
 /* =============================================================================
    09) WEBSITE LAYER AUTHORITIES · UI

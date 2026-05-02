@@ -11,7 +11,7 @@
 
 import { getProfileRuntimeState, subscribeProfileRuntime } from '../shell/profile-runtime.js';
 import { getProfileNavigationState, subscribeProfileNavigation } from '../navigation/profile-navigation.js';
-import { getPrivateProfileSaveState, subscribePrivateProfileSaveState } from '../../../system/profile-save.js';
+import { getPrivateProfileSaveState, subscribePrivateProfileSaveState } from '../../../system/profile/profile-save.js';
 
 /* =============================================================================
    02) SETTINGS HELPERS

@@ -2,7 +2,7 @@ import {
   createOwnedModel,
   getModelStoreBackendState,
   listOwnedModels,
-} from '../../../system/model-store.js';
+} from '../../../system/model/model-store.js';
 
 function renderMetric(label, value) {
   return `

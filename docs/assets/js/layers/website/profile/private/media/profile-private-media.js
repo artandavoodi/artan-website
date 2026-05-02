@@ -19,7 +19,7 @@ import {
   getProfileRuntimeState,
   subscribeProfileRuntime
 } from '../shell/profile-runtime.js';
-import { subscribePrivateProfileSaveState } from '../../../system/profile-save.js';
+import { subscribePrivateProfileSaveState } from '../../../system/profile/profile-save.js';
 
 /* =============================================================================
    03) DOM HELPERS

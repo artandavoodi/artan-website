@@ -2,7 +2,7 @@ import {
   getModelStoreBackendState,
   listModelTrainingRecords,
   listOwnedModels,
-} from '../../../system/model-store.js';
+} from '../../../system/model/model-store.js';
 
 async function syncModelTraining(root) {
   const summary = root.querySelector('[data-model-training-summary]');

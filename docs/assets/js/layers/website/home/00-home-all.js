@@ -56,7 +56,6 @@ import './interaction-settings/00-interaction-settings-all.js';
 /* =========================================================
    01H. FEATURED FUNCTIONS
    ========================================================= */
-import './featured-functions/00-featured-functions-all.js';
 
 /* =========================================================
    02. END OF FILE

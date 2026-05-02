@@ -17,13 +17,13 @@ import {
   activatePublicModel,
   getActiveModelState,
   subscribeActiveModelState
-} from '../system/active-model.js';
+} from '../system/model/active-model.js';
 import {
   getPublicModelById,
   getPublicModels,
   loadPublicModelRegistry,
   searchPublicModels
-} from '../system/public-model-registry.js';
+} from '../system/model/public-model-registry.js';
 import {
   escapeHtml,
   fetchJson,

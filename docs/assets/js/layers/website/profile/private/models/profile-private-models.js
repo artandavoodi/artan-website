@@ -9,7 +9,7 @@
 import {
   getModelStoreBackendState,
   listOwnedModels
-} from '../../../system/model-store.js';
+} from '../../../system/model/model-store.js';
 import {
   getProfileRuntimeState,
   subscribeProfileRuntime

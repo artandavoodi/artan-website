@@ -2,7 +2,7 @@ import {
   getModelStoreBackendState,
   listModelSourceConnectors,
   listOwnedModels,
-} from '../../../system/model-store.js';
+} from '../../../system/model/model-store.js';
 
 async function syncModelSources(root) {
   const summary = root.querySelector('[data-model-source-summary]');

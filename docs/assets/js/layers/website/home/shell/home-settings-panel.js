@@ -1,7 +1,7 @@
 import {
   buildPublicProfileDisplay,
   buildPublicProfilePath,
-} from '../../system/account-profile-identity.js';
+} from '../../system/account/identity/account-profile-identity.js';
 import { subscribeHomeSurfaceState } from '../core/home-surface-state.js';
 
 /* =========================================================

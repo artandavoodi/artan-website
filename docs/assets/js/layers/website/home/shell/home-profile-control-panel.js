@@ -1,11 +1,11 @@
 import {
   buildPublicProfileDisplay,
   buildPublicProfilePath,
-} from '../../system/account-profile-identity.js';
+} from '../../system/account/identity/account-profile-identity.js';
 import {
   getPublicModels,
   loadPublicModelRegistry,
-} from '../../system/public-model-registry.js';
+} from '../../system/model/public-model-registry.js';
 import { subscribeHomeSurfaceState } from '../core/home-surface-state.js';
 
 /* =========================================================

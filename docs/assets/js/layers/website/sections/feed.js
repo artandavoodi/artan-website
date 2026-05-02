@@ -27,17 +27,17 @@ import {
   activatePublicModel,
   getActiveModelState,
   subscribeActiveModelState
-} from '../system/active-model.js';
+} from '../system/model/active-model.js';
 import {
   getPublicModels,
   loadPublicModelRegistry
-} from '../system/public-model-registry.js';
+} from '../system/model/public-model-registry.js';
 import {
   createFeedPost,
   deleteFeedPost,
   getCurrentFeedAuthor,
   listFeedPosts
-} from '../system/feed-store.js';
+} from '../system/feed/feed-store.js';
 
 /* =============================================================================
    02) CONSTANTS

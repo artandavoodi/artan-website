@@ -13,6 +13,7 @@
    11) HOME PLATFORM SHELL TOKENS
    12) HOME STAGE MOTION TOKENS
    13) HOME FEATURED FUNCTIONS TOKENS
+   13A) ABOUT FEATURED FUNCTIONS TOKENS
    14) HOME ESSENCE EFFECT TOKENS
    15) ACCOUNT DRAWER TOKENS
    16) INTERACTION SETTINGS SHELL TOKENS
@@ -677,6 +678,7 @@
 /* =============================================================================
    13) HOME FEATURED FUNCTIONS TOKENS
 ============================================================================= */
+
 :root{
   --layout-home-featured-functions-max-width:1440px;
   --layout-home-featured-functions-viewport-max-width:820px;
@@ -744,6 +746,81 @@
   --layout-home-featured-functions-control-disabled-opacity:0.32;
   --layout-home-featured-functions-track-motion:420ms;
   --layout-home-featured-functions-ready-opacity-motion:260ms;
+}
+
+/* =============================================================================
+   13A) ABOUT FEATURED FUNCTIONS TOKENS
+   About-owned aliases for the migrated Core Capabilities presentation layer.
+   Values currently inherit the established Home Featured Functions baseline so
+   visual behavior remains preserved while ownership is correctly scoped.
+============================================================================= */
+:root{
+  --layout-about-featured-functions-max-width:var(--layout-home-featured-functions-max-width);
+  --layout-about-featured-functions-viewport-max-width:var(--layout-home-featured-functions-viewport-max-width);
+  --layout-about-featured-functions-footer-max-width:var(--layout-home-featured-functions-footer-max-width);
+  --layout-about-featured-functions-timeline-height:var(--layout-home-featured-functions-timeline-height);
+  --layout-about-featured-functions-timeline-progress-scale:var(--layout-home-featured-functions-timeline-progress-scale);
+  --layout-about-featured-functions-description-opacity:var(--layout-home-featured-functions-description-opacity);
+  --layout-about-featured-functions-card-border-width:var(--layout-home-featured-functions-card-border-width);
+  --layout-about-featured-functions-card-border-color-dark:var(--layout-home-featured-functions-card-border-color-dark);
+  --layout-about-featured-functions-card-border-color-hover-dark:var(--layout-home-featured-functions-card-border-color-hover-dark);
+  --layout-about-featured-functions-card-surface-bg-dark:var(--layout-home-featured-functions-card-surface-bg-dark);
+  --layout-about-featured-functions-card-surface-highlight-rest-dark:var(--layout-home-featured-functions-card-surface-highlight-rest-dark);
+  --layout-about-featured-functions-card-surface-highlight-hover-dark:var(--layout-home-featured-functions-card-surface-highlight-hover-dark);
+  --layout-about-featured-functions-card-placeholder-glow-a-dark:var(--layout-home-featured-functions-card-placeholder-glow-a-dark);
+  --layout-about-featured-functions-card-placeholder-glow-b-dark:var(--layout-home-featured-functions-card-placeholder-glow-b-dark);
+  --layout-about-featured-functions-card-placeholder-fill-top-dark:var(--layout-home-featured-functions-card-placeholder-fill-top-dark);
+  --layout-about-featured-functions-card-placeholder-fill-bottom-dark:var(--layout-home-featured-functions-card-placeholder-fill-bottom-dark);
+  --layout-about-featured-functions-card-padding:var(--layout-home-featured-functions-card-padding);
+  --layout-about-featured-functions-visual-aspect-ratio:var(--layout-home-featured-functions-visual-aspect-ratio);
+  --layout-about-featured-functions-card-copy-max-width:var(--layout-home-featured-functions-card-copy-max-width);
+  --layout-about-featured-functions-card-summary-gap:var(--layout-home-featured-functions-card-summary-gap);
+  --layout-about-featured-functions-card-title-gap:var(--layout-home-featured-functions-card-title-gap);
+  --layout-about-featured-functions-card-label-line-height:var(--layout-home-featured-functions-card-label-line-height);
+  --layout-about-featured-functions-card-label-weight:var(--layout-home-featured-functions-card-label-weight);
+  --layout-about-featured-functions-card-label-tracking:var(--layout-home-featured-functions-card-label-tracking);
+  --layout-about-featured-functions-eyebrow-opacity:var(--layout-home-featured-functions-eyebrow-opacity);
+  --layout-about-featured-functions-dot-size:var(--layout-home-featured-functions-dot-size);
+  --layout-about-featured-functions-dot-opacity:var(--layout-home-featured-functions-dot-opacity);
+  --layout-about-featured-functions-dot-opacity-active:var(--layout-home-featured-functions-dot-opacity-active);
+  --layout-about-featured-functions-dot-opacity-light:var(--layout-home-featured-functions-dot-opacity-light);
+  --layout-about-featured-functions-dot-opacity-dark:var(--layout-home-featured-functions-dot-opacity-dark);
+  --layout-about-featured-functions-rail-offset:var(--layout-home-featured-functions-rail-offset);
+  --layout-about-featured-functions-card-matte-blur:var(--layout-home-featured-functions-card-matte-blur);
+  --layout-about-featured-functions-card-matte-saturation:var(--layout-home-featured-functions-card-matte-saturation);
+  --layout-about-featured-functions-card-spectrum-opacity:var(--layout-home-featured-functions-card-spectrum-opacity);
+  --layout-about-featured-functions-card-spectrum-opacity-light:var(--layout-home-featured-functions-card-spectrum-opacity-light);
+  --layout-about-featured-functions-card-spectrum-blend:var(--layout-home-featured-functions-card-spectrum-blend);
+  --layout-about-featured-functions-card-spectrum-red:var(--layout-home-featured-functions-card-spectrum-red);
+  --layout-about-featured-functions-card-spectrum-orange:var(--layout-home-featured-functions-card-spectrum-orange);
+  --layout-about-featured-functions-card-spectrum-yellow:var(--layout-home-featured-functions-card-spectrum-yellow);
+  --layout-about-featured-functions-card-spectrum-violet:var(--layout-home-featured-functions-card-spectrum-violet);
+  --layout-about-featured-functions-card-spectrum-blue:var(--layout-home-featured-functions-card-spectrum-blue);
+  --layout-about-featured-functions-card-spectrum-cyan:var(--layout-home-featured-functions-card-spectrum-cyan);
+  --layout-about-featured-functions-card-summary-color-dark:var(--layout-home-featured-functions-card-summary-color-dark);
+  --layout-about-featured-functions-card-icon-filter-dark:var(--layout-home-featured-functions-card-icon-filter-dark);
+  --layout-about-featured-functions-card-matte-surface-top-dark:var(--layout-home-featured-functions-card-matte-surface-top-dark);
+  --layout-about-featured-functions-card-matte-surface-mid-dark:var(--layout-home-featured-functions-card-matte-surface-mid-dark);
+  --layout-about-featured-functions-card-matte-surface-bottom-dark:var(--layout-home-featured-functions-card-matte-surface-bottom-dark);
+  --layout-about-featured-functions-card-border-color-light:var(--layout-home-featured-functions-card-border-color-light);
+  --layout-about-featured-functions-card-border-color-hover-light:var(--layout-home-featured-functions-card-border-color-hover-light);
+  --layout-about-featured-functions-card-surface-bg-light:var(--layout-home-featured-functions-card-surface-bg-light);
+  --layout-about-featured-functions-card-surface-highlight-rest-light:var(--layout-home-featured-functions-card-surface-highlight-rest-light);
+  --layout-about-featured-functions-card-surface-highlight-hover-light:var(--layout-home-featured-functions-card-surface-highlight-hover-light);
+  --layout-about-featured-functions-card-placeholder-glow-a-light:var(--layout-home-featured-functions-card-placeholder-glow-a-light);
+  --layout-about-featured-functions-card-placeholder-glow-b-light:var(--layout-home-featured-functions-card-placeholder-glow-b-light);
+  --layout-about-featured-functions-card-placeholder-fill-top-light:var(--layout-home-featured-functions-card-placeholder-fill-top-light);
+  --layout-about-featured-functions-card-placeholder-fill-bottom-light:var(--layout-home-featured-functions-card-placeholder-fill-bottom-light);
+  --layout-about-featured-functions-card-summary-color-light:var(--layout-home-featured-functions-card-summary-color-light);
+  --layout-about-featured-functions-card-icon-filter-light:var(--layout-home-featured-functions-card-icon-filter-light);
+  --layout-about-featured-functions-card-matte-surface-top-light:var(--layout-home-featured-functions-card-matte-surface-top-light);
+  --layout-about-featured-functions-card-matte-surface-mid-light:var(--layout-home-featured-functions-card-matte-surface-mid-light);
+  --layout-about-featured-functions-card-matte-surface-bottom-light:var(--layout-home-featured-functions-card-matte-surface-bottom-light);
+  --layout-about-featured-functions-control-size:var(--layout-home-featured-functions-control-size);
+  --layout-about-featured-functions-control-icon-size:var(--layout-home-featured-functions-control-icon-size);
+  --layout-about-featured-functions-control-disabled-opacity:var(--layout-home-featured-functions-control-disabled-opacity);
+  --layout-about-featured-functions-track-motion:var(--layout-home-featured-functions-track-motion);
+  --layout-about-featured-functions-ready-opacity-motion:var(--layout-home-featured-functions-ready-opacity-motion);
 }
 
 /* =============================================================================

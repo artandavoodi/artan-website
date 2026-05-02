@@ -4,7 +4,7 @@
    02) PERSISTENCE API
 ============================================================================= */
 
-import { createOwnedModel } from '../system/model-store.js';
+import { createOwnedModel } from '../system/model/model-store.js';
 import {
   getModelCreationState,
   setModelCreationState

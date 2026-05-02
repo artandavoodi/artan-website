@@ -20,7 +20,7 @@ import {
   getProfileRuntimeState,
   subscribeProfileRuntime
 } from '../shell/profile-runtime.js';
-import { normalizeString } from '../../../system/account-profile-identity.js';
+import { normalizeString } from '../../../system/account/identity/account-profile-identity.js';
 
 /* =============================================================================
    03) STATE

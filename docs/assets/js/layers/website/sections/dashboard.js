@@ -22,11 +22,11 @@ import {
   getActiveModelRoutingContext,
   getActiveModelState,
   subscribeActiveModelState
-} from '../system/active-model.js';
+} from '../system/model/active-model.js';
 import {
   getPublicModels,
   loadPublicModelRegistry
-} from '../system/public-model-registry.js';
+} from '../system/model/public-model-registry.js';
 
 /* =============================================================================
    02) CONSTANTS

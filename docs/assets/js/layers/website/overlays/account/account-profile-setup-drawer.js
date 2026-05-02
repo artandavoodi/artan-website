@@ -26,7 +26,7 @@ import {
   buildAccountPasswordHint,
   evaluateAccountPassword,
   loadAccountPasswordPolicy
-} from '../../system/account-password-policy.js';
+} from '../../system/account/identity/account-password-policy.js';
 
 (() => {
   'use strict';

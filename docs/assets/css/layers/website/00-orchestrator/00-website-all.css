@@ -14,13 +14,15 @@
    02) WEBSITE GROUP AUTHORITY IMPORTS
 ============================================================================= */
 @import url('../components/00-components-all.css');
+@import url('../collections/00-collections-all.css');
 @import url('../features/00-features-all.css');
 @import url('../home/00-home-all.css');
 @import url('../layout/00-layout-all.css');
 @import url('../navigation/00-navigation-all.css');
 @import url('../overlays/00-orchestrator/00-overlays-all.css');
 @import url('../profile/00-profile-all.css');
-@import url('../pages/00-pages-all.css');
+@import url('../pages/00-orchestrator/00-pages-all.css');
+@import url('../publication/00-publication-all.css');
 @import url('../sections/00-sections-all.css');
 @import url('../system/00-system-all.css');
 @import url('../ui/00-ui-all.css');
