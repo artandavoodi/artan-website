@@ -1,10 +1,20 @@
 <!-- =============================================================================
+     NEUROARTAN · HOME DEVELOPER MODE · SHELL
+     -----------------------------------------------------------------------------
+     Purpose: Homepage-routed Developer Console shell. Topbar ownership remains
+     delegated to the existing Developer topbar fragment.
+============================================================================= -->
+
+<!-- =============================================================================
      00) FILE INDEX
+     -----------------------------------------------------------------------------
      01) DEVELOPER CONSOLE SHELL
      02) DEVELOPER MODE TOPBAR MOUNT
-     03) DEVELOPER MODE LAYOUT
-     04) DEVELOPER MODE PANEL MOUNTS
-     05) END OF FILE
+     03) DEVELOPER MODE VIEWPORT
+     04) LEFT COLUMN
+     05) CENTER COLUMN
+     06) RIGHT COLUMN
+     07) END OF FILE
 ============================================================================= -->
 
 <!-- =============================================================================
@@ -14,31 +24,245 @@
   <!-- =============================================================================
        02) DEVELOPER MODE TOPBAR MOUNT
   ============================================================================= -->
-  <div class="home-developer-mode-shell__topbar" data-home-developer-mode-topbar data-home-developer-region="topbar" data-include="home-developer-mode-topbar"></div>
+  <header class="home-developer-mode-shell__topbar" data-home-developer-mode-topbar data-home-developer-region="topbar" data-include="home-developer-mode-topbar" aria-label="Developer Console topbar"></header>
 
   <!-- =============================================================================
-       03) DEVELOPER MODE LAYOUT
+       03) DEVELOPER MODE VIEWPORT
   ============================================================================= -->
-  <div class="home-developer-mode-shell__layout">
-    <aside class="home-developer-mode-shell__left" data-home-developer-region="left-sidebar" data-include="home-developer-mode-left-sidebar" aria-label="Developer workspace navigation"></aside>
+  <div class="home-developer-mode-shell__viewport" data-home-developer-viewport>
+    <div class="home-developer-mode-shell__workspace" data-home-developer-workspace-grid>
+      <!-- =============================================================================
+           04) LEFT COLUMN
+      ============================================================================= -->
+      <aside class="home-developer-mode-shell__column home-developer-mode-shell__column--left" data-home-developer-column="left" aria-label="Developer navigation column">
+        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--left-navigation" data-home-developer-section="left-navigation" aria-label="Developer navigation">
+          <header class="home-developer-mode-shell__section-header">
+            <p class="home-developer-mode-shell__section-eyebrow">Navigation</p>
+            <h2 class="home-developer-mode-shell__section-title">Workspace</h2>
+          </header>
 
-    <!-- =============================================================================
-         04) DEVELOPER MODE PANEL MOUNTS
-    ============================================================================= -->
-    <main class="home-developer-mode-shell__main" data-home-developer-panel-root>
-      <div data-home-developer-panel="command" data-include="home-developer-mode-command-surface"></div>
-      <div data-home-developer-panel="repositories" data-include="home-developer-mode-repository-panel" hidden aria-hidden="true"></div>
-      <div data-home-developer-panel="projects" data-include="home-developer-mode-project-panel" hidden aria-hidden="true"></div>
-      <div data-home-developer-panel="agents" data-include="home-developer-mode-provider-panel" hidden aria-hidden="true"></div>
-      <div data-home-developer-panel="runtime" data-include="home-developer-mode-runtime-panel" hidden aria-hidden="true"></div>
-      <div data-home-developer-panel="review" data-include="home-developer-mode-review-panel" hidden aria-hidden="true"></div>
-      <div data-home-developer-panel="settings" data-include="home-developer-mode-settings-panel" hidden aria-hidden="true"></div>
-    </main>
+          <div class="home-developer-mode-shell__section-body">
+            <nav class="home-developer-mode-sidebar" data-home-developer-left-sidebar aria-label="Developer Mode workspace sections">
+              <p class="home-developer-mode-sidebar__label">Workspace</p>
+              <div class="home-developer-mode-sidebar__items" data-home-developer-sidebar-items></div>
+            </nav>
+          </div>
+        </section>
 
-    <aside class="home-developer-mode-shell__right" data-home-developer-region="right-sidebar" data-include="home-developer-mode-right-sidebar" aria-label="Developer context"></aside>
+        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--left-status" data-home-developer-section="left-status" aria-label="Developer navigation status">
+          <header class="home-developer-mode-shell__section-header">
+            <p class="home-developer-mode-shell__section-eyebrow">Status</p>
+            <h2 class="home-developer-mode-shell__section-title">Navigation State</h2>
+          </header>
+
+          <div class="home-developer-mode-shell__section-body">
+            <p class="home-developer-mode-shell__section-copy">Reserved for active route, selected workspace, and local navigation continuity.</p>
+          </div>
+        </section>
+      </aside>
+
+      <!-- =============================================================================
+           05) CENTER COLUMN
+      ============================================================================= -->
+      <main class="home-developer-mode-shell__column home-developer-mode-shell__column--center" data-home-developer-column="center" data-home-developer-panel-root aria-label="Developer panel column">
+
+        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--routed" data-home-developer-section="routed-panels" aria-label="Developer routed panels">
+          <header class="home-developer-mode-shell__section-header">
+            <p class="home-developer-mode-shell__section-eyebrow">Developer</p>
+            <h2 class="home-developer-mode-shell__section-title">Workspace Panels</h2>
+          </header>
+
+          <div class="home-developer-mode-shell__section-body home-developer-mode-shell__section-body--routed">
+            <section class="home-developer-mode-panel" data-home-developer-panel="repositories" data-home-developer-repository-panel aria-label="Repository navigator" hidden aria-hidden="true">
+              <header class="home-developer-mode-panel__header">
+                <p class="home-developer-mode-panel__eyebrow">Repository</p>
+                <h3 class="home-developer-mode-panel__title">Connect and select repositories</h3>
+                <p class="home-developer-mode-panel__copy">GitHub OAuth and repository discovery are backend-only. Tokens never enter browser JavaScript.</p>
+              </header>
+              <div class="home-developer-mode-actions">
+                <button class="home-developer-mode-button home-developer-mode-button--primary" type="button" data-home-developer-github-connect>Connect GitHub</button>
+                <button class="home-developer-mode-button" type="button" data-home-developer-repository-discover>Discover repositories</button>
+                <button class="home-developer-mode-button" type="button" data-home-developer-github-disconnect>Disconnect</button>
+              </div>
+              <div class="home-developer-mode-list" data-home-developer-repository-list></div>
+              <pre class="home-developer-mode-output" data-home-developer-output="repositories">No repository selected.</pre>
+            </section>
+
+            <section class="home-developer-mode-panel" data-home-developer-panel="projects" data-home-developer-project-panel aria-label="Project navigator" hidden aria-hidden="true">
+              <header class="home-developer-mode-panel__header">
+                <p class="home-developer-mode-panel__eyebrow">Project</p>
+                <h3 class="home-developer-mode-panel__title">Create and bind development projects</h3>
+                <p class="home-developer-mode-panel__copy">Project records bind workspace, repository, provider, and environment state to the backend session.</p>
+              </header>
+              <form class="home-developer-mode-form" data-home-developer-project-form>
+                <label class="home-developer-mode-field">Project name<input name="name" type="text" autocomplete="off"></label>
+                <label class="home-developer-mode-field">Repository<select name="repository"></select></label>
+                <label class="home-developer-mode-field">Branch<input name="branch" type="text" autocomplete="off" value="main"></label>
+                <button class="home-developer-mode-button home-developer-mode-button--primary" type="submit">Create project</button>
+              </form>
+              <pre class="home-developer-mode-output" data-home-developer-output="projects">No project created.</pre>
+            </section>
+
+            <section class="home-developer-mode-panel" data-home-developer-panel="agents" data-home-developer-provider-panel aria-label="Provider registry" hidden aria-hidden="true">
+              <header class="home-developer-mode-panel__header">
+                <p class="home-developer-mode-panel__eyebrow">Provider</p>
+                <h3 class="home-developer-mode-panel__title">Select execution provider</h3>
+                <p class="home-developer-mode-panel__copy">Provider configuration remains server-side and governed by active runtime state.</p>
+              </header>
+              <div class="home-developer-mode-list" data-home-developer-provider-list></div>
+              <pre class="home-developer-mode-output" data-home-developer-output="providers">No provider configured.</pre>
+            </section>
+
+            <section class="home-developer-mode-panel" data-home-developer-panel="runtime" data-home-developer-runtime-panel aria-label="Runtime status" hidden aria-hidden="true">
+              <header class="home-developer-mode-panel__header">
+                <p class="home-developer-mode-panel__eyebrow">Runtime</p>
+                <h3 class="home-developer-mode-panel__title">Developer backend state</h3>
+                <p class="home-developer-mode-panel__copy">Displays active API, provider, repository, and execution-readiness state.</p>
+              </header>
+              <section class="home-developer-mode-action-metadata" data-home-developer-action-metadata="runtime" aria-label="Runtime developer actions">
+                <header class="home-developer-mode-action-metadata__header">
+                  <p class="home-developer-mode-action-metadata__eyebrow">Actions</p>
+                  <h4 class="home-developer-mode-action-metadata__title">Runtime Actions</h4>
+                  <p class="home-developer-mode-action-metadata__copy">Scan, explain, debug, and runtime-oriented developer actions are routed through the canonical homepage interactive panel.</p>
+                </header>
+                <div class="home-developer-mode-action-metadata__list" data-home-developer-action-metadata-list="runtime">
+                  <p class="home-developer-mode-action-metadata__empty">Runtime actions not loaded.</p>
+                </div>
+              </section>
+
+              <pre class="home-developer-mode-output" data-home-developer-output="runtime">Runtime state pending.</pre>
+            </section>
+
+            <section class="home-developer-mode-panel" data-home-developer-panel="review" data-home-developer-review-panel aria-label="Review queue" hidden aria-hidden="true">
+              <header class="home-developer-mode-panel__header">
+                <p class="home-developer-mode-panel__eyebrow">Review</p>
+                <h3 class="home-developer-mode-panel__title">Inspect before mutation</h3>
+                <p class="home-developer-mode-panel__copy">Code proposals, tests, commits, and pull requests require explicit review before execution.</p>
+              </header>
+              <div class="home-developer-mode-actions">
+                <button class="home-developer-mode-button" type="button" data-home-developer-state-refresh>Refresh review artifacts</button>
+                <button class="home-developer-mode-button" type="button" data-home-developer-locked-action="test-request">Request tests</button>
+                <button class="home-developer-mode-button" type="button" data-home-developer-locked-action="commit-pr-request">Prepare commit / PR</button>
+              </div>
+
+              <section class="home-developer-mode-action-metadata" data-home-developer-action-metadata="review" aria-label="Review developer actions">
+                <header class="home-developer-mode-action-metadata__header">
+                  <p class="home-developer-mode-action-metadata__eyebrow">Actions</p>
+                  <h4 class="home-developer-mode-action-metadata__title">Review Actions</h4>
+                  <p class="home-developer-mode-action-metadata__copy">Patch, review, test, commit, and pull-request actions remain metadata-driven and require approval before mutation.</p>
+                </header>
+                <div class="home-developer-mode-action-metadata__list" data-home-developer-action-metadata-list="review">
+                  <p class="home-developer-mode-action-metadata__empty">Review actions not loaded.</p>
+                </div>
+              </section>
+
+              <section class="home-developer-mode-review-artifacts" data-home-developer-review-artifacts aria-label="Developer review artifacts">
+                <header class="home-developer-mode-review-artifacts__header">
+                  <p class="home-developer-mode-review-artifacts__eyebrow">Artifacts</p>
+                  <h4 class="home-developer-mode-review-artifacts__title">Review Queue</h4>
+                  <p class="home-developer-mode-review-artifacts__copy">Patch proposal artifacts created by the homepage interactive panel appear here before any mutation is approved.</p>
+                </header>
+                <div class="home-developer-mode-review-artifacts__list" data-home-developer-review-artifact-list>
+                  <p class="home-developer-mode-review-artifacts__empty">No review artifacts created yet.</p>
+                </div>
+              </section>
+
+              <pre class="home-developer-mode-output" data-home-developer-output="review">No review artifact selected.</pre>
+            </section>
+
+            <section class="home-developer-mode-panel" data-home-developer-panel="settings" data-home-developer-settings-panel aria-label="Developer settings" hidden aria-hidden="true">
+              <header class="home-developer-mode-panel__header">
+                <p class="home-developer-mode-panel__eyebrow">Settings</p>
+                <h3 class="home-developer-mode-panel__title">Developer permissions and continuity</h3>
+                <p class="home-developer-mode-panel__copy">Control Center remains the canonical settings surface. This panel links active project, repository, provider, and approval state back to that source.</p>
+              </header>
+              <div class="home-developer-mode-actions">
+                <button class="home-developer-mode-button home-developer-mode-button--primary" type="button" data-home-developer-open-control-center>Open Developer Control Center</button>
+                <button class="home-developer-mode-button" type="button" data-home-developer-state-refresh>Refresh developer state</button>
+              </div>
+              <pre class="home-developer-mode-output" data-home-developer-output="settings">Settings state not loaded.</pre>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <!-- =============================================================================
+           06) RIGHT COLUMN
+      ============================================================================= -->
+      <aside class="home-developer-mode-shell__column home-developer-mode-shell__column--right" data-home-developer-column="right" data-home-developer-right-sidebar aria-label="Developer context column">
+        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--context" data-home-developer-section="context" aria-label="Developer context state">
+          <header class="home-developer-mode-shell__section-header">
+            <p class="home-developer-mode-shell__section-eyebrow">Context</p>
+            <h2 class="home-developer-mode-shell__section-title">Execution State</h2>
+          </header>
+          <div class="home-developer-mode-shell__section-body">
+            <section class="home-developer-mode-context" aria-label="Developer Mode context">
+              <header class="home-developer-mode-context__header">
+                <p class="home-developer-mode-context__eyebrow">Developer Console</p>
+                <h3 class="home-developer-mode-context__title">Workspace</h3>
+                <p class="home-developer-mode-context__description">Active execution state for the current developer workspace.</p>
+              </header>
+              <div class="home-developer-mode-context__body">
+                <section class="home-developer-mode-context__group" aria-labelledby="home-developer-mode-context-project-title">
+                  <h4 class="home-developer-mode-context__group-title" id="home-developer-mode-context-project-title">Workspace</h4>
+                  <dl class="home-developer-mode-context__list">
+                    <div class="home-developer-mode-context__item"><dt>Project</dt><dd data-home-developer-context="activeProject">Not selected</dd></div>
+                    <div class="home-developer-mode-context__item"><dt>Repository</dt><dd data-home-developer-context="activeRepository">Not selected</dd></div>
+                    <div class="home-developer-mode-context__item"><dt>Branch</dt><dd data-home-developer-context="activeBranch">Not selected</dd></div>
+                    <div class="home-developer-mode-context__item"><dt>File target</dt><dd data-home-developer-context="fileTarget">Not selected</dd></div>
+                  </dl>
+                </section>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--runtime-context" data-home-developer-section="runtime-context" aria-label="Developer runtime context">
+          <header class="home-developer-mode-shell__section-header">
+            <p class="home-developer-mode-shell__section-eyebrow">Runtime</p>
+            <h2 class="home-developer-mode-shell__section-title">Backend State</h2>
+          </header>
+          <div class="home-developer-mode-shell__section-body">
+            <section class="home-developer-mode-context home-developer-mode-context--compact" aria-label="Developer backend context">
+              <div class="home-developer-mode-context__body">
+                <section class="home-developer-mode-context__group" aria-labelledby="home-developer-mode-context-runtime-title">
+                  <h4 class="home-developer-mode-context__group-title" id="home-developer-mode-context-runtime-title">Runtime</h4>
+                  <dl class="home-developer-mode-context__list">
+                    <div class="home-developer-mode-context__item"><dt>GitHub</dt><dd data-home-developer-context="github">Authorization required</dd></div>
+                    <div class="home-developer-mode-context__item"><dt>Provider</dt><dd data-home-developer-context="provider">Not configured</dd></div>
+                    <div class="home-developer-mode-context__item"><dt>Runtime</dt><dd data-home-developer-context="runtime">Backend status pending</dd></div>
+                  </dl>
+                </section>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--governance" data-home-developer-section="governance" aria-label="Developer governance context">
+          <header class="home-developer-mode-shell__section-header">
+            <p class="home-developer-mode-shell__section-eyebrow">Governance</p>
+            <h2 class="home-developer-mode-shell__section-title">Review</h2>
+          </header>
+          <div class="home-developer-mode-shell__section-body">
+            <section class="home-developer-mode-context home-developer-mode-context--compact" aria-label="Developer governance state">
+              <div class="home-developer-mode-context__body">
+                <section class="home-developer-mode-context__group" aria-labelledby="home-developer-mode-context-governance-title">
+                  <h4 class="home-developer-mode-context__group-title" id="home-developer-mode-context-governance-title">Controls</h4>
+                  <dl class="home-developer-mode-context__list">
+                    <div class="home-developer-mode-context__item"><dt>Agent</dt><dd data-home-developer-context="activeAgent">Not active</dd></div>
+                    <div class="home-developer-mode-context__item"><dt>Approval</dt><dd data-home-developer-context="approval">Required before mutation</dd></div>
+                    <div class="home-developer-mode-context__item"><dt>Security</dt><dd data-home-developer-context="security">Secrets server-side only</dd></div>
+                  </dl>
+                </section>
+              </div>
+            </section>
+          </div>
+        </section>
+      </aside>
+    </div>
   </div>
 </section>
 
 <!-- =============================================================================
-     05) END OF FILE
+     07) END OF FILE
 ============================================================================= -->

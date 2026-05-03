@@ -101,7 +101,6 @@ const FRAGMENT_PATHS = {
   'home-developer-mode-topbar': assetPath('/assets/fragments/layers/website/home/developer-mode/topbar/developer-mode-topbar.html'),
   'home-developer-mode-left-sidebar': assetPath('/assets/fragments/layers/website/home/developer-mode/left-sidebar/developer-mode-left-sidebar.html'),
   'home-developer-mode-right-sidebar': assetPath('/assets/fragments/layers/website/home/developer-mode/right-sidebar/developer-mode-right-sidebar.html'),
-  'home-developer-mode-command-surface': assetPath('/assets/fragments/layers/website/home/developer-mode/command-surface/developer-mode-command-surface.html'),
   'home-developer-mode-repository-panel': assetPath('/assets/fragments/layers/website/home/developer-mode/repository-panel/developer-mode-repository-panel.html'),
   'home-developer-mode-project-panel': assetPath('/assets/fragments/layers/website/home/developer-mode/project-panel/developer-mode-project-panel.html'),
   'home-developer-mode-provider-panel': assetPath('/assets/fragments/layers/website/home/developer-mode/provider-panel/developer-mode-provider-panel.html'),

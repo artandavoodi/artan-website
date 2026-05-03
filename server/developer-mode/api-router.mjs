@@ -30,10 +30,12 @@ import {
   createAgentSession,
   createOAuthState,
   createProject,
+  createReviewArtifact,
   ensureSession,
   getDeveloperState,
   listAgentSessions,
   listProjects,
+  listReviewArtifacts,
   updateDeveloperState
 } from './runtime-store.mjs';
 import {
@@ -323,12 +325,19 @@ async function handleRepositoryScan(request, response) {
   }, headers);
 }
 
-function handlePatchProposal(request, response) {
-  sendJson(response, 501, {
-    ok:false,
-    status:'provider_runtime_required',
-    reason:'Patch proposals require a server-side model provider adapter and review artifact storage.'
-  });
+async function handlePatchProposal(request, response) {
+  const { session, headers } = getRuntimeSession(request, response);
+  const payload = await readJsonBody(request);
+  const artifact = createReviewArtifact(session.id, payload);
+
+  sendJson(response, 202, {
+    ok:true,
+    status:'review_artifact_created_provider_runtime_pending',
+    reason:'Patch proposal request captured as a non-mutating review artifact. Provider runtime execution is still pending.',
+    artifact,
+    artifacts:listReviewArtifacts(session.id),
+    developerState:getDeveloperState(session.id)
+  }, headers);
 }
 
 /* =============================================================================
@@ -416,7 +425,7 @@ export async function handleDeveloperModeApi(request, response, url) {
     }
 
     if (request.method === 'POST' && url.pathname === '/api/developer-mode/patches/propose') {
-      handlePatchProposal(request, response);
+      await handlePatchProposal(request, response);
       return true;
     }
 

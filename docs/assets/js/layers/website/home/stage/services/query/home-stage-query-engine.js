@@ -7,9 +7,10 @@
    05. KNOWLEDGE MATCH HELPERS
    06. ROUTING HELPERS
    07. DELEGATION HELPERS
-   08. RESPONSE RESOLUTION
-   09. EVENT BINDING
-   10. MODULE BOOT
+   08. DEVELOPER MODE HELPERS
+   09. RESPONSE RESOLUTION
+   10. EVENT BINDING
+   11. MODULE BOOT
    ========================================================= */
 
 /* =========================================================
@@ -20,6 +21,8 @@ import {
   formatActiveModelResponse,
   getActiveModelRoutingContext
 } from '../../../../system/model/active-model.js';
+
+import { requestHomeDeveloperAction } from '../../../developer-mode/developer-mode-api.js';
 
 /* =========================================================
    02. MODULE STATE
@@ -185,6 +188,61 @@ function dispatchHomeStageDelegation(eventName, detail) {
 }
 
 /* =========================================================
+   08. DEVELOPER MODE HELPERS
+   ========================================================= */
+
+function isHomeStageDeveloperModeActive() {
+  return document.documentElement?.dataset?.homeDeveloperMode === 'active';
+}
+
+function resolveHomeStageDeveloperModeResponse(payload, query) {
+  const normalizedQuery = normalizeHomeStageQuery(query);
+  const status = payload?.ok === false ? 'not ready' : 'received';
+  const reason = payload?.reason || payload?.message || payload?.error || '';
+
+  return formatActiveModelResponse(
+    'developer-mode',
+    [
+      `Developer Mode ${status}: “${normalizedQuery}”.`,
+      reason ? `Runtime response: ${reason}` : 'The request has been routed through the Developer Mode backend boundary.',
+      'Terminal execution, local file mutation, and VS Code patch application remain approval-gated future bridge capabilities.'
+    ].join(' ')
+  );
+}
+
+async function delegateHomeStageDeveloperQuery(query, queryId) {
+  const normalizedQuery = normalizeHomeStageQuery(query);
+
+  dispatchHomeStageDelegation('neuroartan:home-stage-developer-command-requested', {
+    query: normalizedQuery,
+    queryId,
+    source: 'homepage-interaction',
+  });
+
+  try {
+    const payload = await requestHomeDeveloperAction('patch-proposal-request', {
+      command: normalizedQuery,
+      query: normalizedQuery,
+      source: 'homepage-interaction',
+    });
+
+    dispatchHomeStageDelegation('neuroartan:home-stage-developer-command-artifact-created', {
+      ...payload,
+      query: normalizedQuery,
+      queryId,
+      source: 'homepage-interaction',
+    });
+
+    return resolveHomeStageDeveloperModeResponse(payload, normalizedQuery);
+  } catch (error) {
+    return formatActiveModelResponse(
+      'developer-mode',
+      `Developer Mode received: “${normalizedQuery}”. The backend developer bridge is not ready to execute this request yet. ${error?.message || ''}`.trim()
+    );
+  }
+}
+
+/* =========================================================
    05. KNOWLEDGE MATCH HELPERS
    ========================================================= */
 
@@ -221,6 +279,13 @@ function classifyHomeStageQuery(query) {
     return {
       route: 'empty',
       query: '',
+    };
+  }
+
+  if (isHomeStageDeveloperModeActive()) {
+    return {
+      route: 'developer-mode',
+      query: normalizedQuery,
     };
   }
 
@@ -289,10 +354,10 @@ function delegateHomeStagePlatformQuery(query, queryId) {
 }
 
 /* =========================================================
-   08. RESPONSE RESOLUTION
+   09. RESPONSE RESOLUTION
    ========================================================= */
 
-function resolveHomeStageQuery(query, queryId) {
+async function resolveHomeStageQuery(query, queryId) {
   const classification = classifyHomeStageQuery(query);
 
   if (classification.route === 'empty') {
@@ -310,6 +375,15 @@ function resolveHomeStageQuery(query, queryId) {
       response: formatActiveModelResponse('knowledge', classification.response),
       query: classification.query,
       id: classification.id,
+    };
+  }
+
+  if (classification.route === 'developer-mode') {
+    return {
+      route: 'developer-mode',
+      response: await delegateHomeStageDeveloperQuery(classification.query, queryId),
+      query: classification.query,
+      id: null,
     };
   }
 
@@ -355,12 +429,12 @@ function handleHomeStageQuerySubmitted(event) {
   dispatchHomeStageTranscript(query);
   dispatchHomeStageResponse('', queryId);
 
-  window.setTimeout(() => {
+  window.setTimeout(async () => {
     if (queryId !== HOME_STAGE_QUERY_ENGINE_STATE.activeQueryId) {
       return;
     }
 
-    const result = resolveHomeStageQuery(query, queryId);
+    const result = await resolveHomeStageQuery(query, queryId);
 
     if (result.route === 'empty') {
       dispatchHomeStageMode('idle');
@@ -384,7 +458,7 @@ function handleHomeStageQuerySubmitted(event) {
 }
 
 /* =========================================================
-   09. EVENT BINDING
+   10. EVENT BINDING
    ========================================================= */
 
 function bindHomeStageQueryEngineEvents() {
@@ -403,7 +477,7 @@ function bindHomeStageQueryEngineEvents() {
 }
 
 /* =========================================================
-   10. MODULE BOOT
+   11. MODULE BOOT
    ========================================================= */
 
 function bootHomeStageQueryEngine() {

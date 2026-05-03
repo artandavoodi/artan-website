@@ -32,7 +32,7 @@ system: "Neuroartan Website"
 
 spine_version: "1.0"
 template_lock: true
-version: "0.3"
+version: "0.5"
 
 created_date: "2026-05-02"
 last_updated: "2026-05-03"
@@ -51,16 +51,21 @@ scope:
   - "Developer Mode architecture"
   - "AI coding agent frontend boundary"
   - "Provider selection interface"
-  - "Repository-aware development command surface"
+  - "Repository-aware developer action routing"
   - "Secure backend runtime coordination"
   - "Developer-specific top menu architecture"
   - "Developer left and right sidebar architecture"
   - "Repository-aware developer workspace architecture"
   - "Codex-equivalent developer navigation model"
-  - "Developer command and review surface architecture"
+  - "Developer runtime, review, and context surface architecture"
   - "Homepage Developer Mode workspace implementation boundary"
   - "Backend session-state boundary"
   - "GitHub and provider configuration route boundary"
+  - "Canonical interactive panel command-input integration"
+  - "Developer Console execution-context boundary"
+  - "Local companion agent feasibility boundary"
+  - "Web-to-local terminal bridge architecture"
+  - "VS Code patch-application bridge architecture"
 
 index_targets:
   - "Website Planning Index"
@@ -90,7 +95,11 @@ tags:
   - "developer-sidebar"
   - "repository-workspace"
   - "codex-style-interface"
-  - "developer-command-surface"
+  - "developer-action-routing"
+  - "interactive-panel-integration"
+  - "local-agent-bridge"
+  - "web-terminal"
+  - "vscode-bridge"
 ---
 
 # Developer Mode Architecture Specification
@@ -112,7 +121,7 @@ The existing platform already includes early Developer Mode and development cock
 Current reusable elements include:
 
 - development cockpit shell
-- prompt composer
+- canonical homepage interactive panel
 - provider router interface
 - terminal scan generator
 - file target selector
@@ -150,7 +159,7 @@ No developer-specific right sidebar
 No repository workspace navigation model
 No developer-only replacement for platform navigation items such as Feed or public Dashboard
 No Codex-style session navigation model
-No visible command categories for scan, plan, debug, patch, review, test, commit, and pull request
+No fully integrated visible action categories for scan, plan, debug, patch, review, test, commit, and pull request through the canonical interactive panel
 No repository connection and discovery workflow surface
 No prompt engineering workspace
 No code review workspace
@@ -170,12 +179,13 @@ The target architecture is:
 
 ```text
 Developer Mode Toggle
+→ Existing Homepage Interactive Panel as Canonical Command Input
 → Developer Workspace Shell
 → Developer-Specific Top Menu
 → Developer Left Sidebar
-→ Developer Right Sidebar
-→ Developer Command Surface
-→ Voice/Text Command Composer
+→ Developer Right Context Sidebar
+→ Developer Execution / Review Surface
+→ Developer Runtime Router
 → Provider Router
 → Repository Scope Selector
 → Agent Runtime Server
@@ -184,6 +194,7 @@ Developer Mode Toggle
 → Scan / Plan / Patch / Test
 → Review & Approval Interface
 → Commit / Pull Request Execution
+→ Future Local Companion Agent / VS Code Bridge
 ```
 
 The browser is the command, navigation, context, and review surface.
@@ -296,7 +307,7 @@ Approved shell regions:
 ```text
 Developer top menu
 Developer left sidebar
-Main command/review surface
+Main runtime/review/context surface
 Developer right sidebar
 Runtime/status footer or status rail
 ```
@@ -311,7 +322,6 @@ home/developer-mode/
   developer-mode-topbar.html
   developer-mode-left-sidebar.html
   developer-mode-right-sidebar.html
-  developer-mode-command-surface.html
   developer-mode-status-rail.html
 ```
 
@@ -321,7 +331,6 @@ Potential style ownership:
 assets/css/layers/website/home/developer-mode/developer-mode-shell.css
 assets/css/layers/website/home/developer-mode/developer-mode-topbar.css
 assets/css/layers/website/home/developer-mode/developer-mode-sidebar.css
-assets/css/layers/website/home/developer-mode/developer-mode-command-surface.css
 ```
 
 Potential runtime ownership:
@@ -415,11 +424,11 @@ The right sidebar must not contain secrets, credentials, or direct mutation cont
 
 ---
 
-## VIII. Developer Command Surface Architecture
+## VIII. Developer Runtime, Review, and Context Surface Architecture
 
-The main command surface is the core Developer Mode working area.
+The main Developer Mode working area is the runtime, review, and context surface that reflects commands submitted through the canonical homepage interactive panel.
 
-Required command categories:
+Required action categories:
 
 ```text
 Prompt engineering
@@ -435,9 +444,55 @@ Pull request preparation
 Runtime log review
 ```
 
-The command surface should support both voice and text input.
+Voice and text input must be owned by the existing homepage interactive panel.
 
-It should provide structured command templates rather than one uncontrolled freeform field.
+The canonical command input must be the existing homepage interactive panel, not a separate Developer Mode prompt box.
+
+Developer Mode may expose developer-specific context, mode selection, repository selection, runtime status, review queues, patch previews, test results, and approval controls, but it must not create a duplicate canonical AI input surface when the homepage interaction panel already owns user-to-engine communication.
+
+Developer Mode command routing must therefore integrate with the established homepage stage query engine and response bridge.
+
+Developer Mode should therefore operate as an execution-context, runtime-status, and review surface rather than a second chatbot composer.
+## VIIIA. Canonical Interactive Panel Integration Model
+
+The existing homepage interactive panel is the canonical user command surface for Neuroartan.
+
+Developer Mode must integrate with that surface instead of replacing it with an isolated developer-only prompt box.
+
+The current canonical interaction layer includes the homepage stage query engine, homepage transcript events, homepage response events, homepage routing events, voice input foundations, platform search bridge, site knowledge bridge, and web search bridge.
+
+Developer Mode must extend this pathway through a developer-aware routing mode.
+
+Required routing model:
+
+```text
+Existing Interactive Panel
+→ Developer Mode Active State
+→ Developer Command Router
+→ Developer Runtime API
+→ Repository / Provider / Runtime Context
+→ Review / Approval Surface
+→ Existing Response Panel Output
+```
+
+When Developer Mode is active, commands submitted through the existing interactive panel should be routed through the Developer Runtime Router.
+
+When Developer Mode is inactive, the same interactive panel should preserve its normal homepage behavior.
+
+Developer Mode must not fragment the user experience into separate prompt boxes unless a temporary diagnostic composer is explicitly authorized.
+
+The long-term production model is:
+
+```text
+Single canonical input
+Multiple mode-aware execution routes
+Shared response surface
+Dedicated context and review workspaces
+```
+
+This preserves homepage coherence while allowing Developer Mode to become a controlled engineering environment.
+
+Structured developer action templates should be preserved as routing metadata for the canonical interactive panel rather than as a separate static command surface.
 
 Recommended command mode options:
 
@@ -507,12 +562,12 @@ Developer topbar JS ownership
 Developer shell mount location
 Developer left sidebar fragment structure
 Developer right sidebar fragment structure
-Developer command surface fragment structure
+Developer runtime/review/context surface structure
 Developer runtime state object
 Repository selector data source
 Branch selector data source
 Provider/runtime status data source
-Command mode registry
+Developer action mode registry
 Prompt template registry extension
 Debug workflow registry
 Review queue registry
@@ -531,8 +586,8 @@ No implementation should begin until the current architecture is scanned and the
 The frontend may own:
 
 - developer mode toggle visibility
-- developer command surface
-- voice-to-command interface
+- developer runtime, review, and context surface
+- developer action routing state
 - text prompt composer
 - provider selection interface
 - repository selection interface
@@ -581,6 +636,58 @@ The backend/runtime layer must own:
 The runtime must enforce explicit approval gates before repository mutation.
 
 ---
+
+## XIIA. Local Companion Agent and Terminal Bridge Feasibility Boundary
+
+A browser-based Developer Mode cannot directly read local terminal output, local documents, local repositories, or open Visual Studio Code files by itself.
+
+Direct browser access to local terminal and local file mutation is neither secure nor architecturally acceptable.
+
+The feasible professional model requires a trusted local bridge.
+
+Approved future local bridge options:
+
+```text
+Local Companion Agent
+VS Code Extension
+Desktop App Wrapper
+SSH / Remote Workspace Bridge
+Apple-native Developer Helper App
+```
+
+Preferred long-term Neuroartan model:
+
+```text
+Neuroartan Web App
+→ Developer Mode API
+→ Local Companion Agent on Mac
+→ Permissioned Repository Scanner
+→ Approval-Gated Terminal Executor
+→ Patch Application Service
+→ VS Code Workspace Bridge
+→ Result Stream Back to Web App
+```
+
+The local bridge may support:
+
+- local repository scanning
+- local folder indexing
+- governed vault-aware file discovery
+- terminal command proposal and execution after approval
+- patch application to local files after approval
+- Visual Studio Code file opening
+- Visual Studio Code workspace state reporting
+- test command execution
+- Git status and Git diff reporting
+- execution log streaming
+
+The local bridge must not support unrestricted background mutation.
+
+All terminal execution, file writing, dependency installation, Git operations, and patch application must pass through explicit approval gates.
+
+The browser must remain a review, command, and display surface. The local companion must own local machine access.
+
+This makes a ChatGPT/Codex-like local development experience feasible inside Neuroartan while preserving safety and institutional control.
 
 ## XIII. Security Boundaries
 
@@ -683,10 +790,31 @@ Phase 02A — Developer Navigation Architecture
 - define developer-specific top menu fragment structure
 - define developer left sidebar fragment structure
 - define developer right sidebar fragment structure
-- define command surface routing model
+- define developer action routing model through the canonical homepage interactive panel
 - define developer navigation fragment authority keys
 - document which public platform navigation items are excluded from Developer Mode
 - document which developer actions belong in top menu, sidebars, or command surface
+
+Phase 02B — Interactive Panel Command Integration
+
+- audit homepage interactive panel input ownership
+- audit homepage stage query engine routing
+- audit homepage response and transcript events
+- define Developer Mode as a mode-aware route inside the existing interaction pipeline
+- remove Developer Mode as a separate canonical prompt composer
+- preserve Developer Mode only as context, execution review, runtime output, and approval UI
+- route Developer Mode commands through the existing homepage interactive panel when Developer Mode is active
+- verify normal homepage input behavior remains unchanged when Developer Mode is inactive
+
+Phase 02C — Local Bridge Architecture Definition
+
+- define Local Companion Agent responsibilities
+- define VS Code bridge responsibilities
+- define local terminal execution approval gate
+- define local file read/write access boundary
+- define local repository indexing boundary
+- define audit log and rollback requirements
+- document which capabilities are web-only, backend-only, and local-agent-only
 
 Phase 03 — Backend Interface Stub
 
@@ -758,7 +886,7 @@ Implemented architecture now includes:
 - developer-specific topbar
 - developer left sidebar
 - developer right context sidebar
-- command surface
+- runtime, review, and context surface
 - repository panel
 - project panel
 - provider / agent panel
@@ -772,6 +900,14 @@ Implemented architecture now includes:
 - backend session persistence for selected project, repository, workspace, provider, and active agent
 
 Developer Mode is still not approved for autonomous repository mutation.
+
+Developer Mode is now architecturally redirected toward interactive-panel command integration.
+
+The existing homepage interactive panel must become the canonical command input for Developer Mode.
+
+The former static Developer command surface has been deprecated; preserved developer action labels, modes, descriptions, and runtime interfaces must migrate into canonical interactive-panel routing and runtime/review/context surfaces.
+
+The future ChatGPT/Codex-like local development experience is feasible only through a trusted local companion agent, VS Code extension, desktop wrapper, or equivalent local bridge. Browser-only access to local terminal and local files is not approved.
 
 Remaining maturity requirements:
 
@@ -812,10 +948,18 @@ Homepage Developer Mode frontend must not:
 - bypass review/approval gates
 
 Backend session state is transitional and is not the final commercial persistence layer. Canonical commercial persistence must graduate to Supabase profile state or a future company-owned profile/runtime service.
+
+The homepage Developer workspace must not become a duplicate input surface.
+
+Canonical text and voice command input should remain with the homepage interactive panel. Developer Mode should supply the context, selected repository, selected provider, selected runtime, review state, and execution controls used by that canonical input path.
+
+The Developer workspace may display routed action output, repository scans, runtime status, proposed patches, review artifacts, test results, and approval prompts, but the command origin must remain unified through the existing interaction layer.
 ----
 
 ## Change Log
 
+- 2026-05-03 — v0.5 Normalized Developer Mode architecture language after removal of the static command surface, preserving developer action labels, modes, descriptions, and runtime interfaces as routing metadata for the canonical homepage interactive panel and runtime/review/context surfaces. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Static command-surface deprecation and safe action-routing migration under `/Users/artan/Documents/Neuroartan/website`.
+- 2026-05-03 — v0.4 Redirected Developer Mode architecture toward canonical homepage interactive-panel command integration, defined Developer Mode as execution context / review / runtime surface rather than a duplicate prompt surface, and documented the feasibility boundary for web-based terminal, local companion agent, VS Code bridge, and approval-gated local file/terminal access. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Mode architecture redirection and backend/local-bridge feasibility review under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.3 Recorded first implemented homepage Developer Mode workspace and backend session-state boundary. Added status language for fragment-based topbar/sidebar/command/panel routing, GitHub OAuth/repository discovery, provider configuration, agent activation, project binding, and remaining Supabase/runtime blockers. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Codex. Agent ID: Codex. Execution Context: Developer Mode implementation pass under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.2 Expanded Developer Mode architecture to define the missing developer-specific top menu, developer workspace shell, left sidebar, right sidebar, command surface, Codex-equivalent navigation model, Control Center nested settings doctrine reuse requirement, and missing ownership map before implementation. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Mode architecture maturity audit under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-02 — v0.1 Created Developer Mode Architecture Specification to define the governed frontend/backend boundary for Codex-equivalent developer functionality. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Mode architecture specification under `/Users/artan/Documents/Neuroartan/website`.
@@ -829,6 +973,6 @@ GSA PROTOCOL STATUS: Pending Review
 GSA APPROVAL: false  
 LEGAL REVIEW REQUIRED: true  
 CREO REVIEW REQUIRED: true  
-VERSION: 0.3
+VERSION: 0.5
 
 END OF DOCUMENT

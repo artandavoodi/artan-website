@@ -22,7 +22,7 @@ export function renderHomeDeveloperRouteButtons(container, items = []) {
     const button = document.createElement('button');
     button.className = 'home-developer-mode-route';
     button.type = 'button';
-    button.dataset.homeDeveloperRoutePanel = item.panel || 'command';
+    button.dataset.homeDeveloperRoutePanel = item.panel || 'repositories';
     button.dataset.homeDeveloperRouteMode = item.mode || '';
     button.textContent = item.label || item.id || 'Route';
     button.setAttribute('aria-pressed', 'false');
@@ -33,7 +33,7 @@ export function renderHomeDeveloperRouteButtons(container, items = []) {
 /* =============================================================================
    03) PANEL ROUTING
 ============================================================================= */
-export function setHomeDeveloperActivePanel(root, panelId = 'command') {
+export function setHomeDeveloperActivePanel(root, panelId = 'repositories') {
   root.querySelectorAll('[data-home-developer-panel]').forEach((panel) => {
     const isActive = panel.dataset.homeDeveloperPanel === panelId;
     panel.hidden = !isActive;

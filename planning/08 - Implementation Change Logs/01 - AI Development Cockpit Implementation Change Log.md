@@ -32,7 +32,7 @@ system: "Website Planning"
 
 spine_version: "1.0"
 template_lock: "Global Document Metadata Standard"
-version: "0.3"
+version: "0.5"
 
 created_date: "2026-05-02"
 last_updated: "2026-05-03"
@@ -59,6 +59,13 @@ scope:
   - "Homepage Developer Mode workspace implementation trace"
   - "Developer Mode backend session-state tracking"
   - "GitHub and provider backend boundary tracking"
+  - "Developer Mode homepage workspace rebuild trace"
+  - "Developer Mode CSS import-chain stabilization trace"
+  - "Developer Mode routing-state correction trace"
+  - "Interactive panel command-integration direction trace"
+  - "Local companion agent and VS Code bridge feasibility trace"
+  - "Static Developer command surface deprecation trace"
+  - "Developer action metadata migration trace"
 
 index_targets:
   - "Website Planning Index"
@@ -81,6 +88,19 @@ related:
   - "/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/interaction-settings/interaction-settings-shell.css"
   - "/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/interaction-settings/interaction-settings-shell.js"
   - "/Users/artan/Documents/Neuroartan/website/docs/assets/js/core/01-foundation/fragment-authorities.js"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/data/website/development-cockpit/homepage-developer-mode-registry.json"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/js/core/03-runtime/global-layout-injection.js"
+  - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/03 - Developer Mode Architecture Specification.md"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/00-home-all.css"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/developer-mode/developer-mode-shell.html"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/developer-mode-shell.css"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/right-sidebar/developer-mode-right-sidebar.css"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/shared/developer-mode-sidebar-shared.css"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/developer-mode-state.js"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/developer-mode-navigation.js"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/developer-mode-shell.js"
+  - "/Users/artan/Documents/Neuroartan/website/server/developer-mode/api-router.mjs"
+  - "/Users/artan/Documents/Neuroartan/website/server/developer-mode/repository-scan-service.mjs"
 
 tags:
   - "website-planning"
@@ -93,6 +113,14 @@ tags:
   - "apple-native-settings"
   - "platform-menu-reuse"
   - "company-style"
+  - "developer-mode-rebuild"
+  - "interactive-panel-integration"
+  - "developer-console"
+  - "local-agent-bridge"
+  - "vscode-bridge"
+  - "web-terminal"
+  - "static-command-surface-deprecated"
+  - "developer-action-routing"
 ---
 
 # AI Development Cockpit Implementation Change Log
@@ -130,6 +158,203 @@ Unverified work must be marked as unverified.
 ---
 
 ## 3. Current Session Record
+
+### 2026-05-03 — Developer Mode Homepage Console Rebuild, Import-Chain Stabilization, and Interactive Panel Redirection
+
+Execution Agent: ChatGPT / Website Systems & Development Agent
+
+Implementation Objective:
+
+Rebuild the homepage-routed Developer Mode console into a clear three-column structure; preserve the achieved Developer topbar; stabilize the Developer Mode CSS import chain; correct routed-panel state conflicts; begin component-level styling; audit the backend/runtime state; and redirect Developer Mode architecture toward the existing homepage interactive panel as the canonical command input.
+
+Documents Read:
+
+- `/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/03 - Developer Mode Architecture Specification.md`
+- `/Users/artan/Documents/Neuroartan/website/planning/08 - Implementation Change Logs/01 - AI Development Cockpit Implementation Change Log.md`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/interaction-settings/interaction-settings-shell.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/interaction-settings/interaction-settings-shell.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/services/query/home-stage-query-engine.js`
+- `/Users/artan/Documents/Neuroartan/website/server/developer-mode/api-router.mjs`
+- `/Users/artan/Documents/Neuroartan/website/server/developer-mode/repository-scan-service.mjs`
+- `/Users/artan/Documents/Neuroartan/website/server/developer-mode/runtime-store.mjs`
+
+Files Modified:
+
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/00-home-all.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/data/website/development-cockpit/homepage-developer-mode-registry.json`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/developer-mode-shell.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/right-sidebar/developer-mode-right-sidebar.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/shared/developer-mode-sidebar-shared.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/developer-mode-state.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/developer-mode-navigation.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/developer-mode-shell.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/core/01-foundation/fragment-authorities.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/core/03-runtime/global-layout-injection.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/00-developer-mode-all.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/00-developer-mode-all.css`
+- `/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/03 - Developer Mode Architecture Specification.md`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/services/query/home-stage-query-engine.js`
+- `/Users/artan/Documents/Neuroartan/website/server/developer-mode/runtime-store.mjs`
+- `/Users/artan/Documents/Neuroartan/website/server/developer-mode/api-router.mjs`
+- `/Users/artan/Documents/Neuroartan/website/planning/08 - Implementation Change Logs/01 - AI Development Cockpit Implementation Change Log.md`
+
+Files Created:
+
+- None.
+
+Files Removed:
+
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/developer-mode/command-surface/developer-mode-command-surface.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/command-surface/00-developer-mode-command-surface-all.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/command-surface/developer-mode-command-surface.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/command-surface/00-developer-mode-command-surface-all.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/command-surface/developer-mode-command-surface.js`
+
+Systems Implemented:
+
+- Developer Mode CSS registered into the active homepage CSS import chain through `00-home-all.css`.
+- Developer Mode shell rebuilt into a visible homepage console structure with left navigation column, center command/routed-panel column, and right context column.
+- Achieved Developer topbar ownership preserved through the existing `home-developer-mode-topbar` fragment mount.
+- Developer body structure corrected without changing the topbar/menu architecture.
+- Old invalid routed-panel fallback to `command` removed from Developer Mode state, navigation, and shell event routing.
+- Default routed panel corrected to `repositories`.
+- Static command-surface ownership was removed from Developer Mode; center content is now reserved for runtime, review, repository, provider, project, and context surfaces driven by canonical interactive-panel routing.
+- Developer shell CSS corrected so undefined width and height tokens no longer invalidate grid layout.
+- Premature `980px` one-column collapse rule removed to preserve the desktop console structure during stabilization.
+- Sidebar navigation CSS upgraded as a scoped local navigation primitive.
+- Local Developer component styling was upgraded for panels, lists, review artifacts, outputs, and routed review/runtime surfaces after command-surface deprecation.
+- Right sidebar CSS upgraded as local context-card styling.
+- Developer Mode Architecture Specification upgraded to version `0.4` with canonical interactive-panel command integration and local companion/terminal bridge feasibility boundary.
+- Homepage stage query engine now detects active Developer Mode through `document.documentElement.dataset.homeDeveloperMode`.
+- Homepage interactive panel queries now route to a Developer Mode pathway when Developer Mode is active.
+- Developer Mode homepage input routing now delegates to the existing Developer backend boundary through the `patch-proposal-request` interface.
+- Developer Mode command responses now return through the existing homepage stage response event path instead of a separate canonical prompt surface.
+- Runtime store now includes non-mutating review artifact storage for Developer Mode patch proposal requests.
+- `/api/developer-mode/patches/propose` now creates and returns a runtime-memory review artifact instead of returning only `provider_runtime_required`.
+- Patch proposal review artifacts explicitly record that no terminal command was executed, no file was read or written, no mutation was applied, and provider runtime execution remains pending.
+- Static Developer command surface was deprecated and removed after command routing was migrated to the canonical homepage interactive panel.
+- Command-surface CSS and JS imports were removed from Developer Mode root import files.
+- Command-surface fragment authority references were removed from both fragment authority ownership maps.
+- Developer action labels, modes, descriptions, and runtime interfaces were preserved in `homepage-developer-mode-registry.json` as routing metadata instead of being deleted.
+- Former `panel: "command"` registry references were migrated to valid existing panels such as `review`, `runtime`, and `repositories`.
+
+Systems Scaffolded Only:
+
+- Developer Mode is structurally visible and organized, but the visual design is not yet fully polished to the global Control Center standard.
+- The former static Developer command surface has been removed; preserved developer action metadata now requires full integration with the canonical homepage interactive panel and runtime/review/context surfaces.
+- Backend Developer Mode routes exist for state, providers, GitHub status, repository discovery, repository scan, and patch proposal review artifacts, but do not yet provide provider-generated patches, sandboxed mutation, or a local terminal bridge.
+- Local terminal access, local folder scanning, VS Code file application, and local patch execution require a future trusted local companion agent, VS Code extension, desktop wrapper, SSH bridge, or Apple-native helper app.
+
+Systems Not Completed:
+
+- Full canonical command execution through Developer Mode is not complete; the first homepage interactive-panel route into the Developer backend boundary is implemented, and runtime-memory review artifact storage exists, but provider runtime execution, durable artifact persistence, patch generation, and approval-surface rendering remain blocked.
+- Static Developer command composer has been removed, but preserved developer action metadata still requires full canonical interactive-panel routing, visible action-category rendering, and runtime/review/context surface polish.
+- Local companion agent was not created.
+- VS Code bridge was not created.
+- Approval-gated terminal execution was not implemented.
+- Patch application into local files from the web app was not implemented.
+- Final Developer Console visual polish remains pending.
+
+Verification Performed:
+
+- Confirmed Developer Mode CSS import chain is active from `00-home-all.css` to `developer-mode/00-developer-mode-all.css` to `developer-mode-shell.css`.
+- Confirmed served CSS contains Developer Mode shell grid rules.
+- Confirmed invalid `panel-width-sm`, `panel-width-md`, and direct `home-dashboard-topbar-height` dependencies were removed or given safe fallback behavior.
+- Confirmed the `980px` forced one-column collapse rule was removed.
+- Confirmed Developer topbar remains fragment-owned and was not inlined into the shell.
+- Confirmed no `command` routed-panel fallback remains in Developer Mode JS or shell HTML.
+- Confirmed active routed panels are `repositories`, `projects`, `agents`, `runtime`, `review`, and `settings`.
+- Confirmed Developer Mode structure is now visible and clear, though not yet globally polished.
+- Confirmed backend contains Developer Mode server, API router, provider service, runtime store, GitHub service, and repository scan service.
+- Confirmed browser-only local terminal/file access is not feasible securely and requires a trusted local bridge.
+- Confirmed the served homepage stage query engine contains the Developer Mode route, `requestHomeDeveloperAction` import, and `patch-proposal-request` delegation.
+- Confirmed backend route `/api/developer-mode/patches/propose` exists and responds through the Developer Mode server.
+- Confirmed the previous backend response was `provider_runtime_required`, then implemented and verified runtime-memory review artifact creation for `/api/developer-mode/patches/propose`.
+- Confirmed `/api/developer-mode/patches/propose` now returns `ok: true`, `status: review_artifact_created_provider_runtime_pending`, a review artifact object, the current artifact list, and developer state.
+- Confirmed the review artifact diagnostics explicitly preserve no-terminal, no-file-read/write, no-mutation, provider-runtime-pending, and explicit-approval-required boundaries.
+- Confirmed no active static command-surface references remain in `docs/assets` or `server`.
+- Confirmed deleted command-surface files are no longer imported by Developer Mode root CSS or JS.
+- Confirmed registry JSON remains valid after migration.
+- Confirmed `commandModes`, labels, descriptions, and `runtimeInterface` metadata were preserved.
+
+Verification Commands Run:
+
+```bash
+cd "/Users/artan/Documents/Neuroartan/website" && {
+  grep -RInE "developer-mode/00-developer-mode-all.css|developer-mode-shell.css" \
+    "docs/assets/css/layers/website/home/00-home-all.css" \
+    "docs/assets/css/layers/website/home/developer-mode/00-developer-mode-all.css"
+
+  grep -RInE "activePanel:'command'|panel:'command'|\\|\\| 'command'|data-home-developer-panel=\"command\"" \
+    "docs/assets/js/layers/website/home/developer-mode" \
+    "docs/assets/fragments/layers/website/home/developer-mode" || true
+
+  grep -nE "grid-template-columns|max-width: 980|grid-column-single|grid-column:1 / -1|shell-viewport-height|left-column-width|right-column-width" \
+    "docs/assets/css/layers/website/home/developer-mode/developer-mode-shell.css"
+
+  grep -nE "data-include=\"home-developer-mode-topbar\"|home-dashboard-topbar home-developer-mode-topbar" \
+    "docs/assets/fragments/layers/website/home/developer-mode/developer-mode-shell.html" \
+    "docs/assets/fragments/layers/website/home/developer-mode/topbar/developer-mode-topbar.html"
+
+  curl -s "http://127.0.0.1:8891/assets/js/layers/website/home/stage/services/query/home-stage-query-engine.js" | grep -nE "requestHomeDeveloperAction|developer-mode|patch-proposal-request|setTimeout\(async"
+
+  curl -s -X POST "http://127.0.0.1:8891/api/developer-mode/patches/propose" \
+    -H "Content-Type: application/json" \
+    -d '{"command":"scan current developer mode structure","source":"homepage-interaction-route-check"}' | python3 -m json.tool
+
+  grep -nE '"id": "patch-proposal-request"|"route": "/api/developer-mode/patches/propose"' \
+    "docs/assets/data/website/development-cockpit/developer-runtime-interface-registry.json"
+
+  grep -RInE "command-surface|developer-mode-command-surface|home-developer-mode-command-surface" \
+    "docs/assets" "server" | sed -n '1,300p'
+
+  python3 -m json.tool "docs/assets/data/website/development-cockpit/homepage-developer-mode-registry.json" >/dev/null && echo "homepage-developer-mode-registry.json valid"
+
+  grep -nE '"panel": "command"|"command": "home-developer-mode-command-surface"|commandModes|runtimeInterface|description' \
+    "docs/assets/data/website/development-cockpit/homepage-developer-mode-registry.json"
+}
+```
+
+Verification Result:
+
+- Developer Mode CSS import chain is active.
+- Served Developer Mode CSS is active.
+- Developer shell now renders as a visible structured console.
+- Developer topbar remains preserved.
+- Routed-panel state no longer targets the removed `command` route.
+- Structure is approved as clear and usable for the next styling pass.
+- Visual styling remains incomplete and must be polished next.
+- Homepage interactive-panel Developer Mode routing is now implemented at the canonical stage query-engine layer.
+- Developer Mode backend patch proposal boundary is reachable and now creates a non-mutating runtime-memory review artifact while provider runtime execution remains pending.
+- Static command-surface runtime references are removed.
+- Developer action metadata is preserved and migrated to valid routing panels.
+
+Blockers:
+
+- Canonical command routing through the existing homepage interactive panel has its first route implemented, and runtime-memory review artifact storage exists, but actual Developer Mode execution remains blocked by missing provider runtime adapter, durable artifact persistence, visible review artifact surface, and approval workflow rendering.
+- Preserved developer action metadata still needs a proper visible routing surface and canonical homepage-interactive-panel execution mapping.
+- Local Mac terminal access cannot be implemented in browser-only code.
+- Local file/folder access and VS Code edit application require a trusted local companion layer.
+- Full backend execution, sandbox/worktree mutation, test execution, and patch application remain approval-gated future work.
+
+Remaining Work:
+
+- Expand the implemented Developer Mode stage query route into a full execution router with provider runtime adapter, durable review artifact persistence, patch preview, approval gates, visible review artifact surface, and response streaming.
+- Complete migration of preserved developer action metadata into canonical homepage interactive-panel routing and visible runtime/review/context surfaces.
+- Continue converting Developer Mode center content into context, execution review, runtime status, output, and approval UI using preserved developer action metadata.
+- Define and build the Local Companion Agent architecture.
+- Define and build the VS Code bridge or equivalent local patch application mechanism.
+- Continue visual styling polish using the Control Center as the active design reference.
+
+Next Exact Action:
+
+Connect preserved developer action metadata to the canonical homepage interactive panel and visible runtime/review/context surfaces, then continue visual polish from the Control Center reference.
+
+Next Exact File To Open:
+
+`/Users/artan/Documents/Neuroartan/website/docs/assets/data/website/development-cockpit/homepage-developer-mode-registry.json`
+
+---
 
 ### 2026-05-03 — Control Center Nested Settings Baseline and Company-Style System Lock
 
@@ -729,6 +954,10 @@ cd "/Users/artan/Documents/Neuroartan/website" && {
 
 ## Change Log
 
+- 2026-05-03 — v0.5 Recorded safe deprecation and removal of the static Developer command surface, removal of stale command-surface imports and fragment authorities, and preservation/migration of developer action labels, modes, descriptions, and runtime interfaces as routing metadata. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Static command-surface removal and developer action metadata migration under `/Users/artan/Documents/Neuroartan/website`.
+
+- 2026-05-03 — v0.4 Recorded Developer Mode homepage console rebuild, CSS import-chain stabilization, routed-panel state correction, component styling pass, backend capability scan, interactive-panel command-integration direction, non-mutating runtime-memory review artifact scaffold, and local companion / VS Code bridge feasibility boundary. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Mode structural rebuild, architecture redirection, and review artifact backend scaffold under `/Users/artan/Documents/Neuroartan/website`.
+
 - 2026-05-03 — v0.3 Recorded Developer Mode backend, homepage workspace, GitHub authorization boundary, repository discovery boundary, provider configuration, agent activation, project binding, Control Center Developer status, and verification results. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Codex. Agent ID: Codex. Execution Context: Website Developer Mode implementation layer under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.2 Control Center nested settings baseline recorded. Documented Stage-style grouped surface propagation, folder-based section module migration, Session nested child panels, fragment authority updates, icon-only drill-in interaction, local native icon enforcement, token-based nested navigation, rounded theme-aware left/right wrapper, symmetrical header centering, and Platform Menu reuse requirement. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Control Center nested settings pilot under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-02 — v0.1 Codex implementation session recorded for modular AI Development Cockpit scaffolding, model creation route, Supabase-ready profile media storage, and touched CSS tokenization. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Codex. Agent ID: Codex. Execution Context: Website implementation layer under `/Users/artan/Documents/Neuroartan/website`.
@@ -743,7 +972,7 @@ GSA APPROVAL: false
 DOCUMENT STATUS: Draft — AI Development Cockpit Implementation Change Log  
 VISIBILITY: Internal  
 PUBLISH TO WEBSITE: No  
-VERSION: 0.3
+VERSION: 0.5
 
 ---
 

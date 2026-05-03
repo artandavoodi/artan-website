@@ -1,116 +1,266 @@
 /* =============================================================================
-   00) FILE INDEX
-   01) SHELL TOKENS
-   02) SHELL LAYOUT
-   03) PANEL SURFACES
-   04) RESPONSIVE
+   NEUROARTAN · HOME DEVELOPER MODE · SHELL
+   -----------------------------------------------------------------------------
+   Purpose: Parent-only Developer Console shell layout. Component surface,
+   typography, and local visual styling are owned by each section CSS owner.
 ============================================================================= */
 
 /* =============================================================================
-   01) SHELL TOKENS
+   00) FILE INDEX
+   -----------------------------------------------------------------------------
+   01) SHELL LAYOUT TOKENS
+   02) SHELL FRAME
+   03) TOPBAR SLOT
+   04) VIEWPORT AND WORKSPACE GRID
+   05) COLUMN SLOTS
+   06) SECTION FRAME TOKENS
+   07) SECTION SLOTS
+   08) SECTION TYPOGRAPHY
+   09) ACTION METADATA SURFACES
+   10) VISIBILITY BINDINGS
+   11) RESPONSIVE SAFETY
+============================================================================= */
+
+/* =============================================================================
+   01) SHELL LAYOUT TOKENS
 ============================================================================= */
 :root{
-  --home-developer-mode-gap:var(--layout-home-platform-destination-card-inner-gap);
-  --home-developer-mode-panel-padding-y:var(--layout-home-platform-destination-card-padding-y);
-  --home-developer-mode-panel-padding-x:var(--layout-home-platform-destination-card-padding-x);
-  --home-developer-mode-border:var(--border-width-hairline) solid var(--home-panel-card-border);
-  --home-developer-mode-surface:var(--home-panel-card-surface);
-  --home-developer-mode-title-size:var(--layout-home-platform-destination-title-size);
-  --home-developer-mode-copy-size:var(--layout-home-platform-destination-copy-size);
-  --home-developer-mode-copy-line:var(--layout-home-platform-destination-copy-line-height);
+  --home-developer-mode-shell-gap:var(--spacing-lg);
+  --home-developer-mode-shell-padding-y:var(--spacing-lg);
+  --home-developer-mode-shell-padding-x:var(--spacing-lg);
+  --home-developer-mode-shell-viewport-height:calc(100vh - var(--home-dashboard-topbar-height, var(--control-height-xl)));
+  --home-developer-mode-column-gap:var(--spacing-lg);
+  --home-developer-mode-left-column-width:minmax(var(--spacing-none), var(--layout-home-platform-rail-width));
+  --home-developer-mode-right-column-width:minmax(var(--spacing-none), var(--layout-home-platform-subrail-width));
+  --home-developer-mode-section-surface:var(--home-interaction-settings-control-group-surface-bg, var(--home-interaction-panel-bg, var(--surface-primary-color)));
+  --home-developer-mode-section-border:var(--home-interaction-settings-control-group-surface-border, var(--home-interaction-panel-border, var(--border-color)));
+  --home-developer-mode-section-separator:var(--home-interaction-settings-control-group-row-separator, var(--border-color));
+  --home-developer-mode-section-text:var(--text-primary-color);
+  --home-developer-mode-section-muted:var(--text-secondary-color);
+  --home-developer-mode-section-padding-block:var(--spacing-md);
+  --home-developer-mode-section-padding-inline:var(--spacing-md);
+  --home-developer-mode-section-header-gap:var(--spacing-xs);
 }
 
 /* =============================================================================
-   02) SHELL LAYOUT
+   02) SHELL FRAME
 ============================================================================= */
 .home-developer-mode-shell{
-  display:grid;
-  gap:var(--home-developer-mode-gap);
+  display:flex;
+  flex-direction:column;
   width:var(--size-full);
+  min-width:var(--spacing-none);
+  min-height:100vh;
+  max-height:100vh;
+  overflow:hidden;
 }
 
-.home-developer-mode-shell__layout{
-  display:grid;
-  grid-template-columns:repeat(var(--layout-home-platform-destination-grid-count), minmax(var(--spacing-none), var(--grid-column-single)));
-  gap:var(--home-developer-mode-gap);
-  align-items:start;
-}
-
-.home-developer-mode-shell__left,
-.home-developer-mode-shell__right,
-.home-developer-mode-shell__main{
+/* =============================================================================
+   03) TOPBAR SLOT
+============================================================================= */
+.home-developer-mode-shell__topbar{
+  flex:0 0 auto;
+  width:var(--size-full);
   min-width:var(--spacing-none);
 }
 
 /* =============================================================================
-   03) PANEL SURFACES
+   04) VIEWPORT AND WORKSPACE GRID
 ============================================================================= */
-.home-developer-mode-panel,
-.home-developer-mode-context,
-.home-developer-mode-sidebar{
-  border:var(--home-developer-mode-border);
-  background:var(--home-developer-mode-surface);
+.home-developer-mode-shell__viewport{
+  display:flex;
+  flex:1 1 auto;
+  width:var(--size-full);
+  min-width:var(--spacing-none);
+  min-height:var(--spacing-none);
+  height:var(--home-developer-mode-shell-viewport-height);
+  padding:var(--home-developer-mode-shell-padding-y) var(--home-developer-mode-shell-padding-x);
+  overflow:hidden;
 }
 
-.home-developer-mode-panel,
-.home-developer-mode-context,
-.home-developer-mode-sidebar{
+.home-developer-mode-shell__workspace{
   display:grid;
-  gap:var(--home-developer-mode-gap);
-  padding:var(--home-developer-mode-panel-padding-y) var(--home-developer-mode-panel-padding-x);
-}
-
-.home-developer-mode-panel__header{
-  display:grid;
-  gap:var(--layout-home-platform-destination-list-gap);
-}
-
-.home-developer-mode-panel__eyebrow,
-.home-developer-mode-panel__title,
-.home-developer-mode-panel__copy{
-  margin:var(--spacing-none);
-}
-
-.home-developer-mode-panel__eyebrow,
-.home-developer-mode-context__label,
-.home-developer-mode-sidebar__label{
-  color:var(--text-secondary-color);
-  font-size:var(--layout-home-platform-destination-label-size);
-  font-weight:var(--layout-home-platform-destination-label-weight);
-  letter-spacing:var(--layout-home-platform-destination-label-tracking);
-  text-transform:uppercase;
-}
-
-.home-developer-mode-panel__title{
-  color:var(--text-primary-color);
-  font-size:var(--home-developer-mode-title-size);
-  font-weight:var(--layout-home-platform-destination-title-weight);
-  line-height:var(--layout-home-platform-destination-title-line-height);
-}
-
-.home-developer-mode-panel__copy,
-.home-developer-mode-output,
-.home-developer-mode-context__list{
-  color:var(--text-secondary-color);
-  font-size:var(--home-developer-mode-copy-size);
-  line-height:var(--home-developer-mode-copy-line);
-}
-
-.home-developer-mode-output{
-  overflow:auto;
-  min-height:var(--control-height-lg);
-  margin:var(--spacing-none);
-  padding:var(--spacing-sm) var(--control-padding-x-md);
-  border:var(--home-developer-mode-border);
-  background:var(--surface-2);
-  white-space:pre-wrap;
+  grid-template-columns:var(--home-developer-mode-left-column-width) minmax(var(--spacing-none), 1fr) var(--home-developer-mode-right-column-width);
+  gap:var(--home-developer-mode-column-gap);
+  align-items:stretch;
+  width:var(--size-full);
+  min-width:var(--spacing-none);
+  min-height:var(--spacing-none);
+  height:var(--size-full);
 }
 
 /* =============================================================================
-   04) RESPONSIVE
+   05) COLUMN SLOTS
 ============================================================================= */
-@media (max-width:980px){
-  .home-developer-mode-shell__layout{
-    grid-template-columns:var(--grid-column-single);
+.home-developer-mode-shell__column{
+  display:grid;
+  grid-template-rows:minmax(var(--spacing-none), 1fr) auto;
+  gap:var(--home-developer-mode-shell-gap);
+  min-width:var(--spacing-none);
+  min-height:var(--spacing-none);
+  height:var(--size-full);
+  overflow:hidden;
+}
+
+.home-developer-mode-shell__column--center{
+  grid-template-rows:auto minmax(var(--spacing-none), 1fr) auto auto auto auto auto;
+}
+
+.home-developer-mode-shell__column--right{
+  border-left:var(--border-width-sm) solid red;
+}
+
+/* =============================================================================
+   06) SECTION FRAME TOKENS
+============================================================================= */
+.home-developer-mode-shell__section{
+  color:var(--home-developer-mode-section-text);
+  background:var(--home-developer-mode-section-surface);
+  border:var(--border-width-hairline) solid var(--home-developer-mode-section-border);
+}
+
+/* =============================================================================
+   07) SECTION SLOTS
+============================================================================= */
+.home-developer-mode-shell__section{
+  display:flex;
+  flex-direction:column;
+  min-width:var(--spacing-none);
+  min-height:var(--spacing-none);
+  overflow:hidden;
+}
+
+.home-developer-mode-shell__section-header{
+  flex:0 0 auto;
+  min-width:var(--spacing-none);
+  display:flex;
+  flex-direction:column;
+  gap:var(--home-developer-mode-section-header-gap);
+  padding:var(--home-developer-mode-section-padding-block) var(--home-developer-mode-section-padding-inline);
+  border-bottom:var(--border-width-hairline) solid var(--home-developer-mode-section-separator);
+}
+
+.home-developer-mode-shell__section-body{
+  display:flex;
+  flex:1 1 auto;
+  flex-direction:column;
+  min-width:var(--spacing-none);
+  min-height:var(--spacing-none);
+  overflow:auto;
+  padding:var(--home-developer-mode-section-padding-block) var(--home-developer-mode-section-padding-inline);
+}
+
+/* =============================================================================
+   08) SECTION TYPOGRAPHY
+============================================================================= */
+.home-developer-mode-shell__section-eyebrow,
+.home-developer-mode-shell__section-title,
+.home-developer-mode-shell__section-copy{
+  margin:var(--spacing-none);
+}
+
+.home-developer-mode-shell__section-eyebrow{
+  color:var(--home-developer-mode-section-muted);
+  font-size:var(--font-size-caption);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-label);
+  line-height:var(--line-height-tight);
+  text-transform:uppercase;
+}
+
+.home-developer-mode-shell__section-title{
+  color:var(--home-developer-mode-section-text);
+  font-size:var(--font-size-body-1);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-copy);
+  line-height:var(--line-height-tight);
+}
+
+.home-developer-mode-shell__section-copy{
+  color:var(--home-developer-mode-section-muted);
+  font-size:var(--font-size-body-3);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-copy);
+  line-height:var(--line-height-copy);
+}
+
+/* =============================================================================
+   09) ACTION METADATA SURFACES
+============================================================================= */
+.home-developer-mode-action-metadata{
+  display:flex;
+  flex:0 0 auto;
+  flex-direction:column;
+  min-width:var(--spacing-none);
+  color:var(--home-developer-mode-section-text);
+  background:transparent;
+  border:var(--border-width-hairline) solid var(--home-developer-mode-section-border);
+  overflow:hidden;
+}
+
+.home-developer-mode-action-metadata__header{
+  display:flex;
+  flex:0 0 auto;
+  flex-direction:column;
+  gap:var(--home-developer-mode-section-header-gap);
+  padding:var(--home-developer-mode-section-padding-block) var(--home-developer-mode-section-padding-inline);
+  border-bottom:var(--border-width-hairline) solid var(--home-developer-mode-section-separator);
+}
+
+.home-developer-mode-action-metadata__eyebrow,
+.home-developer-mode-action-metadata__title,
+.home-developer-mode-action-metadata__copy,
+.home-developer-mode-action-metadata__empty{
+  margin:var(--spacing-none);
+}
+
+.home-developer-mode-action-metadata__eyebrow{
+  color:var(--home-developer-mode-section-muted);
+  font-size:var(--font-size-caption);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-label);
+  line-height:var(--line-height-tight);
+  text-transform:uppercase;
+}
+
+.home-developer-mode-action-metadata__title{
+  color:var(--home-developer-mode-section-text);
+  font-size:var(--font-size-body-1);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-copy);
+  line-height:var(--line-height-tight);
+}
+
+.home-developer-mode-action-metadata__copy,
+.home-developer-mode-action-metadata__empty{
+  color:var(--home-developer-mode-section-muted);
+  font-size:var(--font-size-body-3);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-copy);
+  line-height:var(--line-height-copy);
+}
+
+.home-developer-mode-action-metadata__list{
+  display:grid;
+  gap:var(--spacing-sm);
+  min-width:var(--spacing-none);
+  min-height:var(--spacing-none);
+  padding:var(--home-developer-mode-section-padding-block) var(--home-developer-mode-section-padding-inline);
+  overflow:auto;
+}
+
+/* =============================================================================
+   10) VISIBILITY BINDINGS
+============================================================================= */
+.home-developer-mode-shell__section-body[hidden]{
+  display:none;
+}
+
+/* =============================================================================
+   11) RESPONSIVE SAFETY
+============================================================================= */
+@media (max-width: 1200px){
+  .home-developer-mode-shell__workspace{
+    grid-template-columns:var(--home-developer-mode-left-column-width) minmax(var(--spacing-none), 1fr) var(--home-developer-mode-right-column-width);
   }
 }

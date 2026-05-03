@@ -1,6 +1,7 @@
 /* =============================================================================
    00) FILE INDEX
    01) HOME LAYER AUTHORITY IMPORTS
+   01A) HOME DEVELOPER MODE AUTHORITY IMPORTS
    02) END OF FILE
 ============================================================================= */
 
@@ -14,6 +15,11 @@
 @import url('./platform-menu/00-platform-menu-all.css');
 @import url('./stage/00-stage-all.css');
 @import url('./interaction-settings/00-interaction-settings-all.css');
+
+/* =============================================================================
+   01A) HOME DEVELOPER MODE AUTHORITY IMPORTS
+============================================================================= */
+@import url('./developer-mode/00-developer-mode-all.css');
 
 /* =============================================================================
    02) END OF FILE

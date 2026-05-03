@@ -18,7 +18,7 @@ const HOME_DEVELOPER_MODE_STATE = {
   registry:null,
   providers:[],
   projects:[],
-  activePanel:'command',
+  activePanel:'repositories',
   activeMode:'scan-repository',
   developerState:null,
   providerStatuses:[]

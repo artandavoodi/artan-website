@@ -5,8 +5,9 @@
    03) SESSION STORE
    04) PROJECT STORE
    05) AGENT SESSION STORE
-   06) DEVELOPER STATE STORE
-   07) END OF FILE
+   06) REVIEW ARTIFACT STORE
+   07) DEVELOPER STATE STORE
+   08) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -96,6 +97,7 @@ const sessions = new Map();
 const oauthStates = new Map();
 const projects = new Map();
 const agentSessions = new Map();
+const reviewArtifacts = new Map();
 
 export function createSession() {
   const id = crypto.randomUUID();
@@ -228,7 +230,71 @@ export function listAgentSessions(sessionId) {
 }
 
 /* =============================================================================
-   06) DEVELOPER STATE STORE
+   06) REVIEW ARTIFACT STORE
+============================================================================= */
+function sanitizeReviewArtifactPayload(payload = {}) {
+  return {
+    command:String(payload.command || payload.query || '').trim(),
+    query:String(payload.query || payload.command || '').trim(),
+    source:String(payload.source || '').trim(),
+    repository:String(payload.repository || '').trim(),
+    branch:String(payload.branch || '').trim(),
+    fileTarget:String(payload.fileTarget || payload.file_target || '').trim(),
+    provider:String(payload.provider || payload.provider_id || '').trim(),
+    mode:String(payload.mode || '').trim()
+  };
+}
+
+export function createReviewArtifact(sessionId, payload = {}) {
+  const state = getDeveloperState(sessionId);
+  const normalized = sanitizeReviewArtifactPayload(payload);
+  const artifact = {
+    id:crypto.randomUUID(),
+    sessionId,
+    type:'patch_proposal',
+    status:'review_artifact_created_provider_runtime_pending',
+    approvalState:'founder_review_required_before_mutation',
+    mutationApplied:false,
+    command:normalized.command,
+    query:normalized.query,
+    source:normalized.source || 'developer-mode',
+    repository:normalized.repository || state.activeRepository || '',
+    branch:normalized.branch || state.activeBranch || '',
+    fileTarget:normalized.fileTarget,
+    provider:normalized.provider || state.activeAgent?.providerId || state.developerPreferences.defaultProvider || 'manual-review',
+    mode:normalized.mode || 'patch-proposal',
+    summary:'Patch proposal request captured. Provider runtime execution and file mutation are not active in this scaffold.',
+    proposal:null,
+    diagnostics:[
+      'Review artifact stored in server runtime memory only.',
+      'No terminal command was executed.',
+      'No file was read or written by this artifact creation step.',
+      'Provider runtime adapter is required before patch content can be generated.',
+      'Explicit approval remains required before any mutation.'
+    ],
+    createdAt:new Date().toISOString(),
+    updatedAt:new Date().toISOString(),
+    canonicalPersistence:'pending_supabase_profile_or_review_artifact_store'
+  };
+
+  reviewArtifacts.set(artifact.id, artifact);
+  return artifact;
+}
+
+export function listReviewArtifacts(sessionId) {
+  return Array.from(reviewArtifacts.values()).filter((artifact) => artifact.sessionId === sessionId);
+}
+
+export function getReviewArtifact(sessionId, artifactId) {
+  const artifact = reviewArtifacts.get(artifactId);
+  if (!artifact || artifact.sessionId !== sessionId) {
+    return null;
+  }
+  return artifact;
+}
+
+/* =============================================================================
+   07) DEVELOPER STATE STORE
 ============================================================================= */
 export function getDeveloperState(sessionId) {
   const session = ensureSession(sessionId);
@@ -341,5 +407,5 @@ export function activateAgent(sessionId, payload = {}) {
 }
 
 /* =============================================================================
-   07) END OF FILE
+   08) END OF FILE
 ============================================================================= */

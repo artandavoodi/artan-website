@@ -5,10 +5,12 @@
    03) CONSTANTS
    04) SHELL REGISTRATION
    05) RENDERING
-   06) BACKEND ACTIONS
-   07) EVENT BINDING
-   08) DEVELOPER CONSOLE MOUNT
-   09) END OF FILE
+   06) REVIEW ARTIFACT RENDERING
+   07) ACTION METADATA RENDERING
+   08) BACKEND ACTIONS
+   09) EVENT BINDING
+   10) DEVELOPER CONSOLE MOUNT
+   11) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -26,7 +28,6 @@ import {
 import {
   getActiveHomeDeveloperProvider,
   getActiveHomeDeveloperRepository,
-  getHomeDeveloperCommandMode,
   getHomeDeveloperModeState,
   setHomeDeveloperModeState
 } from './developer-mode-state.js';
@@ -89,14 +90,138 @@ function renderContext(root) {
   });
 }
 
-function renderCommandModes(root, registry) {
-  const container = root.querySelector('[data-home-developer-command-modes]');
-  renderHomeDeveloperRouteButtons(container, (registry.commandModes || []).map((mode) => ({
-    id:mode.id,
-    label:mode.label,
-    panel:'command',
-    mode:mode.id
-  })));
+
+/* =============================================================================
+   06) REVIEW ARTIFACT RENDERING
+============================================================================= */
+function normalizeReviewArtifacts(value) {
+  return Array.isArray(value) ? value.filter(Boolean) : [];
+}
+
+function formatReviewArtifactLabel(artifact) {
+  return artifact?.command || artifact?.query || artifact?.summary || artifact?.id || 'Review artifact';
+}
+
+function renderReviewArtifacts(root) {
+  const state = getHomeDeveloperModeState();
+  const artifacts = normalizeReviewArtifacts(state.reviewArtifacts || state.developerState?.reviewArtifacts);
+  const list = root.querySelector('[data-home-developer-review-artifact-list]');
+
+  if (!list) return;
+
+  list.replaceChildren();
+
+  if (!artifacts.length) {
+    const empty = document.createElement('p');
+    empty.className = 'home-developer-mode-review-artifacts__empty';
+    empty.textContent = 'No review artifacts created yet.';
+    list.append(empty);
+    return;
+  }
+
+  artifacts.forEach((artifact) => {
+    const item = document.createElement('article');
+    const title = document.createElement('strong');
+    const meta = document.createElement('span');
+    const diagnostics = document.createElement('span');
+
+    item.className = 'home-developer-mode-list__item';
+    item.dataset.homeDeveloperReviewArtifact = artifact.id || '';
+
+    title.textContent = formatReviewArtifactLabel(artifact);
+    meta.textContent = [
+      artifact.status || 'review_artifact_created',
+      artifact.repository || 'repository pending',
+      artifact.provider || 'provider pending'
+    ].filter(Boolean).join(' · ');
+    diagnostics.textContent = normalizeReviewArtifacts(artifact.diagnostics).join(' ');
+
+    item.append(title, meta, diagnostics);
+    list.append(item);
+  });
+}
+
+function updateReviewArtifacts(root, response = {}) {
+  const artifacts = normalizeReviewArtifacts(response.artifacts || (response.artifact ? [response.artifact] : []));
+
+  if (!artifacts.length) return;
+
+  setHomeDeveloperModeState({
+    reviewArtifacts:artifacts,
+    developerState:response.developerState || getHomeDeveloperModeState().developerState
+  });
+  renderReviewArtifacts(root);
+  writeOutput(root, 'review', [
+    `Review artifacts: ${artifacts.length}`,
+    `Latest status: ${response.artifact?.status || response.status || 'review_artifact_created'}`,
+    `Mutation: ${response.artifact?.mutationApplied ? 'applied' : 'not applied'}`,
+    `Approval: ${response.artifact?.approvalState || 'founder_review_required_before_mutation'}`
+  ].join('\n'));
+}
+
+/* =============================================================================
+   07) ACTION METADATA RENDERING
+============================================================================= */
+function normalizeDeveloperActionModes(value) {
+  return Array.isArray(value) ? value.filter(Boolean) : [];
+}
+
+function getDeveloperActionSurface(mode = {}) {
+  const id = mode.id || '';
+  const runtimeInterface = mode.runtimeInterface || '';
+
+  if ([
+    'generate-patch',
+    'review-patch',
+    'generate-tests',
+    'prepare-commit',
+    'prepare-pull-request',
+    'document-change'
+  ].includes(id) || ['patch-proposal-request', 'test-request', 'commit-pr-request'].includes(runtimeInterface)) {
+    return 'review';
+  }
+
+  return 'runtime';
+}
+
+function renderDeveloperActionMetadata(root) {
+  const state = getHomeDeveloperModeState();
+  const modes = normalizeDeveloperActionModes(state.registry?.commandModes);
+
+  root.querySelectorAll('[data-home-developer-action-metadata-list]').forEach((list) => {
+    const surface = list.dataset.homeDeveloperActionMetadataList || 'runtime';
+    const actions = modes.filter((mode) => getDeveloperActionSurface(mode) === surface);
+
+    list.replaceChildren();
+
+    if (!actions.length) {
+      const empty = document.createElement('p');
+      empty.className = 'home-developer-mode-action-metadata__empty';
+      empty.textContent = `${surface === 'review' ? 'Review' : 'Runtime'} actions not loaded.`;
+      list.append(empty);
+      return;
+    }
+
+    actions.forEach((mode) => {
+      const item = document.createElement('button');
+      const title = document.createElement('strong');
+      const meta = document.createElement('span');
+      const copy = document.createElement('span');
+
+      item.className = 'home-developer-mode-list__item';
+      item.type = 'button';
+      item.dataset.homeDeveloperActionMode = mode.id || '';
+      item.dataset.homeDeveloperActionRuntimeInterface = mode.runtimeInterface || '';
+      item.setAttribute('aria-pressed', String(mode.id === state.activeMode));
+
+      title.textContent = mode.label || mode.id || 'Developer action';
+      meta.textContent = [mode.id || '', mode.runtimeInterface || 'runtime pending'].filter(Boolean).join(' · ');
+      copy.textContent = mode.description || 'Developer action metadata.';
+
+      item.append(title, meta, copy);
+      list.append(item);
+    });
+  });
 }
 
 function renderRepositoryList(root) {
@@ -165,11 +290,12 @@ function renderProjectForm(root) {
 function renderDeveloperMode(root) {
   const state = getHomeDeveloperModeState();
   renderHomeDeveloperRouteButtons(root.querySelector('[data-home-developer-sidebar-items]'), state.registry?.sidebarItems || []);
-  renderCommandModes(root, state.registry || {});
   renderRepositoryList(root);
   renderProviderList(root);
   renderProjectForm(root);
   renderContext(root);
+  renderReviewArtifacts(root);
+  renderDeveloperActionMetadata(root);
   setHomeDeveloperActivePanel(root, state.activePanel);
 }
 
@@ -192,7 +318,7 @@ async function refreshDeveloperState(root) {
 }
 
 /* =============================================================================
-   06) BACKEND ACTIONS
+   08) BACKEND ACTIONS
 ============================================================================= */
 async function discoverRepositories(root) {
   const response = await requestHomeDeveloperAction('github-repository-discovery', {
@@ -266,31 +392,6 @@ async function activateProvider(root, providerId) {
   ].join('\n'));
 }
 
-async function runCommand(root, form) {
-  const state = getHomeDeveloperModeState();
-  const mode = getHomeDeveloperCommandMode();
-  const values = readForm(form);
-  const payload = {
-    repository:getActiveHomeDeveloperRepository(),
-    provider:getActiveHomeDeveloperProvider(),
-    agentRole:'implementation-agent',
-    command:values.command || mode?.description || ''
-  };
-  const response = await requestHomeDeveloperAction(mode?.runtimeInterface || 'agent-session-create', payload);
-  writeOutput(root, 'command', [
-    `Mode: ${mode?.label || state.activeMode}`,
-    `Runtime interface: ${mode?.runtimeInterface || 'agent-session-create'}`,
-    `Status: ${response.status}`,
-    `Repository: ${payload.repository || 'not selected'}`,
-    `Provider: ${payload.provider || 'not selected'}`,
-    `Reason: ${response.reason || response.runtime || 'Request recorded.'}`
-  ].join('\n'));
-  if (response.developerState) {
-    setHomeDeveloperModeState({ developerState:response.developerState });
-    renderContext(root);
-  }
-}
-
 async function runScan(root) {
   const response = await requestHomeDeveloperAction('repository-scan-request', {
     repository:getActiveHomeDeveloperRepository()
@@ -305,6 +406,7 @@ async function runLockedReviewAction(root, interfaceId) {
     repository:getActiveHomeDeveloperRepository(),
     provider:getActiveHomeDeveloperProvider()
   });
+  updateReviewArtifacts(root, response);
   writeOutput(root, 'review', [
     `Action: ${interfaceId}`,
     `Status: ${response.status}`,
@@ -313,9 +415,13 @@ async function runLockedReviewAction(root, interfaceId) {
 }
 
 /* =============================================================================
-   07) EVENT BINDING
+   09) EVENT BINDING
 ============================================================================= */
 function bindDeveloperModeEvents(root) {
+  document.addEventListener('neuroartan:home-stage-developer-command-artifact-created', (event) => {
+    updateReviewArtifacts(root, event.detail || {});
+  });
+
   root.addEventListener('click', (event) => {
     const target = event.target instanceof Element ? event.target : null;
     if (!target) return;
@@ -324,10 +430,25 @@ function bindDeveloperModeEvents(root) {
     if (route) {
       event.preventDefault();
       setHomeDeveloperModeState({
-        activePanel:route.dataset.homeDeveloperRoutePanel || 'command',
+        activePanel:route.dataset.homeDeveloperRoutePanel || 'repositories',
         activeMode:route.dataset.homeDeveloperRouteMode || getHomeDeveloperModeState().activeMode
       });
       renderDeveloperMode(root);
+      return;
+    }
+
+    const actionMode = target.closest('[data-home-developer-action-mode]');
+    if (actionMode) {
+      event.preventDefault();
+      setHomeDeveloperModeState({
+        activeMode:actionMode.dataset.homeDeveloperActionMode || getHomeDeveloperModeState().activeMode
+      });
+      renderDeveloperMode(root);
+      writeOutput(root, actionMode.closest('[data-home-developer-panel="review"]') ? 'review' : 'runtime', [
+        `Selected action: ${actionMode.dataset.homeDeveloperActionMode || 'unknown'}`,
+        `Runtime interface: ${actionMode.dataset.homeDeveloperActionRuntimeInterface || 'pending'}`,
+        'Submit the actual command through the canonical homepage interactive panel.'
+      ].join('\n'));
       return;
     }
 
@@ -401,17 +522,11 @@ function bindDeveloperModeEvents(root) {
       void createProject(root, projectForm);
       return;
     }
-
-    const commandForm = target?.closest('[data-home-developer-command-form]');
-    if (commandForm instanceof HTMLFormElement) {
-      event.preventDefault();
-      void runCommand(root, commandForm);
-    }
   });
 }
 
 /* =============================================================================
-   08) DEVELOPER CONSOLE MOUNT
+   10) DEVELOPER CONSOLE MOUNT
 ============================================================================= */
 export async function mountHomeDeveloperModeShell(root) {
   if (!root || root.dataset.homeDeveloperModeMounted === 'true') {
@@ -436,5 +551,5 @@ export async function mountHomeDeveloperModeShell(root) {
 }
 
 /* =============================================================================
-   09) END OF FILE
+   11) END OF FILE
 ============================================================================= */
