@@ -4,11 +4,12 @@
    02. DOM HELPERS
    03. ACTIVE DESCRIPTION PROPAGATION
    04. SECTION NAVIGATION
-   05. SETTING CONTROLS
-   06. PANEL LIFECYCLE
-   07. SHELL DELEGATION
-   08. GLOBAL TRIGGERS
-   09. BOOT
+   05. NESTED PANEL NAVIGATION
+   06. SETTING CONTROLS
+   07. PANEL LIFECYCLE
+   08. SHELL DELEGATION
+   09. GLOBAL TRIGGERS
+   10. BOOT
    ========================================================= */
 
 /* =========================================================
@@ -19,6 +20,15 @@ const HOME_INTERACTION_SETTINGS_SHELL_STATE = {
   isGlobalBound: false,
   shellRoot: null,
   activeSection: 'overview',
+  activeNestedPanel: '',
+  nestedPanelParentSection: '',
+};
+
+const HOME_INTERACTION_SETTINGS_NESTED_PANEL_PATHS = {
+  'home-interaction-settings-session': '/assets/fragments/layers/website/home/interaction-settings/sections/session/index.html',
+  'home-interaction-settings-session-active-chat': '/assets/fragments/layers/website/home/interaction-settings/sections/session/active-chat.html',
+  'home-interaction-settings-session-reset-behavior': '/assets/fragments/layers/website/home/interaction-settings/sections/session/reset-behavior.html',
+  'home-interaction-settings-session-persistence': '/assets/fragments/layers/website/home/interaction-settings/sections/session/persistence.html',
 };
 
 /* =========================================================
@@ -32,6 +42,9 @@ function getHomeInteractionSettingsShellNodes() {
     navItems: Array.from(root?.querySelectorAll?.('[data-home-interaction-settings-tab]') ?? []),
     sectionMounts: Array.from(root?.querySelectorAll?.('[data-home-interaction-settings-section-mount]') ?? []),
     activeDescription: root?.querySelector?.('[data-home-interaction-settings-active-description="true"]') ?? null,
+    panelHeader: root?.querySelector?.('.home-interaction-settings-panel__header') ?? null,
+    panelTitle: root?.querySelector?.('.home-interaction-settings-panel__title') ?? null,
+    nestedBackControl: root?.querySelector?.('[data-home-interaction-settings-nested-back]') ?? null,
     settingControls: Array.from(root?.querySelectorAll?.('[data-home-interaction-setting]') ?? []),
   };
 }
@@ -39,6 +52,15 @@ function getHomeInteractionSettingsShellNodes() {
 function normalizeHomeInteractionSettingsSection(section) {
   const normalized = typeof section === 'string' ? section.trim() : '';
   return normalized || 'overview';
+}
+
+function normalizeHomeInteractionSettingsFragmentKey(fragmentKey) {
+  const normalized = typeof fragmentKey === 'string' ? fragmentKey.trim() : '';
+  return normalized;
+}
+
+function getHomeInteractionSettingsActiveMount(nodes) {
+  return nodes.sectionMounts.find((mount) => !mount.hidden && mount.getAttribute('aria-hidden') !== 'true') ?? null;
 }
 
 /* =========================================================
@@ -73,6 +95,11 @@ function setHomeInteractionSettingsSection(section) {
 
   setHomeInteractionSettingsActiveDescription(nodes, activeSection);
 
+  HOME_INTERACTION_SETTINGS_SHELL_STATE.activeNestedPanel = '';
+  HOME_INTERACTION_SETTINGS_SHELL_STATE.nestedPanelParentSection = '';
+  if (nodes.root) delete nodes.root.dataset.homeInteractionSettingsNestedPanel;
+  setHomeInteractionSettingsNestedBackState(false);
+
   nodes.navItems.forEach((item) => {
     const isActive = item.dataset.homeInteractionSettingsTab === activeSection;
     item.setAttribute('aria-selected', String(isActive));
@@ -88,7 +115,145 @@ function setHomeInteractionSettingsSection(section) {
 }
 
 /* =========================================================
-   05. SETTING CONTROLS
+   05. NESTED PANEL NAVIGATION
+   ========================================================= */
+function getHomeInteractionSettingsNestedPanelPath(fragmentKey) {
+  const normalizedKey = normalizeHomeInteractionSettingsFragmentKey(fragmentKey);
+  return HOME_INTERACTION_SETTINGS_NESTED_PANEL_PATHS[normalizedKey] || '';
+}
+
+function ensureHomeInteractionSettingsNestedBackControl(nodes) {
+  if (!nodes.root || !nodes.panelHeader) return null;
+
+  const existingControl = nodes.root.querySelector('[data-home-interaction-settings-nested-back]');
+
+  if (existingControl) return existingControl;
+
+  const navigationControl = document.createElement('div');
+  const previousControl = document.createElement('button');
+  const previousIcon = document.createElement('img');
+  const navigationDivider = document.createElement('span');
+  const nextControl = document.createElement('button');
+  const nextIcon = document.createElement('img');
+
+  navigationControl.className = 'home-interaction-settings-panel__nested-navigation';
+  navigationControl.dataset.homeInteractionSettingsNestedNavigation = 'true';
+  navigationControl.hidden = true;
+  navigationControl.setAttribute('aria-hidden', 'true');
+
+  previousControl.type = 'button';
+  previousControl.className = 'home-interaction-settings-panel__nested-back';
+  previousControl.dataset.homeInteractionSettingsNestedBack = 'true';
+  previousControl.setAttribute('aria-label', 'Previous');
+
+  previousIcon.className = 'ui-icon-theme-aware home-interaction-settings-panel__nested-navigation-icon';
+  previousIcon.src = '/assets/icons/core/navigation/unclassified/left.svg';
+  previousIcon.alt = '';
+  previousIcon.setAttribute('aria-hidden', 'true');
+
+  navigationDivider.className = 'home-interaction-settings-panel__nested-navigation-divider';
+  navigationDivider.setAttribute('aria-hidden', 'true');
+
+  nextControl.type = 'button';
+  nextControl.className = 'home-interaction-settings-panel__nested-next';
+  nextControl.dataset.homeInteractionSettingsNestedNext = 'true';
+  nextControl.setAttribute('aria-label', 'Next');
+  nextControl.disabled = true;
+  nextControl.setAttribute('aria-disabled', 'true');
+
+  nextIcon.className = 'ui-icon-theme-aware home-interaction-settings-panel__nested-navigation-icon';
+  nextIcon.src = '/assets/icons/core/navigation/unclassified/right.svg';
+  nextIcon.alt = '';
+  nextIcon.setAttribute('aria-hidden', 'true');
+
+  previousControl.appendChild(previousIcon);
+  nextControl.appendChild(nextIcon);
+  navigationControl.append(previousControl, navigationDivider, nextControl);
+
+  if (nodes.panelTitle) {
+    nodes.panelTitle.insertAdjacentElement('afterend', navigationControl);
+  } else {
+    nodes.panelHeader.appendChild(navigationControl);
+  }
+
+  return previousControl;
+}
+
+function setHomeInteractionSettingsNestedBackState(isVisible) {
+  const nodes = getHomeInteractionSettingsShellNodes();
+  const backControl = ensureHomeInteractionSettingsNestedBackControl(nodes);
+  const navigationControl = nodes.root?.querySelector?.('[data-home-interaction-settings-nested-navigation]') ?? null;
+
+  if (!backControl || !navigationControl) return;
+
+  navigationControl.hidden = !isVisible;
+  navigationControl.setAttribute('aria-hidden', String(!isVisible));
+}
+
+async function loadHomeInteractionSettingsFragmentIntoMount(fragmentKey, mount) {
+  const fragmentPath = getHomeInteractionSettingsNestedPanelPath(fragmentKey);
+
+  if (!fragmentPath || !mount) return false;
+
+  const response = await fetch(fragmentPath, { credentials: 'same-origin' });
+
+  if (!response.ok) return false;
+
+  mount.innerHTML = await response.text();
+  mount.dataset.include = fragmentKey;
+  mount.dispatchEvent(new CustomEvent('fragment:mounted', {
+    bubbles: true,
+    detail: {
+      fragment: fragmentKey,
+      source: 'home-interaction-settings-nested-panel',
+    },
+  }));
+
+  return true;
+}
+
+async function openHomeInteractionSettingsNestedPanel(fragmentKey) {
+  const nodes = getHomeInteractionSettingsShellNodes();
+  const activeMount = getHomeInteractionSettingsActiveMount(nodes);
+  const normalizedKey = normalizeHomeInteractionSettingsFragmentKey(fragmentKey);
+
+  if (!activeMount || !normalizedKey) return false;
+
+  const parentSection = normalizeHomeInteractionSettingsSection(activeMount.dataset.homeInteractionSettingsSectionMount);
+  const didLoad = await loadHomeInteractionSettingsFragmentIntoMount(normalizedKey, activeMount);
+
+  if (!didLoad) return false;
+
+  HOME_INTERACTION_SETTINGS_SHELL_STATE.activeNestedPanel = normalizedKey;
+  HOME_INTERACTION_SETTINGS_SHELL_STATE.nestedPanelParentSection = parentSection;
+  nodes.root.dataset.homeInteractionSettingsNestedPanel = normalizedKey;
+  setHomeInteractionSettingsNestedBackState(true);
+
+  return true;
+}
+
+async function closeHomeInteractionSettingsNestedPanel() {
+  const nodes = getHomeInteractionSettingsShellNodes();
+  const parentSection = normalizeHomeInteractionSettingsSection(HOME_INTERACTION_SETTINGS_SHELL_STATE.nestedPanelParentSection || HOME_INTERACTION_SETTINGS_SHELL_STATE.activeSection);
+  const activeMount = getHomeInteractionSettingsActiveMount(nodes);
+  const parentFragmentKey = `home-interaction-settings-${parentSection}`;
+
+  if (!activeMount) return false;
+
+  const didLoad = await loadHomeInteractionSettingsFragmentIntoMount(parentFragmentKey, activeMount);
+
+  if (!didLoad) return false;
+
+  HOME_INTERACTION_SETTINGS_SHELL_STATE.activeNestedPanel = '';
+  HOME_INTERACTION_SETTINGS_SHELL_STATE.nestedPanelParentSection = '';
+  delete nodes.root.dataset.homeInteractionSettingsNestedPanel;
+  setHomeInteractionSettingsNestedBackState(false);
+
+  return true;
+}
+
+/* =========================================================
+   06. SETTING CONTROLS
    ========================================================= */
 function syncHomeInteractionSettingsControl(control) {
   if (!control) return;
@@ -114,7 +279,7 @@ function syncHomeInteractionSettingsControl(control) {
 }
 
 /* =========================================================
-   06. PANEL LIFECYCLE
+   07. PANEL LIFECYCLE
    ========================================================= */
 function openHomeInteractionSettingsPanel(section = HOME_INTERACTION_SETTINGS_SHELL_STATE.activeSection) {
   const nodes = getHomeInteractionSettingsShellNodes();
@@ -130,6 +295,7 @@ function openHomeInteractionSettingsPanel(section = HOME_INTERACTION_SETTINGS_SH
     trigger.setAttribute('aria-expanded', 'true');
   });
   setHomeInteractionSettingsSection(section);
+  setHomeInteractionSettingsNestedBackState(false);
 }
 
 function closeHomeInteractionSettingsPanel() {
@@ -158,13 +324,14 @@ function bindHomeInteractionSettingsShell() {
 
   if (!nodes.root) return false;
 
+  ensureHomeInteractionSettingsNestedBackControl(nodes);
   HOME_INTERACTION_SETTINGS_SHELL_STATE.shellRoot = nodes.root;
   HOME_INTERACTION_SETTINGS_SHELL_STATE.isShellBound = true;
   return true;
 }
 
 /* =========================================================
-   07. SHELL DELEGATION
+   08. SHELL DELEGATION
    ========================================================= */
 function handleHomeInteractionSettingsShellClick(event) {
   const target = event.target instanceof Element ? event.target : null;
@@ -181,6 +348,24 @@ function handleHomeInteractionSettingsShellClick(event) {
     event.preventDefault();
     event.stopPropagation();
     closeHomeInteractionSettingsPanel();
+    return true;
+  }
+
+  const nestedBackControl = target.closest('[data-home-interaction-settings-nested-back]');
+
+  if (nestedBackControl) {
+    event.preventDefault();
+    event.stopPropagation();
+    closeHomeInteractionSettingsNestedPanel();
+    return true;
+  }
+
+  const drillControl = target.closest('[data-home-interaction-settings-drill-control]');
+
+  if (drillControl) {
+    event.preventDefault();
+    event.stopPropagation();
+    openHomeInteractionSettingsNestedPanel(drillControl.dataset.homeInteractionSettingsTarget);
     return true;
   }
 
@@ -217,7 +402,7 @@ function handleHomeInteractionSettingsShellClick(event) {
 }
 
 /* =========================================================
-   08. GLOBAL TRIGGERS
+   09. GLOBAL TRIGGERS
    ========================================================= */
 function bindHomeInteractionSettingsGlobalTriggers() {
   if (HOME_INTERACTION_SETTINGS_SHELL_STATE.isGlobalBound) return;
@@ -285,7 +470,7 @@ function bindHomeInteractionSettingsGlobalTriggers() {
 }
 
 /* =========================================================
-   09. BOOT
+   10. BOOT
    ========================================================= */
 function bootHomeInteractionSettingsShell() {
   bindHomeInteractionSettingsGlobalTriggers();
@@ -297,7 +482,8 @@ function bootHomeInteractionSettingsShell() {
   setHomeInteractionSettingsSection(HOME_INTERACTION_SETTINGS_SHELL_STATE.activeSection);
 }
 
-window.addEventListener('fragment:mounted', () => {
+window.addEventListener('fragment:mounted', (event) => {
+  if (event instanceof CustomEvent && event.detail?.source === 'home-interaction-settings-nested-panel') return;
   if (!document.getElementById('home-interaction-settings-panel')) return;
 
   bootHomeInteractionSettingsShell();

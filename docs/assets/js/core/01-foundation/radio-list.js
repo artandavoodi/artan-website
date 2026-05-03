@@ -33,7 +33,15 @@ function getRadioListItems(root){
 }
 
 function getRadioListItemValue(item){
-  return item?.dataset?.uiRadioListValue || item?.dataset?.homeInteractionSettingValue || '';
+  const control = getRadioListItemControl(item);
+
+  return item?.dataset?.uiRadioListValue
+    || item?.dataset?.homeInteractionSettingValue
+    || item?.dataset?.homeInteractionSettingsValue
+    || control?.dataset?.uiRadioListValue
+    || control?.dataset?.homeInteractionSettingValue
+    || control?.dataset?.homeInteractionSettingsValue
+    || '';
 }
 
 function getRadioListItemControl(item){
@@ -52,6 +60,7 @@ function setRadioListItemState(item, isActive){
 
   item.setAttribute('aria-checked', String(isActive));
   item.setAttribute('aria-pressed', String(isActive));
+  item.classList.toggle('is-active', isActive);
   item.removeAttribute('tabindex');
 
   if (control){

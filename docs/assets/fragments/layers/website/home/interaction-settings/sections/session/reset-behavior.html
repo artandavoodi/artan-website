@@ -1,0 +1,72 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) RESET BEHAVIOR SECTION ROOT
+     02) RESET BEHAVIOR SECTION HEADER
+     03) RESET SCOPE
+     04) RESET CONFIRMATION
+============================================================================= -->
+
+<!-- =============================================================================
+     01) RESET BEHAVIOR SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="session-reset-behavior" aria-label="Reset behavior">
+  <!-- =============================================================================
+       02) RESET BEHAVIOR SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/session.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Reset behavior</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Define what resets when the active session is cleared</p>
+  </header>
+
+  <!-- =============================================================================
+       03) RESET SCOPE
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-reset-scope-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-reset-scope-title">Scope</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Reset scope">
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Composer reset">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Composer</span>
+          <span class="home-interaction-settings-panel__option-description">Clear the current input area</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Response reset">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Response surface</span>
+          <span class="home-interaction-settings-panel__option-description">Clear the visible response area while preserving the Control Center state</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Control center reset protection">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Control Center</span>
+          <span class="home-interaction-settings-panel__option-description">Preserve selected settings and navigation state during reset</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) RESET CONFIRMATION
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-reset-confirmation-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-reset-confirmation-title">Confirmation</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Reset confirmation">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Require confirmation</span>
+          <span class="home-interaction-settings-panel__option-description">Ask before clearing an active conversation surface</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="reset-confirmation" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+    </div>
+  </section>
+</section>

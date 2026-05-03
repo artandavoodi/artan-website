@@ -1,0 +1,83 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) RESPONSE SECTION ROOT
+     02) RESPONSE SECTION HEADER
+     03) RESPONSE OUTPUT
+     04) RESPONSE CONTROLS
+============================================================================= -->
+
+<!-- =============================================================================
+     01) RESPONSE SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="response" aria-label="Response behavior">
+  <!-- =============================================================================
+       02) RESPONSE SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/response.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Response behavior</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Control how responses are displayed, copied, spoken, and prepared for long-form reading</p>
+  </header>
+
+  <!-- =============================================================================
+       03) RESPONSE OUTPUT
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-response-output-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-response-output-title">Output</h3>
+
+    <div class="ui-radio-list home-interaction-settings-panel__radio-list" data-ui-radio-list="response-mode" role="radiogroup" aria-label="Response output mode">
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="text" aria-checked="true" aria-pressed="true">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-setting="response-mode" data-home-interaction-setting-value="text"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Text</span>
+          <span class="ui-radio-list__description">Keep responses written in the interaction panel</span>
+        </span>
+      </div>
+
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="voice" aria-checked="false" aria-pressed="false">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-setting="response-mode" data-home-interaction-setting-value="voice"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Voice</span>
+          <span class="ui-radio-list__description">Use spoken output when a voice engine is connected</span>
+        </span>
+      </div>
+
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="hybrid" aria-checked="false" aria-pressed="false">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-setting="response-mode" data-home-interaction-setting-value="hybrid"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Hybrid</span>
+          <span class="ui-radio-list__description">Prepare text and voice response behavior together</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) RESPONSE CONTROLS
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-response-controls-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-response-controls-title">Controls</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Response controls">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Copy message control</span>
+          <span class="home-interaction-settings-panel__option-description">Show copy controls on generated responses</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="copy-message" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Contained scrolling</span>
+          <span class="home-interaction-settings-panel__option-description">Keep long responses inside the governed response panel</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="response-scroll" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+    </div>
+  </section>
+</section>

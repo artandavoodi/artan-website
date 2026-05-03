@@ -1,0 +1,71 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) ACTIVE CHAT SECTION ROOT
+     02) ACTIVE CHAT SECTION HEADER
+     03) ACTIVE CHAT IDENTITY
+     04) ACTIVE CHAT STATE
+============================================================================= -->
+
+<!-- =============================================================================
+     01) ACTIVE CHAT SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="session-active-chat" aria-label="Active chat">
+  <!-- =============================================================================
+       02) ACTIVE CHAT SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/chat-history.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Active chat</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Inspect the current conversation identity, lifecycle state, and future persistence route</p>
+  </header>
+
+  <!-- =============================================================================
+       03) ACTIVE CHAT IDENTITY
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-active-chat-identity-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-active-chat-identity-title">Identity</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Active chat identity">
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Current chat title">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Current chat</span>
+          <span class="home-interaction-settings-panel__option-description">Session title will bind here when conversation storage is connected</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Chat identifier">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Identifier</span>
+          <span class="home-interaction-settings-panel__option-description">Runtime chat identifier is pending session registry connection</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) ACTIVE CHAT STATE
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-active-chat-state-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-active-chat-state-title">State</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Active chat state">
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Save state">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Save state</span>
+          <span class="home-interaction-settings-panel__option-description">Ready for persistent session storage</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Archive state">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Archive state</span>
+          <span class="home-interaction-settings-panel__option-description">Archive action requires session registry implementation</span>
+        </span>
+      </div>
+    </div>
+  </section>
+</section>

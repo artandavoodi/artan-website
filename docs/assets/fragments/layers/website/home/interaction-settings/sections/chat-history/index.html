@@ -1,0 +1,80 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) CHAT HISTORY SECTION ROOT
+     02) CHAT HISTORY SECTION HEADER
+     03) CHAT HISTORY CONTROLS
+     04) CHAT HISTORY MANAGEMENT
+============================================================================= -->
+
+<!-- =============================================================================
+     01) CHAT HISTORY SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="history" aria-label="Chat history">
+  <!-- =============================================================================
+       02) CHAT HISTORY SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/chat-history.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Chat history</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Control how conversations are saved, retrieved, renamed, archived, and prepared for persistent session management</p>
+  </header>
+
+  <!-- =============================================================================
+       03) CHAT HISTORY CONTROLS
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-chat-history-controls-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-chat-history-controls-title">Controls</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Chat history controls">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Save chats</span>
+          <span class="home-interaction-settings-panel__option-description">Prepare sessions for history, search, rename, and archive</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="chat-history" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="false">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Temporary chat</span>
+          <span class="home-interaction-settings-panel__option-description">Keep the current session out of persistent history</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="temporary-chat" data-home-interaction-setting-value="disabled"><span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) CHAT HISTORY MANAGEMENT
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-chat-history-management-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-chat-history-management-title">Management</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Chat management status">
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Rename chats status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Rename</span>
+          <span class="home-interaction-settings-panel__option-description">Chat titles will be editable when session storage is connected</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Archive chats status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Archive</span>
+          <span class="home-interaction-settings-panel__option-description">Conversations will support archive state without deletion</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Search chats status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Search</span>
+          <span class="home-interaction-settings-panel__option-description">History search will route through the session index layer</span>
+        </span>
+      </div>
+    </div>
+  </section>
+</section>

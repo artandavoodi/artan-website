@@ -1,0 +1,72 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) PERSISTENCE SECTION ROOT
+     02) PERSISTENCE SECTION HEADER
+     03) PERSISTENCE STORAGE
+     04) PERSISTENCE ROUTING
+============================================================================= -->
+
+<!-- =============================================================================
+     01) PERSISTENCE SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="session-persistence" aria-label="Persistence">
+  <!-- =============================================================================
+       02) PERSISTENCE SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/session.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Persistence</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Define how session state moves from local continuity toward authenticated account storage</p>
+  </header>
+
+  <!-- =============================================================================
+       03) PERSISTENCE STORAGE
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-persistence-storage-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-persistence-storage-title">Storage</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Persistence storage">
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Local storage">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Local storage</span>
+          <span class="home-interaction-settings-panel__option-description">Preserve interface state locally before account storage is connected</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Account storage">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Account storage</span>
+          <span class="home-interaction-settings-panel__option-description">Prepare authenticated continuity once profile storage is available</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) PERSISTENCE ROUTING
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-persistence-routing-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-persistence-routing-title">Routing</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Persistence routing">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Session save</span>
+          <span class="home-interaction-settings-panel__option-description">Keep the active session eligible for persistence where supported</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="session-save" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Sync route">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Sync route</span>
+          <span class="home-interaction-settings-panel__option-description">Local first, account-backed after authentication</span>
+        </span>
+      </div>
+    </div>
+  </section>
+</section>

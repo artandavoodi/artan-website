@@ -1,0 +1,114 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) CHANGELOG SECTION ROOT
+     02) CHANGELOG SECTION HEADER
+     03) CHANGELOG MODE
+     04) CHANGELOG CONTROLS
+     05) CHANGELOG LEDGER
+============================================================================= -->
+
+<!-- =============================================================================
+     01) CHANGELOG SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="changelog" aria-labelledby="home-interaction-settings-changelog-title">
+  <!-- =============================================================================
+       02) CHANGELOG SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/changelog.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title" id="home-interaction-settings-changelog-title">Changelog</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Track interaction changes, agent actions, workspace updates, release decisions, and implementation history</p>
+  </header>
+
+  <!-- =============================================================================
+       03) CHANGELOG MODE
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-changelog-mode-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-changelog-mode-title">Mode</h3>
+
+    <div class="ui-radio-list home-interaction-settings-panel__radio-list" data-ui-radio-list="changelog-mode" role="radiogroup" aria-label="Changelog modes">
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="session" aria-checked="true" aria-pressed="true">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-settings-action="changelog-mode" data-home-interaction-settings-value="session"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Session log</span>
+          <span class="ui-radio-list__description">Record command, response, scan, plan, and review events for the active session</span>
+        </span>
+      </div>
+
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="workspace" aria-checked="false" aria-pressed="false">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-settings-action="changelog-mode" data-home-interaction-settings-value="workspace"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Workspace log</span>
+          <span class="ui-radio-list__description">Preserve project-level changes, workspace state, and implementation decisions</span>
+        </span>
+      </div>
+
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="release" aria-checked="false" aria-pressed="false">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-settings-action="changelog-mode" data-home-interaction-settings-value="release"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Release ledger</span>
+          <span class="ui-radio-list__description">Track commercial-grade release history, affected modules, tests, approvals, and rollback notes</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) CHANGELOG CONTROLS
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-changelog-controls-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-changelog-controls-title">Controls</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Changelog controls">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Record agent actions</span>
+          <span class="home-interaction-settings-panel__option-description">Log scans, plans, patches, tests, approvals, and blocked runtime actions</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-settings-action="record-agent-actions"><span></span></button>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Release impact</span>
+          <span class="home-interaction-settings-panel__option-description">Attach commercial and product relevance to implementation records when applicable</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-settings-action="record-release-impact"><span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       05) CHANGELOG LEDGER
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-changelog-ledger-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-changelog-ledger-title">Ledger</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Changelog ledger">
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Latest entry">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Latest entry</span>
+          <span class="home-interaction-settings-panel__option-description">Awaiting runtime ledger</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Ledger status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Ledger status</span>
+          <span class="home-interaction-settings-panel__option-description">Frontend ready</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Export changelog">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Export changelog</span>
+          <span class="home-interaction-settings-panel__option-description">Requires approval</span>
+        </span>
+      </div>
+    </div>
+  </section>
+</section>

@@ -1,0 +1,80 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) DEVELOPER SECTION ROOT
+     02) DEVELOPER SECTION HEADER
+     03) DEVELOPER RUNTIME
+     04) DEVELOPER CONTROLS
+============================================================================= -->
+
+<!-- =============================================================================
+     01) DEVELOPER SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="developer" aria-label="Developer">
+  <!-- =============================================================================
+       02) DEVELOPER SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/developer.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Developer</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Prepare governed development controls for local runtime health, provider routing, GitHub authorization, and future Codex-enabled implementation actions</p>
+  </header>
+
+  <!-- =============================================================================
+       03) DEVELOPER RUNTIME
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-developer-runtime-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-developer-runtime-title">Runtime</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Developer runtime status">
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Local runtime status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Local runtime</span>
+          <span class="home-interaction-settings-panel__option-description">Prepare health checks for Ollama and local model execution</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Cloud provider status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Cloud providers</span>
+          <span class="home-interaction-settings-panel__option-description">Prepare API routing for external model providers</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Provider registry status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Provider registry</span>
+          <span class="home-interaction-settings-panel__option-description">Prepare a governed registry for local, cloud, and custom models</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) DEVELOPER CONTROLS
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-developer-controls-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-developer-controls-title">Controls</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Development controls">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="false">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Developer mode</span>
+          <span class="home-interaction-settings-panel__option-description">Expose governed development controls when authorization is available</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="developer-mode" data-home-interaction-setting-value="disabled"><span></span></button>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="false">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">GitHub authorization</span>
+          <span class="home-interaction-settings-panel__option-description">Prepare repository-aware development actions for future integration</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="github-authorization" data-home-interaction-setting-value="disabled"><span></span></button>
+      </div>
+    </div>
+  </section>
+</section>

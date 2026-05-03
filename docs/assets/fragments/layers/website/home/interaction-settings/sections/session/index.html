@@ -1,0 +1,89 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) SESSION SECTION ROOT
+     02) SESSION SECTION HEADER
+     03) SESSION CONTROLS
+     04) SESSION STATUS
+============================================================================= -->
+
+<!-- =============================================================================
+     01) SESSION SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="session" aria-label="Session">
+  <!-- =============================================================================
+       02) SESSION SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/session.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Session</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Control the active conversation state, reset behavior, temporary mode, and future session identity routing</p>
+  </header>
+
+  <!-- =============================================================================
+       03) SESSION CONTROLS
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-session-controls-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-session-controls-title">Controls</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Session controls">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Session save</span>
+          <span class="home-interaction-settings-panel__option-description">Preserve the active session state where storage is available</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="session-save" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Reset confirmation</span>
+          <span class="home-interaction-settings-panel__option-description">Prepare confirmation behavior before clearing an active chat</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="reset-confirmation" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) SESSION STATUS
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-session-status-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-session-status-title">Status</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Session status">
+      <div class="home-interaction-settings-panel__drill-row" aria-label="Active chat settings">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Active chat</span>
+          <span class="home-interaction-settings-panel__option-description">Current chat identity will connect to the conversation registry</span>
+        </span>
+        <button class="home-interaction-settings-panel__drill-indicator" type="button" data-home-interaction-settings-drill-control data-home-interaction-settings-target="home-interaction-settings-session-active-chat" aria-label="Open Active chat settings">
+          <img class="ui-icon-theme-aware home-interaction-settings-panel__drill-indicator-icon" src="/assets/icons/core/navigation/unclassified/right.svg" alt="">
+        </button>
+      </div>
+
+      <div class="home-interaction-settings-panel__drill-row" aria-label="Reset behavior settings">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Reset behavior</span>
+          <span class="home-interaction-settings-panel__option-description">Reset clears composer and response surfaces while preserving the control layer</span>
+        </span>
+        <button class="home-interaction-settings-panel__drill-indicator" type="button" data-home-interaction-settings-drill-control data-home-interaction-settings-target="home-interaction-settings-session-reset-behavior" aria-label="Open Reset behavior settings">
+          <img class="ui-icon-theme-aware home-interaction-settings-panel__drill-indicator-icon" src="/assets/icons/core/navigation/unclassified/right.svg" alt="">
+        </button>
+      </div>
+
+      <div class="home-interaction-settings-panel__drill-row" aria-label="Persistence settings">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Persistence</span>
+          <span class="home-interaction-settings-panel__option-description">Session persistence will route through local storage first, then account storage</span>
+        </span>
+        <button class="home-interaction-settings-panel__drill-indicator" type="button" data-home-interaction-settings-drill-control data-home-interaction-settings-target="home-interaction-settings-session-persistence" aria-label="Open Persistence settings">
+          <img class="ui-icon-theme-aware home-interaction-settings-panel__drill-indicator-icon" src="/assets/icons/core/navigation/unclassified/right.svg" alt="">
+        </button>
+      </div>
+    </div>
+  </section>
+</section>

@@ -1,0 +1,59 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) VOICE SECTION ROOT
+     02) VOICE SECTION HEADER
+     03) VOICE OUTPUT
+     04) VOICE INPUT
+============================================================================= -->
+
+<!-- =============================================================================
+     01) VOICE SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="voice" aria-label="Voice">
+  <!-- =============================================================================
+       02) VOICE SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/voice.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Voice</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Prepare speech input, spoken response output, and voice-engine behavior for connected local or cloud voice services</p>
+  </header>
+
+  <!-- =============================================================================
+       03) VOICE OUTPUT
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-voice-output-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-voice-output-title">Output</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Voice output controls">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="false">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Text to speech</span>
+          <span class="home-interaction-settings-panel__option-description">Read responses aloud when a voice engine is connected</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="text-to-speech" data-home-interaction-setting-value="disabled"><span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) VOICE INPUT
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-voice-input-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-voice-input-title">Input</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Voice input controls">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Voice input</span>
+          <span class="home-interaction-settings-panel__option-description">Allow the stage microphone to prepare spoken input capture</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="voice-input" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+    </div>
+  </section>
+</section>

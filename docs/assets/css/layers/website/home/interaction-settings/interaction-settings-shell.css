@@ -11,11 +11,12 @@
    09) GROUPED SETTINGS SURFACE
    10) OPTIONS
    11) ROW CONTROLS
-   12) TOGGLE CONTROLS
-   13) META / STATUS
-   14) SETTINGS-OPEN PAGE STATE
-   15) STAGE SETTINGS PAGE BINDINGS
-   16) RESPONSIVE
+   12) DRILL-IN ROW CONTROLS
+   13) TOGGLE CONTROLS
+   14) META / STATUS
+   15) SETTINGS-OPEN PAGE STATE
+   16) STAGE SETTINGS PAGE BINDINGS
+   17) RESPONSIVE
 ============================================================================= */
 
 /* =============================================================================
@@ -113,6 +114,7 @@
   --home-interaction-settings-panel-status-bg:var(--home-platform-shell-control-bg, var(--control-bg));
 
   --home-interaction-settings-header-gap:var(--layout-interaction-settings-header-gap);
+  --home-interaction-settings-header-padding-y:var(--home-interaction-settings-panel-inner-padding-top);
   --home-interaction-settings-title-block-gap:var(--layout-interaction-settings-title-block-gap);
   --home-interaction-settings-control-text-description-gap:var(--spacing-md);
   --home-interaction-settings-eyebrow-size:var(--layout-interaction-settings-eyebrow-size);
@@ -128,20 +130,42 @@
   --home-interaction-settings-active-description-weight:var(--home-platform-shell-nav-text-weight, var(--layout-interaction-settings-option-description-weight));
   --home-interaction-settings-active-description-line-height:var(--layout-interaction-settings-option-description-line-height);
   --home-interaction-settings-active-description-gap:var(--home-platform-shell-gap, var(--spacing-lg));
+  --home-interaction-settings-nested-navigation-gap:var(--spacing-none);
+  --home-interaction-settings-nested-navigation-padding:var(--spacing-none);
+  --home-interaction-settings-nested-navigation-radius:var(--control-radius-pill);
+  --home-interaction-settings-nested-navigation-bg:var(--home-interaction-settings-panel-control-bg);
+  --home-interaction-settings-nested-navigation-border:var(--home-interaction-settings-panel-header-separator);
+  --home-interaction-settings-nested-navigation-divider-color:var(--home-interaction-settings-panel-border);
+  --home-interaction-settings-nested-navigation-divider-height:calc(var(--home-interaction-settings-nested-navigation-control-size) * 0.58);
+  --home-interaction-settings-arrow-icon-size:var(--layout-interaction-settings-arrow-icon-size, calc(((var(--global-close-button-size, var(--close-control-size)) + var(--global-close-button-line-width, var(--close-control-line-width))) / 2) * 0.45));
+  --home-interaction-settings-nested-navigation-control-size:var(--global-close-button-size, var(--close-control-size));
+  --home-interaction-settings-nested-navigation-icon-size:var(--home-interaction-settings-arrow-icon-size);
+  --home-interaction-settings-nested-navigation-color:var(--home-interaction-settings-panel-nav-color);
+  --home-interaction-settings-nested-navigation-color-hover:var(--home-interaction-settings-panel-nav-hover-color);
+  --home-interaction-settings-nested-navigation-opacity:var(--home-interaction-settings-panel-nav-opacity);
+  --home-interaction-settings-nested-navigation-opacity-hover:var(--home-interaction-settings-panel-nav-hover-opacity);
+  --home-interaction-settings-nested-navigation-opacity-disabled:var(--state-opacity-disabled, 0.32);
   --home-interaction-settings-nav-gap:var(--home-platform-shell-nav-gap, var(--layout-interaction-settings-nav-gap));
   --home-interaction-settings-section-gap:var(--spacing-xl);
   --home-interaction-settings-section-padding-bottom:var(--spacing-xl);
   --home-interaction-settings-section-heading-gap:var(--layout-interaction-settings-section-heading-gap);
-  --home-interaction-settings-section-icon-size:var(--layout-interaction-settings-section-icon-size-large, calc(var(--home-interaction-settings-panel-icon-size) * 1.75));
-  --home-interaction-settings-section-icon-gap:var(--home-interaction-settings-panel-nav-item-gap);
+  --home-interaction-settings-section-icon-size:var(--layout-interaction-settings-section-icon-size-large, calc(var(--home-interaction-settings-panel-icon-size) * 1.6));
+  --home-interaction-settings-section-icon-gap:var(--layout-interaction-settings-section-icon-gap, calc(var(--home-interaction-settings-panel-nav-item-gap) * 1.25));
   --home-interaction-settings-section-header-padding-top:var(--spacing-none);
   --home-interaction-settings-section-header-padding-bottom:var(--home-interaction-settings-panel-inner-padding-top);
   --home-interaction-settings-section-header-separator:var(--home-interaction-settings-panel-header-separator);
   --home-interaction-settings-section-title-color-prominent:var(--home-interaction-settings-panel-nav-hover-color);
-  --home-interaction-settings-section-title-size-large:var(--layout-interaction-settings-section-title-size-large, var(--home-interaction-settings-title-size));
+  --home-interaction-settings-section-title-size-large:var(--layout-interaction-settings-section-title-size-large, calc((var(--home-interaction-settings-title-size) + var(--home-interaction-settings-panel-nav-font-size)) / 2));
+  --home-interaction-settings-section-title-size-with-description:var(--layout-interaction-settings-section-title-size-with-description, var(--home-interaction-settings-title-size));
   --home-interaction-settings-section-title-weight-large:var(--home-interaction-settings-title-weight);
   --home-interaction-settings-section-title-line-height-large:var(--home-interaction-settings-title-line-height);
+  --home-interaction-settings-section-title-line-height-with-description:var(--layout-interaction-settings-section-title-line-height-with-description, var(--home-interaction-settings-panel-nav-line-height));
   --home-interaction-settings-section-title-tracking:var(--layout-interaction-settings-section-title-tracking);
+  --home-interaction-settings-section-copy-gap:var(--layout-interaction-settings-section-copy-gap, var(--spacing-sm));
+  --home-interaction-settings-section-description-color:var(--home-interaction-settings-active-description-color);
+  --home-interaction-settings-section-description-size:var(--home-interaction-settings-active-description-size);
+  --home-interaction-settings-section-description-weight:var(--home-interaction-settings-active-description-weight);
+  --home-interaction-settings-section-description-line-height:var(--home-interaction-settings-active-description-line-height);
   --home-interaction-settings-control-group-gap:var(--spacing-none);
   --home-interaction-settings-control-group-padding-top:var(--spacing-xl);
   --home-interaction-settings-control-group-title-margin-bottom:var(--spacing-sm);
@@ -157,6 +181,12 @@
   --home-interaction-settings-control-group-row-padding-x:var(--spacing-md);
   --home-interaction-settings-control-group-row-separator:var(--home-interaction-settings-panel-header-separator);
   --home-interaction-settings-control-subgroup-gap:var(--spacing-sm);
+  --home-interaction-settings-drill-indicator-color:var(--home-interaction-settings-panel-muted-color);
+  --home-interaction-settings-drill-indicator-control-width:var(--home-interaction-settings-panel-toggle-width);
+  --home-interaction-settings-drill-indicator-control-height:var(--home-interaction-settings-panel-toggle-height);
+  --home-interaction-settings-drill-indicator-icon-size:var(--home-interaction-settings-arrow-icon-size);
+  --home-interaction-settings-drill-indicator-weight:var(--home-interaction-settings-panel-nav-font-weight);
+  --home-interaction-settings-drill-indicator-line-height:var(--home-interaction-settings-panel-nav-line-height);
   --home-interaction-settings-option-grid-gap:var(--layout-interaction-settings-option-grid-gap);
   --home-interaction-settings-option-gap:var(--layout-interaction-settings-option-gap);
   --home-interaction-settings-option-padding-y:var(--layout-interaction-settings-option-padding-y);
@@ -237,7 +267,7 @@
   align-items:center;
   justify-content:space-between;
   gap:var(--home-interaction-settings-header-gap);
-  padding:var(--home-interaction-settings-panel-inner-padding-top) var(--home-interaction-settings-panel-inner-padding-inline) var(--home-interaction-settings-panel-body-gap) var(--home-interaction-settings-panel-inner-padding-inline);
+  padding:var(--home-interaction-settings-header-padding-y) var(--home-interaction-settings-panel-inner-padding-inline);
   border-bottom:var(--border-width-hairline) solid var(--home-interaction-settings-panel-header-separator);
   position:relative;
   z-index:2;
@@ -308,8 +338,92 @@
   content:none;
 }
 
+
 .home-interaction-settings-panel__active-description[hidden]{
   display:none;
+}
+
+
+.home-interaction-settings-panel__nested-navigation{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  align-self:center;
+  gap:var(--home-interaction-settings-nested-navigation-gap);
+  flex:0 0 auto;
+  margin-top:auto;
+  margin-right:var(--spacing-none);
+  margin-bottom:auto;
+  margin-left:var(--spacing-none);
+  padding:var(--home-interaction-settings-nested-navigation-padding);
+  border:var(--border-width-hairline) solid var(--home-interaction-settings-nested-navigation-border);
+  border-radius:var(--home-interaction-settings-nested-navigation-radius);
+  background:var(--home-interaction-settings-nested-navigation-bg);
+  color:var(--home-interaction-settings-nested-navigation-color);
+  overflow:hidden;
+}
+
+.home-interaction-settings-panel__nested-navigation[hidden]{
+  display:none;
+}
+
+.home-interaction-settings-panel__nested-back,
+.home-interaction-settings-panel__nested-next{
+  -webkit-appearance:none;
+  appearance:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  align-self:center;
+  flex:0 0 auto;
+  width:var(--home-interaction-settings-nested-navigation-control-size);
+  height:var(--home-interaction-settings-nested-navigation-control-size);
+  margin:var(--spacing-none);
+  padding:var(--spacing-none);
+  border:var(--border-width-hairline) solid transparent;
+  border-radius:var(--spacing-none);
+  background:transparent;
+  color:var(--home-interaction-settings-nested-navigation-color);
+  opacity:var(--home-interaction-settings-nested-navigation-opacity);
+  outline:none;
+  text-decoration:none;
+  transform:none;
+  transition:var(--interaction-transition-control);
+}
+
+.home-interaction-settings-panel__nested-back:hover,
+.home-interaction-settings-panel__nested-back:focus-visible,
+.home-interaction-settings-panel__nested-next:hover,
+.home-interaction-settings-panel__nested-next:focus-visible{
+  color:var(--home-interaction-settings-nested-navigation-color-hover);
+  opacity:var(--home-interaction-settings-nested-navigation-opacity-hover);
+}
+
+.home-interaction-settings-panel__nested-back:focus-visible,
+.home-interaction-settings-panel__nested-next:focus-visible{
+  outline:var(--focus-ring-width, 1px) solid color-mix(in srgb, var(--color-primary1) 72%, transparent);
+  outline-offset:var(--focus-ring-offset, var(--spacing-xs));
+}
+
+.home-interaction-settings-panel__nested-next:disabled,
+.home-interaction-settings-panel__nested-next[aria-disabled="true"]{
+  opacity:var(--home-interaction-settings-nested-navigation-opacity-disabled);
+}
+
+.home-interaction-settings-panel__nested-navigation-icon{
+  display:block;
+  width:var(--home-interaction-settings-nested-navigation-icon-size);
+  height:var(--home-interaction-settings-nested-navigation-icon-size);
+}
+
+.home-interaction-settings-panel__nested-navigation-divider{
+  display:block;
+  align-self:center;
+  flex:0 0 var(--border-width-hairline);
+  width:var(--border-width-hairline);
+  height:var(--home-interaction-settings-nested-navigation-divider-height);
+  background:var(--home-interaction-settings-nested-navigation-divider-color);
+  opacity:var(--home-interaction-settings-panel-nav-hover-opacity);
 }
 
 /* =============================================================================
@@ -433,12 +547,18 @@
 }
 
 .home-interaction-settings-panel__section-heading--with-icon{
-  display:flex;
-  align-items:center;
-  gap:var(--home-interaction-settings-section-icon-gap);
+  display:grid;
+  gap:var(--home-interaction-settings-section-copy-gap);
   padding-top:var(--home-interaction-settings-section-header-padding-top);
   padding-bottom:calc(var(--home-interaction-settings-section-header-padding-bottom) + var(--home-interaction-settings-panel-gap));
   border-bottom:var(--border-width-hairline) solid var(--home-interaction-settings-section-header-separator);
+}
+
+.home-interaction-settings-panel__section-title-row{
+  display:flex;
+  align-items:center;
+  gap:var(--home-interaction-settings-section-icon-gap);
+  min-width:var(--spacing-none);
 }
 
 .home-interaction-settings-panel__section-icon{
@@ -462,14 +582,25 @@
   font-weight:var(--home-interaction-settings-panel-nav-font-weight);
   letter-spacing:var(--home-interaction-settings-section-title-tracking);
   line-height:var(--home-interaction-settings-panel-nav-line-height);
-  text-transform:uppercase;
+  text-transform:none;
 }
 
 .home-interaction-settings-panel__section-heading--with-icon .home-interaction-settings-panel__section-title{
+  display:flex;
+  align-items:center;
+  height:var(--home-interaction-settings-section-icon-size);
   color:var(--home-interaction-settings-section-title-color-prominent);
   font-size:var(--home-interaction-settings-section-title-size-large);
   font-weight:var(--home-interaction-settings-section-title-weight-large);
-  line-height:var(--home-interaction-settings-section-title-line-height-large);
+  line-height:var(--home-interaction-settings-section-title-size-large);
+}
+
+.home-interaction-settings-panel__section-description{
+  margin:var(--spacing-none);
+  color:var(--home-interaction-settings-section-description-color);
+  font-size:var(--home-interaction-settings-section-description-size);
+  font-weight:var(--home-interaction-settings-section-description-weight);
+  line-height:var(--home-interaction-settings-section-description-line-height);
 }
 
 /* =============================================================================
@@ -499,7 +630,7 @@
   font-weight:var(--home-interaction-settings-control-group-title-weight);
   line-height:var(--home-interaction-settings-control-group-title-line-height);
   letter-spacing:var(--home-interaction-settings-control-group-title-tracking);
-  text-transform:uppercase;
+  text-transform:none;
 }
 
 .home-interaction-settings-panel__control-group > .ui-radio-list,
@@ -527,13 +658,17 @@
 }
 
 .home-interaction-settings-panel__control-group .ui-radio-list__item,
-.home-interaction-settings-panel__control-group .home-interaction-settings-panel__toggle-row{
+.home-interaction-settings-panel__control-group .home-interaction-settings-panel__toggle-row,
+.home-interaction-settings-panel__control-group .home-interaction-settings-panel__drill-row{
   min-height:var(--home-interaction-settings-panel-nav-item-min-height);
   padding:var(--home-interaction-settings-control-group-row-padding-y) var(--home-interaction-settings-control-group-row-padding-x);
 }
 
 .home-interaction-settings-panel__control-group .ui-radio-list__item + .ui-radio-list__item,
-.home-interaction-settings-panel__control-group .home-interaction-settings-panel__toggle-row + .home-interaction-settings-panel__toggle-row{
+.home-interaction-settings-panel__control-group .home-interaction-settings-panel__toggle-row + .home-interaction-settings-panel__toggle-row,
+.home-interaction-settings-panel__control-group .home-interaction-settings-panel__drill-row + .home-interaction-settings-panel__drill-row,
+.home-interaction-settings-panel__control-group .home-interaction-settings-panel__toggle-row + .home-interaction-settings-panel__drill-row,
+.home-interaction-settings-panel__control-group .home-interaction-settings-panel__drill-row + .home-interaction-settings-panel__toggle-row{
   border-top:var(--border-width-hairline) solid var(--home-interaction-settings-control-group-row-separator);
 }
 
@@ -544,7 +679,8 @@
 }
 
 .home-interaction-settings-panel__radio-list .ui-radio-list__content,
-.home-interaction-settings-panel__toggle-row > span:first-child{
+.home-interaction-settings-panel__toggle-row > span:first-child,
+.home-interaction-settings-panel__drill-row > span:first-child{
   display:flex;
   align-items:baseline;
   gap:var(--home-interaction-settings-control-text-description-gap);
@@ -552,16 +688,19 @@
 }
 
 .home-interaction-settings-panel__radio-list .ui-radio-list__label,
-.home-interaction-settings-panel__toggle-row .home-interaction-settings-panel__option-label{
-  color:var(--home-interaction-settings-panel-control-text-active);
-  font-size:var(--home-interaction-settings-option-label-size);
-  font-weight:var(--home-interaction-settings-row-weight);
-  line-height:var(--home-interaction-settings-eyebrow-line-height);
+.home-interaction-settings-panel__toggle-row .home-interaction-settings-panel__option-label,
+.home-interaction-settings-panel__drill-row .home-interaction-settings-panel__option-label{
+  color:var(--home-interaction-settings-panel-nav-color);
+  font-size:var(--home-interaction-settings-panel-nav-font-size);
+  font-weight:var(--home-interaction-settings-panel-nav-font-weight);
+  line-height:var(--home-interaction-settings-panel-nav-line-height);
   white-space:nowrap;
 }
 
 .home-interaction-settings-panel__radio-list .ui-radio-list__description,
-.home-interaction-settings-panel__toggle-row .home-interaction-settings-panel__option-description{
+.home-interaction-settings-panel__toggle-row .home-interaction-settings-panel__option-description,
+.home-interaction-settings-panel__drill-row .home-interaction-settings-panel__option-description{
+  display:none;
   color:var(--home-interaction-settings-panel-control-description);
   font-size:var(--home-interaction-settings-option-description-size);
   font-weight:var(--home-interaction-settings-option-description-weight);
@@ -600,10 +739,10 @@
 }
 
 .home-interaction-settings-panel__option-label{
-  color:var(--home-interaction-settings-panel-control-text-active);
-  font-size:var(--home-interaction-settings-option-label-size);
-  font-weight:var(--home-interaction-settings-row-weight);
-  line-height:var(--home-interaction-settings-eyebrow-line-height);
+  color:var(--home-interaction-settings-panel-nav-color);
+  font-size:var(--home-interaction-settings-panel-nav-font-size);
+  font-weight:var(--home-interaction-settings-panel-nav-font-weight);
+  line-height:var(--home-interaction-settings-panel-nav-line-height);
 }
 
 .home-interaction-settings-panel__option-description{
@@ -628,10 +767,10 @@
   border:var(--border-width-hairline) solid var(--home-interaction-settings-panel-control-border);
   border-radius:var(--home-interaction-settings-panel-control-radius);
   background:var(--home-interaction-settings-panel-control-bg);
-  color:var(--home-interaction-settings-panel-control-text);
-  font-size:var(--home-interaction-settings-option-label-size);
-  font-weight:var(--home-interaction-settings-row-weight);
-  line-height:var(--home-interaction-settings-eyebrow-line-height);
+  color:var(--home-interaction-settings-panel-nav-color);
+  font-size:var(--home-interaction-settings-panel-nav-font-size);
+  font-weight:var(--home-interaction-settings-panel-nav-font-weight);
+  line-height:var(--home-interaction-settings-panel-nav-line-height);
   outline:none;
   text-decoration:none;
   transition:var(--interaction-transition-control);
@@ -646,7 +785,64 @@
 }
 
 /* =============================================================================
-   12) TOGGLE CONTROLS
+   12) DRILL-IN ROW CONTROLS
+============================================================================= */
+.home-interaction-settings-panel__drill-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--home-interaction-settings-toggle-row-gap);
+  width:var(--size-full);
+  padding:var(--home-interaction-settings-unified-control-padding-y) var(--home-interaction-settings-unified-control-padding-x);
+  border:var(--border-width-hairline) solid var(--home-interaction-settings-unified-control-border);
+  border-radius:var(--spacing-none);
+  background:var(--home-interaction-settings-unified-control-bg);
+  color:var(--home-interaction-settings-panel-control-text);
+  text-align:left;
+  box-shadow:none;
+}
+
+.home-interaction-settings-panel__drill-indicator{
+  -webkit-appearance:none;
+  appearance:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-end;
+  align-self:center;
+  flex:0 0 auto;
+  width:var(--home-interaction-settings-drill-indicator-control-width);
+  height:var(--home-interaction-settings-drill-indicator-control-height);
+  margin:var(--spacing-none);
+  padding:var(--spacing-none);
+  border:var(--border-width-hairline) solid transparent;
+  border-radius:var(--home-interaction-settings-panel-nav-item-radius);
+  background:transparent;
+  color:var(--home-interaction-settings-drill-indicator-color);
+  outline:none;
+  text-decoration:none;
+  transform:none;
+  transition:var(--interaction-transition-control);
+}
+
+.home-interaction-settings-panel__drill-indicator:hover,
+.home-interaction-settings-panel__drill-indicator:focus-visible{
+  color:var(--home-interaction-settings-panel-control-text-active);
+  opacity:var(--home-interaction-settings-panel-nav-hover-opacity);
+}
+
+.home-interaction-settings-panel__drill-indicator:focus-visible{
+  outline:var(--focus-ring-width, 1px) solid color-mix(in srgb, var(--color-primary1) 72%, transparent);
+  outline-offset:var(--focus-ring-offset, var(--spacing-xs));
+}
+
+.home-interaction-settings-panel__drill-indicator-icon{
+  display:block;
+  width:var(--home-interaction-settings-drill-indicator-icon-size);
+  height:var(--home-interaction-settings-drill-indicator-icon-size);
+}
+
+/* =============================================================================
+   13) TOGGLE CONTROLS
 ============================================================================= */
 .home-interaction-settings-panel__toggle-row{
   -webkit-appearance:none;
@@ -675,6 +871,7 @@
   opacity:var(--home-interaction-settings-panel-nav-hover-opacity);
   box-shadow:var(--home-interaction-settings-unified-control-shadow-active);
 }
+
 
 
 .home-interaction-settings-panel__toggle{
@@ -722,7 +919,7 @@
 }
 
 /* =============================================================================
-   13) META / STATUS
+   14) META / STATUS
 ============================================================================= */
 .home-interaction-settings-panel__status{
   margin:var(--spacing-none);
@@ -736,7 +933,7 @@
 }
 
 /* =============================================================================
-   14) SETTINGS-OPEN PAGE STATE
+   15) SETTINGS-OPEN PAGE STATE
 ============================================================================= */
 body[data-home-interaction-settings-state="open"] .home-interaction-panel,
 body[data-home-interaction-settings-state="open"] .home-stage-interactive-text,
@@ -753,7 +950,7 @@ body[data-home-interaction-settings-state="open"] #stage-cognitive-core-shell{
 }
 
 /* =============================================================================
-   15) STAGE SETTINGS PAGE BINDINGS
+   16) STAGE SETTINGS PAGE BINDINGS
 ============================================================================= */
 body[data-home-stage-footer="disabled"] #home-footer-mount,
 body[data-home-stage-footer="disabled"] .home-shell__footer,
@@ -839,7 +1036,7 @@ body[data-home-stage-contrast="high"] .home-stage-interactive-text{
 }
 
 /* =============================================================================
-   16) RESPONSIVE
+   17) RESPONSIVE
 ============================================================================= */
 @media (max-width:900px){
   .home-interaction-settings-panel__option-grid{

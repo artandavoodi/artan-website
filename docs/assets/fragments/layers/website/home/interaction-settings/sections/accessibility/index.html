@@ -1,0 +1,75 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) ACCESSIBILITY SECTION ROOT
+     02) ACCESSIBILITY SECTION HEADER
+     03) ACCESSIBILITY MOTION
+     04) ACCESSIBILITY READING
+============================================================================= -->
+
+<!-- =============================================================================
+     01) ACCESSIBILITY SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="accessibility" aria-label="Accessibility">
+  <!-- =============================================================================
+       02) ACCESSIBILITY SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/accessibility.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Accessibility</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Adjust motion, reading comfort, response assistance, and future accessibility controls for the interaction surface</p>
+  </header>
+
+  <!-- =============================================================================
+       03) ACCESSIBILITY MOTION
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-accessibility-motion-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-accessibility-motion-title">Motion</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Motion controls">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="false">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Reduce motion</span>
+          <span class="home-interaction-settings-panel__option-description">Limit stage motion, circle animation, and transition intensity</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="reduced-motion" data-home-interaction-setting-value="disabled"><span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) ACCESSIBILITY READING
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-accessibility-reading-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-accessibility-reading-title">Reading</h3>
+
+    <div class="ui-radio-list home-interaction-settings-panel__radio-list" data-ui-radio-list="reading-density" role="radiogroup" aria-label="Reading comfort">
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="standard" aria-checked="true" aria-pressed="true">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-setting="reading-density" data-home-interaction-setting-value="standard"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Standard</span>
+          <span class="ui-radio-list__description">Use the default premium response spacing</span>
+        </span>
+      </div>
+
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="expanded" aria-checked="false" aria-pressed="false">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-setting="reading-density" data-home-interaction-setting-value="expanded"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Expanded</span>
+          <span class="ui-radio-list__description">Increase response spacing for longer reading sessions</span>
+        </span>
+      </div>
+
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="compact" aria-checked="false" aria-pressed="false">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-setting="reading-density" data-home-interaction-setting-value="compact"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Compact</span>
+          <span class="ui-radio-list__description">Reduce response spacing for dense work sessions</span>
+        </span>
+      </div>
+    </div>
+  </section>
+</section>

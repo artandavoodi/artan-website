@@ -1,0 +1,80 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) PRIVACY SECTION ROOT
+     02) PRIVACY SECTION HEADER
+     03) PRIVACY CONTROLS
+     04) PRIVACY STATUS
+============================================================================= -->
+
+<!-- =============================================================================
+     01) PRIVACY SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="privacy" aria-label="Privacy">
+  <!-- =============================================================================
+       02) PRIVACY SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/privacy.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title">Privacy</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Control session persistence, temporary mode, local preference storage, and future account-level privacy routing</p>
+  </header>
+
+  <!-- =============================================================================
+       03) PRIVACY CONTROLS
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-privacy-controls-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-privacy-controls-title">Controls</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Privacy controls">
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Session save</span>
+          <span class="home-interaction-settings-panel__option-description">Remember preferences and session state where supported</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="session-save" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-pressed="true">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Local preferences</span>
+          <span class="home-interaction-settings-panel__option-description">Store interface preferences locally until account persistence is connected</span>
+        </span>
+        <button class="home-interaction-settings-panel__toggle" type="button" data-home-interaction-toggle-control aria-label="Toggle setting" data-home-interaction-setting="local-preferences" data-home-interaction-setting-value="enabled"><span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) PRIVACY STATUS
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-privacy-status-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-privacy-status-title">Status</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Privacy status">
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Temporary mode status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Temporary mode</span>
+          <span class="home-interaction-settings-panel__option-description">Temporary conversations will bypass persistent history once chat storage is connected</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Account memory status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Account memory</span>
+          <span class="home-interaction-settings-panel__option-description">Account-level preference sync will require authenticated profile storage</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Provider routing status">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Provider routing</span>
+          <span class="home-interaction-settings-panel__option-description">Model routing privacy will depend on local, cloud, or automatic provider selection</span>
+        </span>
+      </div>
+    </div>
+  </section>
+</section>

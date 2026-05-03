@@ -1,0 +1,102 @@
+<!-- =============================================================================
+     00) FILE INDEX
+     01) WORKSPACE SECTION ROOT
+     02) WORKSPACE SECTION HEADER
+     03) WORKSPACE MODE
+     04) WORKSPACE CONTEXT
+============================================================================= -->
+
+<!-- =============================================================================
+     01) WORKSPACE SECTION ROOT
+============================================================================= -->
+<section class="home-interaction-settings-panel__section" data-home-interaction-settings-section="workspace" aria-labelledby="home-interaction-settings-workspace-title">
+  <!-- =============================================================================
+       02) WORKSPACE SECTION HEADER
+  ============================================================================= -->
+  <header class="home-interaction-settings-panel__section-heading home-interaction-settings-panel__section-heading--with-icon">
+    <div class="home-interaction-settings-panel__section-title-row">
+      <span class="home-interaction-settings-panel__section-icon" aria-hidden="true">
+        <img class="ui-icon-theme-aware" src="/assets/icons/core/system/unclassified/workspace.svg" alt="">
+      </span>
+      <h3 class="home-interaction-settings-panel__section-title" id="home-interaction-settings-workspace-title">Workspace</h3>
+    </div>
+    <p class="home-interaction-settings-panel__section-description">Define the operating context before model, memory, developer, or changelog controls are applied</p>
+  </header>
+
+  <!-- =============================================================================
+       03) WORKSPACE MODE
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-workspace-mode-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-workspace-mode-title">Mode</h3>
+
+    <div class="ui-radio-list home-interaction-settings-panel__radio-list" data-ui-radio-list="workspace-mode" role="radiogroup" aria-label="Workspace modes">
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="personal" aria-checked="true" aria-pressed="true">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-settings-action="workspace-mode" data-home-interaction-settings-value="personal"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Personal workspace</span>
+          <span class="ui-radio-list__description">Use the founder workspace for focused development and private continuity</span>
+        </span>
+      </div>
+
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="project" aria-checked="false" aria-pressed="false">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-settings-action="workspace-mode" data-home-interaction-settings-value="project"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Project workspace</span>
+          <span class="ui-radio-list__description">Bind the session to a selected project, repository scope, and implementation context</span>
+        </span>
+      </div>
+
+      <div class="ui-radio-list__item home-interaction-settings-panel__radio-item" data-ui-radio-list-item data-ui-radio-list-value="institutional" aria-checked="false" aria-pressed="false">
+        <button class="ui-radio-list__indicator" type="button" data-ui-radio-list-control aria-label="Select option" data-home-interaction-settings-action="workspace-mode" data-home-interaction-settings-value="institutional"></button>
+        <span class="ui-radio-list__content">
+          <span class="ui-radio-list__label">Institutional workspace</span>
+          <span class="ui-radio-list__description">Route work through governed Neuroartan planning, release, and approval records</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================================
+       04) WORKSPACE CONTEXT
+  ============================================================================= -->
+  <section class="home-interaction-settings-panel__control-group" aria-labelledby="home-interaction-settings-workspace-context-title">
+    <h3 class="home-interaction-settings-panel__control-group-title" id="home-interaction-settings-workspace-context-title">Context</h3>
+
+    <div class="home-interaction-settings-panel__section-group" aria-label="Workspace context">
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Active workspace">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Active workspace</span>
+          <span class="home-interaction-settings-panel__option-description">Neuroartan Website</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Active project">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Active project</span>
+          <span class="home-interaction-settings-panel__option-description">Website Stabilization</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Environment">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Environment</span>
+          <span class="home-interaction-settings-panel__option-description">Local Preview</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Repository connection">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Repository connection</span>
+          <span class="home-interaction-settings-panel__option-description">Available when authorized</span>
+        </span>
+      </div>
+
+      <div class="home-interaction-settings-panel__toggle-row" aria-label="Workspace memory">
+        <span>
+          <span class="home-interaction-settings-panel__option-label">Workspace memory</span>
+          <span class="home-interaction-settings-panel__option-description">Project-bound</span>
+        </span>
+      </div>
+    </div>
+  </section>
+</section>
