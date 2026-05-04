@@ -32,11 +32,11 @@ system: "Neuroartan Website"
 
 spine_version: "1.0"
 template_lock: true
-version: "0.1"
+version: "0.2"
 
 created_date: "2026-05-02"
-last_updated: "2026-05-02"
-last_reviewed: "2026-05-02"
+last_updated: "2026-05-04"
+last_reviewed: "2026-05-04"
 review_cycle: "Monthly"
 
 effective_date: "2026-05-02"
@@ -53,6 +53,10 @@ scope:
   - "Repository-aware development loop"
   - "Sandboxed scan, plan, patch, test workflow"
   - "Provider-neutral agent orchestration"
+  - "Developer Operations Console runtime surface boundary"
+  - "Developer Console Full View runtime and log planning"
+  - "Developer terminal dock runtime boundary"
+  - "Approval-gated terminal and execution review boundary"
 
 index_targets:
   - "Website Planning Index"
@@ -66,6 +70,8 @@ related:
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/05 - GitHub Repository Access & Permission Specification.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/06 - Agent Sandbox & Internet Egress Governance Specification.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/08 - Patch Review, Test, Commit & PR Workflow Specification.md"
+  - "/Users/artan/Documents/Neuroartan/website/planning/06 - GitHub & Terminal Workflows/01 - Repository Development Workflow Specification.md"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html"
 
 tags:
   - "ai-coding-agent"
@@ -74,6 +80,11 @@ tags:
   - "sandbox-runtime"
   - "repository-aware-development"
   - "codex-equivalent"
+  - "developer-operations-console"
+  - "developer-console-full-view"
+  - "developer-console-terminal-dock"
+  - "runtime-logs"
+  - "approval-gated-execution"
 ---
 
 # AI Coding Agent Runtime Specification
@@ -159,6 +170,36 @@ The frontend must not own provider secrets, GitHub tokens, repository clone cred
 ## IV-B. Backend / Runtime Responsibilities
 
 The backend runtime must own provider credential resolution, model provider execution, repository authorization, sandbox allocation, filesystem scanning, patch generation, patch application after approval, test execution after approval, commit creation after approval, pull request creation after approval, audit logging, and rollback or cleanup support.
+
+---
+
+## IV-C. Developer Operations Console Runtime Surface
+
+The Developer Operations Console is the approved frontend runtime surface for developer-facing operations, review, logs, scan outputs, repository state, workspace state, environment state, and future terminal dock interaction.
+
+The console may display runtime state, proposed commands, scan output, logs, review packages, test summaries, and approval controls.
+
+The console must not execute repository mutation directly from browser code.
+
+The console operates as a runtime surface, not as the runtime authority.
+
+Runtime authority remains server-side.
+
+The approved boundary is:
+
+```text
+Developer Operations Console
+→ Runtime Request Preview
+→ Approval Gate
+→ Server-Side Runtime
+→ Runtime Audit Ledger
+```
+
+The Developer Operations Console may support a Full View terminal dock only after the Full View shell, tab rendering, viewport suppression, scroll ownership, and parent-token styling are stable.
+
+The terminal dock may display proposed commands, scan output, runtime logs, and approval-gated execution state.
+
+The terminal dock must not perform destructive execution automatically.
 
 ---
 
@@ -405,6 +446,39 @@ Audit records must be preserved for operational traceability.
 
 ---
 
+## XII-A. Console Runtime and Log Surfaces
+
+The Developer Operations Console may display runtime information through the following future surfaces:
+
+- terminal dock
+- runtime logs
+- scan output
+- command proposal review
+- approval state
+- test result review
+- repository status
+- workspace status
+- environment status
+- agent coordination state
+
+These surfaces are display and review surfaces unless explicitly promoted into approved backend runtime actions.
+
+Any future execution action must preserve:
+
+- explicit approval
+- operator identity
+- agent identity
+- repository scope
+- branch scope
+- command preview
+- mutation boundary
+- audit logging
+- rollback metadata
+
+The terminal dock shall be treated as a review and coordination surface before it is ever treated as an execution surface.
+
+---
+
 ## XIII. Security Boundaries and Requirements
 
 The runtime must enforce:
@@ -440,6 +514,16 @@ Phase 02 — Read-Only Runtime
 - implement read-only scanner
 - implement provider router stub
 - return scan and plan outputs only
+
+Phase 02A — Developer Operations Console Runtime Surface
+
+- connect Developer Operations Console to runtime request preview state
+- display repository, workspace, and environment state inside the console
+- prepare scan output display surface
+- prepare runtime log display surface
+- prepare terminal dock placeholder in Full View only after shell stability
+- preserve approval-gated execution boundaries
+- prevent direct frontend mutation
 
 Phase 03 — Provider Execution
 
@@ -496,10 +580,13 @@ The AI Coding Agent Runtime is not yet implemented.
 
 The current authorized work is architecture definition, runtime contract planning, and safe frontend-to-backend boundary design.
 
+The Developer Operations Console is now the planned runtime display and review surface for developer-facing operations. It may present runtime state, scan output, command proposals, logs, review packages, and approval controls, but runtime authority remains server-side and approval-gated.
+
 ---
 
 ## Change Log
 
+- 2026-05-04 — v0.2 Added Developer Operations Console runtime surface boundary, Full View terminal dock planning, runtime log and scan-output surface direction, approval-gated execution review requirements, and Phase 02A runtime-surface implementation boundary. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: AI Coding Agent Runtime propagation for Developer Operations Console under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-02 — v0.1 Created AI Coding Agent Runtime Specification to define the secure server-side execution spine for Codex-equivalent repository-aware development. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: AI coding agent runtime architecture specification under `/Users/artan/Documents/Neuroartan/website`.
 
 ---
@@ -511,6 +598,6 @@ GSA PROTOCOL STATUS: Pending Review
 GSA APPROVAL: false  
 LEGAL REVIEW REQUIRED: true  
 CREO REVIEW REQUIRED: true  
-VERSION: 0.1
+VERSION: 0.2
 
 END OF DOCUMENT

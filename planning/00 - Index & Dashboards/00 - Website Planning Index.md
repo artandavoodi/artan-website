@@ -32,11 +32,11 @@ system: "Website Planning"
 
 spine_version: "1.0"
 template_lock: "Global Document Metadata Standard"
-version: "0.6"
+version: "0.7"
 
 created_date: "2026-05-02"
-last_updated: "2026-05-03"
-last_reviewed: "2026-05-03"
+last_updated: "2026-05-04"
+last_reviewed: "2026-05-04"
 review_cycle: "Weekly"
 
 effective_date: "2026-05-02"
@@ -60,6 +60,8 @@ scope:
   - "Developer Mode dedicated top menu architecture governance"
   - "Developer Mode sidebar and command surface architecture governance"
   - "Codex-style developer workspace maturity planning"
+  - "Developer Operations Console direction tracking"
+  - "Developer Console Mini View and Full View governance"
 
 index_targets:
   - "Strategic Decisions Register"
@@ -70,6 +72,7 @@ index_targets:
   - "Website Modular Architecture Doctrine Register"
   - "Control Center Grouped Settings Surface Design Doctrine Register"
   - "AI Development Cockpit Implementation Change Log Register"
+  - "Developer Operations Console Directive Register"
   - "Provider Strategy Register"
   - "Repository Workflow Register"
   - "Daily Execution Records Register"
@@ -93,6 +96,7 @@ related:
   - "/Users/artan/Documents/Neuroartan/website/planning/06 - GitHub & Terminal Workflows/01 - Repository Development Workflow Specification.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/07 - Daily Execution Records/01 - Daily Execution Log.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/08 - Implementation Change Logs/01 - AI Development Cockpit Implementation Change Log.md"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html"
 
 tags:
   - "website-planning"
@@ -114,6 +118,9 @@ tags:
   - "apple-native-settings"
   - "platform-menu-reuse"
   - "company-style"
+  - "developer-operations-console"
+  - "developer-console-full-view"
+  - "developer-console-mini-view"
 ---
 
 # Website Planning Index
@@ -160,6 +167,7 @@ It must not be treated as public website content unless explicit publication app
 | Repository Development Workflow Specification | `/Users/artan/Documents/Neuroartan/website/planning/06 - GitHub & Terminal Workflows/01 - Repository Development Workflow Specification.md` | Defines terminal scan, file targeting, patch instruction, and GitHub commit workflows. |
 | Daily Execution Log | `/Users/artan/Documents/Neuroartan/website/planning/07 - Daily Execution Records/01 - Daily Execution Log.md` | Records daily execution, verification, blockers, and next actions. |
 | AI Development Cockpit Implementation Change Log | `/Users/artan/Documents/Neuroartan/website/planning/08 - Implementation Change Logs/01 - AI Development Cockpit Implementation Change Log.md` | Records implementation sessions, file changes, verification results, blockers, and reusable system baselines including the Control Center nested settings pilot. |
+| Developer Operations Console Directive | `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html` | Defines the Developer Operations Console direction, Mini View and Full View model, tab migration governance, terminal dock planning, and parent-token styling rule. |
 
 ---
 
@@ -185,6 +193,9 @@ Current priority:
 6. proceed to read-only backend stubs only after architecture review
 7. preserve the Control Center nested settings pilot as the canonical Apple-native company-style baseline before Platform Menu reuse or global primitive extraction
 8. treat Developer Mode as a dedicated developer workspace requiring its own top menu, sidebars, command surface, and Codex-style navigation before implementation
+9. mature the Developer Operations Panel into a dockable Developer Operations Console with Mini View and Full View states
+10. preserve the Developer Mode topbar while suppressing non-topbar Developer Mode viewport content during Developer Console Full View
+11. route Developer-specific controls into their correct Developer Operations Console tab domains
 
 ---
 
@@ -247,12 +258,13 @@ Each Codex prompt must be scoped to one bounded objective and must request:
 | Repository Development Workflow Specification | Draft | Requires workflow review before cockpit implementation. |
 | Daily Execution Log | Draft | Active for continuity tracking. |
 | AI Development Cockpit Implementation Change Log | Active | Updated with Control Center nested settings baseline and company-style system lock. |
+| Developer Operations Console Directive | Active | Created as the active direction record for Developer Operations Console Mini View, Full View, tab migration, terminal dock planning, and parent-token styling governance. |
 
 ---
 
 ## 9. Next Action
 
-Next action is to connect Developer Mode backend session state to canonical Supabase profile persistence, then configure GitHub OAuth credentials and provider runtime credentials for live authorization and provider validation.
+Next action is to complete Developer Operations Console styling and layout stabilization, then continue Developer Mode backend session persistence, GitHub OAuth credential configuration, and provider runtime validation.
 
 The Control Center Session nested settings pilot remains the canonical reusable Apple-native settings baseline for nested navigation, drill-in rows, native icon controls, and future Platform Menu or Developer Mode reuse.
 
@@ -262,6 +274,7 @@ Developer Mode runtime mutation remains gated until sandbox isolation, internet 
 
 ## Change Log
 
+- 2026-05-04 — v0.7 Indexed Developer Operations Console direction, including Mini View and Full View governance, tab migration model, topbar preservation requirement, terminal dock planning, and parent-token styling direction. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Planning Index update for Developer Operations Console direction under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.6 Indexed Developer Mode Architecture Specification version 0.3 and recorded the first homepage-routed Developer Mode workspace plus backend session-state implementation boundary. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Codex. Agent ID: Codex. Execution Context: Website Planning Index update for Developer Mode implementation under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.5 Indexed Developer Mode Architecture Specification version 0.2 as the active maturity reference for dedicated developer top menu, developer left and right sidebars, command surface, repository workspace, Codex-style navigation, and Control Center nested settings doctrine reuse. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Planning Index update for Developer Mode architecture maturity under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.4 Indexed Control Center Grouped Settings Surface Design Doctrine and AI Development Cockpit Implementation Change Log as active planning records. Registered the Control Center Session nested settings pilot as the canonical Apple-native company-style baseline for future Platform Menu reuse and reusable primitive extraction planning. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Planning Index update under `/Users/artan/Documents/Neuroartan/website`.
@@ -278,7 +291,7 @@ GSA APPROVAL: false
 DOCUMENT STATUS: Draft — Website Planning Index  
 VISIBILITY: Internal  
 PUBLISH TO WEBSITE: No  
-VERSION: 0.6
+VERSION: 0.7
 
 ---
 

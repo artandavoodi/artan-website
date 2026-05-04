@@ -24,12 +24,12 @@
    01) STAGE CORE TOKENS
 ============================================================================= */
 :root{
-  --home-stage-motion-core-width:var(--layout-home-stage-motion-core-width);
-  --home-stage-motion-core-height:var(--layout-home-stage-motion-core-height);
-  --home-stage-motion-core-active-width:var(--layout-home-stage-motion-core-active-width);
-  --home-stage-motion-core-active-height:var(--layout-home-stage-motion-core-active-height);
-  --home-stage-motion-vessel-size:var(--layout-home-stage-motion-vessel-size);
-  --home-stage-motion-vessel-active-size:var(--layout-home-stage-motion-vessel-active-size);
+  --home-stage-motion-core-width:calc(var(--layout-home-stage-motion-core-width) * 0.92);
+  --home-stage-motion-core-height:calc(var(--layout-home-stage-motion-core-height) * 0.92);
+  --home-stage-motion-core-active-width:calc(var(--layout-home-stage-motion-core-active-width) * 0.92);
+  --home-stage-motion-core-active-height:calc(var(--layout-home-stage-motion-core-active-height) * 0.92);
+  --home-stage-motion-vessel-size:calc(var(--layout-home-stage-motion-vessel-size) * 0.86);
+  --home-stage-motion-vessel-active-size:calc(var(--layout-home-stage-motion-vessel-active-size) * 0.86);
   --home-stage-motion-vessel-ring-border:var(--layout-home-stage-motion-vessel-ring-border);
   --home-stage-motion-vessel-inner-bg:var(--layout-home-stage-motion-vessel-inner-bg);
   --home-stage-motion-core-color:var(--layout-home-stage-motion-core-color);
@@ -37,9 +37,9 @@
   --home-stage-motion-core-idle-ring-opacity:var(--layout-home-stage-motion-core-idle-ring-opacity);
   --home-stage-motion-core-idle-signal-opacity:var(--layout-home-stage-motion-core-idle-signal-opacity);
   --home-stage-motion-core-idle-pulse-opacity:var(--layout-home-stage-motion-core-idle-pulse-opacity);
-  --home-stage-motion-core-signal-size:var(--layout-home-stage-motion-core-signal-size);
+  --home-stage-motion-core-signal-size:calc(var(--layout-home-stage-motion-core-signal-size) * 0.86);
   --home-stage-motion-core-ring-size:var(--home-stage-motion-vessel-size);
-  --home-stage-motion-core-pulse-size:var(--layout-home-stage-motion-core-pulse-size);
+  --home-stage-motion-core-pulse-size:calc(var(--layout-home-stage-motion-core-pulse-size) * 0.86);
   --home-stage-motion-core-signal-blur:var(--layout-home-stage-motion-core-signal-blur);
   --home-stage-motion-core-pulse-blur:var(--layout-home-stage-motion-core-pulse-blur);
   --home-stage-motion-vessel-blur:var(--layout-home-stage-motion-vessel-blur);
@@ -150,6 +150,10 @@
     height var(--home-stage-motion-transition);
 }
 
+#stage-center-core{
+  border:1px solid yellow;
+}
+
 #stage-center-core:has(#stage-cognitive-core-shell[data-voice-active="true"]){
   width:var(--home-stage-motion-core-active-width);
   height:var(--home-stage-motion-core-active-height);
@@ -162,6 +166,7 @@
 
 #stage-center-core:has(#stage-cognitive-core-shell[data-voice-active="true"]) #stage-cognitive-core-ring{
   width:var(--home-stage-motion-vessel-active-size);
+  height:var(--home-stage-motion-vessel-active-size);
 }
 
 /* =============================================================================

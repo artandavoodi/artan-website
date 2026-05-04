@@ -32,11 +32,11 @@ system: "Website Planning"
 
 spine_version: "1.0"
 template_lock: "Global Document Metadata Standard"
-version: "0.1"
+version: "0.2"
 
 created_date: "2026-05-02"
-last_updated: "2026-05-02"
-last_reviewed: "2026-05-02"
+last_updated: "2026-05-04"
+last_reviewed: "2026-05-04"
 review_cycle: "Weekly"
 
 effective_date: "2026-05-02"
@@ -53,6 +53,10 @@ scope:
   - "Exact file targeting"
   - "Patch instruction workflow"
   - "GitHub commit message workflow"
+  - "Developer Operations Console terminal dock planning"
+  - "Full View console command and scan surface planning"
+  - "Approval-gated terminal execution flow"
+  - "Developer runtime and log console workflow"
 
 index_targets:
   - "Website Planning Index"
@@ -69,6 +73,9 @@ related:
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/01 - AI Development Cockpit Architecture Specification.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/05 - Provider & Runtime Strategy/01 - Model Provider Strategy.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/07 - Daily Execution Records/01 - Daily Execution Log.md"
+  - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/03 - Developer Mode Architecture Specification.md"
+  - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/04 - AI Coding Agent Runtime Specification.md"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html"
 
 tags:
   - "website-planning"
@@ -76,6 +83,11 @@ tags:
   - "terminal-scan"
   - "github-workflow"
   - "development-continuity"
+  - "developer-operations-console"
+  - "developer-console-full-view"
+  - "developer-console-terminal-dock"
+  - "approval-gated-terminal"
+  - "runtime-logs"
 ---
 
 # Repository Development Workflow Specification
@@ -257,6 +269,47 @@ When a hardcoded value is temporary, the cockpit should mark it for future regis
 ---
 
 ## 12. Codex Workflow Integration
+## 12A. Developer Operations Console Terminal Direction
+
+The Developer Operations Console shall eventually include a terminal dock in Full View.
+
+The terminal dock shall not live inside the homepage interaction panel.
+
+The terminal dock shall belong to the Developer Operations Console because it supports developer operations, repository workflow, scan output, command generation, runtime review, and future agent coordination.
+
+The terminal dock shall be introduced only after the following conditions are stable:
+
+- Developer Operations Console Full View shell
+- Mini View and Full View state handling
+- Full View topbar preservation
+- Full View viewport suppression
+- tab-template rendering
+- parent-token styling inheritance
+- one clean scroll owner
+
+The terminal dock may support:
+
+- scan command display
+- terminal command proposal
+- copyable command output
+- local scan result review
+- runtime log surface
+- agent coordination transcript
+- approval-gated execution handoff
+
+The terminal dock must preserve the existing repository workflow:
+
+1. scan
+2. identify owner
+3. open exact file
+4. apply controlled change
+5. verify result
+6. prepare commit message
+7. define next action
+
+The terminal dock must not execute destructive commands automatically.
+
+Any future execution bridge must remain approval-gated and must preserve clear human control.
 
 Codex prompts should use this workflow specification as the execution discipline.
 
@@ -302,6 +355,10 @@ This workflow is successful when the cockpit can generate:
 - commit messages
 - next-action directives
 - daily execution log entries
+- Developer Operations Console terminal-dock command plans
+- Full View scan-output review surfaces
+- approval-gated terminal handoff records
+- runtime log review surfaces
 
 The workflow should reduce dependency on memory and preserve execution continuity.
 
@@ -309,6 +366,7 @@ The workflow should reduce dependency on memory and preserve execution continuit
 
 ## Change Log
 
+- 2026-05-04 — v0.2 Added Developer Operations Console terminal dock direction, Full View command and scan surface planning, approval-gated terminal workflow constraints, runtime log review direction, and relationship to the Developer Operations Console architecture. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Repository Development Workflow propagation for Developer Operations Console under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-02 — v0.1 Initial repository development workflow specification created for terminal, GitHub, exact-path, and patch-instruction workflows. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website planning layer under `/Users/artan/Documents/Neuroartan/website`.
 
 ---
@@ -320,7 +378,7 @@ GSA APPROVAL: false
 DOCUMENT STATUS: Draft — Repository Development Workflow Specification  
 VISIBILITY: Internal  
 PUBLISH TO WEBSITE: No  
-VERSION: 0.1
+VERSION: 0.2
 
 ---
 

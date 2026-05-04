@@ -1,0 +1,66 @@
+<!-- =============================================================================
+     NEUROARTAN · HOME STAGE · DEVELOPER OPERATIONS PANEL
+     -----------------------------------------------------------------------------
+     Purpose: Developer-only secondary operations panel shell. Search, tabs,
+     results, actions, and summary are sovereign subfragments under this panel.
+============================================================================= -->
+
+<!-- =============================================================================
+     00) FILE INDEX
+     -----------------------------------------------------------------------------
+     01) DEVELOPER OPERATIONS PANEL
+     02) CONSOLE HEADER
+     03) SEARCH MOUNT
+     04) TABS MOUNT
+     05) TAB CONTENT MOUNT
+     06) RESULTS MOUNT
+     07) SUMMARY MOUNT
+     08) END OF FILE
+============================================================================= -->
+
+<!-- =============================================================================
+     01) DEVELOPER OPERATIONS PANEL
+============================================================================= -->
+<section class="home-stage-developer-operations-panel" data-home-stage-developer-operations-panel aria-hidden="true" aria-label="Developer operations panel">
+  <!-- =============================================================================
+       02) CONSOLE HEADER
+  ============================================================================= -->
+  <header class="home-stage-developer-operations-panel__header" data-home-stage-developer-operations-header>
+    <div class="home-stage-developer-operations-panel__header-copy">
+      <p class="home-stage-developer-operations-panel__eyebrow">Developer Console</p>
+      <h2 class="home-stage-developer-operations-panel__title">Operations</h2>
+    </div>
+    <button class="home-stage-developer-operations-panel__view-toggle" type="button" data-home-stage-developer-operations-view-toggle aria-pressed="false" aria-label="Expand developer console">
+      <span class="home-stage-developer-operations-panel__view-toggle-label" data-home-stage-developer-operations-view-toggle-label>Full View</span>
+    </button>
+  </header>
+
+  <!-- =============================================================================
+       03) SEARCH MOUNT
+  ============================================================================= -->
+  <div data-include="home-stage-developer-operations-search"></div>
+
+  <!-- =============================================================================
+       04) TABS MOUNT
+  ============================================================================= -->
+  <div data-include="home-stage-developer-operations-tabs"></div>
+
+  <!-- =============================================================================
+       05) TAB CONTENT MOUNT
+  ============================================================================= -->
+  <div class="home-stage-developer-operations-panel__tab-content" data-home-stage-developer-operations-tab-content></div>
+
+  <!-- =============================================================================
+       06) RESULTS MOUNT
+  ============================================================================= -->
+  <div data-include="home-stage-developer-operations-results"></div>
+
+  <!-- =============================================================================
+       07) SUMMARY MOUNT
+  ============================================================================= -->
+  <div data-include="home-stage-developer-operations-summary"></div>
+</section>
+
+<!-- =============================================================================
+     08) END OF FILE
+============================================================================= -->

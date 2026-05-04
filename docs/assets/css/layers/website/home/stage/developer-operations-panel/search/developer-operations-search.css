@@ -1,0 +1,52 @@
+/* =============================================================================
+   NEUROARTAN · HOME STAGE · DEVELOPER OPERATIONS SEARCH
+   -----------------------------------------------------------------------------
+   Purpose: Styles the Developer Operations search surface.
+============================================================================= */
+
+/* =============================================================================
+   00) FILE INDEX
+   -----------------------------------------------------------------------------
+   01) SEARCH SURFACE
+   02) SEARCH INPUT
+   03) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) SEARCH SURFACE
+============================================================================= */
+.home-stage-developer-operations-panel__search{
+  display:grid;
+  gap:var(--spacing-xs);
+  min-width:0;
+}
+
+.home-stage-developer-operations-panel__search-label{
+  color:var(--home-stage-developer-operations-muted);
+  font-size:var(--font-size-caption);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--letter-spacing-wide);
+  text-transform:uppercase;
+}
+
+/* =============================================================================
+   02) SEARCH INPUT
+============================================================================= */
+.home-stage-developer-operations-panel__search-input{
+  width:var(--size-full);
+  min-height:var(--home-stage-developer-operations-control-height);
+  padding:var(--home-stage-developer-operations-control-padding);
+  color:var(--home-stage-developer-operations-text);
+  background:transparent;
+  border:var(--border-width-hairline) solid var(--home-stage-developer-operations-border);
+  border-radius:var(--home-stage-developer-operations-button-radius);
+  font:inherit;
+}
+
+.home-stage-developer-operations-panel__search-input::placeholder{
+  color:var(--home-stage-developer-operations-muted);
+}
+
+/* =============================================================================
+   03) END OF FILE
+============================================================================= */

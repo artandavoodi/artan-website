@@ -1,0 +1,52 @@
+/* =============================================================================
+   NEUROARTAN · HOME STAGE · DEVELOPER OPERATIONS TABS
+   -----------------------------------------------------------------------------
+   Purpose: Styles the Developer Operations tab navigation surface.
+============================================================================= */
+
+/* =============================================================================
+   00) FILE INDEX
+   -----------------------------------------------------------------------------
+   01) TABS SURFACE
+   02) TAB BUTTONS
+   03) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) TABS SURFACE
+============================================================================= */
+.home-stage-developer-operations-panel__tabs{
+  display:flex;
+  flex:0 0 auto;
+  gap:var(--spacing-xs);
+  min-width:0;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+
+/* =============================================================================
+   02) TAB BUTTONS
+============================================================================= */
+.home-stage-developer-operations-panel__tab{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:var(--home-stage-developer-operations-control-height);
+  padding:var(--home-stage-developer-operations-control-padding);
+  color:var(--home-stage-developer-operations-muted);
+  background:transparent;
+  border:var(--border-width-hairline) solid var(--home-stage-developer-operations-border);
+  border-radius:var(--home-stage-developer-operations-button-radius);
+  font:inherit;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.home-stage-developer-operations-panel__tab[aria-pressed="true"]{
+  color:var(--home-stage-developer-operations-text);
+  background:color-mix(in srgb, var(--home-stage-developer-operations-border) 22%, transparent);
+}
+
+/* =============================================================================
+   03) END OF FILE
+============================================================================= */

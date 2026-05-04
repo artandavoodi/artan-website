@@ -1,0 +1,82 @@
+/* =============================================================================
+   NEUROARTAN · HOME STAGE · DEVELOPER OPERATIONS RESULTS
+   -----------------------------------------------------------------------------
+   Purpose: Styles the Developer Operations results surface and result records.
+============================================================================= */
+
+/* =============================================================================
+   00) FILE INDEX
+   -----------------------------------------------------------------------------
+   01) RESULTS BODY
+   02) RESULTS LIST
+   03) RESULT RECORDS
+   04) EMPTY STATE
+   05) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) RESULTS BODY
+============================================================================= */
+.home-stage-developer-operations-panel__body{
+  flex:1 1 auto;
+  min-width:0;
+  min-height:0;
+}
+
+/* =============================================================================
+   02) RESULTS LIST
+============================================================================= */
+.home-stage-developer-operations-panel__results{
+  display:grid;
+  gap:var(--spacing-xs);
+  width:100%;
+  min-width:0;
+  min-height:0;
+  max-height:calc(var(--home-stage-developer-operations-max-height) - (var(--home-stage-developer-operations-control-height) * 3));
+  overflow:auto;
+}
+
+/* =============================================================================
+   03) RESULT RECORDS
+============================================================================= */
+.home-stage-developer-operations-panel__result{
+  display:grid;
+  gap:var(--spacing-2xs);
+  padding:var(--spacing-xs) var(--spacing-sm);
+  border:var(--border-width-hairline) solid var(--home-stage-developer-operations-border);
+  border-radius:var(--home-stage-developer-operations-button-radius);
+  background:transparent;
+}
+
+.home-stage-developer-operations-panel__result-title,
+.home-stage-developer-operations-panel__result-meta,
+.home-stage-developer-operations-panel__result-summary{
+  margin:0;
+}
+
+.home-stage-developer-operations-panel__result-title{
+  color:var(--home-stage-developer-operations-text);
+  font:inherit;
+  font-weight:var(--font-weight-regular);
+}
+
+.home-stage-developer-operations-panel__result-meta,
+.home-stage-developer-operations-panel__result-summary{
+  color:var(--home-stage-developer-operations-muted);
+  font-size:var(--font-size-caption);
+  line-height:var(--line-height-caption);
+}
+
+/* =============================================================================
+   04) EMPTY STATE
+============================================================================= */
+.home-stage-developer-operations-panel__empty{
+  margin:0;
+  color:var(--home-stage-developer-operations-muted);
+  font-size:var(--font-size-caption);
+  line-height:var(--line-height-caption);
+}
+
+/* =============================================================================
+   05) END OF FILE
+============================================================================= */

@@ -32,11 +32,11 @@ system: "Website Planning"
 
 spine_version: "1.0"
 template_lock: "Global Document Metadata Standard"
-version: "0.5"
+version: "0.6"
 
 created_date: "2026-05-02"
-last_updated: "2026-05-03"
-last_reviewed: "2026-05-03"
+last_updated: "2026-05-04"
+last_reviewed: "2026-05-04"
 review_cycle: "Daily"
 
 effective_date: "2026-05-02"
@@ -66,6 +66,11 @@ scope:
   - "Local companion agent and VS Code bridge feasibility trace"
   - "Static Developer command surface deprecation trace"
   - "Developer action metadata migration trace"
+  - "Developer Operations Console modularization trace"
+  - "Developer Operations Console Mini View and Full View implementation trace"
+  - "Developer Operations tab migration trace"
+  - "Developer Mode topbar preservation and viewport suppression trace"
+  - "Developer Console styling and terminal dock direction trace"
 
 index_targets:
   - "Website Planning Index"
@@ -101,6 +106,11 @@ related:
   - "/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/developer-mode-shell.js"
   - "/Users/artan/Documents/Neuroartan/website/server/developer-mode/api-router.mjs"
   - "/Users/artan/Documents/Neuroartan/website/server/developer-mode/repository-scan-service.mjs"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/developer-operations-panel.html"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/stage/developer-operations-panel/developer-operations-panel.css"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/developer-operations-panel.js"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/developer-mode/developer-mode-shell.html"
 
 tags:
   - "website-planning"
@@ -121,6 +131,13 @@ tags:
   - "web-terminal"
   - "static-command-surface-deprecated"
   - "developer-action-routing"
+  - "developer-operations-console"
+  - "developer-console-full-view"
+  - "developer-console-mini-view"
+  - "developer-operations-tabs"
+  - "developer-console-terminal-dock"
+  - "developer-mode-topbar-preservation"
+  - "developer-mode-viewport-suppression"
 ---
 
 # AI Development Cockpit Implementation Change Log
@@ -158,6 +175,170 @@ Unverified work must be marked as unverified.
 ---
 
 ## 3. Current Session Record
+
+### 2026-05-04 — Developer Operations Console Modularization, Tab Migration, Full View Portal, and Viewport Suppression Stabilization
+
+Execution Agent: ChatGPT / Website Systems & Development Agent
+
+Implementation Objective:
+
+Transform the Developer Operations Panel from a compact developer helper surface into a modular dockable Developer Operations Console with Mini View and Full View states; migrate developer-specific controls out of the homepage interaction panel; preserve the Developer Mode topbar; suppress non-topbar Developer Mode viewport content during Full View; document the console direction; and prepare the next styling and terminal-dock phase.
+
+Documents Read:
+
+- `/Users/artan/Documents/Neuroartan/website/planning/00 - Index & Dashboards/00 - Website Planning Index.md`
+- `/Users/artan/Documents/Neuroartan/website/planning/08 - Implementation Change Logs/01 - AI Development Cockpit Implementation Change Log.md`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/developer-operations-panel.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/stage/developer-operations-panel/developer-operations-panel.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/developer-operations-panel.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/developer-mode/developer-mode-shell.html`
+
+Files Created:
+
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/search/developer-operations-search.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/developer-operations-tabs.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/actions/developer-operations-actions.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/results/developer-operations-results.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/summary/developer-operations-summary.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/tasks/tasks-tab.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/repositories/repositories-tab.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/workspaces/workspaces-tab.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/environments/environments-tab.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/code-review/code-review-tab.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/archive/archive-tab.html`
+- Modular CSS and JavaScript folders/files for Developer Operations search, tabs, actions, results, summary, index, tasks, repositories, workspaces, environments, code review, and archive.
+
+Files Modified:
+
+- `/Users/artan/Documents/Neuroartan/website/planning/00 - Index & Dashboards/00 - Website Planning Index.md`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/home-stage-composition.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/home-interaction-panel.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/developer-operations-panel.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/stage/developer-operations-panel/00-developer-operations-panel-all.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/stage/developer-operations-panel/developer-operations-panel.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/00-developer-operations-panel-all.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/developer-operations-panel.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/core/01-foundation/fragment-authorities.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/core/03-runtime/global-layout-injection.js`
+
+Systems Implemented:
+
+- Developer Operations Panel modularized across fragments, CSS modules, and JavaScript modules.
+- Search, Tabs, Actions, Results, Summary, Index, Tasks, Repositories, Workspaces, Environments, Code Review, and Archive received dedicated modular boundaries.
+- Developer-specific controls were removed from the homepage interaction panel.
+- Task controls were migrated into the Tasks tab: Create Prompt, Debug Issue, and Fix Code.
+- Repository controls were migrated into the Repositories tab: Repository selector, Connect GitHub, and Discover repos.
+- Workspace controls were migrated into the Workspaces tab: Workspace name and Create workspace.
+- Environment controls were migrated into the Environments tab: environment selector / Cloud Sandbox surface.
+- Tab-template rendering was wired into the Developer Operations Panel controller.
+- Full View / Mini View state was added to the Developer Operations Panel.
+- Developer Operations Panel can move between the Mini View mount and a Full View portal.
+- Full View portal was moved outside the clipped red stage composition to prevent masking by the stage composition container.
+- Full View top alignment was corrected to the Developer Mode topbar height of `3.55rem`.
+- Full View diagnostic cyan border was added temporarily to support visual boundary work.
+- Developer Mode viewport suppression was corrected to target `.home-developer-mode-shell__viewport`, preserving `.home-developer-mode-shell__topbar`.
+- Developer Operations Console Directive was expanded to record architecture, achievements, suppression rule, diagnostic policy, terminal placement, execution phases, and next styling direction.
+
+Systems Scaffolded Only:
+
+- Developer Operations Console visual styling is not complete.
+- Parent-token styling inheritance is planned but not fully normalized.
+- Full View scroll ownership remains under review and must be stabilized through one professional scroll owner.
+- Terminal dock is planned as a Full View bottom dock but has not yet been implemented.
+- Runtime logs, agent interaction, and terminal surfaces remain future console zones.
+- Temporary diagnostic borders remain active until final visual verification.
+- Temporary response-panel test height remains active until final console layout verification.
+
+Systems Not Completed:
+
+- Final Developer Operations Console styling is not complete.
+- Full View internal layout zones are not complete.
+- Terminal dock placeholder has not been added.
+- Logs/runtime/agent zones have not been added.
+- Final removal of temporary diagnostic borders has not occurred.
+- Final production response-panel height restoration has not occurred.
+
+Verification Performed:
+
+- Confirmed no empty Developer Operations files remained after modularization.
+- Confirmed Developer Operations subfragments served through the local server.
+- Confirmed CSS and JavaScript orchestrator imports served through the local server.
+- Confirmed Developer Operations index module imports and exports correctly.
+- Confirmed main Developer Operations panel controller imports and calls the index module.
+- Confirmed migrated developer controls no longer exist inside the homepage interaction panel.
+- Confirmed migrated controls exist inside their intended Developer Operations tab templates.
+- Confirmed tab-template rendering targets a dedicated tab-content mount.
+- Confirmed Full View portal exists outside the clipped stage composition.
+- Confirmed Full View top alignment was corrected from unverified `--site-header-height` fallback to the actual Developer Mode topbar height.
+- Confirmed suppressing the full Developer Mode shell hides the topbar and is therefore invalid.
+- Confirmed the clean suppression target is `.home-developer-mode-shell__viewport`, preserving `.home-developer-mode-shell__topbar`.
+
+Verification Commands Run:
+
+```bash
+cd "/Users/artan/Documents/Neuroartan/website" && {
+  find "docs/assets/fragments/layers/website/home/stage/developer-operations-panel" \
+       "docs/assets/css/layers/website/home/stage/developer-operations-panel" \
+       "docs/assets/js/layers/website/home/stage/developer-operations-panel" \
+       -type f -empty | sort
+
+  grep -RInE "home-stage-developer-operations-search|home-stage-developer-operations-tabs|home-stage-developer-operations-actions|home-stage-developer-operations-results|home-stage-developer-operations-summary|developer-operations-index" \
+    "docs/assets/js/core/01-foundation/fragment-authorities.js" \
+    "docs/assets/js/core/03-runtime/global-layout-injection.js" \
+    "docs/assets/js/layers/website/home/stage/developer-operations-panel" \
+    "docs/assets/css/layers/website/home/stage/developer-operations-panel" \
+    "docs/assets/fragments/layers/website/home/stage/developer-operations-panel"
+
+  grep -RInE "data-home-developer-actions|data-home-developer-workbench|data-home-developer-repository|data-home-developer-environment|data-home-developer-workspace-name|data-home-developer-github-connect|data-home-developer-repositories-discover|data-home-developer-workspace-create|data-home-developer-action" \
+    "docs/assets/fragments/layers/website/home/stage/home-interaction-panel.html" \
+    "docs/assets/fragments/layers/website/home/stage/developer-operations-panel"
+
+  grep -RInE "homeDeveloperConsoleView|data-home-developer-console-view|placeDeveloperOperationsPanel|home-stage-developer-console-portal|home-developer-mode-shell__viewport|home-developer-mode-shell__topbar" \
+    "docs/assets/js/layers/website/home" \
+    "docs/assets/fragments/layers/website/home" \
+    "docs/assets/css/layers/website/home"
+}
+```
+
+Verification Result:
+
+- Developer Operations modular structure exists and is wired.
+- Tab migration is complete at the fragment level.
+- Full View / Mini View movement exists.
+- Full View portal is structurally outside the clipped stage composition.
+- Topbar preservation rule is understood and documented.
+- `.home-developer-mode-shell__viewport` is the correct body-only suppression target.
+- Styling and scroll behavior remain the next active implementation phase.
+
+Blockers:
+
+- Full visual styling is pending.
+- Internal scroll behavior still needs a final root-owner decision.
+- Terminal dock architecture must wait until Full View shell styling is stable.
+- Temporary diagnostic borders should not be removed until the console layout is approved.
+
+Remaining Work:
+
+- Normalize Developer Operations Console styling through parent-owned tokens.
+- Style search, tabs, tab content, controls, results, and summary coherently.
+- Stabilize one clean scroll owner for Mini View and Full View.
+- Add future Full View terminal dock placeholder.
+- Add future runtime logs, runtime state, and agent interaction zones.
+- Remove diagnostic borders after final visual confirmation.
+- Restore the temporary response-panel height after console layout verification.
+
+Next Exact Action:
+
+Continue Developer Operations Console styling and layout stabilization using the parent token system, beginning with the Full View and Mini View shell styling.
+
+Next Exact File To Open:
+
+`/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/stage/developer-operations-panel/developer-operations-panel.css`
+
+---
 
 ### 2026-05-03 — Developer Mode Homepage Console Rebuild, Import-Chain Stabilization, and Interactive Panel Redirection
 
@@ -954,6 +1135,8 @@ cd "/Users/artan/Documents/Neuroartan/website" && {
 
 ## Change Log
 
+- 2026-05-04 — v0.6 Recorded Developer Operations Console modularization, tab migration, Mini View and Full View implementation, portal movement outside the clipped stage composition, Developer Mode topbar preservation, viewport-only suppression target, terminal dock direction, temporary diagnostic policy, and next styling phase. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Operations Console implementation trace under `/Users/artan/Documents/Neuroartan/website`.
+
 - 2026-05-03 — v0.5 Recorded safe deprecation and removal of the static Developer command surface, removal of stale command-surface imports and fragment authorities, and preservation/migration of developer action labels, modes, descriptions, and runtime interfaces as routing metadata. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Static command-surface removal and developer action metadata migration under `/Users/artan/Documents/Neuroartan/website`.
 
 - 2026-05-03 — v0.4 Recorded Developer Mode homepage console rebuild, CSS import-chain stabilization, routed-panel state correction, component styling pass, backend capability scan, interactive-panel command-integration direction, non-mutating runtime-memory review artifact scaffold, and local companion / VS Code bridge feasibility boundary. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Mode structural rebuild, architecture redirection, and review artifact backend scaffold under `/Users/artan/Documents/Neuroartan/website`.
@@ -972,7 +1155,7 @@ GSA APPROVAL: false
 DOCUMENT STATUS: Draft — AI Development Cockpit Implementation Change Log  
 VISIBILITY: Internal  
 PUBLISH TO WEBSITE: No  
-VERSION: 0.5
+VERSION: 0.6
 
 ---
 

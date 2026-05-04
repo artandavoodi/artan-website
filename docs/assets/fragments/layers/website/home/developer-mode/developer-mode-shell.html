@@ -67,33 +67,13 @@
       <main class="home-developer-mode-shell__column home-developer-mode-shell__column--center" data-home-developer-column="center" data-home-developer-panel-root aria-label="Developer panel column">
 
         <section class="home-developer-mode-shell__section home-developer-mode-shell__section--routed" data-home-developer-section="routed-panels" aria-label="Developer routed panels">
-          <header class="home-developer-mode-shell__section-header">
-            <p class="home-developer-mode-shell__section-eyebrow">Developer</p>
-            <h2 class="home-developer-mode-shell__section-title">Workspace Panels</h2>
-          </header>
-
           <div class="home-developer-mode-shell__section-body home-developer-mode-shell__section-body--routed">
             <section class="home-developer-mode-panel" data-home-developer-panel="repositories" data-home-developer-repository-panel aria-label="Repository navigator" hidden aria-hidden="true">
-              <header class="home-developer-mode-panel__header">
-                <p class="home-developer-mode-panel__eyebrow">Repository</p>
-                <h3 class="home-developer-mode-panel__title">Connect and select repositories</h3>
-                <p class="home-developer-mode-panel__copy">GitHub OAuth and repository discovery are backend-only. Tokens never enter browser JavaScript.</p>
-              </header>
-              <div class="home-developer-mode-actions">
-                <button class="home-developer-mode-button home-developer-mode-button--primary" type="button" data-home-developer-github-connect>Connect GitHub</button>
-                <button class="home-developer-mode-button" type="button" data-home-developer-repository-discover>Discover repositories</button>
-                <button class="home-developer-mode-button" type="button" data-home-developer-github-disconnect>Disconnect</button>
-              </div>
               <div class="home-developer-mode-list" data-home-developer-repository-list></div>
               <pre class="home-developer-mode-output" data-home-developer-output="repositories">No repository selected.</pre>
             </section>
 
             <section class="home-developer-mode-panel" data-home-developer-panel="projects" data-home-developer-project-panel aria-label="Project navigator" hidden aria-hidden="true">
-              <header class="home-developer-mode-panel__header">
-                <p class="home-developer-mode-panel__eyebrow">Project</p>
-                <h3 class="home-developer-mode-panel__title">Create and bind development projects</h3>
-                <p class="home-developer-mode-panel__copy">Project records bind workspace, repository, provider, and environment state to the backend session.</p>
-              </header>
               <form class="home-developer-mode-form" data-home-developer-project-form>
                 <label class="home-developer-mode-field">Project name<input name="name" type="text" autocomplete="off"></label>
                 <label class="home-developer-mode-field">Repository<select name="repository"></select></label>
@@ -104,82 +84,24 @@
             </section>
 
             <section class="home-developer-mode-panel" data-home-developer-panel="agents" data-home-developer-provider-panel aria-label="Provider registry" hidden aria-hidden="true">
-              <header class="home-developer-mode-panel__header">
-                <p class="home-developer-mode-panel__eyebrow">Provider</p>
-                <h3 class="home-developer-mode-panel__title">Select execution provider</h3>
-                <p class="home-developer-mode-panel__copy">Provider configuration remains server-side and governed by active runtime state.</p>
-              </header>
               <div class="home-developer-mode-list" data-home-developer-provider-list></div>
               <pre class="home-developer-mode-output" data-home-developer-output="providers">No provider configured.</pre>
             </section>
 
             <section class="home-developer-mode-panel" data-home-developer-panel="runtime" data-home-developer-runtime-panel aria-label="Runtime status" hidden aria-hidden="true">
-              <header class="home-developer-mode-panel__header">
-                <p class="home-developer-mode-panel__eyebrow">Runtime</p>
-                <h3 class="home-developer-mode-panel__title">Developer backend state</h3>
-                <p class="home-developer-mode-panel__copy">Displays active API, provider, repository, and execution-readiness state.</p>
-              </header>
-              <section class="home-developer-mode-action-metadata" data-home-developer-action-metadata="runtime" aria-label="Runtime developer actions">
-                <header class="home-developer-mode-action-metadata__header">
-                  <p class="home-developer-mode-action-metadata__eyebrow">Actions</p>
-                  <h4 class="home-developer-mode-action-metadata__title">Runtime Actions</h4>
-                  <p class="home-developer-mode-action-metadata__copy">Scan, explain, debug, and runtime-oriented developer actions are routed through the canonical homepage interactive panel.</p>
-                </header>
-                <div class="home-developer-mode-action-metadata__list" data-home-developer-action-metadata-list="runtime">
-                  <p class="home-developer-mode-action-metadata__empty">Runtime actions not loaded.</p>
-                </div>
-              </section>
-
               <pre class="home-developer-mode-output" data-home-developer-output="runtime">Runtime state pending.</pre>
             </section>
 
             <section class="home-developer-mode-panel" data-home-developer-panel="review" data-home-developer-review-panel aria-label="Review queue" hidden aria-hidden="true">
-              <header class="home-developer-mode-panel__header">
-                <p class="home-developer-mode-panel__eyebrow">Review</p>
-                <h3 class="home-developer-mode-panel__title">Inspect before mutation</h3>
-                <p class="home-developer-mode-panel__copy">Code proposals, tests, commits, and pull requests require explicit review before execution.</p>
-              </header>
-              <div class="home-developer-mode-actions">
-                <button class="home-developer-mode-button" type="button" data-home-developer-state-refresh>Refresh review artifacts</button>
-                <button class="home-developer-mode-button" type="button" data-home-developer-locked-action="test-request">Request tests</button>
-                <button class="home-developer-mode-button" type="button" data-home-developer-locked-action="commit-pr-request">Prepare commit / PR</button>
-              </div>
-
-              <section class="home-developer-mode-action-metadata" data-home-developer-action-metadata="review" aria-label="Review developer actions">
-                <header class="home-developer-mode-action-metadata__header">
-                  <p class="home-developer-mode-action-metadata__eyebrow">Actions</p>
-                  <h4 class="home-developer-mode-action-metadata__title">Review Actions</h4>
-                  <p class="home-developer-mode-action-metadata__copy">Patch, review, test, commit, and pull-request actions remain metadata-driven and require approval before mutation.</p>
-                </header>
-                <div class="home-developer-mode-action-metadata__list" data-home-developer-action-metadata-list="review">
-                  <p class="home-developer-mode-action-metadata__empty">Review actions not loaded.</p>
-                </div>
-              </section>
-
               <section class="home-developer-mode-review-artifacts" data-home-developer-review-artifacts aria-label="Developer review artifacts">
-                <header class="home-developer-mode-review-artifacts__header">
-                  <p class="home-developer-mode-review-artifacts__eyebrow">Artifacts</p>
-                  <h4 class="home-developer-mode-review-artifacts__title">Review Queue</h4>
-                  <p class="home-developer-mode-review-artifacts__copy">Patch proposal artifacts created by the homepage interactive panel appear here before any mutation is approved.</p>
-                </header>
                 <div class="home-developer-mode-review-artifacts__list" data-home-developer-review-artifact-list>
                   <p class="home-developer-mode-review-artifacts__empty">No review artifacts created yet.</p>
                 </div>
               </section>
-
               <pre class="home-developer-mode-output" data-home-developer-output="review">No review artifact selected.</pre>
             </section>
 
             <section class="home-developer-mode-panel" data-home-developer-panel="settings" data-home-developer-settings-panel aria-label="Developer settings" hidden aria-hidden="true">
-              <header class="home-developer-mode-panel__header">
-                <p class="home-developer-mode-panel__eyebrow">Settings</p>
-                <h3 class="home-developer-mode-panel__title">Developer permissions and continuity</h3>
-                <p class="home-developer-mode-panel__copy">Control Center remains the canonical settings surface. This panel links active project, repository, provider, and approval state back to that source.</p>
-              </header>
-              <div class="home-developer-mode-actions">
-                <button class="home-developer-mode-button home-developer-mode-button--primary" type="button" data-home-developer-open-control-center>Open Developer Control Center</button>
-                <button class="home-developer-mode-button" type="button" data-home-developer-state-refresh>Refresh developer state</button>
-              </div>
               <pre class="home-developer-mode-output" data-home-developer-output="settings">Settings state not loaded.</pre>
             </section>
           </div>

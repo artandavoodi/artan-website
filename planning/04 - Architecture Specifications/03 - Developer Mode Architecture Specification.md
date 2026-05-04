@@ -32,11 +32,11 @@ system: "Neuroartan Website"
 
 spine_version: "1.0"
 template_lock: true
-version: "0.5"
+version: "0.6"
 
 created_date: "2026-05-02"
-last_updated: "2026-05-03"
-last_reviewed: "2026-05-03"
+last_updated: "2026-05-04"
+last_reviewed: "2026-05-04"
 review_cycle: "Monthly"
 
 effective_date: "2026-05-02"
@@ -66,6 +66,12 @@ scope:
   - "Local companion agent feasibility boundary"
   - "Web-to-local terminal bridge architecture"
   - "VS Code patch-application bridge architecture"
+  - "Developer Operations Console architecture"
+  - "Developer Console Mini View and Full View architecture"
+  - "Developer Operations tab-domain architecture"
+  - "Developer Mode topbar preservation architecture"
+  - "Developer Mode viewport suppression architecture"
+  - "Developer terminal dock architecture"
 
 index_targets:
   - "Website Planning Index"
@@ -83,6 +89,7 @@ related:
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/07 - Voice-to-Agent Command Pipeline Specification.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/08 - Patch Review, Test, Commit & PR Workflow Specification.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/09 - Control Center Grouped Settings Surface Design Doctrine.md"
+  - "/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html"
 
 tags:
   - "developer-mode"
@@ -100,6 +107,13 @@ tags:
   - "local-agent-bridge"
   - "web-terminal"
   - "vscode-bridge"
+  - "developer-operations-console"
+  - "developer-console-full-view"
+  - "developer-console-mini-view"
+  - "developer-operations-tabs"
+  - "developer-mode-topbar-preservation"
+  - "developer-mode-viewport-suppression"
+  - "developer-console-terminal-dock"
 ---
 
 # Developer Mode Architecture Specification
@@ -524,6 +538,113 @@ Propagate
 
 ---
 
+## VIIIB. Developer Operations Console Architecture
+
+The Developer Operations Panel is now architecturally elevated into the Developer Operations Console.
+
+The Developer Operations Console is the developer-facing operations layer for task controls, repository controls, workspace controls, environment controls, code review, archive records, future terminal access, runtime state, logs, and agent coordination.
+
+The console operates in two modes:
+
+Mini View:
+- Compact Developer Operations Panel inside the homepage stage composition.
+
+Full View:
+- Expanded Developer Operations Console below the Developer Mode topbar.
+- Portal-mounted outside the clipped stage composition.
+- Viewport-oriented developer operations surface.
+
+The console must not replace the canonical homepage interactive panel as the primary user command input.
+
+The console supplies developer context, controls, runtime surfaces, review surfaces, repository state, workspace state, environment state, and future terminal/log surfaces.
+
+The canonical input path remains:
+
+Homepage Interactive Panel → Developer-aware command routing when Developer Mode is active → Developer Operations Console context, review, and runtime surface.
+
+The Developer Operations Console tab model is Tasks, Repositories, Workspaces, Environments, Code Review, and Archive.
+
+Tab-domain ownership is:
+
+Tasks:
+- Create Prompt
+- Debug Issue
+- Fix Code
+
+Repositories:
+- Repository selector
+- Connect GitHub
+- Discover repositories
+
+Workspaces:
+- Workspace name
+- Create workspace
+
+Environments:
+- Environment selector
+- Cloud Sandbox and runtime environment controls
+
+Code Review:
+- Review workflows
+- Approval surfaces
+- Patch inspection
+- Future review records
+
+Archive:
+- Completed or historical developer operation records
+
+Developer-specific controls must not remain in the homepage interaction panel.
+
+Developer-specific controls must live in the correct Developer Operations Console tab domain.
+
+The console must use parent-owned design tokens so search, tabs, tab content, controls, results, summary, terminal, logs, runtime state, and future agent surfaces inherit one coherent visual system.
+
+The Developer Operations Console must preserve a minimal, enterprise-grade visual surface while keeping its modular architecture sophisticated beneath the interface.
+
+## VIIIC. Developer Console Full View and Viewport Suppression Model
+
+Developer Console Full View must preserve the Developer Mode topbar and suppress all non-topbar Developer Mode body content.
+
+The Developer Mode shell root must not be suppressed because it contains the topbar.
+
+The correct suppression target is the Developer Mode viewport/body layer, not the shell root.
+
+Approved preservation and suppression rule:
+
+Preserve:
+- `.home-developer-mode-shell__topbar`
+
+Suppress:
+- `.home-developer-mode-shell__viewport`
+- homepage stage composition
+- homepage interaction panel mounts
+- homepage response panel mounts
+- Mini View Developer Operations mount
+
+Disallowed suppression targets:
+
+- `.home-developer-mode-shell`
+- `.home-developer-mode-shell__topbar`
+- home platform topbar owners
+- global menu owners
+- navigation shell owners
+
+The Full View console must be mounted through a portal outside the clipped homepage stage composition so it is not masked by the stage composition container.
+
+The Full View top edge must align with the active Developer Mode topbar height.
+
+Temporary diagnostic borders may be used during layout verification, but they must be removed after final visual approval.
+
+## VIIID. Developer Terminal Dock Direction
+
+The terminal shall be introduced as a Full View bottom dock inside the Developer Operations Console.
+
+The terminal shall remain structurally separate from the homepage interaction panel.
+
+The terminal may later support scan output, command generation, runtime logs, agent coordination, execution review, terminal proposal display, and approval-gated execution flow.
+
+The terminal must not be implemented before the Developer Operations Console Full View shell, tab rendering, scroll ownership, and parent-token styling are stable.
+
 ## IX. Developer Navigation Reuse Rule
 
 Developer Mode must reuse the approved Control Center nested settings doctrine where appropriate.
@@ -816,6 +937,18 @@ Phase 02C — Local Bridge Architecture Definition
 - define audit log and rollback requirements
 - document which capabilities are web-only, backend-only, and local-agent-only
 
+Phase 02D — Developer Operations Console Stabilization
+
+- finalize Developer Operations Console Mini View and Full View state management
+- preserve Developer Mode topbar during Full View
+- suppress only non-topbar Developer Mode viewport content during Full View
+- keep the Developer Mode shell root intact
+- migrate developer-specific controls into correct tab domains
+- normalize parent-token styling inheritance for search, tabs, controls, results, and summary
+- stabilize one clean scroll owner for Mini View and Full View
+- add Full View terminal dock placeholder only after shell stability
+- preserve temporary diagnostic borders until final visual verification
+
 Phase 03 — Backend Interface Stub
 
 - define backend API contract
@@ -903,6 +1036,8 @@ Developer Mode is still not approved for autonomous repository mutation.
 
 Developer Mode is now architecturally redirected toward interactive-panel command integration.
 
+Developer Mode now includes the Developer Operations Console direction. The Developer Operations Panel has been modularized and elevated toward a dockable Mini View and Full View console. Developer-specific controls are being moved out of the homepage interaction panel and into Tasks, Repositories, Workspaces, Environments, Code Review, and Archive tab domains. Full View must preserve the Developer Mode topbar while suppressing the Developer Mode viewport/body content only.
+
 The existing homepage interactive panel must become the canonical command input for Developer Mode.
 
 The former static Developer command surface has been deprecated; preserved developer action labels, modes, descriptions, and runtime interfaces must migrate into canonical interactive-panel routing and runtime/review/context surfaces.
@@ -958,6 +1093,7 @@ The Developer workspace may display routed action output, repository scans, runt
 
 ## Change Log
 
+- 2026-05-04 — v0.6 Added Developer Operations Console architecture, including Mini View and Full View model, tab-domain ownership, topbar preservation, viewport-only suppression, portal-mounted Full View direction, parent-token styling rule, terminal dock direction, and implementation phase 02D. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Operations Console architecture propagation under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.5 Normalized Developer Mode architecture language after removal of the static command surface, preserving developer action labels, modes, descriptions, and runtime interfaces as routing metadata for the canonical homepage interactive panel and runtime/review/context surfaces. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Static command-surface deprecation and safe action-routing migration under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.4 Redirected Developer Mode architecture toward canonical homepage interactive-panel command integration, defined Developer Mode as execution context / review / runtime surface rather than a duplicate prompt surface, and documented the feasibility boundary for web-based terminal, local companion agent, VS Code bridge, and approval-gated local file/terminal access. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Mode architecture redirection and backend/local-bridge feasibility review under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.3 Recorded first implemented homepage Developer Mode workspace and backend session-state boundary. Added status language for fragment-based topbar/sidebar/command/panel routing, GitHub OAuth/repository discovery, provider configuration, agent activation, project binding, and remaining Supabase/runtime blockers. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Codex. Agent ID: Codex. Execution Context: Developer Mode implementation pass under `/Users/artan/Documents/Neuroartan/website`.
@@ -973,6 +1109,6 @@ GSA PROTOCOL STATUS: Pending Review
 GSA APPROVAL: false  
 LEGAL REVIEW REQUIRED: true  
 CREO REVIEW REQUIRED: true  
-VERSION: 0.5
+VERSION: 0.6
 
 END OF DOCUMENT

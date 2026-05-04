@@ -44,6 +44,9 @@
   text-align:center;
   pointer-events:none;
 }
+.home-stage-interactive-text{
+  border:1px solid lime;
+}
 
 /* =============================================================================
    03) STATE SURFACE

@@ -1,0 +1,204 @@
+<!-- =============================================================================
+     NEUROARTAN · WEBSITE · DEVELOPER OPERATIONS CONSOLE DIRECTIVE
+     -----------------------------------------------------------------------------
+     Purpose: Defines the architectural directive, achieved implementation state,
+     and next execution path for the Developer Operations Console.
+============================================================================= -->
+
+<!-- =============================================================================
+     00) FILE INDEX
+     -----------------------------------------------------------------------------
+     01) DIRECTIVE SUMMARY
+     02) ARCHITECTURAL POSITION
+     03) MODE MODEL
+     04) PRIMARY CONSOLE ZONES
+     05) TOKENIZATION RULE
+     06) TERMINAL PLACEMENT
+     07) MIGRATION RULE
+     08) CURRENT IMPLEMENTATION ACHIEVEMENTS
+     09) FULL VIEW SUPPRESSION RULE
+     10) ACTIVE TEMPORARY DIAGNOSTICS
+     11) EXECUTION PHASES
+     12) NEXT EXECUTION DIRECTION
+     13) CURRENT STATUS
+     14) END OF FILE
+============================================================================= -->
+
+<!-- =============================================================================
+     01) DIRECTIVE SUMMARY
+============================================================================= -->
+<section class="development-cockpit-directive" data-development-cockpit-directive="developer-operations-console">
+  <h2>Developer Operations Console Directive</h2>
+  <p>The Developer Operations Panel shall mature into a dockable developer console with two operational modes: Mini View and Full View.</p>
+  <p>The console must remain minimal on the surface while preserving a sophisticated modular architecture beneath it.</p>
+  <p>The Developer Operations Console is the active developer-facing operations layer for task controls, repository controls, workspace controls, environment controls, code review, future terminal access, runtime state, logs, and agent coordination.</p>
+</section>
+
+<!-- =============================================================================
+     02) ARCHITECTURAL POSITION
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="architectural-position">
+  <h3>Architectural Position</h3>
+  <p>The Developer Operations Console belongs to the website development cockpit layer and coordinates developer-facing controls, repositories, workspaces, environments, runtime state, logs, agent interaction, and terminal access.</p>
+  <p>The homepage interaction panel shall remain the primary conversational input surface. Developer-specific operational controls shall live inside the Developer Operations Console.</p>
+  <p>The console shall not use overlays, compensating hacks, or unrelated owner files for layout correction. Each correction must be applied through the true structural owner.</p>
+</section>
+
+<!-- =============================================================================
+     03) MODE MODEL
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="mode-model">
+  <h3>Mode Model</h3>
+  <ul>
+    <li><strong>Mini View:</strong> compact Developer Operations Panel inside the homepage stage stack.</li>
+    <li><strong>Full View:</strong> expanded developer console positioned below the Developer Mode topbar, occupying the available viewport safely.</li>
+  </ul>
+  <p>The mode switch shall use one parent state token so all child zones inherit the correct layout behavior.</p>
+  <p>Full View shall move the console into a dedicated portal outside the clipped stage composition so it is not masked by the red composition container.</p>
+</section>
+
+<!-- =============================================================================
+     04) PRIMARY CONSOLE ZONES
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="primary-console-zones">
+  <h3>Primary Console Zones</h3>
+  <ul>
+    <li>Header and mode controls.</li>
+    <li>Search and command palette surface.</li>
+    <li>Tabbed operation domains.</li>
+    <li>Main operational work area.</li>
+    <li>Terminal dock for Full View.</li>
+    <li>Runtime logs and system state.</li>
+    <li>Agent interaction and review surfaces.</li>
+    <li>Summary and environment state footer.</li>
+  </ul>
+</section>
+
+<!-- =============================================================================
+     05) TOKENIZATION RULE
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="tokenization-rule">
+  <h3>Tokenization Rule</h3>
+  <p>The Developer Operations Console parent shall own shared design tokens for surface, border, radius, font size, control height, button styling, hover behavior, active state, gap, padding, panel width, Mini View, and Full View.</p>
+  <p>Child modules shall inherit from the parent and must not invent independent visual systems unless explicitly promoted into a governed token.</p>
+  <p>The console styling direction shall follow the existing Control Center logic: parent-owned visual language, child-owned local structure, and no duplicated design systems.</p>
+</section>
+
+<!-- =============================================================================
+     06) TERMINAL PLACEMENT
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="terminal-placement">
+  <h3>Terminal Placement</h3>
+  <p>The terminal shall be introduced as a Full View bottom dock inside the Developer Operations Console.</p>
+  <p>The terminal shall remain structurally separate from the homepage interaction panel and shall support future runtime logs, command generation, scan output, and agent coordination.</p>
+  <p>The terminal shall not be implemented before the Full View shell, tab rendering, and parent-token styling system are stable.</p>
+</section>
+
+<!-- =============================================================================
+     07) MIGRATION RULE
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="migration-rule">
+  <h3>Migration Rule</h3>
+  <p>Developer-specific controls shall be migrated out of the homepage interaction panel and into their correct Developer Operations tab domain.</p>
+  <ul>
+    <li><strong>Tasks:</strong> Create Prompt, Debug Issue, Fix Code.</li>
+    <li><strong>Repositories:</strong> Repository selector, Connect GitHub, Discover repos.</li>
+    <li><strong>Workspaces:</strong> Workspace name, Create workspace.</li>
+    <li><strong>Environments:</strong> environment selector and sandbox controls.</li>
+    <li><strong>Code Review:</strong> review workflows and approval surfaces.</li>
+    <li><strong>Archive:</strong> completed or historical developer operation records.</li>
+  </ul>
+</section>
+
+<!-- =============================================================================
+     08) CURRENT IMPLEMENTATION ACHIEVEMENTS
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="current-implementation-achievements">
+  <h3>Current Implementation Achievements</h3>
+  <ul>
+    <li>The Developer Operations Panel has been modularized into sovereign fragment, CSS, and JavaScript module folders.</li>
+    <li>Search, Tabs, Actions, Results, Summary, Index, Tasks, Repositories, Workspaces, Environments, Code Review, and Archive now have modular file boundaries.</li>
+    <li>Developer-specific controls were removed from the homepage interaction panel.</li>
+    <li>Task controls were migrated into the Tasks tab.</li>
+    <li>Repository controls were migrated into the Repositories tab.</li>
+    <li>Workspace controls were migrated into the Workspaces tab.</li>
+    <li>Environment controls were migrated into the Environments tab.</li>
+    <li>Tab-template rendering was wired into the Developer Operations Panel controller.</li>
+    <li>The Full View toggle was added to the Developer Operations Panel.</li>
+    <li>The Developer Operations Panel can move between the Mini View mount and Full View portal.</li>
+    <li>The Full View portal was moved outside the clipped red stage composition.</li>
+    <li>Full View top alignment was corrected to the active Developer Mode topbar height.</li>
+    <li>The correct body-only Developer Mode suppression target was identified as the viewport layer, preserving the topbar layer.</li>
+  </ul>
+</section>
+
+<!-- =============================================================================
+     09) FULL VIEW SUPPRESSION RULE
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="full-view-suppression-rule">
+  <h3>Full View Suppression Rule</h3>
+  <p>When Developer Console Full View is active, all non-topbar homepage and Developer Mode surfaces shall be hidden. The Developer Mode topbar shall remain visible and untouched.</p>
+  <p>The shell-level Developer Mode selector must not be suppressed because it also contains the topbar. Suppression must target the body/viewport child layer only.</p>
+  <ul>
+    <li><strong>Keep:</strong> Developer Mode topbar.</li>
+    <li><strong>Suppress:</strong> Developer Mode viewport/body content.</li>
+    <li><strong>Suppress:</strong> homepage stage composition and interaction surfaces.</li>
+    <li><strong>Do not suppress:</strong> shell root, topbar, header, navigation, or global menu owners.</li>
+  </ul>
+</section>
+
+<!-- =============================================================================
+     10) ACTIVE TEMPORARY DIAGNOSTICS
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="active-temporary-diagnostics">
+  <h3>Active Temporary Diagnostics</h3>
+  <ul>
+    <li>The Full View console diagnostic border is cyan and shall remain until final layout verification.</li>
+    <li>The stage composition diagnostic borders shall remain until final component alignment verification.</li>
+    <li>The response-panel test height remains temporary and shall be restored to the intended production value after console layout verification.</li>
+  </ul>
+</section>
+
+<!-- =============================================================================
+     11) EXECUTION PHASES
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="execution-phases">
+  <h3>Execution Phases</h3>
+  <ol>
+    <li>Preserve the achieved homepage stage composition and diagnostic borders until final visual confirmation.</li>
+    <li>Complete Developer Operations modular file architecture across fragments, CSS, and JavaScript.</li>
+    <li>Wire tab rendering so each tab displays its own migrated controls.</li>
+    <li>Normalize parent token inheritance and shared control styling.</li>
+    <li>Stabilize Mini View and Full View state management.</li>
+    <li>Stabilize Full View suppression so only non-topbar content disappears.</li>
+    <li>Define one clean scroll owner for Full View and Mini View navigation.</li>
+    <li>Add terminal dock placeholder in Full View only.</li>
+    <li>Remove temporary diagnostic borders and temporary response height after final verification.</li>
+  </ol>
+</section>
+
+<!-- =============================================================================
+     12) NEXT EXECUTION DIRECTION
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="next-execution-direction">
+  <h3>Next Execution Direction</h3>
+  <ol>
+    <li>Finalize Full View suppression with the Developer Mode viewport target and topbar preservation.</li>
+    <li>Normalize the Developer Operations Console parent token system.</li>
+    <li>Style search, tabs, tab content, controls, results, and summary as one coherent console system.</li>
+    <li>Stabilize internal scroll behavior through one professional scroll owner.</li>
+    <li>Add future Full View zones for terminal, logs, runtime state, and agent interaction only after shell stability.</li>
+  </ol>
+</section>
+
+<!-- =============================================================================
+     13) CURRENT STATUS
+============================================================================= -->
+<section class="development-cockpit-directive__section" data-development-cockpit-directive-section="current-status">
+  <h3>Current Status</h3>
+  <p>The Developer Operations Panel has been modularized into sovereign fragments, CSS modules, and JavaScript modules. Developer-specific controls have been migrated into their intended tab domains. Full View exists through a portal outside the clipped stage composition. The next implementation step is styling, scroll ownership stabilization, and Full View viewport suppression finalization while preserving the Developer Mode topbar.</p>
+</section>
+
+<!-- =============================================================================
+     14) END OF FILE
+============================================================================= -->

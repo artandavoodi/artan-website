@@ -1,0 +1,354 @@
+/* =============================================================================
+   NEUROARTAN · HOME STAGE · DEVELOPER OPERATIONS PANEL
+   -----------------------------------------------------------------------------
+   Purpose: Developer-only secondary operations panel inside the homepage stage
+   composition. It must remain flex-safe and never push the response panel outside
+   the viewport.
+============================================================================= */
+
+/* =============================================================================
+   00) FILE INDEX
+   -----------------------------------------------------------------------------
+   01) PANEL TOKENS
+   02) PANEL FRAME
+   03) SEARCH
+   04) TABS
+   05) TAB CONTENT
+   06) BODY / RESULTS
+   07) SUMMARY
+   08) CONSOLE HEADER
+   09) DEVELOPER MODE VISIBILITY
+   10) FULL VIEW MODE
+   11) FULL VIEW BACKGROUND SUPPRESSION
+============================================================================= */
+
+/* =============================================================================
+   01) PANEL TOKENS
+============================================================================= */
+.home-stage-developer-operations-panel{
+  --home-stage-developer-operations-width:var(--home-interaction-panel-width);
+  --home-stage-developer-operations-surface:var(--home-interaction-panel-surface);
+  --home-stage-developer-operations-border:var(--home-interaction-panel-border);
+  --home-stage-developer-operations-radius:var(--home-interaction-panel-radius);
+  --home-stage-developer-operations-shadow:var(--home-interaction-panel-shadow);
+  --home-stage-developer-operations-text:var(--home-interaction-panel-text);
+  --home-stage-developer-operations-muted:var(--home-interaction-panel-muted);
+  --home-stage-developer-operations-gap:var(--home-interaction-panel-gap);
+  --home-stage-developer-operations-padding:var(--home-interaction-panel-padding);
+  --home-stage-developer-operations-control-height:var(--home-interaction-panel-control-height);
+  --home-stage-developer-operations-control-padding:var(--home-interaction-panel-control-padding);
+  --home-stage-developer-operations-button-radius:var(--home-interaction-panel-button-radius);
+  --home-stage-developer-operations-max-height:min(28vh, 14rem);
+  --home-stage-developer-operations-full-top:3.55rem;
+  --home-stage-developer-operations-full-inset:0px;
+  --home-stage-developer-operations-full-height:calc(100dvh - var(--home-stage-developer-operations-full-top));
+  --home-stage-developer-operations-full-width:100vw;
+  --home-stage-developer-operations-full-z-index:9990;
+  --home-stage-developer-operations-full-surface:var(--home-stage-developer-operations-surface);
+  --home-stage-developer-operations-full-text:var(--home-stage-developer-operations-text);
+  --home-stage-developer-operations-full-border:var(--home-stage-developer-operations-border);
+}
+
+/* =============================================================================
+   02) PANEL FRAME
+============================================================================= */
+.home-stage-developer-operations-panel{
+  display:none;
+  flex:0 0 auto;
+  flex-direction:column;
+  gap:var(--home-stage-developer-operations-gap);
+  width:var(--home-stage-developer-operations-width);
+  max-width:100%;
+  min-width:0;
+  max-height:var(--home-stage-developer-operations-max-height);
+  min-height:0;
+  margin:0 auto;
+  padding:var(--home-stage-developer-operations-padding);
+  color:var(--home-stage-developer-operations-text);
+  background:var(--home-stage-developer-operations-surface);
+  border:var(--border-width-hairline) solid var(--home-stage-developer-operations-border);
+  border-radius:var(--home-stage-developer-operations-radius);
+  box-shadow:var(--home-stage-developer-operations-shadow);
+  overflow:hidden;
+}
+
+.home-stage-developer-operations-panel{
+  border-color:violet;
+}
+
+/* =============================================================================
+   03) SEARCH
+============================================================================= */
+.home-stage-developer-operations-panel__search{
+  display:grid;
+  gap:var(--spacing-xs);
+  min-width:0;
+}
+
+.home-stage-developer-operations-panel__search-label{
+  color:var(--home-stage-developer-operations-muted);
+  font-size:var(--font-size-caption);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-label);
+  line-height:var(--line-height-tight);
+  text-transform:uppercase;
+}
+
+.home-stage-developer-operations-panel__search-input{
+  width:var(--size-full);
+  min-height:var(--home-stage-developer-operations-control-height);
+  padding:var(--home-stage-developer-operations-control-padding);
+  color:var(--home-stage-developer-operations-text);
+  background:transparent;
+  border:var(--border-width-hairline) solid var(--home-stage-developer-operations-border);
+  border-radius:var(--home-stage-developer-operations-button-radius);
+  font:inherit;
+}
+
+/* =============================================================================
+   04) TABS
+============================================================================= */
+.home-stage-developer-operations-panel__tabs{
+  display:flex;
+  flex:0 0 auto;
+  gap:var(--spacing-xs);
+  min-width:0;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+
+.home-stage-developer-operations-panel__tab{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:var(--home-stage-developer-operations-control-height);
+  padding:var(--home-stage-developer-operations-control-padding);
+  color:var(--home-stage-developer-operations-muted);
+  background:transparent;
+  border:var(--border-width-hairline) solid var(--home-stage-developer-operations-border);
+  border-radius:var(--home-stage-developer-operations-button-radius);
+  font:inherit;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.home-stage-developer-operations-panel__tab[aria-pressed="true"]{
+  color:var(--home-stage-developer-operations-text);
+  background:var(--home-stage-developer-operations-surface);
+}
+
+/* =============================================================================
+   05) TAB CONTENT
+============================================================================= */
+.home-stage-developer-operations-panel__tab-content{
+  display:grid;
+  gap:var(--home-stage-developer-operations-gap);
+  width:100%;
+  min-width:0;
+  min-height:0;
+  overflow:visible;
+}
+
+.home-stage-developer-operations-panel__tab-panel{
+  display:grid;
+  gap:var(--home-stage-developer-operations-gap);
+  width:100%;
+  min-width:0;
+}
+
+.home-stage-developer-operations-panel__control,
+.home-stage-developer-operations-panel__button{
+  width:100%;
+  min-height:var(--home-stage-developer-operations-control-height);
+  padding:var(--home-stage-developer-operations-control-padding);
+  color:var(--home-stage-developer-operations-text);
+  background:transparent;
+  border:var(--border-width-hairline) solid var(--home-stage-developer-operations-border);
+  border-radius:var(--home-stage-developer-operations-button-radius);
+  font:inherit;
+}
+
+.home-stage-developer-operations-panel__button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+/* =============================================================================
+   06) BODY / RESULTS
+============================================================================= */
+.home-stage-developer-operations-panel__body{
+  display:flex;
+  flex:1 1 auto;
+  min-width:0;
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+.home-stage-developer-operations-panel__results{
+  display:grid;
+  gap:var(--spacing-xs);
+  width:100%;
+  min-width:0;
+  min-height:0;
+  max-height:none;
+  overflow:visible;
+}
+
+.home-stage-developer-operations-panel__empty{
+  margin:var(--spacing-none);
+  color:var(--home-stage-developer-operations-muted);
+  font-size:var(--font-size-body-3);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-copy);
+  line-height:var(--line-height-copy);
+}
+
+/* =============================================================================
+   07) SUMMARY
+============================================================================= */
+.home-stage-developer-operations-panel__summary{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(var(--spacing-none), 1fr));
+  gap:var(--spacing-xs);
+  min-width:0;
+  padding-top:var(--spacing-xs);
+  border-top:var(--border-width-hairline) solid var(--home-stage-developer-operations-border);
+}
+
+.home-stage-developer-operations-panel__summary-item{
+  margin:var(--spacing-none);
+  min-width:0;
+  color:var(--home-stage-developer-operations-muted);
+  font-size:var(--font-size-caption);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-copy);
+  line-height:var(--line-height-tight);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* =============================================================================
+   08) CONSOLE HEADER
+============================================================================= */
+.home-stage-developer-operations-panel__header{
+  display:flex;
+  flex:0 0 auto;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--home-stage-developer-operations-gap);
+  min-width:0;
+}
+
+.home-stage-developer-operations-panel__header-copy{
+  display:grid;
+  gap:var(--spacing-2xs);
+  min-width:0;
+}
+
+.home-stage-developer-operations-panel__eyebrow,
+.home-stage-developer-operations-panel__title{
+  margin:0;
+}
+
+.home-stage-developer-operations-panel__eyebrow{
+  color:var(--home-stage-developer-operations-muted);
+  font-size:var(--font-size-caption);
+  font-weight:var(--font-weight-light);
+  letter-spacing:var(--tracking-label);
+  line-height:var(--line-height-tight);
+  text-transform:uppercase;
+}
+
+.home-stage-developer-operations-panel__title{
+  color:var(--home-stage-developer-operations-text);
+  font:inherit;
+  font-weight:var(--font-weight-regular);
+  line-height:var(--line-height-tight);
+}
+
+.home-stage-developer-operations-panel__view-toggle{
+  display:inline-flex;
+  flex:0 0 auto;
+  align-items:center;
+  justify-content:center;
+  min-height:var(--home-stage-developer-operations-control-height);
+  padding:var(--home-stage-developer-operations-control-padding);
+  color:var(--home-stage-developer-operations-text);
+  background:transparent;
+  border:var(--border-width-hairline) solid var(--home-stage-developer-operations-border);
+  border-radius:var(--home-stage-developer-operations-button-radius);
+  font:inherit;
+  cursor:pointer;
+}
+
+/* =============================================================================
+   09) DEVELOPER MODE VISIBILITY
+============================================================================= */
+html[data-home-developer-mode="active"] .home-stage-developer-operations-panel{
+  display:flex;
+}
+
+/* =============================================================================
+   10) FULL VIEW MODE
+============================================================================= */
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] .home-stage-developer-operations-panel{
+  position:fixed;
+  left:var(--home-stage-developer-operations-full-inset);
+  right:var(--home-stage-developer-operations-full-inset);
+  top:var(--home-stage-developer-operations-full-top);
+  z-index:var(--home-stage-developer-operations-full-z-index);
+  width:var(--home-stage-developer-operations-full-width);
+  height:var(--home-stage-developer-operations-full-height);
+  max-height:var(--home-stage-developer-operations-full-height);
+  min-height:var(--home-stage-developer-operations-full-height);
+  border-radius:0;
+  margin:0;
+  background:var(--home-stage-developer-operations-full-surface);
+  color:var(--home-stage-developer-operations-full-text);
+  border-color:var(--home-stage-developer-operations-full-border);
+  border-color:cyan;
+  box-shadow:var(--home-stage-developer-operations-shadow);
+  backdrop-filter:blur(var(--home-interaction-panel-blur)) saturate(var(--home-interaction-panel-saturate));
+  -webkit-backdrop-filter:blur(var(--home-interaction-panel-blur)) saturate(var(--home-interaction-panel-saturate));
+  overflow:hidden;
+  opacity:1;
+  pointer-events:auto;
+}
+
+
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] .home-stage-developer-operations-panel__tab-content,
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] .home-stage-developer-operations-panel__results{
+  max-height:none;
+}
+
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] .home-stage-developer-operations-panel__tab-content{
+  flex:0 0 auto;
+  overflow:visible;
+}
+
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] .home-stage-developer-operations-panel__body{
+  flex:1 1 auto;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+/* =============================================================================
+   11) FULL VIEW BACKGROUND SUPPRESSION
+============================================================================= */
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] #stage-intro,
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] #stage-center,
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] #stage-copy,
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] #stage-actions,
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] #home-interaction-panel-mount,
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] #home-interaction-response-panel-mount,
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] #home-stage-developer-operations-panel-mount,
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] .home-developer-mode-shell__viewport,
+html[data-home-developer-mode="active"][data-home-developer-console-view="full"] [data-home-platform-destination-root]{
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+}
