@@ -32,7 +32,7 @@ system: "Website Planning"
 
 spine_version: "1.0"
 template_lock: "Global Document Metadata Standard"
-version: "0.7"
+version: "0.8"
 
 created_date: "2026-05-02"
 last_updated: "2026-05-04"
@@ -62,6 +62,9 @@ scope:
   - "Codex-style developer workspace maturity planning"
   - "Developer Operations Console direction tracking"
   - "Developer Console Mini View and Full View governance"
+  - "Developer Operations Console tab-runtime migration governance"
+  - "Developer Mode topbar simplification and utility planning"
+  - "Developer Mode shell cleanup and sidebar repurposing pipeline"
 
 index_targets:
   - "Strategic Decisions Register"
@@ -121,6 +124,9 @@ tags:
   - "developer-operations-console"
   - "developer-console-full-view"
   - "developer-console-mini-view"
+  - "developer-console-tab-migration"
+  - "developer-mode-topbar-simplification"
+  - "developer-shell-cleanup"
 ---
 
 # Website Planning Index
@@ -185,17 +191,17 @@ The AI Development Cockpit should become the internal command surface for prompt
 
 Current priority:
 
-1. preserve the existing command-generation cockpit frontend
-2. complete Developer Mode navigation ownership mapping before runtime work, including dedicated developer top menu, left sidebar, right sidebar, and command surface
-3. keep provider, GitHub, sandbox, internet egress, patch, test, commit, and pull request execution server-side
-4. prohibit frontend secrets and browser-side repository mutation
-5. define backend interface contracts before implementing runtime code
-6. proceed to read-only backend stubs only after architecture review
-7. preserve the Control Center nested settings pilot as the canonical Apple-native company-style baseline before Platform Menu reuse or global primitive extraction
-8. treat Developer Mode as a dedicated developer workspace requiring its own top menu, sidebars, command surface, and Codex-style navigation before implementation
-9. mature the Developer Operations Panel into a dockable Developer Operations Console with Mini View and Full View states
-10. preserve the Developer Mode topbar while suppressing non-topbar Developer Mode viewport content during Developer Console Full View
-11. route Developer-specific controls into their correct Developer Operations Console tab domains
+1. preserve the existing command-generation cockpit frontend while consolidating Developer-specific operational controls into the Developer Operations Console
+2. complete Developer Operations Console stabilization across Mini View and Full View, including fixed footer summary, independent content viewport, global tab styling, and root-owned layout separation
+3. preserve the simplified Developer Mode topbar as the executive developer workspace switcher: Code, App, Docs, Notifications, Settings, and Account
+4. keep project, repository, agent/provider, scan, review, test, pull request, and runtime actions inside the Developer Operations Console tabs rather than the Developer Mode topbar or left sidebar
+5. keep provider, GitHub, sandbox, internet egress, patch, test, commit, and pull request execution server-side
+6. prohibit frontend secrets and browser-side repository mutation
+7. preserve the Control Center nested settings pilot as the canonical Apple-native company-style baseline for future Developer Mode settings, notification, and account dropdown planning
+8. repurpose the cleared Developer Mode left sidebar for future terminal, logs, command history, approval queue, and runtime monitor surfaces
+9. audit and simplify the Developer Mode shell, including static content removal, logic-bearing content migration, and right-sidebar redesign
+10. document Developer Mode notification, settings, and account dropdown architecture before implementation
+11. continue runtime hardening only after shell structure, ownership, and visual hierarchy are stable
 
 ---
 
@@ -247,7 +253,7 @@ Each Codex prompt must be scoped to one bounded objective and must request:
 | Codex Daily Prompt Queue | Draft | Prompt 01 ready for review before execution. |
 | AI Development Cockpit Architecture Specification | Draft | Requires architecture review before Codex execution. |
 | Website Modular Architecture Doctrine | Draft | Active continuation reference for modular website architecture stabilization. |
-| Developer Mode Architecture Specification | Draft | Expanded to version 0.3; homepage Developer Mode workspace, backend session state, GitHub OAuth/repository discovery boundary, provider configuration, agent activation, project binding, and approval-gated runtime status are now recorded. |
+| Developer Mode Architecture Specification | Draft | Requires update for the simplified Developer Mode topbar, cleared left sidebar, Developer Operations Console tab migration, notification/settings/account dropdown planning, and next shell-cleanup phase. |
 | AI Coding Agent Runtime Specification | Draft | Requires backend/runtime architecture review before implementation. |
 | GitHub Repository Access & Permission Specification | Draft | Requires security and repository governance review before implementation. |
 | Agent Sandbox & Internet Egress Governance Specification | Draft | Requires security review before any network-capable runtime implementation. |
@@ -257,23 +263,26 @@ Each Codex prompt must be scoped to one bounded objective and must request:
 | Model Provider Strategy | Draft | Requires provider/security review before implementation. |
 | Repository Development Workflow Specification | Draft | Requires workflow review before cockpit implementation. |
 | Daily Execution Log | Draft | Active for continuity tracking. |
-| AI Development Cockpit Implementation Change Log | Active | Updated with Control Center nested settings baseline and company-style system lock. |
-| Developer Operations Console Directive | Active | Created as the active direction record for Developer Operations Console Mini View, Full View, tab migration, terminal dock planning, and parent-token styling governance. |
+| AI Development Cockpit Implementation Change Log | Active | Requires update for Developer Operations Console tab migration, Developer Mode topbar simplification, footer/content viewport stabilization, and legacy shell cleanup. |
+| Developer Operations Console Directive | Active | Requires update for completed tab-runtime migration, fixed footer/content viewport architecture, global topbar/menu tokenization, and next terminal/sidebar pipeline. |
 
 ---
 
 ## 9. Next Action
 
-Next action is to complete Developer Operations Console styling and layout stabilization, then continue Developer Mode backend session persistence, GitHub OAuth credential configuration, and provider runtime validation.
+Next action is to update the Developer Mode Architecture Specification, Developer Operations Console Directive, and AI Development Cockpit Implementation Change Log with the completed Developer Operations Console stabilization and migration work.
 
-The Control Center Session nested settings pilot remains the canonical reusable Apple-native settings baseline for nested navigation, drill-in rows, native icon controls, and future Platform Menu or Developer Mode reuse.
+The next implementation focus is the Developer Mode shell cleanup phase. This phase must audit the remaining left sidebar, right sidebar, center shell, static placeholder content, runtime-bearing content, and visual hierarchy before further redesign.
 
-Developer Mode runtime mutation remains gated until sandbox isolation, internet egress policy, patch artifact storage, test execution, commit/PR attribution, and approval gates are implemented and reviewed.
+The simplified Developer Mode topbar is the active direction: Code, App, Docs, Notifications, Settings, and Account. Notifications, Settings, and Account require separate planning before implementation, including dropdown behavior, state ownership, accessibility, and global token use.
+
+The cleared left sidebar is reserved for future terminal, logs, command history, approval queue, and runtime monitor surfaces.
 
 ---
 
 ## Change Log
 
+- 2026-05-04 — v0.8 Recorded Developer Operations Console stabilization achievements, including Mini View and Full View layout correction, fixed summary footer, independent content viewport, tab-runtime migration from the legacy Developer Mode shell, cleared left sidebar registry, simplified Developer Mode topbar, global topbar menu gap tokenization, profile/account global structure alignment, and next Developer Mode shell cleanup pipeline. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Planning Index update for Developer Operations Console migration and Developer Mode shell cleanup readiness under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-04 — v0.7 Indexed Developer Operations Console direction, including Mini View and Full View governance, tab migration model, topbar preservation requirement, terminal dock planning, and parent-token styling direction. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Planning Index update for Developer Operations Console direction under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.6 Indexed Developer Mode Architecture Specification version 0.3 and recorded the first homepage-routed Developer Mode workspace plus backend session-state implementation boundary. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Codex. Agent ID: Codex. Execution Context: Website Planning Index update for Developer Mode implementation under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.5 Indexed Developer Mode Architecture Specification version 0.2 as the active maturity reference for dedicated developer top menu, developer left and right sidebars, command surface, repository workspace, Codex-style navigation, and Control Center nested settings doctrine reuse. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Planning Index update for Developer Mode architecture maturity under `/Users/artan/Documents/Neuroartan/website`.
@@ -291,7 +300,7 @@ GSA APPROVAL: false
 DOCUMENT STATUS: Draft — Website Planning Index  
 VISIBILITY: Internal  
 PUBLISH TO WEBSITE: No  
-VERSION: 0.7
+VERSION: 0.8
 
 ---
 

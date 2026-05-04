@@ -32,7 +32,7 @@ system: "Neuroartan Website"
 
 spine_version: "1.0"
 template_lock: true
-version: "0.6"
+version: "0.7"
 
 created_date: "2026-05-02"
 last_updated: "2026-05-04"
@@ -72,6 +72,10 @@ scope:
   - "Developer Mode topbar preservation architecture"
   - "Developer Mode viewport suppression architecture"
   - "Developer terminal dock architecture"
+  - "Developer Operations Console tab-runtime migration"
+  - "Developer Mode simplified topbar architecture"
+  - "Developer Mode notification, settings, and account dropdown planning"
+  - "Developer Mode shell cleanup and sidebar repurposing architecture"
 
 index_targets:
   - "Website Planning Index"
@@ -114,6 +118,10 @@ tags:
   - "developer-mode-topbar-preservation"
   - "developer-mode-viewport-suppression"
   - "developer-console-terminal-dock"
+  - "developer-console-tab-runtime-migration"
+  - "developer-mode-simplified-topbar"
+  - "developer-mode-shell-cleanup"
+  - "developer-mode-utility-dropdowns"
 ---
 
 # Developer Mode Architecture Specification
@@ -130,7 +138,7 @@ Developer Mode must not expose repository mutation, provider secrets, GitHub cre
 
 ## II. Current State
 
-The existing platform already includes early Developer Mode and development cockpit surfaces, but the architecture is still immature.
+Developer Mode now has an implemented developer workspace foundation and a stabilized Developer Operations Console direction.
 
 Current reusable elements include:
 
@@ -152,39 +160,44 @@ Current reusable elements include:
 - voice interaction foundations
 - Platform Menu workspace destination for Developer Mode
 - homepage stage developer workbench controls
-- repository selector placeholder
-- environment selector placeholder
-- GitHub connection placeholder
-- repository discovery placeholder
-- workspace creation placeholder
+- Developer Mode shell fragment
+- Developer Mode topbar fragment
+- Developer Mode left sidebar mount
+- Developer Mode right context sidebar
+- Developer Operations Console Mini View
+- Developer Operations Console Full View
+- Developer Operations Console content viewport
+- Developer Operations Console fixed summary footer
+- Developer Operations Console tab modules for Tasks, Repositories, Workspaces, Environments, Code Review, and Archive
+- repository action runtime migrated into the Repositories tab module
+- project/workspace creation runtime migrated into the Workspaces tab module
+- provider and runtime scan actions migrated into the Environments tab module
+- review artifact and locked review actions migrated into the Code Review tab module
+- simplified Developer Mode topbar with Code, App, Docs, Notifications, Settings, and Account
+- cleared Developer Mode left sidebar registry for future terminal and runtime utilities
 
-The current cockpit is not yet an autonomous coding agent runtime.
+The current cockpit is still not an autonomous coding agent runtime.
 
-It does not currently provide secure API execution, repository authorization, sandboxed worktrees, internet egress control, patch application, automated testing, commits, or pull request creation.
-
-It also does not yet provide a dedicated developer-specific top menu or developer workspace navigation environment.
+It does not yet provide secure repository mutation, sandboxed worktrees, internet egress control, patch application, automated testing, commits, or pull request creation.
 
 Current gaps include:
 
 ```text
-No developer-specific topbar
-No developer-specific left sidebar
-No developer-specific right sidebar
-No repository workspace navigation model
-No developer-only replacement for platform navigation items such as Feed or public Dashboard
-No Codex-style session navigation model
-No fully integrated visible action categories for scan, plan, debug, patch, review, test, commit, and pull request through the canonical interactive panel
-No repository connection and discovery workflow surface
-No prompt engineering workspace
-No code review workspace
-No issue debugging workspace
-No runtime status workspace
-No approval queue workspace
-No reusable developer menu fragment authority model
-No developer navigation doctrine based on the approved Control Center nested settings baseline
+No planned notification dropdown
+No planned settings dropdown
+No planned account dropdown
+No finalized right-sidebar information architecture
+No left-sidebar terminal/log/runtime monitor implementation
+No fully styled migrated tab content surface
+No production GitHub App or OAuth credential deployment
+No Supabase-backed long-term developer profile state
+No sandbox/worktree runtime
+No reviewable patch artifact storage
+No test execution approval workflow
+No commit or pull request mutation route after approval
 ```
 
-The immediate architecture task is to define Developer Mode as its own developer workspace with dedicated navigation, not as a generic Platform Menu destination.
+The immediate architecture task is now to clean the Developer Mode shell, audit all remaining static and logic-bearing content, repurpose the cleared left sidebar, redesign the right sidebar, and formally plan Notifications, Settings, and Account utility dropdowns before implementation.
 ----
 
 ## III. Target Architecture
@@ -255,60 +268,52 @@ Developer Mode must feel like a focused coding-agent workspace, not a public con
 
 ## IV. Developer-Specific Top Menu Architecture
 
-Developer Mode requires a dedicated top menu that replaces the generic platform topbar while Developer Mode is active.
+Developer Mode has a dedicated top menu that replaces the generic public platform topbar while Developer Mode is active.
 
-The developer top menu must be fragmented, reusable, token-based, and registered through the website fragment authority system.
+The developer top menu must remain fragmented, reusable, token-based, and registered through the website fragment authority system.
 
-The developer top menu must not include irrelevant public-platform items unless explicitly required.
-
-Items to exclude from the default developer top menu:
+The developer top menu must preserve:
 
 ```text
-Feed
-Public dashboard shortcut
-Public model directory shortcut
-Generic public platform navigation
+Neuroartan logo
+Developer Mode title
 ```
 
-Required developer top menu zones:
+The active approved topbar item model is:
 
 ```text
-Developer mode identity
-Repository connection state
-Active repository selector
-Branch selector
-Runtime/provider status
-Command mode selector
-Review queue shortcut
-Logs/status shortcut
-Developer settings shortcut
-Profile/account utility
-```
-
-The developer top menu should expose high-signal actions only.
-
-It must stay calm, sparse, and operational.
-
-It must not become a crowded command ribbon.
-
-Approved top menu candidate items:
-
-```text
-Repository
-Branch
-Prompt
-Scan
-Debug
-Review
-Tests
-Pull request
-Runtime
+Code
+App
+Docs
+Notifications
 Settings
+Account
 ```
 
-The top menu is for global developer context and mode switching.
+Topbar item ownership:
 
-Detailed controls belong in sidebars or the main command surface.
+```text
+Code → developer code workspace mode
+App → application/runtime workspace mode
+Docs → documentation/reference workspace mode
+Notifications → future notification dropdown
+Settings → future developer settings dropdown
+Account → global profile/account control and future account dropdown
+```
+
+The topbar must not include operational controls such as project, repository, agent/provider, prompt, scan, debug, review, tests, pull request, runtime, or logs.
+
+Those operational controls belong in the Developer Operations Console tabs or the future left-sidebar terminal/log/runtime surfaces.
+
+The Account control must reuse the global homepage profile/account structure, including the global circular profile action, avatar shell, icon fallback, theme-aware icon behavior, and `data-home-topbar-profile-state` visibility logic.
+
+Notifications and Settings may use icon-only controls with accessible labels. Code, App, and Docs may remain text-only workspace switches unless a later icon standard is approved.
+
+The top menu is for executive developer workspace switching and utility access.
+
+It must stay sparse, minimal, and market-ready.
+
+Detailed controls belong in the Developer Operations Console, sidebar utility surfaces, or the canonical interactive panel routing layer.
 
 ---
 
@@ -361,16 +366,15 @@ The final file structure must be created only after a live scan of the current w
 
 ## VI. Developer Left Sidebar Architecture
 
-The developer left sidebar should own workspace navigation.
+The Developer Mode left sidebar has been cleared of the former workspace navigation registry.
 
-It should behave like a developer cockpit navigation rail, not like public website navigation.
-
-Recommended left sidebar sections:
+The previous left-sidebar items were:
 
 ```text
 Overview
+Projects
 Repositories
-Workspaces
+Agents
 Prompts
 Scans
 Plans
@@ -384,31 +388,27 @@ Logs
 Settings
 ```
 
-The left sidebar should support nested Apple-native navigation using the approved Control Center nested settings baseline.
+These items were removed from the left sidebar because their operational controls now belong in Developer Operations Console tab domains or future specialized utility surfaces.
 
-Examples:
+The cleared left sidebar is reserved for future focused developer utilities.
+
+Recommended future left sidebar surfaces:
 
 ```text
-Repositories
-  Connected repositories
-  Discover repositories
-  Repository permissions
-  Protected paths
-
-Debugging
-  Current issue
-  Console errors
-  Runtime traces
-  Failed tests
-
-Reviews
-  Pending patches
-  Test results
-  Approval queue
-  Commit draft
+Terminal
+Logs
+Command history
+Approval queue
+Runtime monitor
+Local bridge status
+Agent session queue
 ```
 
-The left sidebar must remain stable while the main panel changes.
+The left sidebar must not reintroduce broad operational navigation already owned by the Developer Operations Console.
+
+The left sidebar should become a calm terminal/log/runtime utility rail.
+
+It must remain structurally available while its final utility architecture is documented.
 
 ---
 
@@ -540,7 +540,7 @@ Propagate
 
 ## VIIIB. Developer Operations Console Architecture
 
-The Developer Operations Panel is now architecturally elevated into the Developer Operations Console.
+The Developer Operations Panel is architecturally elevated into the Developer Operations Console.
 
 The Developer Operations Console is the developer-facing operations layer for task controls, repository controls, workspace controls, environment controls, code review, archive records, future terminal access, runtime state, logs, and agent coordination.
 
@@ -548,11 +548,13 @@ The console operates in two modes:
 
 Mini View:
 - Compact Developer Operations Panel inside the homepage stage composition.
+- Horizontal shell padding is flat in Mini View so internal controls align to the compact panel edges.
 
 Full View:
 - Expanded Developer Operations Console below the Developer Mode topbar.
 - Portal-mounted outside the clipped stage composition.
 - Viewport-oriented developer operations surface.
+- Uses the same rail formula as the global platform menu for left and right interior alignment.
 
 The console must not replace the canonical homepage interactive panel as the primary user command input.
 
@@ -562,9 +564,18 @@ The canonical input path remains:
 
 Homepage Interactive Panel → Developer-aware command routing when Developer Mode is active → Developer Operations Console context, review, and runtime surface.
 
-The Developer Operations Console tab model is Tasks, Repositories, Workspaces, Environments, Code Review, and Archive.
+The Developer Operations Console tab model is:
 
-Tab-domain ownership is:
+```text
+Tasks
+Repositories
+Workspaces
+Environments
+Code Review
+Archive
+```
+
+Current tab-domain ownership is:
 
 Tasks:
 - Create Prompt
@@ -575,29 +586,48 @@ Repositories:
 - Repository selector
 - Connect GitHub
 - Discover repositories
+- Repository action runtime
 
 Workspaces:
-- Workspace name
-- Create workspace
+- Project/workspace creation form
+- Project creation runtime
 
 Environments:
-- Environment selector
-- Cloud Sandbox and runtime environment controls
+- Provider/agent list
+- Provider activation runtime
+- Runtime scan action
 
 Code Review:
-- Review workflows
-- Approval surfaces
-- Patch inspection
-- Future review records
+- Generate patch
+- Run review
+- Run tests
+- Review artifact list
+- Locked review action runtime
 
 Archive:
 - Completed or historical developer operation records
 
-Developer-specific controls must not remain in the homepage interaction panel.
+The former Developer Mode center-column panels were migrated into Developer Operations Console tabs.
 
-Developer-specific controls must live in the correct Developer Operations Console tab domain.
+Legacy center-panel runtime handlers were removed from the Developer Mode shell after migration.
 
-The console must use parent-owned design tokens so search, tabs, tab content, controls, results, summary, terminal, logs, runtime state, and future agent surfaces inherit one coherent visual system.
+The Developer Operations Console now uses:
+
+```text
+Top zones: search and tab navigation
+Content viewport: tab-specific content and operation results
+Footer zone: fixed summary footer
+```
+
+The summary footer is structurally independent from tab content and results.
+
+The content viewport is the flexible scroll region.
+
+The summary footer remains anchored at the bottom of Mini View and Full View.
+
+The tabs use the global homepage topbar action style for type, size, hover logic, icon/text spacing, and spacing tokenization.
+
+The active tab underline and separator line reuse the products local navigation separator pattern.
 
 The Developer Operations Console must preserve a minimal, enterprise-grade visual surface while keeping its modular architecture sophisticated beneath the interface.
 
@@ -943,11 +973,19 @@ Phase 02D — Developer Operations Console Stabilization
 - preserve Developer Mode topbar during Full View
 - suppress only non-topbar Developer Mode viewport content during Full View
 - keep the Developer Mode shell root intact
+- complete Developer Operations Console content viewport separation
+- anchor the summary footer independently from tab content and results
 - migrate developer-specific controls into correct tab domains
-- normalize parent-token styling inheritance for search, tabs, controls, results, and summary
+- migrate Repositories, Workspaces, Environments, and Code Review runtime actions from the legacy Developer Mode shell into tab-owned modules
+- remove legacy center-panel runtime handlers from the Developer Mode shell after migration
+- remove legacy center-column workspace panels from the Developer Mode shell after migration
+- clear left-sidebar registry items after migration
+- simplify Developer Mode topbar to Code, App, Docs, Notifications, Settings, and Account
+- align Developer Mode topbar with the global homepage topbar action, icon, profile, hover, and spacing systems
+- normalize parent-token styling inheritance for search, tabs, controls, results, summary, and future terminal surfaces
 - stabilize one clean scroll owner for Mini View and Full View
+- document notification, settings, and account dropdown requirements before implementation
 - add Full View terminal dock placeholder only after shell stability
-- preserve temporary diagnostic borders until final visual verification
 
 Phase 03 — Backend Interface Stub
 
@@ -1007,42 +1045,7 @@ Legal review is required before external user exposure, third-party provider exe
 
 ## XX. Status
 
-Developer Mode is approved for architecture definition.
-
-Developer Mode is not yet approved for live autonomous repository mutation.
-
-Developer Mode now has a first homepage-routed developer workspace foundation and a backend session-state foundation.
-
-Implemented architecture now includes:
-
-- homepage Developer Mode shell fragment
-- developer-specific topbar
-- developer left sidebar
-- developer right context sidebar
-- runtime, review, and context surface
-- repository panel
-- project panel
-- provider / agent panel
-- runtime panel
-- review / approval panel
-- settings panel
-- backend Developer Mode state route
-- backend provider status and configuration route
-- backend agent activation route
-- backend GitHub OAuth initiation/callback/status/repository discovery route
-- backend session persistence for selected project, repository, workspace, provider, and active agent
-
-Developer Mode is still not approved for autonomous repository mutation.
-
-Developer Mode is now architecturally redirected toward interactive-panel command integration.
-
-Developer Mode now includes the Developer Operations Console direction. The Developer Operations Panel has been modularized and elevated toward a dockable Mini View and Full View console. Developer-specific controls are being moved out of the homepage interaction panel and into Tasks, Repositories, Workspaces, Environments, Code Review, and Archive tab domains. Full View must preserve the Developer Mode topbar while suppressing the Developer Mode viewport/body content only.
-
-The existing homepage interactive panel must become the canonical command input for Developer Mode.
-
-The former static Developer command surface has been deprecated; preserved developer action labels, modes, descriptions, and runtime interfaces must migrate into canonical interactive-panel routing and runtime/review/context surfaces.
-
-The future ChatGPT/Codex-like local development experience is feasible only through a trusted local companion agent, VS Code extension, desktop wrapper, or equivalent local bridge. Browser-only access to local terminal and local files is not approved.
+Developer Mode now includes a stabilized Developer Operations Console direction. The Developer Operations Panel has been modularized and elevated into a dockable Mini View and Full View console. Developer-specific controls have been moved out of the legacy Developer Mode center shell and into Repositories, Workspaces, Environments, and Code Review tab domains. The console now has an independent content viewport and fixed summary footer. Full View preserves the Developer Mode topbar while suppressing only the Developer Mode viewport/body content. The Developer Mode topbar has been simplified to Code, App, Docs, Notifications, Settings, and Account, and the former left-sidebar workspace navigation registry has been cleared for future terminal/log/runtime utility use.
 
 Remaining maturity requirements:
 
@@ -1053,6 +1056,12 @@ Remaining maturity requirements:
 - reviewable patch artifact storage
 - test execution approval workflow
 - commit and pull request mutation route after approval
+- notification dropdown architecture
+- developer settings dropdown architecture
+- account dropdown architecture
+- right-sidebar simplification and context hierarchy redesign
+- left-sidebar terminal/log/runtime monitor implementation
+- migrated tab content styling and empty-state polish
 
 ---
 
@@ -1089,10 +1098,11 @@ The homepage Developer workspace must not become a duplicate input surface.
 Canonical text and voice command input should remain with the homepage interactive panel. Developer Mode should supply the context, selected repository, selected provider, selected runtime, review state, and execution controls used by that canonical input path.
 
 The Developer workspace may display routed action output, repository scans, runtime status, proposed patches, review artifacts, test results, and approval prompts, but the command origin must remain unified through the existing interaction layer.
-----
 
+----
 ## Change Log
 
+- 2026-05-04 — v0.7 Recorded completed Developer Operations Console stabilization and migration architecture, including independent content viewport, fixed summary footer, Repositories / Workspaces / Environments / Code Review runtime migration, legacy Developer Mode shell cleanup, cleared left-sidebar registry, simplified Developer Mode topbar, global profile/account structure alignment, and next notification/settings/account dropdown and shell-cleanup pipeline. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Mode Architecture Specification update for Developer Operations Console migration and Developer Mode shell cleanup readiness under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-04 — v0.6 Added Developer Operations Console architecture, including Mini View and Full View model, tab-domain ownership, topbar preservation, viewport-only suppression, portal-mounted Full View direction, parent-token styling rule, terminal dock direction, and implementation phase 02D. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Operations Console architecture propagation under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.5 Normalized Developer Mode architecture language after removal of the static command surface, preserving developer action labels, modes, descriptions, and runtime interfaces as routing metadata for the canonical homepage interactive panel and runtime/review/context surfaces. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Static command-surface deprecation and safe action-routing migration under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.4 Redirected Developer Mode architecture toward canonical homepage interactive-panel command integration, defined Developer Mode as execution context / review / runtime surface rather than a duplicate prompt surface, and documented the feasibility boundary for web-based terminal, local companion agent, VS Code bridge, and approval-gated local file/terminal access. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Developer Mode architecture redirection and backend/local-bridge feasibility review under `/Users/artan/Documents/Neuroartan/website`.
@@ -1109,6 +1119,6 @@ GSA PROTOCOL STATUS: Pending Review
 GSA APPROVAL: false  
 LEGAL REVIEW REQUIRED: true  
 CREO REVIEW REQUIRED: true  
-VERSION: 0.6
+VERSION: 0.7
 
 END OF DOCUMENT

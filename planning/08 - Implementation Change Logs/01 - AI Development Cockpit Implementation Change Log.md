@@ -32,7 +32,7 @@ system: "Website Planning"
 
 spine_version: "1.0"
 template_lock: "Global Document Metadata Standard"
-version: "0.6"
+version: "0.7"
 
 created_date: "2026-05-02"
 last_updated: "2026-05-04"
@@ -71,6 +71,12 @@ scope:
   - "Developer Operations tab migration trace"
   - "Developer Mode topbar preservation and viewport suppression trace"
   - "Developer Console styling and terminal dock direction trace"
+  - "Developer Operations Console content viewport and fixed footer stabilization trace"
+  - "Developer Operations Console tab-runtime migration trace"
+  - "Developer Mode legacy shell cleanup trace"
+  - "Developer Mode simplified topbar implementation trace"
+  - "Developer Mode left-sidebar clearing and future utility rail trace"
+  - "Developer Mode notification, settings, and account dropdown planning trace"
 
 index_targets:
   - "Website Planning Index"
@@ -138,6 +144,12 @@ tags:
   - "developer-console-terminal-dock"
   - "developer-mode-topbar-preservation"
   - "developer-mode-viewport-suppression"
+  - "developer-console-content-viewport"
+  - "developer-console-fixed-footer"
+  - "developer-console-tab-runtime-migration"
+  - "developer-mode-topbar-simplification"
+  - "developer-mode-shell-cleanup"
+  - "developer-mode-utility-dropdowns"
 ---
 
 # AI Development Cockpit Implementation Change Log
@@ -175,6 +187,141 @@ Unverified work must be marked as unverified.
 ---
 
 ## 3. Current Session Record
+
+### 2026-05-04 — Developer Operations Console Stabilization, Runtime Migration, Legacy Shell Cleanup, and Developer Topbar Simplification
+
+Execution Agent: ChatGPT / Website Systems & Development Agent
+
+Implementation Objective:
+
+Complete the Developer Operations Console stabilization pass; separate content viewport behavior from the fixed summary footer; migrate runtime ownership for Repositories, Workspaces, Environments, and Code Review from the legacy Developer Mode shell into tab-owned modules; remove legacy center-panel runtime handlers and HTML panels; clear the left-sidebar registry; simplify the Developer Mode topbar into a minimal executive workspace switcher; align account/profile behavior to the global homepage topbar structure; and prepare the next Developer Mode shell cleanup phase.
+
+Documents Read:
+
+- `/Users/artan/Documents/Neuroartan/website/planning/00 - Index & Dashboards/00 - Website Planning Index.md`
+- `/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/03 - Developer Mode Architecture Specification.md`
+- `/Users/artan/Documents/Neuroartan/website/planning/08 - Implementation Change Logs/01 - AI Development Cockpit Implementation Change Log.md`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/shell/home-dashboard-topbar.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/shell/home-dashboard-topbar.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/developer-mode/topbar/developer-mode-topbar.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/topbar/developer-mode-topbar.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/topbar/developer-mode-topbar.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/developer-mode/developer-mode-shell.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/developer-mode-shell.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/data/website/development-cockpit/homepage-developer-mode-registry.json`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/developer-operations-panel.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/stage/developer-operations-panel/developer-operations-panel.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/developer-operations-panel.js`
+
+Files Created:
+
+- None.
+
+Files Modified:
+
+- `/Users/artan/Documents/Neuroartan/website/planning/00 - Index & Dashboards/00 - Website Planning Index.md`
+- `/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/03 - Developer Mode Architecture Specification.md`
+- `/Users/artan/Documents/Neuroartan/website/planning/08 - Implementation Change Logs/01 - AI Development Cockpit Implementation Change Log.md`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/core/01-tokens/navigation.tokens.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/data/website/development-cockpit/homepage-developer-mode-registry.json`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/developer-mode/developer-mode-shell.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/developer-mode-shell.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/developer-mode/topbar/developer-mode-topbar.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/developer-mode/topbar/developer-mode-topbar.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/developer-mode/topbar/developer-mode-topbar.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/developer-operations-panel.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/css/layers/website/home/stage/developer-operations-panel/developer-operations-panel.css`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/developer-operations-panel.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/repositories/repositories-tab.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/tabs/repositories/repositories-tab.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/workspaces/workspaces-tab.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/tabs/workspaces/workspaces-tab.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/environments/environments-tab.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/tabs/environments/environments-tab.js`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/home/stage/developer-operations-panel/tabs/code-review/code-review-tab.html`
+- `/Users/artan/Documents/Neuroartan/website/docs/assets/js/layers/website/home/stage/developer-operations-panel/tabs/code-review/code-review-tab.js`
+
+Systems Implemented:
+
+- Developer Operations content viewport separated tab content and results from the fixed summary footer.
+- Developer Operations summary footer was anchored as an independent footer zone.
+- Repositories, Workspaces, Environments, and Code Review runtime actions were migrated into tab-owned modules.
+- Legacy Developer Mode shell runtime handlers and center-column workspace panels were removed after migration.
+- Developer Mode left-sidebar registry items were cleared while preserving the mount.
+- Developer Mode topbar was simplified to Code, App, Docs, Notifications, Settings, and Account.
+- Developer Mode topbar account/profile control was aligned to the global homepage profile/account structure.
+- Notifications and Settings were converted to icon-only utility controls with accessible labels and theme-aware icons.
+- Global topbar gap tokenization was propagated across homepage topbar, profile topbar, Developer Mode topbar, and Developer Operations tabs.
+
+Systems Scaffolded Only:
+
+- Notifications dropdown is not yet implemented.
+- Developer settings dropdown is not yet implemented.
+- Account dropdown is not yet implemented.
+- Left sidebar terminal/log/runtime utility rail is not yet implemented.
+- Right sidebar cleanup and redesign are not yet implemented.
+- Migrated tab content still requires final visual polish and empty-state refinement.
+- Archive tab remains a future ownership zone.
+
+Systems Not Completed:
+
+- Production GitHub credentials and durable repository authorization remain incomplete.
+- Secure sandbox/worktree runtime remains incomplete.
+- Patch artifact persistence remains incomplete.
+- Automated test execution remains incomplete.
+- Commit and pull request mutation route remains incomplete.
+- Notification, settings, and account dropdowns require planning before implementation.
+- Developer Mode shell static and logic-bearing content still requires full audit.
+
+Verification Performed:
+
+- Confirmed Developer Operations tabs render independently from footer summary.
+- Confirmed summary footer is structurally outside the content viewport.
+- Confirmed migrated tab modules pass JavaScript syntax checks.
+- Confirmed Developer Operations controller imports and routes the migrated tab modules.
+- Confirmed legacy runtime handlers and center-column panels were removed from Developer Mode shell.
+- Confirmed `sidebarItems` registry is empty while the left sidebar mount remains available.
+- Confirmed old Developer Mode topbar labels were removed.
+- Confirmed Developer Mode profile/account control uses the global profile structure and `data-home-topbar-profile-state="icon"`.
+- Confirmed Notifications and Settings visible labels were removed while accessible labels remain.
+- Confirmed Developer Mode topbar CSS and JS pass syntax checks.
+
+Verification Result:
+
+- Developer Operations Console stabilization is functionally complete for this phase.
+- Developer Operations Console tab-runtime migration is complete for Repositories, Workspaces, Environments, and Code Review.
+- Developer Mode legacy shell panels and handlers were cleaned after migration.
+- Developer Mode topbar is simplified, minimal, and aligned to the global homepage topbar profile/account logic.
+- Left sidebar is cleared for future terminal/log/runtime utility use.
+
+Blockers:
+
+- Browser visual confirmation is still required for final migrated tab content polish.
+- Notification, settings, and account dropdown behavior requires architecture before implementation.
+- Right sidebar must be audited before redesign.
+- Future terminal/log/runtime surfaces require a separate left-sidebar utility architecture.
+
+Remaining Work:
+
+- Plan Notifications dropdown.
+- Plan Developer Settings dropdown.
+- Plan Account dropdown.
+- Audit remaining Developer Mode shell static content.
+- Audit remaining Developer Mode shell logic-bearing content.
+- Redesign the right sidebar information hierarchy.
+- Plan left sidebar Terminal, Logs, Command History, Approval Queue, and Runtime Monitor surfaces.
+- Style migrated tab content, lists, outputs, and empty states.
+- Update Developer Operations Console Directive.
+
+Next Exact Action:
+
+Update the Developer Operations Console Directive, then begin the Developer Mode shell cleanup audit.
+
+Next Exact File To Open:
+
+`/Users/artan/Documents/Neuroartan/website/docs/assets/fragments/layers/website/development-cockpit/developer-operations-console-directive.html`
+
+---
 
 ### 2026-05-04 — Developer Operations Console Modularization, Tab Migration, Full View Portal, and Viewport Suppression Stabilization
 
@@ -1155,7 +1302,7 @@ GSA APPROVAL: false
 DOCUMENT STATUS: Draft — AI Development Cockpit Implementation Change Log  
 VISIBILITY: Internal  
 PUBLISH TO WEBSITE: No  
-VERSION: 0.6
+VERSION: 0.7
 
 ---
 
