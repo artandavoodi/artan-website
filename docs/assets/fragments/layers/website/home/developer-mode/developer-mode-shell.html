@@ -10,10 +10,10 @@
      -----------------------------------------------------------------------------
      01) DEVELOPER CONSOLE SHELL
      02) DEVELOPER MODE TOPBAR MOUNT
-     03) DEVELOPER MODE VIEWPORT
-     04) LEFT COLUMN
-     05) CENTER COLUMN
-     06) RIGHT COLUMN
+     03) DEVELOPER MODE SOVEREIGN VIEWPORT
+     04) LEFT UTILITY SLOT
+     05) CENTER WORKSPACE SLOT
+     06) RIGHT CONTEXT SLOT
      07) END OF FILE
 ============================================================================= -->
 
@@ -25,110 +25,47 @@
        02) DEVELOPER MODE TOPBAR MOUNT
   ============================================================================= -->
   <header class="home-developer-mode-shell__topbar" data-home-developer-mode-topbar data-home-developer-region="topbar" data-include="home-developer-mode-topbar" aria-label="Developer Console topbar"></header>
+  <section class="home-developer-mode-shell__settings-panel developer-mode-settings-panel-shell" data-developer-mode-settings-shell data-home-developer-mode-region="settings-panel" data-include="home-developer-mode-settings-panel-shell" hidden aria-hidden="true">
+    <div class="developer-mode-settings-panel-shell__overlay" data-developer-mode-settings-overlay hidden aria-hidden="true"></div>
+
+    <div class="developer-mode-settings-panel-shell__surface" data-developer-mode-settings-panel>
+      <div class="developer-mode-settings-panel-shell__sections" data-developer-mode-settings-sections>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="overview" data-include="home-developer-mode-settings-panel-overview"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="environments" data-include="home-developer-mode-settings-panel-environments"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="connectors" data-include="home-developer-mode-settings-panel-connectors"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="analytics" data-include="home-developer-mode-settings-panel-analytics"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="data-control" data-include="home-developer-mode-settings-panel-data-control"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="privacy" data-include="home-developer-mode-settings-panel-privacy"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="runtime" data-include="home-developer-mode-settings-panel-runtime"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="approvals" data-include="home-developer-mode-settings-panel-approvals"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="logs-history" data-include="home-developer-mode-settings-panel-logs-history"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="notifications" data-include="home-developer-mode-settings-panel-notifications"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="security-access" data-include="home-developer-mode-settings-panel-security-access"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="provider-model" data-include="home-developer-mode-settings-panel-provider-model"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="workspace-project-bindings" data-include="home-developer-mode-settings-panel-workspace-project-bindings"></div>
+      </div>
+    </div>
+  </section>
 
   <!-- =============================================================================
-       03) DEVELOPER MODE VIEWPORT
+       03) DEVELOPER MODE SOVEREIGN VIEWPORT
   ============================================================================= -->
   <div class="home-developer-mode-shell__viewport" data-home-developer-viewport>
     <div class="home-developer-mode-shell__workspace" data-home-developer-workspace-grid>
       <!-- =============================================================================
-           04) LEFT COLUMN
+           04) LEFT UTILITY SLOT
       ============================================================================= -->
-      <aside class="home-developer-mode-shell__column home-developer-mode-shell__column--left" data-home-developer-column="left" aria-label="Developer navigation column">
-        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--left-navigation" data-home-developer-section="left-navigation" aria-label="Developer navigation">
-          <div class="home-developer-mode-shell__section-body">
-            <nav class="home-developer-mode-sidebar" data-home-developer-left-sidebar aria-label="Developer Mode workspace sections">
-              <p class="home-developer-mode-sidebar__label">Workspace</p>
-              <div class="home-developer-mode-sidebar__items" data-home-developer-sidebar-items></div>
-            </nav>
-          </div>
-        </section>
-      </aside>
+      <aside class="home-developer-mode-shell__slot home-developer-mode-shell__slot--left" data-home-developer-slot="left" aria-label="Developer utility slot"></aside>
 
       <!-- =============================================================================
-           05) CENTER COLUMN
+           05) CENTER WORKSPACE SLOT
       ============================================================================= -->
-      <main class="home-developer-mode-shell__column home-developer-mode-shell__column--center" data-home-developer-column="center" data-home-developer-panel-root aria-label="Developer panel column">
-
-        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--routed" data-home-developer-section="routed-panels" aria-label="Developer routed panels">
-          <div class="home-developer-mode-shell__section-body home-developer-mode-shell__section-body--routed">
-          </div>
-        </section>
-      </main>
+      <main class="home-developer-mode-shell__slot home-developer-mode-shell__slot--center" data-home-developer-slot="center" aria-label="Developer workspace slot"></main>
 
       <!-- =============================================================================
-           06) RIGHT COLUMN
+           06) RIGHT CONTEXT SLOT
       ============================================================================= -->
-      <aside class="home-developer-mode-shell__column home-developer-mode-shell__column--right" data-home-developer-column="right" data-home-developer-right-sidebar aria-label="Developer context column">
-        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--context" data-home-developer-section="context" aria-label="Developer context state">
-          <header class="home-developer-mode-shell__section-header">
-            <p class="home-developer-mode-shell__section-eyebrow">Context</p>
-            <h2 class="home-developer-mode-shell__section-title">Execution State</h2>
-          </header>
-          <div class="home-developer-mode-shell__section-body">
-            <section class="home-developer-mode-context" aria-label="Developer Mode context">
-              <header class="home-developer-mode-context__header">
-                <p class="home-developer-mode-context__eyebrow">Developer Console</p>
-                <h3 class="home-developer-mode-context__title">Workspace</h3>
-                <p class="home-developer-mode-context__description">Active execution state for the current developer workspace.</p>
-              </header>
-              <div class="home-developer-mode-context__body">
-                <section class="home-developer-mode-context__group" aria-labelledby="home-developer-mode-context-project-title">
-                  <h4 class="home-developer-mode-context__group-title" id="home-developer-mode-context-project-title">Workspace</h4>
-                  <dl class="home-developer-mode-context__list">
-                    <div class="home-developer-mode-context__item"><dt>Project</dt><dd data-home-developer-context="activeProject">Not selected</dd></div>
-                    <div class="home-developer-mode-context__item"><dt>Repository</dt><dd data-home-developer-context="activeRepository">Not selected</dd></div>
-                    <div class="home-developer-mode-context__item"><dt>Branch</dt><dd data-home-developer-context="activeBranch">Not selected</dd></div>
-                    <div class="home-developer-mode-context__item"><dt>File target</dt><dd data-home-developer-context="fileTarget">Not selected</dd></div>
-                  </dl>
-                </section>
-              </div>
-            </section>
-          </div>
-        </section>
-
-        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--runtime-context" data-home-developer-section="runtime-context" aria-label="Developer runtime context">
-          <header class="home-developer-mode-shell__section-header">
-            <p class="home-developer-mode-shell__section-eyebrow">Runtime</p>
-            <h2 class="home-developer-mode-shell__section-title">Backend State</h2>
-          </header>
-          <div class="home-developer-mode-shell__section-body">
-            <section class="home-developer-mode-context home-developer-mode-context--compact" aria-label="Developer backend context">
-              <div class="home-developer-mode-context__body">
-                <section class="home-developer-mode-context__group" aria-labelledby="home-developer-mode-context-runtime-title">
-                  <h4 class="home-developer-mode-context__group-title" id="home-developer-mode-context-runtime-title">Runtime</h4>
-                  <dl class="home-developer-mode-context__list">
-                    <div class="home-developer-mode-context__item"><dt>GitHub</dt><dd data-home-developer-context="github">Authorization required</dd></div>
-                    <div class="home-developer-mode-context__item"><dt>Provider</dt><dd data-home-developer-context="provider">Not configured</dd></div>
-                    <div class="home-developer-mode-context__item"><dt>Runtime</dt><dd data-home-developer-context="runtime">Backend status pending</dd></div>
-                  </dl>
-                </section>
-              </div>
-            </section>
-          </div>
-        </section>
-
-        <section class="home-developer-mode-shell__section home-developer-mode-shell__section--governance" data-home-developer-section="governance" aria-label="Developer governance context">
-          <header class="home-developer-mode-shell__section-header">
-            <p class="home-developer-mode-shell__section-eyebrow">Governance</p>
-            <h2 class="home-developer-mode-shell__section-title">Review</h2>
-          </header>
-          <div class="home-developer-mode-shell__section-body">
-            <section class="home-developer-mode-context home-developer-mode-context--compact" aria-label="Developer governance state">
-              <div class="home-developer-mode-context__body">
-                <section class="home-developer-mode-context__group" aria-labelledby="home-developer-mode-context-governance-title">
-                  <h4 class="home-developer-mode-context__group-title" id="home-developer-mode-context-governance-title">Controls</h4>
-                  <dl class="home-developer-mode-context__list">
-                    <div class="home-developer-mode-context__item"><dt>Agent</dt><dd data-home-developer-context="activeAgent">Not active</dd></div>
-                    <div class="home-developer-mode-context__item"><dt>Approval</dt><dd data-home-developer-context="approval">Required before mutation</dd></div>
-                    <div class="home-developer-mode-context__item"><dt>Security</dt><dd data-home-developer-context="security">Secrets server-side only</dd></div>
-                  </dl>
-                </section>
-              </div>
-            </section>
-          </div>
-        </section>
-      </aside>
+      <aside class="home-developer-mode-shell__slot home-developer-mode-shell__slot--right" data-home-developer-slot="right" aria-label="Developer context slot"></aside>
     </div>
   </div>
 </section>

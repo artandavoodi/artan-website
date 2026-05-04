@@ -4,3 +4,4 @@ development/__pycache__/
 .env
 .env.*
 !.env.example
+.aider*
