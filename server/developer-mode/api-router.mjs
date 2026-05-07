@@ -49,7 +49,9 @@ import { scanRepository } from './repository-scan-service.mjs';
 import {
   assertNoFrontendSecrets as rejectProviderFrontendSecrets,
   buildProviderConfiguration,
-  getProviderStatuses
+  getProviderStatuses,
+  listOpenAICompatibleModels,
+  runOpenAICompatibleChat
 } from './provider-service.mjs';
 
 /* =============================================================================
@@ -199,6 +201,25 @@ function handleProviderStatus(request, response) {
     developerState:getDeveloperState(session.id),
     reason:'Provider execution requires server-side credentials or local runtime availability. No provider secrets are exposed to browser JavaScript.'
   }, headers);
+}
+
+async function handleOpenAICompatibleModels(request, response) {
+  const { headers } = getRuntimeSession(request, response);
+  const payload = await listOpenAICompatibleModels();
+  sendJson(response, payload.ok ? 200 : 503, payload, headers);
+}
+
+async function handleOpenAICompatibleChat(request, response) {
+  const { headers } = getRuntimeSession(request, response);
+  const payload = await readJsonBody(request);
+  const rejected = rejectProviderFrontendSecrets(payload);
+  if (rejected) {
+    sendJson(response, 400, rejected, headers);
+    return;
+  }
+
+  const result = await runOpenAICompatibleChat(payload);
+  sendJson(response, result.ok ? 200 : 502, result, headers);
 }
 
 function handleDeveloperStateRead(request, response) {
@@ -386,6 +407,16 @@ export async function handleDeveloperModeApi(request, response, url) {
 
     if (request.method === 'GET' && url.pathname === '/api/developer-mode/providers/status') {
       handleProviderStatus(request, response);
+      return true;
+    }
+
+    if (request.method === 'GET' && url.pathname === '/api/developer-mode/providers/openai-compatible/models') {
+      await handleOpenAICompatibleModels(request, response);
+      return true;
+    }
+
+    if (request.method === 'POST' && url.pathname === '/api/developer-mode/providers/openai-compatible/chat') {
+      await handleOpenAICompatibleChat(request, response);
       return true;
     }
 

@@ -187,6 +187,38 @@ function dispatchHomeStageDelegation(eventName, detail) {
   document.dispatchEvent(new CustomEvent(eventName, { detail }));
 }
 
+async function requestMountedRuntimeResponse(query, route) {
+  const normalizedQuery = normalizeHomeStageQuery(query);
+  if (!normalizedQuery) {
+    return '';
+  }
+
+  try {
+    const response = await fetch('/api/developer-mode/providers/openai-compatible/chat', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+      body: JSON.stringify({
+        query: normalizedQuery,
+        route,
+        source: 'homepage-interaction',
+      }),
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload?.ok) {
+      return '';
+    }
+
+    return normalizeHomeStageQuery(payload.response || '');
+  } catch (_) {
+    return '';
+  }
+}
+
 /* =========================================================
    08. DEVELOPER MODE HELPERS
    ========================================================= */
@@ -388,26 +420,35 @@ async function resolveHomeStageQuery(query, queryId) {
   }
 
   if (classification.route === 'web') {
+    const mountedResponse = await requestMountedRuntimeResponse(classification.query, classification.route);
     return {
       route: 'web',
-      response: delegateHomeStageWebQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('web', classification.query),
+      response: mountedResponse
+        ? formatActiveModelResponse('web', mountedResponse)
+        : delegateHomeStageWebQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('web', classification.query),
       query: classification.query,
       id: null,
     };
   }
 
   if (classification.route === 'site-knowledge') {
+    const mountedResponse = await requestMountedRuntimeResponse(classification.query, classification.route);
     return {
       route: 'site-knowledge',
-      response: delegateHomeStageSiteKnowledgeQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('site-knowledge', classification.query),
+      response: mountedResponse
+        ? formatActiveModelResponse('site-knowledge', mountedResponse)
+        : delegateHomeStageSiteKnowledgeQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('site-knowledge', classification.query),
       query: classification.query,
       id: null,
     };
   }
 
+  const mountedResponse = await requestMountedRuntimeResponse(classification.query, classification.route);
   return {
     route: 'platform-search',
-    response: delegateHomeStagePlatformQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('platform-search', classification.query),
+    response: mountedResponse
+      ? formatActiveModelResponse('platform-search', mountedResponse)
+      : delegateHomeStagePlatformQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('platform-search', classification.query),
     query: classification.query,
     id: null,
   };

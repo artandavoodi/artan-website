@@ -33,6 +33,16 @@
       "description": "Backend-owned Hugging Face provider route for inference or free-tier model evaluation when a server-side token is configured."
     },
     {
+      "id": "lm-studio-openai-compatible",
+      "label": "LM Studio / OpenAI-Compatible",
+      "mode": "local_or_public_bridge",
+      "runtime": "openai-compatible",
+      "status": "available_when_local_or_ngrok_endpoint_exists",
+      "requiresBackend": true,
+      "frontendSecretsAllowed": false,
+      "description": "Backend-owned OpenAI-compatible route for LM Studio locally or the same runtime exposed through ngrok. Browser JavaScript never receives provider secrets."
+    },
+    {
       "id": "gemma-ollama-local",
       "label": "Gemma / Ollama Local",
       "mode": "local",

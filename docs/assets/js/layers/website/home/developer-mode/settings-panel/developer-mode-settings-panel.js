@@ -77,6 +77,17 @@
     }));
   }
 
+  function getDeveloperModeSettingsMount(shell) {
+    if (!(shell instanceof HTMLElement)) return null;
+
+    const parent = shell.parentElement;
+    if (parent instanceof HTMLElement && parent.matches('[data-include="home-developer-mode-settings-panel-shell"]')) {
+      return parent;
+    }
+
+    return document.getElementById('home-developer-mode-settings-panel-shell-mount');
+  }
+
   function registerDeveloperModeSettingsAuthority() {
     if (DEVELOPER_MODE_SETTINGS_PANEL.isRegistered) return;
 
@@ -95,6 +106,12 @@
     const shell = DEVELOPER_MODE_SETTINGS_PANEL.shell;
     const panel = DEVELOPER_MODE_SETTINGS_PANEL.panel;
     const overlay = DEVELOPER_MODE_SETTINGS_PANEL.overlay;
+    const mount = getDeveloperModeSettingsMount(shell);
+
+    if (mount instanceof HTMLElement) {
+      mount.hidden = !isVisible;
+      mount.setAttribute('aria-hidden', String(!isVisible));
+    }
 
     if (shell instanceof HTMLElement) {
       shell.hidden = !isVisible;
@@ -139,6 +156,13 @@
       const isActive = targetRoute === route;
       button.setAttribute('aria-pressed', String(isActive));
       button.toggleAttribute('data-active', isActive);
+    }
+
+    for (const [sectionId, section] of DEVELOPER_MODE_SETTINGS_PANEL.sectionMounts.entries()) {
+      const isActive = sectionId === route;
+      section.hidden = !isActive;
+      section.setAttribute('aria-hidden', String(!isActive));
+      section.toggleAttribute('data-active', isActive);
     }
   }
 

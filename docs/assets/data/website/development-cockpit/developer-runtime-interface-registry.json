@@ -50,6 +50,26 @@
       "description": "Saves provider and model selection state without accepting browser-supplied credentials."
     },
     {
+      "id": "openai-compatible-models",
+      "label": "OpenAI-compatible model discovery",
+      "method": "GET",
+      "route": "/api/developer-mode/providers/openai-compatible/models",
+      "frontendStatus": "backend_session_available",
+      "mutation": false,
+      "requiresApproval": false,
+      "description": "Discovers mounted LM Studio or ngrok OpenAI-compatible models through the backend without exposing secrets."
+    },
+    {
+      "id": "openai-compatible-chat",
+      "label": "OpenAI-compatible chat execution",
+      "method": "POST",
+      "route": "/api/developer-mode/providers/openai-compatible/chat",
+      "frontendStatus": "backend_session_available",
+      "mutation": false,
+      "requiresApproval": false,
+      "description": "Routes homepage interaction prompts to the mounted ICOS OpenAI-compatible runtime."
+    },
+    {
       "id": "agent-activate",
       "label": "Agent activation",
       "method": "POST",

@@ -158,6 +158,8 @@ Current priority: complete the planning document set and prepare the first Codex
 
 ## Change Log
 
+- 2026-05-07 — v0.2 Daily execution record updated for platform runtime stabilization. Result: Developer Mode settings shell opens from a single owner, homepage stage composition no longer shrink-wraps during refresh/hydration, LM Studio models are discoverable through the backend, mounted chat execution returns through the website runtime, and ICOS identity is enforced on identity questions. Verification: `npm run check:developer-mode`, model discovery endpoint, mounted chat endpoint, homepage response event path, and local server restart. Blockers: ngrok public URL still requires an operator-provided `ICOS_OPENAI_COMPATIBLE_BASE_URL` value and server restart. Next Action: configure ngrok URL in the website server environment, then retest public platform access against the same OpenAI-compatible routes. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Codex. Agent ID: Codex. Execution Context: Website runtime bridge under `/Users/artan/Documents/Neuroartan/website`.
+
 - 2026-05-02 — v0.1 Initial daily execution log created for AI Development Cockpit implementation tracking. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website planning layer under `/Users/artan/Documents/Neuroartan/website`.
 
 ---

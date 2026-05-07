@@ -62,7 +62,12 @@ export const developerModeConfig = Object.freeze({
     scope: process.env.GITHUB_OAUTH_SCOPE || 'repo read:user'
   },
   providers: {
-    ollamaBaseUrl: process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434'
+    ollamaBaseUrl: process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434',
+    openAICompatibleBaseUrl: process.env.ICOS_OPENAI_COMPATIBLE_BASE_URL
+      || process.env.LM_STUDIO_BASE_URL
+      || 'http://127.0.0.1:1234/v1',
+    openAICompatibleAPIKey: process.env.ICOS_OPENAI_COMPATIBLE_API_KEY || process.env.LM_STUDIO_API_KEY || '',
+    openAICompatibleModel: process.env.ICOS_OPENAI_COMPATIBLE_MODEL || process.env.LM_STUDIO_MODEL || ''
   }
 });
 

@@ -25,6 +25,8 @@
   --home-composition-panel-to-response-gap:1rem;
   --home-composition-stage-component-gap:var(--home-composition-panel-to-response-gap);
   --home-composition-panel-stack-gap:var(--home-composition-stage-component-gap);
+  --home-composition-stage-width:var(--layout-home-interaction-panel-width);
+  --home-composition-stage-width-mobile:var(--layout-home-interaction-panel-width-mobile);
 }
 
 /* =============================================================================
@@ -50,6 +52,25 @@
   display:flex;
   align-items:center;
   justify-content:center;
+}
+
+.stage-stack{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  width:var(--home-composition-stage-width);
+  max-width:100%;
+  min-width:0;
+  min-height:100%;
+  height:100%;
+  pointer-events:none;
+}
+
+.home-stage-vertical-stack{
+  width:100%;
+  max-width:100%;
+  min-width:0;
 }
 
 #stage-intro{
@@ -146,6 +167,11 @@
 /* =============================================================================
    04) RESPONSIVE COMPOSITION
 ============================================================================= */
+@media (max-width:760px){
+  .stage-stack{
+    width:var(--home-composition-stage-width-mobile);
+  }
+}
 
 /* =============================================================================
    05) END OF FILE
