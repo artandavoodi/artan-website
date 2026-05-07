@@ -32,11 +32,11 @@ system: "Website Planning"
 
 spine_version: "1.0"
 template_lock: "Global Document Metadata Standard"
-version: "0.8"
+version: "0.9"
 
 created_date: "2026-05-02"
-last_updated: "2026-05-04"
-last_reviewed: "2026-05-04"
+last_updated: "2026-05-07"
+last_reviewed: "2026-05-07"
 review_cycle: "Weekly"
 
 effective_date: "2026-05-02"
@@ -65,12 +65,14 @@ scope:
   - "Developer Operations Console tab-runtime migration governance"
   - "Developer Mode topbar simplification and utility planning"
   - "Developer Mode shell cleanup and sidebar repurposing pipeline"
+  - "Sovereign design system and Stitch integration direction"
 
 index_targets:
   - "Strategic Decisions Register"
   - "Execution Roadmaps Register"
   - "Codex Prompt Queue Register"
   - "Architecture Specifications Register"
+  - "Sovereign Design System & Stitch Integration Direction Register"
   - "Developer Mode Architecture Specification Register"
   - "Website Modular Architecture Doctrine Register"
   - "Control Center Grouped Settings Surface Design Doctrine Register"
@@ -95,6 +97,7 @@ related:
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/07 - Voice-to-Agent Command Pipeline Specification.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/08 - Patch Review, Test, Commit & PR Workflow Specification.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/09 - Control Center Grouped Settings Surface Design Doctrine.md"
+  - "/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/10 - Neuroartan Sovereign Design System & Stitch Integration Direction.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/05 - Provider & Runtime Strategy/01 - Model Provider Strategy.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/06 - GitHub & Terminal Workflows/01 - Repository Development Workflow Specification.md"
   - "/Users/artan/Documents/Neuroartan/website/planning/07 - Daily Execution Records/01 - Daily Execution Log.md"
@@ -127,6 +130,10 @@ tags:
   - "developer-console-tab-migration"
   - "developer-mode-topbar-simplification"
   - "developer-shell-cleanup"
+  - "sovereign-design-system"
+  - "stitch"
+  - "google-stitch"
+  - "design-tokens"
 ---
 
 # Website Planning Index
@@ -169,6 +176,7 @@ It must not be treated as public website content unless explicit publication app
 | Voice-to-Agent Command Pipeline Specification | `/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/07 - Voice-to-Agent Command Pipeline Specification.md` | Defines voice command capture, normalization, risk classification, confirmation, and runtime routing boundaries. |
 | Patch Review, Test, Commit & PR Workflow Specification | `/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/08 - Patch Review, Test, Commit & PR Workflow Specification.md` | Defines reviewable patch artifacts, test approval, commit attribution, and pull request governance. |
 | Control Center Grouped Settings Surface Design Doctrine | `/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/09 - Control Center Grouped Settings Surface Design Doctrine.md` | Defines the approved Control Center grouped settings surface, Stage-native section header baseline, folder-based section module structure, Session nested panel pilot, icon-only drill-in interaction, local native icon rule, nested left/right navigation wrapper, and Platform Menu reuse requirement. |
+| Neuroartan Sovereign Design System & Stitch Integration Direction | `/Users/artan/Documents/Neuroartan/website/planning/04 - Architecture Specifications/10 - Neuroartan Sovereign Design System & Stitch Integration Direction.md` | Defines the cost-free sovereign design system direction, Stitch acceleration role, design token authority, and propagation path across website, ICOS, apps, dashboards, and future platform surfaces. |
 | Model Provider Strategy | `/Users/artan/Documents/Neuroartan/website/planning/05 - Provider & Runtime Strategy/01 - Model Provider Strategy.md` | Defines cloud, local, and manual provider routing strategy. |
 | Repository Development Workflow Specification | `/Users/artan/Documents/Neuroartan/website/planning/06 - GitHub & Terminal Workflows/01 - Repository Development Workflow Specification.md` | Defines terminal scan, file targeting, patch instruction, and GitHub commit workflows. |
 | Daily Execution Log | `/Users/artan/Documents/Neuroartan/website/planning/07 - Daily Execution Records/01 - Daily Execution Log.md` | Records daily execution, verification, blockers, and next actions. |
@@ -260,6 +268,7 @@ Each Codex prompt must be scoped to one bounded objective and must request:
 | Voice-to-Agent Command Pipeline Specification | Draft | Requires UX, security, and command-risk review before runtime binding. |
 | Patch Review, Test, Commit & PR Workflow Specification | Draft | Requires repository mutation and approval workflow review before implementation. |
 | Control Center Grouped Settings Surface Design Doctrine | Active | Approved visual and runtime baseline for Control Center Session pilot; requires propagation review before Platform Menu adoption. |
+| Neuroartan Sovereign Design System & Stitch Integration Direction | Draft | Requires Stitch capability audit, token registry implementation planning, and propagation review across website and ICOS app surfaces. |
 | Model Provider Strategy | Draft | Requires provider/security review before implementation. |
 | Repository Development Workflow Specification | Draft | Requires workflow review before cockpit implementation. |
 | Daily Execution Log | Draft | Active for continuity tracking. |
@@ -280,8 +289,7 @@ The cleared left sidebar is reserved for future terminal, logs, command history,
 
 ---
 
-## Change Log
-
+- 2026-05-07 — v0.9 Indexed Neuroartan Sovereign Design System & Stitch Integration Direction as an active architecture specification for cost-free design-system acceleration, sovereign token authority, and cross-surface propagation across website, ICOS, apps, dashboards, and future platform surfaces. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Planning Index update for sovereign design system and Stitch integration direction under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-04 — v0.8 Recorded Developer Operations Console stabilization achievements, including Mini View and Full View layout correction, fixed summary footer, independent content viewport, tab-runtime migration from the legacy Developer Mode shell, cleared left sidebar registry, simplified Developer Mode topbar, global topbar menu gap tokenization, profile/account global structure alignment, and next Developer Mode shell cleanup pipeline. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Planning Index update for Developer Operations Console migration and Developer Mode shell cleanup readiness under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-04 — v0.7 Indexed Developer Operations Console direction, including Mini View and Full View governance, tab migration model, topbar preservation requirement, terminal dock planning, and parent-token styling direction. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Website Systems & Development Agent. Agent ID: A-0205-0022. Execution Context: Website Planning Index update for Developer Operations Console direction under `/Users/artan/Documents/Neuroartan/website`.
 - 2026-05-03 — v0.6 Indexed Developer Mode Architecture Specification version 0.3 and recorded the first homepage-routed Developer Mode workspace plus backend session-state implementation boundary. Operator Name: Artan. Operator Personnel ID: CEO-001-01-01. Agent Name: Codex. Agent ID: Codex. Execution Context: Website Planning Index update for Developer Mode implementation under `/Users/artan/Documents/Neuroartan/website`.
@@ -300,7 +308,7 @@ GSA APPROVAL: false
 DOCUMENT STATUS: Draft — Website Planning Index  
 VISIBILITY: Internal  
 PUBLISH TO WEBSITE: No  
-VERSION: 0.8
+VERSION: 0.9
 
 ---
 
