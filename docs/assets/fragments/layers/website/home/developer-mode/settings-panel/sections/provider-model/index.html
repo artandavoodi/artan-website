@@ -1,0 +1,31 @@
+<section class="developer-mode-settings-panel-section developer-mode-settings-panel-section--provider-model" aria-label="Provider and model section">
+  <header class="developer-mode-settings-panel-section__header">
+    <p class="developer-mode-settings-panel-section__eyebrow">Provider & model</p>
+    <h4 class="developer-mode-settings-panel-section__title">Model routing and provider activation</h4>
+    <p class="developer-mode-settings-panel-section__copy">Select a backend-owned provider, scan mounted OpenAI-compatible models, save the runtime configuration, and activate the development agent.</p>
+  </header>
+
+  <div class="developer-mode-settings-panel-section__body">
+    <div class="developer-mode-settings-card">
+      <label class="ui-form-row">
+        <span class="ui-label__text">Provider</span>
+        <select class="developer-mode-settings-field" data-developer-mode-settings-field="provider"></select>
+      </label>
+
+      <label class="ui-form-row">
+        <span class="ui-label__text">Model</span>
+        <select class="developer-mode-settings-field" data-developer-mode-settings-field="model"></select>
+      </label>
+
+      <div class="developer-mode-settings-actions">
+        <button class="developer-mode-settings-button" type="button" data-developer-mode-settings-action="scan-models">Scan LM Studio models</button>
+        <button class="developer-mode-settings-button" type="button" data-developer-mode-settings-action="save-provider">Save provider</button>
+        <button class="developer-mode-settings-button" type="button" data-developer-mode-settings-action="activate-agent">Activate agent</button>
+      </div>
+
+      <p class="developer-mode-settings-status" data-developer-mode-settings-output="provider-status">Provider status pending.</p>
+    </div>
+
+    <div class="developer-mode-settings-list" data-developer-mode-settings-list="providers"></div>
+  </div>
+</section>

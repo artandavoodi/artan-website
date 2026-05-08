@@ -1,0 +1,30 @@
+<section class="developer-mode-settings-panel-section developer-mode-settings-panel-section--approvals" aria-label="Approvals section">
+  <header class="developer-mode-settings-panel-section__header">
+    <p class="developer-mode-settings-panel-section__eyebrow">Approvals</p>
+    <h4 class="developer-mode-settings-panel-section__title">Mutation approval gates</h4>
+    <p class="developer-mode-settings-panel-section__copy">Repository mutation remains locked behind patch proposal, review artifact, explicit approval, and server-side credential ownership.</p>
+  </header>
+
+  <div class="developer-mode-settings-panel-section__body">
+    <div class="developer-mode-settings-card">
+      <div class="ui-settings-row">
+        <div class="ui-settings-row__copy">
+          <p class="ui-settings-row__title">Patch review required</p>
+          <p class="ui-settings-row__description">File writes, tests, commits, and pull requests require a review artifact before execution.</p>
+        </div>
+        <div class="ui-settings-row__control">
+          <span class="developer-mode-settings-pill">Always on</span>
+        </div>
+      </div>
+      <div class="ui-settings-row">
+        <div class="ui-settings-row__copy">
+          <p class="ui-settings-row__title">Commit and PR lock</p>
+          <p class="ui-settings-row__description">The backend captures requests but blocks mutation until approval runtime is implemented.</p>
+        </div>
+        <div class="ui-settings-row__control">
+          <span class="developer-mode-settings-pill">Locked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -13,24 +13,48 @@
   <div class="developer-mode-settings-panel-shell__surface" data-developer-mode-settings-panel>
     <header class="developer-mode-settings-panel-shell__header">
       <p class="developer-mode-settings-panel-shell__eyebrow">Developer Mode</p>
-      <h3 class="developer-mode-settings-panel-shell__title">Settings shell</h3>
-      <p class="developer-mode-settings-panel-shell__copy">This shell owns the developer-mode settings system and mounts the section architecture below it.</p>
+      <h3 class="developer-mode-settings-panel-shell__title">Developer settings</h3>
+      <p class="developer-mode-settings-panel-shell__copy">Configure repositories, providers, model routing, runtime access, approvals, and project bindings from one governed platform surface.</p>
     </header>
 
-    <div class="developer-mode-settings-panel-shell__sections" data-developer-mode-settings-sections>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="overview" data-include="home-developer-mode-settings-panel-overview"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="environments" data-include="home-developer-mode-settings-panel-environments"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="connectors" data-include="home-developer-mode-settings-panel-connectors"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="analytics" data-include="home-developer-mode-settings-panel-analytics"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="data-control" data-include="home-developer-mode-settings-panel-data-control"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="privacy" data-include="home-developer-mode-settings-panel-privacy"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="runtime" data-include="home-developer-mode-settings-panel-runtime"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="approvals" data-include="home-developer-mode-settings-panel-approvals"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="logs-history" data-include="home-developer-mode-settings-panel-logs-history"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="notifications" data-include="home-developer-mode-settings-panel-notifications"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="security-access" data-include="home-developer-mode-settings-panel-security-access"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="provider-model" data-include="home-developer-mode-settings-panel-provider-model"></div>
-      <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="workspace-project-bindings" data-include="home-developer-mode-settings-panel-workspace-project-bindings"></div>
+    <div class="developer-mode-settings-panel-shell__main" data-developer-mode-settings-main>
+      <nav class="developer-mode-settings-panel-shell__primary" aria-label="Developer settings primary groups">
+        <button class="developer-mode-settings-panel-shell__primary-item" type="button" data-developer-mode-settings-group="control">Control</button>
+        <button class="developer-mode-settings-panel-shell__primary-item" type="button" data-developer-mode-settings-group="runtime">Runtime</button>
+        <button class="developer-mode-settings-panel-shell__primary-item" type="button" data-developer-mode-settings-group="governance">Governance</button>
+      </nav>
+
+      <nav class="developer-mode-settings-panel-shell__secondary" aria-label="Developer settings sections">
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="overview" data-developer-mode-settings-route-group="control">Overview</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="connectors" data-developer-mode-settings-route-group="control">Connectors</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="workspace-project-bindings" data-developer-mode-settings-route-group="control">Workspace</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="environments" data-developer-mode-settings-route-group="runtime">Environments</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="provider-model" data-developer-mode-settings-route-group="runtime">Provider & model</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="runtime" data-developer-mode-settings-route-group="runtime">Runtime</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="security-access" data-developer-mode-settings-route-group="governance">Security</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="approvals" data-developer-mode-settings-route-group="governance">Approvals</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="privacy" data-developer-mode-settings-route-group="governance">Privacy</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="data-control" data-developer-mode-settings-route-group="governance">Data control</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="analytics" data-developer-mode-settings-route-group="governance">Analytics</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="logs-history" data-developer-mode-settings-route-group="governance">Logs</button>
+        <button class="developer-mode-settings-panel-shell__route" type="button" data-developer-mode-settings-route="notifications" data-developer-mode-settings-route-group="governance">Notifications</button>
+      </nav>
+
+      <div class="developer-mode-settings-panel-shell__sections" data-developer-mode-settings-sections>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="overview" data-include="home-developer-mode-settings-panel-overview"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="environments" data-include="home-developer-mode-settings-panel-environments"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="connectors" data-include="home-developer-mode-settings-panel-connectors"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="analytics" data-include="home-developer-mode-settings-panel-analytics"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="data-control" data-include="home-developer-mode-settings-panel-data-control"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="privacy" data-include="home-developer-mode-settings-panel-privacy"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="runtime" data-include="home-developer-mode-settings-panel-runtime"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="approvals" data-include="home-developer-mode-settings-panel-approvals"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="logs-history" data-include="home-developer-mode-settings-panel-logs-history"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="notifications" data-include="home-developer-mode-settings-panel-notifications"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="security-access" data-include="home-developer-mode-settings-panel-security-access"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="provider-model" data-include="home-developer-mode-settings-panel-provider-model"></div>
+        <div class="developer-mode-settings-panel-shell__section" data-developer-mode-settings-section="workspace-project-bindings" data-include="home-developer-mode-settings-panel-workspace-project-bindings"></div>
+      </div>
     </div>
   </div>
 </section>

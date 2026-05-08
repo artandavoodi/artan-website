@@ -1,0 +1,39 @@
+<section class="developer-mode-settings-panel-section developer-mode-settings-panel-section--workspace-project-bindings" aria-label="Workspace and project bindings section">
+  <header class="developer-mode-settings-panel-section__header">
+    <p class="developer-mode-settings-panel-section__eyebrow">Workspace</p>
+    <h4 class="developer-mode-settings-panel-section__title">Project and repository binding</h4>
+    <p class="developer-mode-settings-panel-section__copy">Create a developer project, bind it to an authorized repository, choose the environment mode, and request a read-only repository scan.</p>
+  </header>
+
+  <div class="developer-mode-settings-panel-section__body">
+    <form class="developer-mode-settings-card ui-form" data-developer-mode-settings-project-form>
+      <label class="ui-form-row">
+        <span class="ui-label__text">Project name</span>
+        <input class="developer-mode-settings-field" name="projectName" type="text" autocomplete="off" placeholder="Neuroartan platform work">
+      </label>
+
+      <label class="ui-form-row">
+        <span class="ui-label__text">Workspace name</span>
+        <input class="developer-mode-settings-field" name="workspaceName" type="text" autocomplete="off" placeholder="website-main">
+      </label>
+
+      <label class="ui-form-row">
+        <span class="ui-label__text">Repository</span>
+        <select class="developer-mode-settings-field" name="repository" data-developer-mode-settings-field="repository"></select>
+      </label>
+
+      <label class="ui-form-row">
+        <span class="ui-label__text">Environment</span>
+        <select class="developer-mode-settings-field" name="environmentMode" data-developer-mode-settings-field="environment"></select>
+      </label>
+
+      <div class="developer-mode-settings-actions">
+        <button class="developer-mode-settings-button" type="submit">Create project</button>
+        <button class="developer-mode-settings-button" type="button" data-developer-mode-settings-action="scan-repository">Scan repository</button>
+      </div>
+    </form>
+
+    <div class="developer-mode-settings-list" data-developer-mode-settings-list="projects"></div>
+    <pre class="developer-mode-settings-log" data-developer-mode-settings-output="repository-scan"></pre>
+  </div>
+</section>

@@ -110,18 +110,12 @@ async function resolveHomeStageWebSearch(query, queryId) {
     }
   }
 
-  dispatchExternalWebSearchBridge({
-    query,
-    queryId,
-    source: 'homepage-voice',
-  });
-
   return {
-    route: 'web',
+    route: 'blocked',
     response:
-      'This query is correctly routed to live web search, but no live browser or server-side web retrieval bridge is connected to the homepage engine yet.',
+      'Web search is not available from the local homepage runtime. Use the local repository tools for website and software changes.',
     href: null,
-    provider: 'unbound',
+    provider: 'local-blocked',
   };
 }
 
@@ -140,11 +134,14 @@ async function handleHomeStageWebSearchRequested(event) {
   const result = await resolveHomeStageWebSearch(query, queryId);
 
   dispatchHomeStageMode('responding');
-  dispatchHomeStageResponse(formatActiveModelResponse('web', result.response), queryId);
+  dispatchHomeStageResponse(
+    formatActiveModelResponse(result.route === 'web' ? 'web' : 'local', result.response),
+    queryId
+  );
   dispatchHomeStageRoutingResolved({
     query,
     queryId,
-    route: 'web',
+    route: result.route,
     provider: result.provider,
     href: result.href,
   });
@@ -158,6 +155,52 @@ function bindHomeStageWebSearchEvents() {
   document.addEventListener(
     'neuroartan:home-stage-web-search-requested',
     (event) => {
+      const query = normalizeHomeStageWebQuery(event?.detail?.query ?? '');
+
+      if (!query) {
+        return;
+      }
+
+      const localOnlyMarkers = [
+        'website',
+        'homepage',
+        'software',
+        'platform',
+        'repo',
+        'repository',
+        'file',
+        'edit',
+        'fix',
+        'change',
+        'replace',
+        'scan',
+        'audit',
+        'find',
+        'open',
+      ];
+
+      const normalized = query.toLowerCase();
+      const isLocalTask = localOnlyMarkers.some((marker) => normalized.includes(marker));
+
+      if (isLocalTask) {
+        dispatchHomeStageMode('responding');
+        dispatchHomeStageResponse(
+          formatActiveModelResponse(
+            'local',
+            'This request belongs to the local repository workflow, not web search.'
+          ),
+          event?.detail?.queryId ?? null
+        );
+        dispatchHomeStageRoutingResolved({
+          query,
+          queryId: event?.detail?.queryId ?? null,
+          route: 'local',
+          provider: 'local-blocked',
+          href: null,
+        });
+        return;
+      }
+
       void handleHomeStageWebSearchRequested(event);
     }
   );

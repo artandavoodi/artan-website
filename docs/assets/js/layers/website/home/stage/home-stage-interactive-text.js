@@ -15,7 +15,7 @@
 const HOME_STAGE_INTERACTIVE_TEXT_STATE = {
   isBound: false,
   mode: 'idle',
-  label: 'What is in my mind?',
+  label: 'What is in your mind?',
   resetIndex: 0,
   hasReceivedInput: false,
   isResetting: false,

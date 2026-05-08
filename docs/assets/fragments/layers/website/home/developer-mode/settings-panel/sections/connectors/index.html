@@ -1,0 +1,34 @@
+<section class="developer-mode-settings-panel-section developer-mode-settings-panel-section--connectors" aria-label="Connectors section">
+  <header class="developer-mode-settings-panel-section__header">
+    <p class="developer-mode-settings-panel-section__eyebrow">Connectors</p>
+    <h4 class="developer-mode-settings-panel-section__title">GitHub and repository access</h4>
+    <p class="developer-mode-settings-panel-section__copy">Authorize GitHub through the backend, discover repositories, and bind the selected repository to the active developer workspace.</p>
+  </header>
+
+  <div class="developer-mode-settings-panel-section__body">
+    <div class="developer-mode-settings-card">
+      <div class="ui-settings-row">
+        <div class="ui-settings-row__copy">
+          <p class="ui-settings-row__title">GitHub authorization</p>
+          <p class="ui-settings-row__description" data-developer-mode-settings-output="github-status">Checking GitHub state.</p>
+        </div>
+        <div class="ui-settings-row__control developer-mode-settings-actions">
+          <button class="developer-mode-settings-button" type="button" data-developer-mode-settings-action="github-connect">Connect GitHub</button>
+          <button class="developer-mode-settings-button" type="button" data-developer-mode-settings-action="github-disconnect">Disconnect</button>
+        </div>
+      </div>
+
+      <div class="ui-settings-row">
+        <div class="ui-settings-row__copy">
+          <p class="ui-settings-row__title">Authorized repositories</p>
+          <p class="ui-settings-row__description">Repository discovery uses server-side GitHub authorization. Browser JavaScript never receives tokens.</p>
+        </div>
+        <div class="ui-settings-row__control developer-mode-settings-actions">
+          <button class="developer-mode-settings-button" type="button" data-developer-mode-settings-action="github-load-repositories">Load repositories</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="developer-mode-settings-list" data-developer-mode-settings-list="repositories"></div>
+  </div>
+</section>
