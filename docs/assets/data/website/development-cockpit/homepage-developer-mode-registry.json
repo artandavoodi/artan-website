@@ -2,12 +2,12 @@
   "version": "2026-05-03",
   "canonicalStatus": "homepage_developer_mode_registry",
   "topbarItems": [
-    { "id": "code", "label": "Code", "workspace": "code", "icon": "/assets/icons/core/files/unclassified/code.svg", "active": true },
+    { "id": "code", "label": "Code", "workspace": "code", "icon": "/assets/icons/core/files/code/code.svg", "active": true },
     { "id": "app", "label": "App", "workspace": "app", "icon": "/assets/icons/layers/software/app/app.svg", "active": false },
     { "id": "docs", "label": "Docs", "workspace": "docs", "icon": "/assets/icons/layers/developer/docs/docs.svg", "active": false },
-    { "id": "notifications", "label": "Notifications", "utility": "notifications", "icon": "/assets/icons/core/system/unclassified/bell.svg" },
-    { "id": "settings", "label": "Settings", "utility": "settings", "icon": "/assets/icons/core/system/unclassified/settings.svg" },
-    { "id": "account", "label": "Account", "utility": "account", "icon": "/assets/icons/core/identity/unclassified/account.svg" }
+    { "id": "notifications", "label": "Notifications", "utility": "notifications", "icon": "/assets/icons/core/system/notifications/bell.svg" },
+    { "id": "settings", "label": "Settings", "utility": "settings", "icon": "/assets/icons/layers/website/home/developer-mode/topbar/developer-mode-developer-settings.svg" },
+    { "id": "account", "label": "Account", "utility": "account", "icon": "/assets/icons/core/identity/account/account.svg" }
   ],
   "sidebarItems": [],
   "commandModes": [

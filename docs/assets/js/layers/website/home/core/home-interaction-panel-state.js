@@ -53,7 +53,7 @@ function getHomeInteractionStateCopy(hasTypedInput = false) {
           submitLabel: 'Send',
           submitDisabled: false,
           submitIntent: 'submit',
-          submitIcon: '/assets/icons/core/actions/unclassified/send.svg',
+          submitIcon: '/assets/icons/core/actions/send/send.svg',
         };
       }
 
@@ -62,7 +62,7 @@ function getHomeInteractionStateCopy(hasTypedInput = false) {
         submitLabel: 'Reset',
         submitDisabled: false,
         submitIntent: 'reset',
-        submitIcon: '/assets/icons/core/actions/unclassified/plus.svg',
+        submitIcon: '/assets/icons/core/actions/create/plus.svg',
       };
     default:
       return {
@@ -70,7 +70,7 @@ function getHomeInteractionStateCopy(hasTypedInput = false) {
         submitLabel: 'Send',
         submitDisabled: false,
         submitIntent: 'submit',
-        submitIcon: '/assets/icons/core/actions/unclassified/send.svg',
+        submitIcon: '/assets/icons/core/actions/send/send.svg',
       };
   }
 }

@@ -28,7 +28,7 @@
       "slug": "voice-reflection",
       "image": "",
       "scene": "/collections/featured/icos-featured-functions/scenes/voice-reflection.scene.json",
-      "icon": "/assets/icons/layers/website/sections/home/featured-functions/reflection.svg",
+      "icon": "/assets/icons/core/cognition/reflection/reflection.svg",
       "theme": "dark",
       "visibility": "public"
     },
@@ -43,7 +43,7 @@
       "slug": "thought-capture",
       "image": "",
       "scene": "/collections/featured/icos-featured-functions/scenes/thought-capture.scene.json",
-      "icon": "/assets/icons/layers/website/sections/home/featured-functions/capture.svg",
+      "icon": "/assets/icons/core/cognition/capture/capture.svg",
       "theme": "dark",
       "visibility": "public"
     },
@@ -58,7 +58,7 @@
       "slug": "pattern-mapping",
       "image": "",
       "scene": "/collections/featured/icos-featured-functions/scenes/pattern-mapping.scene.json",
-      "icon": "/assets/icons/layers/website/sections/home/featured-functions/patterning.svg",
+      "icon": "/assets/icons/core/cognition/patterning/patterning.svg",
       "theme": "dark",
       "visibility": "public"
     },
@@ -73,7 +73,7 @@
       "slug": "cognitive-graph",
       "image": "",
       "scene": "/collections/featured/icos-featured-functions/scenes/cognitive-graph.scene.json",
-      "icon": "/assets/icons/layers/website/sections/home/featured-functions/structure.svg",
+      "icon": "/assets/icons/core/cognition/structure/structure.svg",
       "theme": "dark",
       "visibility": "public"
     },
@@ -88,7 +88,7 @@
       "slug": "emotional-tracking",
       "image": "",
       "scene": "/collections/featured/icos-featured-functions/scenes/emotional-tracking.scene.json",
-      "icon": "/assets/icons/layers/website/sections/home/featured-functions/signals.svg",
+      "icon": "/assets/icons/core/cognition/signals/signals.svg",
       "theme": "dark",
       "visibility": "public"
     },
@@ -103,7 +103,7 @@
       "slug": "longitudinal-continuity",
       "image": "",
       "scene": "/collections/featured/icos-featured-functions/scenes/longitudinal-continuity.scene.json",
-      "icon": "/assets/icons/layers/website/sections/home/featured-functions/continuity.svg",
+      "icon": "/assets/icons/core/cognition/continuity/continuity.svg",
       "theme": "dark",
       "visibility": "public"
     }
