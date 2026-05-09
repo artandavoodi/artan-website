@@ -4,8 +4,9 @@
    02) SESSION HELPERS
    03) GITHUB ROUTES
    04) DEVELOPER MODE ROUTES
-   05) ROUTER
-   06) END OF FILE
+   05) RUNTIME INTELLIGENCE ROUTES
+   06) ROUTER
+   07) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -36,6 +37,8 @@ import {
   listAgentSessions,
   listProjects,
   listReviewArtifacts,
+  getRuntimeMetrics,
+  listRuntimes,
   updateDeveloperState
 } from './runtime-store.mjs';
 import {
@@ -49,10 +52,62 @@ import { scanRepository } from './repository-scan-service.mjs';
 import {
   assertNoFrontendSecrets as rejectProviderFrontendSecrets,
   buildProviderConfiguration,
+  getProviderRuntimeCapabilities,
+  getProviderRuntimeRegistry,
   getProviderStatuses,
   listOpenAICompatibleModels,
   runOpenAICompatibleChat
 } from './provider-service.mjs';
+/* =============================================================================
+   05) RUNTIME INTELLIGENCE ROUTES
+============================================================================= */
+function handleRuntimeRegistry(request, response) {
+  const { session, headers } = getRuntimeSession(request, response);
+
+  sendJson(response, 200, {
+    ok:true,
+    status:'runtime_registry_loaded',
+    runtimes:listRuntimes(),
+    metrics:getRuntimeMetrics(),
+    providers:getProviderRuntimeRegistry(),
+    developerState:getDeveloperState(session.id)
+  }, headers);
+}
+
+function handleRuntimeCapabilities(request, response, url) {
+  const { session, headers } = getRuntimeSession(request, response);
+  const providerId = url.searchParams.get('provider') || 'openai-compatible';
+
+  sendJson(response, 200, {
+    ok:true,
+    status:'runtime_capabilities_loaded',
+    runtime:getProviderRuntimeCapabilities(providerId),
+    developerState:getDeveloperState(session.id)
+  }, headers);
+}
+
+function handleRuntimeHealth(request, response) {
+  const { session, headers } = getRuntimeSession(request, response);
+
+  sendJson(response, 200, {
+    ok:true,
+    status:'runtime_health_nominal',
+    runtime:{
+      apiRouter:true,
+      providerRegistry:true,
+      runtimeStore:true,
+      repositoryScanner:true,
+      githubBridge:true,
+      orchestrationLayer:false,
+      memoryEngine:false,
+      autonomousExecution:false,
+      sandboxIsolation:false,
+      repositoryGraph:false
+    },
+    metrics:getRuntimeMetrics(),
+    developerState:getDeveloperState(session.id)
+  }, headers);
+}
 
 /* =============================================================================
    02) SESSION HELPERS
@@ -362,7 +417,7 @@ async function handlePatchProposal(request, response) {
 }
 
 /* =============================================================================
-   05) ROUTER
+   06) ROUTER
 ============================================================================= */
 export async function handleDeveloperModeApi(request, response, url) {
   if (!url.pathname.startsWith('/api/developer-mode/')) {
@@ -370,6 +425,20 @@ export async function handleDeveloperModeApi(request, response, url) {
   }
 
   try {
+    if (request.method === 'GET' && url.pathname === '/api/developer-mode/runtime/registry') {
+      handleRuntimeRegistry(request, response);
+      return true;
+    }
+
+    if (request.method === 'GET' && url.pathname === '/api/developer-mode/runtime/capabilities') {
+      handleRuntimeCapabilities(request, response, url);
+      return true;
+    }
+
+    if (request.method === 'GET' && url.pathname === '/api/developer-mode/runtime/health') {
+      handleRuntimeHealth(request, response);
+      return true;
+    }
     if (request.method === 'GET' && url.pathname === '/api/developer-mode/github/login') {
       await handleGitHubLogin(request, response);
       return true;
@@ -487,5 +556,5 @@ export async function handleDeveloperModeApi(request, response, url) {
 }
 
 /* =============================================================================
-   06) END OF FILE
+   07) END OF FILE
 ============================================================================= */

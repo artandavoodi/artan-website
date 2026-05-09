@@ -1,3 +1,4 @@
+
 /* =============================================================================
    00) FILE INDEX
    01) MODULE IDENTITY
@@ -5,7 +6,9 @@
    03) PROVIDER STATUS HELPERS
    04) FRONTEND SECRET GUARDS
    05) PROVIDER CONFIGURATION
-   06) END OF FILE
+   06) OPENAI-COMPATIBLE RUNTIME BRIDGE
+   07) PROVIDER RUNTIME REGISTRY
+   08) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -17,6 +20,10 @@
    02) IMPORTS
 ============================================================================= */
 import { developerModeConfig } from './config.mjs';
+import {
+  getRuntimeMetrics,
+  listRuntimes
+} from './runtime-store.mjs';
 
 /* =============================================================================
    03) PROVIDER STATUS HELPERS
@@ -375,5 +382,80 @@ export async function runOpenAICompatibleChat(payload = {}) {
 }
 
 /* =============================================================================
-   06) END OF FILE
+   07) PROVIDER RUNTIME REGISTRY
+============================================================================= */
+export function getProviderRuntimeRegistry() {
+  const providers = getProviderStatuses();
+  const runtimes = listRuntimes();
+  const metrics = getRuntimeMetrics();
+
+  return {
+    generatedAt:new Date().toISOString(),
+    providerCount:providers.length,
+    runtimeCount:runtimes.length,
+    runtimeMetrics:metrics,
+    providers:providers.map((provider) => ({
+      ...provider,
+      orchestrationReady:Boolean(
+        provider.configured
+        && provider.runtime
+        && provider.mode !== 'manual'
+      ),
+      runtimeCategory:(() => {
+        if (provider.mode === 'local') return 'local_runtime';
+        if (provider.mode === 'cloud') return 'cloud_runtime';
+        if (provider.mode === 'local_or_public_bridge') return 'bridge_runtime';
+        return 'manual_runtime';
+      })(),
+      executionCapabilities:{
+        chat:true,
+        streaming:false,
+        patching:false,
+        repositoryAwareness:false,
+        autonomousExecution:false,
+        toolCalling:false,
+        memoryPersistence:false
+      }
+    }))
+  };
+}
+
+export function getProviderRuntimeCapabilities(providerId) {
+  const provider = getProviderStatus(providerId);
+
+  if (!provider) {
+    return {
+      ok:false,
+      status:'provider_not_found'
+    };
+  }
+
+  return {
+    ok:true,
+    providerId:provider.id,
+    runtime:provider.runtime,
+    mode:provider.mode,
+    configured:provider.configured,
+    capabilities:{
+      basicChat:true,
+      runtimeOrchestration:false,
+      semanticMemory:false,
+      repositoryGraph:false,
+      sandboxExecution:false,
+      patchGeneration:false,
+      autonomousAgents:false,
+      multiWorkspaceExecution:false
+    },
+    nextInfrastructureTargets:[
+      'runtime-manager',
+      'tool-registry',
+      'sandbox-manager',
+      'repository-graph-engine',
+      'memory-engine'
+    ]
+  };
+}
+
+/* =============================================================================
+   08) END OF FILE
 ============================================================================= */

@@ -2,8 +2,9 @@
    00) FILE INDEX
    01) IMPORTS
    02) CONTENT TYPES
-   03) STATIC SERVING
-   04) END OF FILE
+   03) RUNTIME STATIC INTELLIGENCE
+   04) STATIC SERVING
+   05) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -13,6 +14,10 @@ import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import path from 'node:path';
 import { developerModeConfig } from './config.mjs';
+import {
+  getRuntimeMetrics,
+  listRuntimes
+} from './runtime-store.mjs';
 import { sendText } from './http-utils.mjs';
 
 /* =============================================================================
@@ -33,7 +38,28 @@ const CONTENT_TYPES = Object.freeze({
 });
 
 /* =============================================================================
-   03) STATIC SERVING
+   03) RUNTIME STATIC INTELLIGENCE
+============================================================================= */
+function buildRuntimeHeaders() {
+  const runtimes = listRuntimes();
+  const metrics = getRuntimeMetrics();
+
+  return {
+    'x-icos-runtime-count':String(runtimes.length),
+    'x-icos-runtime-sessions':String(metrics.activeSessions || 0),
+    'x-icos-runtime-projects':String(metrics.activeProjects || 0),
+    'x-icos-runtime-agents':String(metrics.activeAgentSessions || 0),
+    'x-icos-runtime-mode':String(
+      developerModeConfig.runtime.runtimeMode || 'development'
+    ),
+    'x-icos-runtime-orchestration':String(
+      developerModeConfig.runtime.orchestrationEnabled
+    )
+  };
+}
+
+/* =============================================================================
+   04) STATIC SERVING
 ============================================================================= */
 function resolveStaticPath(urlPath) {
   const decodedPath = decodeURIComponent(urlPath.split('?')[0] || '/');
@@ -64,7 +90,8 @@ export async function serveStatic(request, response, url) {
     const contentType = CONTENT_TYPES[path.extname(filePath)] || 'application/octet-stream';
     response.writeHead(200, {
       'content-type':contentType,
-      'cache-control':'no-store'
+      'cache-control':'no-store',
+      ...buildRuntimeHeaders()
     });
     createReadStream(filePath).pipe(response);
     return true;
@@ -75,5 +102,5 @@ export async function serveStatic(request, response, url) {
 }
 
 /* =============================================================================
-   04) END OF FILE
+   05) END OF FILE
 ============================================================================= */

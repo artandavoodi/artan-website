@@ -2,8 +2,14 @@
    00) FILE INDEX
    01) IMPORTS
    02) ENVIRONMENT LOADING
-   03) CONFIGURATION
-   04) END OF FILE
+   03) ENVIRONMENT HELPERS
+   04) RUNTIME CONFIGURATION
+   05) SANDBOX CONFIGURATION
+   06) MEMORY CONFIGURATION
+   07) EXECUTION CONFIGURATION
+   08) REPOSITORY INTELLIGENCE CONFIGURATION
+   09) CONFIGURATION
+   10) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -40,7 +46,7 @@ function loadDotEnv() {
 loadDotEnv();
 
 /* =============================================================================
-   03) CONFIGURATION
+   03) ENVIRONMENT HELPERS
 ============================================================================= */
 function splitEnvList(value) {
   return String(value || '')
@@ -49,12 +55,80 @@ function splitEnvList(value) {
     .filter(Boolean);
 }
 
+/* =============================================================================
+   04) RUNTIME CONFIGURATION
+============================================================================= */
+const runtimeConfiguration = Object.freeze({
+  runtimeId:process.env.ICOS_RUNTIME_ID || 'icos-runtime',
+  runtimeLabel:process.env.ICOS_RUNTIME_LABEL || 'Neuroartan ICOS Runtime',
+  runtimeMode:process.env.ICOS_RUNTIME_MODE || 'development',
+  orchestrationEnabled:process.env.ICOS_ORCHESTRATION_ENABLED === 'true',
+  autonomousExecutionEnabled:process.env.ICOS_AUTONOMOUS_EXECUTION === 'true',
+  runtimeTelemetryEnabled:process.env.ICOS_RUNTIME_TELEMETRY !== 'false'
+});
+
+/* =============================================================================
+   05) SANDBOX CONFIGURATION
+============================================================================= */
+const sandboxConfiguration = Object.freeze({
+  enabled:process.env.ICOS_SANDBOX_ENABLED !== 'false',
+  filesystemIsolation:process.env.ICOS_SANDBOX_FILESYSTEM !== 'false',
+  networkIsolation:process.env.ICOS_SANDBOX_NETWORK === 'true',
+  commandExecution:process.env.ICOS_COMMAND_EXECUTION === 'true',
+  maxConcurrentExecutions:Number(
+    process.env.ICOS_MAX_CONCURRENT_EXECUTIONS || 2
+  )
+});
+
+/* =============================================================================
+   06) MEMORY CONFIGURATION
+============================================================================= */
+const memoryConfiguration = Object.freeze({
+  enabled:process.env.ICOS_MEMORY_ENABLED === 'true',
+  provider:process.env.ICOS_MEMORY_PROVIDER || 'local',
+  vectorStore:process.env.ICOS_VECTOR_STORE || 'local-json',
+  embeddingModel:process.env.ICOS_EMBEDDING_MODEL || '',
+  semanticIndexing:process.env.ICOS_SEMANTIC_INDEXING === 'true'
+});
+
+/* =============================================================================
+   07) EXECUTION CONFIGURATION
+============================================================================= */
+const executionConfiguration = Object.freeze({
+  patchGeneration:process.env.ICOS_PATCH_GENERATION === 'true',
+  rollbackSnapshots:process.env.ICOS_ROLLBACK_SNAPSHOTS !== 'false',
+  gitIntegration:process.env.ICOS_GIT_INTEGRATION !== 'false',
+  automaticValidation:process.env.ICOS_AUTOMATIC_VALIDATION === 'true',
+  previewEnvironment:process.env.ICOS_PREVIEW_ENVIRONMENT === 'true'
+});
+
+/* =============================================================================
+   08) REPOSITORY INTELLIGENCE CONFIGURATION
+============================================================================= */
+const repositoryIntelligenceConfiguration = Object.freeze({
+  enabled:process.env.ICOS_REPOSITORY_INTELLIGENCE !== 'false',
+  dependencyGraph:process.env.ICOS_DEPENDENCY_GRAPH === 'true',
+  ownershipGraph:process.env.ICOS_OWNERSHIP_GRAPH === 'true',
+  cssOwnershipGraph:process.env.ICOS_CSS_GRAPH === 'true',
+  deadCodeDetection:process.env.ICOS_DEAD_CODE_DETECTION === 'true',
+  architectureIndexing:process.env.ICOS_ARCHITECTURE_INDEXING === 'true'
+});
+
+/* =============================================================================
+   09) CONFIGURATION
+============================================================================= */
+
 export const developerModeConfig = Object.freeze({
   repositoryRoot: REPOSITORY_ROOT,
   docsRoot: path.join(REPOSITORY_ROOT, 'docs'),
   host: process.env.DEVELOPER_MODE_HOST || '127.0.0.1',
   port: Number(process.env.DEVELOPER_MODE_PORT || 8891),
   publicOrigin: process.env.DEVELOPER_MODE_PUBLIC_ORIGIN || 'http://127.0.0.1:8891',
+  runtime:runtimeConfiguration,
+  sandbox:sandboxConfiguration,
+  memory:memoryConfiguration,
+  execution:executionConfiguration,
+  repositoryIntelligence:repositoryIntelligenceConfiguration,
   allowedRoots: splitEnvList(process.env.DEVELOPER_ALLOWED_ROOTS || REPOSITORY_ROOT).map((entry) => path.resolve(entry)),
   github: {
     clientId: process.env.GITHUB_OAUTH_CLIENT_ID || '',
@@ -72,5 +146,5 @@ export const developerModeConfig = Object.freeze({
 });
 
 /* =============================================================================
-   04) END OF FILE
+   10) END OF FILE
 ============================================================================= */

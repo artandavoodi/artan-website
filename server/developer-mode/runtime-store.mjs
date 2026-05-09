@@ -7,7 +7,8 @@
    05) AGENT SESSION STORE
    06) REVIEW ARTIFACT STORE
    07) DEVELOPER STATE STORE
-   08) END OF FILE
+   08) RUNTIME REGISTRY
+   09) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -98,6 +99,16 @@ const oauthStates = new Map();
 const projects = new Map();
 const agentSessions = new Map();
 const reviewArtifacts = new Map();
+const runtimeRegistry = new Map();
+const runtimeMetrics = {
+  sessionsCreated:0,
+  projectsCreated:0,
+  agentSessionsCreated:0,
+  reviewArtifactsCreated:0,
+  providersConfigured:0,
+  runtimeBoots:0,
+  updatedAt:new Date().toISOString()
+};
 
 export function createSession() {
   const id = crypto.randomUUID();
@@ -108,6 +119,8 @@ export function createSession() {
     createdAt:new Date().toISOString(),
     updatedAt:new Date().toISOString()
   });
+  runtimeMetrics.sessionsCreated += 1;
+  runtimeMetrics.updatedAt = new Date().toISOString();
   return sessions.get(id);
 }
 
@@ -189,6 +202,8 @@ export function createProject(sessionId, payload = {}) {
       defaultEnvironmentMode:project.environmentMode
     }
   });
+  runtimeMetrics.projectsCreated += 1;
+  runtimeMetrics.updatedAt = new Date().toISOString();
   return project;
 }
 
@@ -222,6 +237,8 @@ export function createAgentSession(sessionId, payload = {}) {
       defaultProvider:agentSession.provider
     }
   });
+  runtimeMetrics.agentSessionsCreated += 1;
+  runtimeMetrics.updatedAt = new Date().toISOString();
   return agentSession;
 }
 
@@ -278,6 +295,8 @@ export function createReviewArtifact(sessionId, payload = {}) {
   };
 
   reviewArtifacts.set(artifact.id, artifact);
+  runtimeMetrics.reviewArtifactsCreated += 1;
+  runtimeMetrics.updatedAt = new Date().toISOString();
   return artifact;
 }
 
@@ -380,6 +399,8 @@ export function configureProvider(sessionId, providerConfig = {}) {
 
   state.configuredProviders = providers;
   state.developerPreferences.defaultProvider = provider.id || state.developerPreferences.defaultProvider;
+  runtimeMetrics.providersConfigured += 1;
+  runtimeMetrics.updatedAt = new Date().toISOString();
   state.updatedAt = new Date().toISOString();
   session.updatedAt = state.updatedAt;
   sessions.set(session.id, session);
@@ -407,5 +428,65 @@ export function activateAgent(sessionId, payload = {}) {
 }
 
 /* =============================================================================
-   08) END OF FILE
+   08) RUNTIME REGISTRY
+============================================================================= */
+export function registerRuntime(runtimeId, payload = {}) {
+  const runtime = {
+    id:String(runtimeId || crypto.randomUUID()).trim(),
+    label:String(payload.label || '').trim(),
+    status:String(payload.status || 'initializing').trim(),
+    providerCount:Number(payload.providerCount || 0),
+    workspaceCount:Number(payload.workspaceCount || 0),
+    sandboxIsolation:Boolean(payload.sandboxIsolation),
+    createdAt:new Date().toISOString(),
+    updatedAt:new Date().toISOString()
+  };
+
+  runtimeRegistry.set(runtime.id, runtime);
+
+  runtimeMetrics.runtimeBoots += 1;
+  runtimeMetrics.updatedAt = new Date().toISOString();
+
+  return runtime;
+}
+
+export function updateRuntime(runtimeId, patch = {}) {
+  const runtime = runtimeRegistry.get(runtimeId);
+
+  if (!runtime) {
+    return null;
+  }
+
+  Object.assign(runtime, {
+    ...patch,
+    updatedAt:new Date().toISOString()
+  });
+
+  runtimeRegistry.set(runtime.id, runtime);
+  runtimeMetrics.updatedAt = new Date().toISOString();
+
+  return runtime;
+}
+
+export function getRuntime(runtimeId) {
+  return runtimeRegistry.get(runtimeId) || null;
+}
+
+export function listRuntimes() {
+  return Array.from(runtimeRegistry.values());
+}
+
+export function getRuntimeMetrics() {
+  return {
+    ...runtimeMetrics,
+    activeSessions:sessions.size,
+    activeProjects:projects.size,
+    activeAgentSessions:agentSessions.size,
+    activeReviewArtifacts:reviewArtifacts.size,
+    activeRuntimes:runtimeRegistry.size
+  };
+}
+
+/* =============================================================================
+   09) END OF FILE
 ============================================================================= */

@@ -4,13 +4,17 @@
    02) CONFIG HELPERS
    03) OAUTH HELPERS
    04) GITHUB API HELPERS
-   05) END OF FILE
+   05) REPOSITORY INTELLIGENCE BRIDGE
+   06) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
    01) IMPORTS
 ============================================================================= */
 import { developerModeConfig } from './config.mjs';
+import {
+  generateRepositoryIntelligence
+} from './repository-scan-service.mjs';
 
 /* =============================================================================
    02) CONFIG HELPERS
@@ -98,6 +102,55 @@ export async function fetchGitHubRepositories(token) {
   }));
 }
 
+
 /* =============================================================================
-   05) END OF FILE
+   05) REPOSITORY INTELLIGENCE BRIDGE
+============================================================================= */
+export async function buildGitHubRepositoryIntelligence({
+  token,
+  repositoryId
+}) {
+  const repositories = await fetchGitHubRepositories(token);
+
+  const repository = repositories.find(
+    (entry) => String(entry.id) === String(repositoryId)
+  );
+
+  if (!repository) {
+    return {
+      ok:false,
+      status:'repository_not_found'
+    };
+  }
+
+  const intelligence = await generateRepositoryIntelligence({
+    repositoryId
+  });
+
+  return {
+    ok:true,
+    status:'github_repository_intelligence_generated',
+    repository:{
+      id:repository.id,
+      label:repository.label,
+      owner:repository.owner,
+      fullName:repository.fullName,
+      private:repository.private,
+      writePermissionStatus:repository.writePermissionStatus
+    },
+    runtimeCapabilities:{
+      repositoryScanning:true,
+      repositoryIntelligence:true,
+      dependencyGraph:false,
+      ownershipGraph:false,
+      semanticIndexing:false,
+      patchGeneration:false,
+      autonomousExecution:false
+    },
+    intelligence
+  };
+}
+
+/* =============================================================================
+   06) END OF FILE
 ============================================================================= */

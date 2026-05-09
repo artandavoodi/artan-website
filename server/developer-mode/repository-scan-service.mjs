@@ -3,8 +3,10 @@
    01) IMPORTS
    02) REGISTRY HELPERS
    03) PATH SAFETY
-   04) READ-ONLY SCAN
-   05) END OF FILE
+   04) FILE CLASSIFICATION
+   05) READ-ONLY SCAN
+   06) REPOSITORY INTELLIGENCE
+   07) END OF FILE
 ============================================================================= */
 
 /* =============================================================================
@@ -58,7 +60,36 @@ function shouldSkip(name) {
 }
 
 /* =============================================================================
-   04) READ-ONLY SCAN
+   04) FILE CLASSIFICATION
+============================================================================= */
+function classifyFile(filePath = '') {
+  const extension = path.extname(filePath).toLowerCase();
+
+  if (['.mjs', '.js', '.ts', '.tsx', '.jsx'].includes(extension)) {
+    return 'runtime_source';
+  }
+
+  if (['.css'].includes(extension)) {
+    return 'style_source';
+  }
+
+  if (['.html'].includes(extension)) {
+    return 'markup_source';
+  }
+
+  if (['.json', '.yaml', '.yml'].includes(extension)) {
+    return 'configuration_source';
+  }
+
+  if (['.md'].includes(extension)) {
+    return 'documentation_source';
+  }
+
+  return 'generic_source';
+}
+
+/* =============================================================================
+   05) READ-ONLY SCAN
 ============================================================================= */
 async function walkFiles(root, current = root, files = []) {
   if (files.length >= 240) return files;
@@ -75,9 +106,19 @@ async function walkFiles(root, current = root, files = []) {
 
     if (entry.isFile()) {
       const fileStat = await stat(absolute);
+      const relativePath = path.relative(root, absolute);
+
       files.push({
-        path:path.relative(root, absolute),
-        size:fileStat.size
+        path:relativePath,
+        size:fileStat.size,
+        classification:classifyFile(relativePath),
+        extension:path.extname(relativePath).toLowerCase(),
+        runtimeCritical:Boolean(
+          relativePath.includes('server/')
+          || relativePath.includes('runtime')
+          || relativePath.includes('system/')
+          || relativePath.includes('developer-mode')
+        )
       });
     }
   }
@@ -123,6 +164,83 @@ export async function scanRepository({ repositoryId }) {
   };
 }
 
+
 /* =============================================================================
-   05) END OF FILE
+   06) REPOSITORY INTELLIGENCE
+============================================================================= */
+export async function generateRepositoryIntelligence({ repositoryId }) {
+  const scan = await scanRepository({ repositoryId });
+
+  if (!scan.ok) {
+    return scan;
+  }
+
+  const intelligence = {
+    generatedAt:new Date().toISOString(),
+    repositoryId,
+    runtimeFiles:0,
+    styleFiles:0,
+    markupFiles:0,
+    configurationFiles:0,
+    documentationFiles:0,
+    runtimeCriticalFiles:0,
+    extensions:{},
+    runtimeZones:new Set()
+  };
+
+  for (const file of scan.files) {
+    intelligence.extensions[file.extension] = (
+      intelligence.extensions[file.extension] || 0
+    ) + 1;
+
+    if (file.classification === 'runtime_source') {
+      intelligence.runtimeFiles += 1;
+    }
+
+    if (file.classification === 'style_source') {
+      intelligence.styleFiles += 1;
+    }
+
+    if (file.classification === 'markup_source') {
+      intelligence.markupFiles += 1;
+    }
+
+    if (file.classification === 'configuration_source') {
+      intelligence.configurationFiles += 1;
+    }
+
+    if (file.classification === 'documentation_source') {
+      intelligence.documentationFiles += 1;
+    }
+
+    if (file.runtimeCritical) {
+      intelligence.runtimeCriticalFiles += 1;
+    }
+
+    if (file.path.includes('developer-mode')) {
+      intelligence.runtimeZones.add('developer-mode');
+    }
+
+    if (file.path.includes('system/')) {
+      intelligence.runtimeZones.add('system-layer');
+    }
+
+    if (file.path.includes('server/')) {
+      intelligence.runtimeZones.add('server-runtime');
+    }
+  }
+
+  return {
+    ok:true,
+    status:'repository_intelligence_generated',
+    repositoryId,
+    intelligence:{
+      ...intelligence,
+      runtimeZones:Array.from(intelligence.runtimeZones)
+    }
+  };
+}
+
+/* =============================================================================
+   07) END OF FILE
 ============================================================================= */
