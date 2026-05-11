@@ -23,26 +23,21 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
-     inkscape:zoom="1.0833333"
-     inkscape:cx="12"
-     inkscape:cy="12"
+     inkscape:zoom="7.3867626"
+     inkscape:cx="16.109899"
+     inkscape:cy="12.793155"
      inkscape:window-width="1472"
-     inkscape:window-height="923"
+     inkscape:window-height="896"
      inkscape:window-x="0"
-     inkscape:window-y="33"
+     inkscape:window-y="32"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg1" />
-  <g
-     id="g2"
-     transform="matrix(0.48639096,0,0,0.48639096,19.819021,-8.5039384)"
-     style="stroke-width:2.05596">
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2.05596;stroke-linecap:round;stroke-linejoin:round"
-       d="M -34.473996,42.155262 H 2.3228184"
-       id="path1" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:2.05596;stroke-linecap:round;stroke-linejoin:round"
-       d="M -16.075589,60.553669 V 23.756855"
-       id="path1-9" />
-  </g>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+     d="M 3.051181,12 H 20.948819"
+     id="path1" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+     d="M 12,20.948819 V 3.0511811"
+     id="path1-9" />
 </svg>

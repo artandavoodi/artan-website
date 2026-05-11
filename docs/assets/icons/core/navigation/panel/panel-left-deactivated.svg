@@ -13,7 +13,42 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs1" />
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect4"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,3,0,1 @ F,0,0,1,0,1,0,1 @ F,0,0,1,0,1,0,1 @ F,0,0,1,0,3,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect3"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
   <sodipodi:namedview
      id="namedview1"
      pagecolor="#505050"
@@ -23,11 +58,11 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
-     inkscape:zoom="10.780858"
-     inkscape:cx="11.73376"
-     inkscape:cy="9.3220781"
+     inkscape:zoom="7.6475214"
+     inkscape:cx="10.722428"
+     inkscape:cy="17.84892"
      inkscape:window-width="1472"
-     inkscape:window-height="812"
+     inkscape:window-height="868"
      inkscape:window-x="0"
      inkscape:window-y="32"
      inkscape:window-maximized="0"
@@ -39,9 +74,11 @@
      height="17.897779"
      x="3.0511811"
      y="3.05111"
-     ry="4.8641515" />
+     ry="5" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:0.999999;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
-     d="M 6.830708,5.766929 V 18.233061"
-     id="path1" />
+     id="rect2"
+     style="fill:#000000;stroke-width:0.999996;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:79.1;paint-order:stroke fill markers"
+     d="M 7.8193312,5.3858261 H 8.354331 a 1,1 45 0 1 1,1 V 17.614173 a 1,1 135 0 1 -1,1 H 7.8193312 a 3,3 45 0 1 -3,-3 V 8.3858261 a 3,3 135 0 1 3,-3 z"
+     inkscape:path-effect="#path-effect4"
+     inkscape:original-d="M 4.8193312,5.3858261 H 9.354331 V 18.614173 H 4.8193312 Z" />
 </svg>
