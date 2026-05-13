@@ -24,16 +24,28 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:zoom="9.4625112"
-     inkscape:cx="-1.0039618"
+     inkscape:cx="-0.95112173"
      inkscape:cy="6.7635323"
      inkscape:window-width="1472"
      inkscape:window-height="895"
      inkscape:window-x="0"
-     inkscape:window-y="61"
+     inkscape:window-y="33"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg1" />
-  <path
-     id="path3536-0-4-9"
-     style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;fill:#000000;stroke-width:0.999986;stroke-linecap:round;stroke-linejoin:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
-     d="M 9.3196249,2.2159864 C 7.0691545,2.1945664 4.8288445,3.1316614 3.2747026,4.9698924 0.51178378,8.2378585 0.95198067,13.134323 4.2512655,15.882002 c 3.1435844,2.61801 7.7702285,2.358975 10.5898435,-0.498047 l 2.716797,2.261719 a 0.60000002,0.60000002 0 0 0 0.84375,-0.07617 0.60000002,0.60000002 0 0 0 -0.07617,-0.845703 L 15.614547,14.46794 C 17.960321,11.215997 17.412649,6.6486334 14.268844,4.0304395 12.825407,2.8283298 11.069991,2.2326464 9.3196249,2.2159864 Z m -0.013672,1.1894531 c 1.4783901,0.014664 2.9631111,0.5197053 4.1894531,1.5410157 2.803067,2.3344236 3.170531,6.4559778 0.828125,9.2265628 -2.342405,2.770585 -6.4938079,3.125439 -9.2968749,0.791015 C 2.2235892,12.62961 1.8541726,8.5080558 4.196578,5.7374708 5.514181,4.1790167 7.4051664,3.3865858 9.3059529,3.4054395 Z" />
+  <g
+     id="g8"
+     transform="matrix(2.2852991,0.40155523,-0.40295989,2.2773329,-1770.8438,-2018.2265)"
+     style="stroke-width:1.63157">
+    <circle
+       style="fill:none;stroke:#000000;stroke-width:0.431685;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       id="path3536-0-4-9-1"
+       cx="1151.3729"
+       cy="178.81192"
+       r="3.5"
+       transform="rotate(30)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.431685;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 910.87682,732.36921 1.59855,0.92293"
+       id="path3537-3-0" />
+  </g>
 </svg>
