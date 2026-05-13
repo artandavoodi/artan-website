@@ -115,3 +115,13 @@ if (document.readyState === 'loading') {
 } else {
   bootHomeInteractionResponsePanel();
 }
+
+export function setHomeInteractionResponseContent(value = '') {
+  const nodes = document.querySelector('#home-interaction-response-panel-content');
+  if (nodes) nodes.textContent = String(value || '');
+}
+
+export function setHomeInteractionResponseState(value = 'idle') {
+  const panel = document.querySelector('#home-interaction-response-panel');
+  if (panel) panel.dataset.state = value;
+}

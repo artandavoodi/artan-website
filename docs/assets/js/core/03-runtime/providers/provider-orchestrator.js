@@ -24,12 +24,30 @@ export async function requestRuntimeCompletion(payload = {}) {
 
   switch (runtime.activeProvider) {
     case 'gemini':
-      return requestGeminiCompletion(payload);
+      return fetch('http://localhost:3030/api/runtime/gemini', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          contents:[
+            {
+              role:'user',
+              parts:[{text:payload.prompt || ''}]
+            }
+          ]
+        })
+      }).then(r => r.json()).then(data => {
+        return (
+          data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+          data?.output ||
+          data?.text ||
+          ''
+        );
+      });
 
-    case 'openai':
+    case 'openai': // disabled
       return requestOpenAICompletion(payload);
 
-    case 'local':
+    case 'local': // disabled
       return requestLocalCompletion(payload);
 
     default:
@@ -45,10 +63,10 @@ export async function streamRuntimeCompletion(payload = {}) {
     case 'gemini':
       return streamGeminiCompletion(payload);
 
-    case 'openai':
+    case 'openai': // disabled
       return requestOpenAICompletion(payload);
 
-    case 'local':
+    case 'local': // disabled
       return requestLocalCompletion(payload);
 
     default:

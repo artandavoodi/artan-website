@@ -4,7 +4,7 @@
 
 const NEUROARTAN_RUNTIME_PROVIDER_STATE = {
   activeProvider:'gemini',
-  activeModel:'gemini-2.0-flash',
+  activeModel:'gemini-2.5-flash',
   apiKey:'AIzaSyCM8bKrz9CoSf3NJ7UhsxeDuIpJQsrhSos',
   streaming:true,
   multimodal:true,

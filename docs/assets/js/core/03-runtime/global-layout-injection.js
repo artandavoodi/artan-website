@@ -95,7 +95,7 @@ const FRAGMENT_PATHS = {
   'home-profile-control-panel': assetPath('/assets/fragments/layers/website/home/shell/home-profile-control-panel.html'),
   'home-dashboard-topbar': assetPath('/assets/fragments/layers/website/home/shell/home-dashboard-topbar.html'),
   'home-interaction-panel': assetPath('/assets/fragments/layers/website/home/stage/home-interaction-panel.html'),
-  'runtime-provider-settings': assetPath('/assets/fragments/layers/website/home/settings/runtime-provider-settings/runtime-provider-settings.html'),
+  'runtime-provider-settings': '/assets/fragments/layers/website/home/settings/runtime-provider-settings/runtime-provider-settings.html',
   'home-interaction-response-panel': assetPath('/assets/fragments/layers/website/home/stage/home-interaction-response-panel.html'),
   'home-stage-developer-operations-panel': assetPath('/assets/fragments/layers/website/home/stage/developer-operations-panel/developer-operations-panel.html'),
   'home-stage-developer-operations-search': assetPath('/assets/fragments/layers/website/home/stage/developer-operations-panel/search/developer-operations-search.html'),

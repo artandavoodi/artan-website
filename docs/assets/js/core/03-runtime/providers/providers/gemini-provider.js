@@ -14,7 +14,9 @@ export async function requestGeminiCompletion(payload = {}) {
   const runtime = getRuntimeProviderState();
 
   const apiKey =
-    localStorage.getItem('neuroartan-provider-gemini-key') || '';
+    runtime.apiKey ||
+    localStorage.getItem('neuroartan-provider-gemini-key') ||
+    '';
 
   if (!apiKey) {
     throw new Error('Missing Gemini API key.');
@@ -74,11 +76,27 @@ export async function requestGeminiCompletion(payload = {}) {
 
   const data = await response.json();
 
+  console.log(
+    '[ICOS:GEMINI:RAW]',
+    data
+  );
+
   const responseText =
-    data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+    data?.candidates?.[0]?.content?.parts?.map(
+      (part) => part?.text || ''
+    ).join('\n') ||
+
+    data?.candidates?.[0]?.output ||
     '';
 
-  return responseText.trim();
+  console.log(
+    '[ICOS:GEMINI:TEXT]',
+    responseText
+  );
+
+  return String(
+    responseText || ''
+  ).trim();
 }
 
 

@@ -214,18 +214,13 @@ function isHomeStageDeveloperModeActive() {
 }
 
 function resolveHomeStageDeveloperModeResponse(payload, query) {
-  const normalizedQuery = normalizeHomeStageQuery(query);
-  const status = payload?.ok === false ? 'not ready' : 'received';
-  const reason = payload?.reason || payload?.message || payload?.error || '';
-
-  return formatActiveModelResponse(
-    'developer-mode',
-    [
-      `Developer Mode ${status}: “${normalizedQuery}”.`,
-      reason ? `Runtime response: ${reason}` : 'The request has been routed through the Developer Mode backend boundary.',
-      'Terminal execution, local file mutation, and VS Code patch application remain approval-gated future bridge capabilities.'
-    ].join(' ')
-  );
+  return String(
+    payload?.response ||
+    payload?.message ||
+    payload?.text ||
+    query ||
+    ''
+  ).trim();
 }
 
 async function delegateHomeStageDeveloperQuery(query, queryId) {
@@ -251,12 +246,9 @@ async function delegateHomeStageDeveloperQuery(query, queryId) {
       source: 'homepage-interaction',
     });
 
-    return resolveHomeStageDeveloperModeResponse(payload, normalizedQuery);
+    return payload;
   } catch (error) {
-    return formatActiveModelResponse(
-      'developer-mode',
-      `Developer Mode received: “${normalizedQuery}”. The backend developer bridge is not ready to execute this request yet. ${error?.message || ''}`.trim()
-    );
+    throw error;
   }
 }
 

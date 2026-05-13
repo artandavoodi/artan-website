@@ -3,6 +3,11 @@ import {
   streamRuntimeCompletion
 } from '../../../../core/03-runtime/providers/provider-orchestrator.js';
 
+import {
+  setHomeInteractionResponseContent,
+  setHomeInteractionResponseState
+} from './home-interaction-response-panel.js';
+
 /* =========================================================
    00. FILE INDEX
    01. IMPORTS
@@ -526,15 +531,59 @@ if (!query) {
     stagedFiles: HOME_INTERACTION_PANEL_STATE.files.map((file) => file.name),
   });
 
+  setHomeInteractionResponseState('responding');
+
+  streamRuntimeCompletion({
+    prompt:query
+  })
+    .then((response) => {
+      console.log(
+        '[ICOS:FINAL:RUNTIME]',
+        response
+      );
+
+      if (
+        response &&
+        typeof response === 'object'
+      ) {
+        response =
+          response.response ||
+          response.message ||
+          response.text ||
+          JSON.stringify(response, null, 2);
+      }
+
+      setHomeInteractionResponseContent(
+        String(response || 'No runtime output.')
+      );
+
+      setHomeInteractionResponseState('complete');
+    })
+    .catch((error) => {
+      console.error(
+        '[ICOS:RUNTIME:ERROR]',
+        error
+      );
+
+      setHomeInteractionResponseContent(
+        error?.message ||
+        'Runtime execution failed.'
+      );
+
+      setHomeInteractionResponseState('complete');
+    });
+
   if (nodes.fileInput instanceof HTMLInputElement) {
     nodes.fileInput.value = '';
   }
 
   HOME_INTERACTION_PANEL_STATE.files = [];
   renderHomeInteractionFiles();
+
   if (nodes.input instanceof HTMLTextAreaElement) {
     nodes.input.focus();
   }
+
   syncHomeInteractionComposerHeight();
 }
 

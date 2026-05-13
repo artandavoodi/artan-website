@@ -22,8 +22,8 @@
    01) RESPONSE PANEL TOKENS
 ============================================================================= */
 :root{
-  --home-interaction-response-panel-width:min(58rem, calc(100vw - (2 * var(--site-gutter))));
-  --home-interaction-response-panel-max-height:min(52vh, 36rem);
+  --home-interaction-response-panel-width:min(42rem, calc(100vw - (2 * var(--site-gutter))));
+  --home-interaction-response-panel-max-height:18rem;
   --home-interaction-response-panel-padding:0.18rem 0.18rem 0.18rem;
   --home-interaction-response-panel-content-max-width:52rem;
   --home-interaction-response-panel-content-align:left;
@@ -60,7 +60,7 @@
   background:var(--home-interaction-response-panel-surface);
   color:var(--home-interaction-response-panel-text);
   text-align:var(--home-interaction-response-panel-content-align);
-  overflow:visible;
+  overflow:hidden;
 }
 
 /* =============================================================================
@@ -93,7 +93,7 @@
   overflow-y:auto;
   overflow-x:hidden;
   overscroll-behavior:contain;
-  scrollbar-width:none;
+  scrollbar-width:thin;
   scrollbar-color:var(--home-interaction-response-panel-scrollbar) transparent;
   outline:none;
   border-radius:var(--home-interaction-response-panel-radius);
@@ -125,7 +125,7 @@
 .home-interaction-response-panel__content{
   margin:0;
   max-width:var(--home-interaction-response-panel-content-max-width);
-  padding:0.4rem 0.2rem 1.4rem;
+  padding:0.75rem 0.95rem 1rem;
   color:var(--home-interaction-response-panel-text);
   font-size:var(--home-interaction-response-panel-font-size);
   font-weight:var(--home-interaction-response-panel-font-weight);
@@ -144,8 +144,8 @@
 ============================================================================= */
 @media (max-width:760px){
   :root{
-    --home-interaction-response-panel-width:min(100%, calc(100vw - (2 * var(--site-gutter))));
-    --home-interaction-response-panel-max-height:min(52vh, 36rem);
+    --home-interaction-response-panel-width:min(42rem, calc(100vw - (2 * var(--site-gutter))));
+    --home-interaction-response-panel-max-height:18rem;
     --home-interaction-response-panel-content-max-width:100%;
     --home-interaction-response-panel-font-size:0.96rem;
     --home-interaction-response-panel-line-height:1.66;
@@ -205,7 +205,7 @@
   padding:1rem 1.1rem;
   border-radius:1rem;
   background:color-mix(in srgb, var(--surface-elevated) 42%, transparent);
-  scrollbar-width:none;
+  scrollbar-width:thin;
 }
 
 .home-interaction-response-panel__content pre::-webkit-scrollbar{
