@@ -24,7 +24,7 @@ export async function requestRuntimeCompletion(payload = {}) {
 
   switch (runtime.activeProvider) {
     case 'gemini':
-      return fetch('http://localhost:3030/api/runtime/gemini', {
+      return fetch('/api/runtime/gemini', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({

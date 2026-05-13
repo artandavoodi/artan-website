@@ -117,11 +117,13 @@ if (document.readyState === 'loading') {
 }
 
 export function setHomeInteractionResponseContent(value = '') {
-  const nodes = document.querySelector('#home-interaction-response-panel-content');
-  if (nodes) nodes.textContent = String(value || '');
+  HOME_INTERACTION_RESPONSE_PANEL_STATE.response = typeof value === 'string' ? value.trim() : '';
+  HOME_INTERACTION_RESPONSE_PANEL_STATE.state = HOME_INTERACTION_RESPONSE_PANEL_STATE.response ? 'responding' : 'idle';
+  syncHomeInteractionResponsePanel();
 }
 
 export function setHomeInteractionResponseState(value = 'idle') {
+  HOME_INTERACTION_RESPONSE_PANEL_STATE.state = value;
   const panel = document.querySelector('#home-interaction-response-panel');
   if (panel) panel.dataset.state = value;
 }
