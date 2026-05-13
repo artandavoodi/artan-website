@@ -165,7 +165,7 @@
 }
 
 .home-interaction-panel{
-  border-color:orange;
+  
 }
 
 .home-interaction-panel:focus-within,
@@ -557,7 +557,7 @@
 }
 
 #stage #stage-microphone-button.home-interaction-panel__voice[data-voice-mode="listening"]{
-  border-color:var(--home-interaction-panel-control-listening-border);
+  border-color:var(--home-interaction-panel-control-border-hover);
   background:var(--home-interaction-panel-control-listening-bg);
   color:var(--home-interaction-panel-control-text-hover);
   animation:home-interaction-panel-voice-listening var(--home-interaction-panel-voice-animation-duration) var(--interaction-ease-standard) infinite;

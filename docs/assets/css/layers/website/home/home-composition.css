@@ -86,7 +86,7 @@
 }
 
 #stage-intro{
-  border:1px solid red;
+  border:none;
 }
 
 #stage-top{
@@ -148,7 +148,7 @@
 }
 
 .home-stage-panel-stack{
-  border:1px solid blue;
+  border:none;
 }
 
 .home-stage-panel-stack__item{

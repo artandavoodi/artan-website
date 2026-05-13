@@ -99,7 +99,7 @@
 }
 
 .home-stage-developer-operations-panel{
-  border-color:violet;
+  
 }
 
 /* =============================================================================
@@ -428,7 +428,7 @@ html[data-home-developer-mode="active"][data-home-developer-console-view="full"]
   background:var(--home-stage-developer-operations-full-surface);
   color:var(--home-stage-developer-operations-full-text);
   border-color:var(--home-stage-developer-operations-full-border);
-  border-color:cyan;
+  
   border-radius:0;
   box-shadow:var(--home-stage-developer-operations-shadow);
   backdrop-filter:blur(var(--home-interaction-panel-blur)) saturate(var(--home-interaction-panel-saturate));
