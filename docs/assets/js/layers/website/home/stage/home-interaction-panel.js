@@ -1,3 +1,8 @@
+import {
+  requestRuntimeCompletion,
+  streamRuntimeCompletion
+} from '../../../../core/03-runtime/providers/provider-orchestrator.js';
+
 /* =========================================================
    00. FILE INDEX
    01. IMPORTS
@@ -497,10 +502,18 @@ function submitHomeInteractionQuery() {
   const nodes = getHomeInteractionPanelNodes();
   const query = normalizeHomeInteractionQuery(nodes.input?.value || '');
 
-  if (!query) {
-    nodes.input?.focus();
-    return;
-  }
+  
+if (!query) {
+  document.querySelector('#home-interaction-panel-submit')
+    ?.setAttribute('data-voice-mode', 'listening');
+
+  window.dispatchEvent(
+    new CustomEvent('home-stage-voice-start')
+  );
+
+  return;
+}
+
 
   dispatchHomeInteractionEvent('neuroartan:home-stage-voice-mode', {
     mode: 'thinking',
@@ -696,3 +709,54 @@ if (document.readyState === 'loading') {
 } else {
   bootHomeInteractionPanel();
 }
+
+
+document.addEventListener('dragenter', (event) => {
+  const panel = document.querySelector('#home-interaction-panel');
+
+  if (!(panel instanceof HTMLElement)) {
+    return;
+  }
+
+  if (event.dataTransfer?.types?.includes('Files')) {
+    panel.setAttribute('data-home-interaction-dragging', 'true');
+  }
+});
+
+document.addEventListener('dragleave', () => {
+  document
+    .querySelector('#home-interaction-panel')
+    ?.removeAttribute('data-home-interaction-dragging');
+});
+
+document.addEventListener('drop', (event) => {
+  const panel = document.querySelector('#home-interaction-panel');
+
+  if (!(panel instanceof HTMLElement)) {
+    return;
+  }
+
+  panel.removeAttribute('data-home-interaction-dragging');
+
+  const files = Array.from(event.dataTransfer?.files || []);
+
+  if (!files.length) {
+    return;
+  }
+
+  const input = document.querySelector('#home-interaction-panel-file-input');
+
+  if (input instanceof HTMLInputElement) {
+    input.files = event.dataTransfer.files;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+
+    window.dispatchEvent(
+      new CustomEvent('home-multimodal-ingest', {
+        detail: {
+          files
+        }
+      })
+    );
+  }
+});
+

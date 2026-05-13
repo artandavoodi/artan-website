@@ -165,21 +165,7 @@ function resolveHomeStageDelegatedResponse(route, query) {
 
   switch (route) {
     case 'web':
-      return formatActiveModelResponse(
-        'web',
-        `I can route this as a current-information request: “${normalizedQuery}”. Live web retrieval should be handled by the governed web-search layer when connected.`
-      );
-    case 'site-knowledge':
-      return formatActiveModelResponse(
-        'site-knowledge',
-        `I can search the Neuroartan website and platform surface for: “${normalizedQuery}”. The next implementation step is to connect this route to the governed site-knowledge index.`
-      );
-    case 'platform-search':
-    default:
-      return formatActiveModelResponse(
-        'platform-search',
-        `I received your request: “${normalizedQuery}”. The homepage interaction layer is now routing this into the active model pathway.`
-      );
+      return normalizedQuery;
   }
 }
 
@@ -423,9 +409,7 @@ async function resolveHomeStageQuery(query, queryId) {
     const mountedResponse = await requestMountedRuntimeResponse(classification.query, classification.route);
     return {
       route: 'web',
-      response: mountedResponse
-        ? formatActiveModelResponse('web', mountedResponse)
-        : delegateHomeStageWebQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('web', classification.query),
+      response: mountedResponse || delegateHomeStageWebQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('web', classification.query),
       query: classification.query,
       id: null,
     };
@@ -435,9 +419,7 @@ async function resolveHomeStageQuery(query, queryId) {
     const mountedResponse = await requestMountedRuntimeResponse(classification.query, classification.route);
     return {
       route: 'site-knowledge',
-      response: mountedResponse
-        ? formatActiveModelResponse('site-knowledge', mountedResponse)
-        : delegateHomeStageSiteKnowledgeQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('site-knowledge', classification.query),
+      response: mountedResponse || delegateHomeStageSiteKnowledgeQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('site-knowledge', classification.query),
       query: classification.query,
       id: null,
     };
@@ -446,9 +428,7 @@ async function resolveHomeStageQuery(query, queryId) {
   const mountedResponse = await requestMountedRuntimeResponse(classification.query, classification.route);
   return {
     route: 'platform-search',
-    response: mountedResponse
-      ? formatActiveModelResponse('platform-search', mountedResponse)
-      : delegateHomeStagePlatformQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('platform-search', classification.query),
+    response: mountedResponse || delegateHomeStagePlatformQuery(classification.query, queryId) || resolveHomeStageDelegatedResponse('platform-search', classification.query),
     query: classification.query,
     id: null,
   };

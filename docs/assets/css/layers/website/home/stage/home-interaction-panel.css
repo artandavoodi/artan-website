@@ -74,8 +74,8 @@
   --home-interaction-panel-submit-bg:var(--control-bg);
   --home-interaction-panel-submit-border:var(--control-border);
   --home-interaction-panel-submit-text:var(--text-primary-color);
-  --home-interaction-panel-submit-thinking-bg:color-mix(in srgb, var(--text-primary-color) 10%, transparent);
-  --home-interaction-panel-submit-reset-bg:color-mix(in srgb, var(--color-primary1) 12%, transparent);
+  --home-interaction-panel-control-thinking-bg:color-mix(in srgb, var(--text-primary-color) 10%, transparent);
+  --home-interaction-panel-control-responding-bg:color-mix(in srgb, var(--color-primary1) 12%, transparent);
   --home-interaction-panel-disabled-opacity:var(--layout-home-interaction-panel-disabled-opacity);
 
   --home-interaction-panel-file-chip-border:var(--control-border);
@@ -252,6 +252,9 @@
   letter-spacing:var(--home-interaction-panel-developer-action-tracking);
   text-decoration:none;
   white-space:nowrap;
+  justify-content:center;
+  align-items:center;
+  aspect-ratio:1 / 1;
   transition:var(--interaction-transition-control);
 }
 
@@ -312,15 +315,18 @@
   align-items:center;
   justify-content:center;
   min-height:var(--home-interaction-panel-developer-control-height);
-  padding:var(--spacing-none) var(--home-interaction-panel-submit-padding-x);
+  padding:0;
   border:var(--border-width-hairline) solid var(--home-interaction-panel-submit-border);
-  border-radius:var(--home-interaction-panel-submit-radius);
+  border-radius:50%;
   background:var(--home-interaction-panel-submit-bg);
   color:var(--home-interaction-panel-submit-text);
   font-size:var(--home-interaction-panel-submit-size);
   font-weight:var(--home-interaction-panel-submit-weight);
   line-height:var(--home-interaction-panel-submit-line-height);
   white-space:nowrap;
+  justify-content:center;
+  align-items:center;
+  aspect-ratio:1 / 1;
   transition:var(--interaction-transition-control);
 }
 
@@ -354,7 +360,7 @@
 .home-interaction-panel__composer-right{
   display:inline-flex;
   align-items:center;
-  gap:var(--home-interaction-panel-composer-side-gap);
+  gap:var(--spacing-2);
   min-width:var(--spacing-none);
 }
 
@@ -371,7 +377,7 @@
 ============================================================================= */
 .home-interaction-panel__attach,
 .home-interaction-panel__voice,
-.home-interaction-panel__submit,
+.home-interaction-panel__continuity,
 .home-interaction-panel__settings,
 .home-interaction-panel__model-button{
   -webkit-appearance:none;
@@ -409,8 +415,8 @@
 .home-interaction-panel__voice[data-voice-active="true"],
 .home-interaction-panel__model-button:hover,
 .home-interaction-panel__model-button:focus-visible,
-.home-interaction-panel__submit:hover,
-.home-interaction-panel__submit:focus-visible{
+.home-interaction-panel__continuity:hover,
+.home-interaction-panel__continuity:focus-visible{
   border-color:var(--home-interaction-panel-control-border-hover);
   background:var(--home-interaction-panel-control-bg-hover);
   color:var(--home-interaction-panel-control-text-hover);
@@ -419,7 +425,7 @@
 .home-interaction-panel__attach-icon,
 .home-interaction-panel__settings-icon,
 .home-interaction-panel__model-chevron,
-.home-interaction-panel__submit-icon{
+.home-interaction-panel__continuity-icon{
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -432,7 +438,7 @@
 .home-interaction-panel__attach-icon img,
 .home-interaction-panel__settings-icon img,
 .home-interaction-panel__model-chevron img,
-.home-interaction-panel__submit-icon img{
+.home-interaction-panel__continuity-icon img{
   display:block;
   width:var(--size-full);
   height:var(--size-full);
@@ -445,8 +451,8 @@
 .home-interaction-panel__settings:focus-visible .home-interaction-panel__settings-icon,
 .home-interaction-panel__model-button:hover .home-interaction-panel__model-chevron,
 .home-interaction-panel__model-button:focus-visible .home-interaction-panel__model-chevron,
-.home-interaction-panel__submit:hover .home-interaction-panel__submit-icon,
-.home-interaction-panel__submit:focus-visible .home-interaction-panel__submit-icon{
+.home-interaction-panel__continuity:hover .home-interaction-panel__continuity-icon,
+.home-interaction-panel__continuity:focus-visible .home-interaction-panel__continuity-icon{
   opacity:var(--home-interaction-panel-icon-opacity-hover);
 }
 
@@ -470,6 +476,9 @@
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
+  justify-content:center;
+  align-items:center;
+  aspect-ratio:1 / 1;
   color:currentColor;
   font-size:var(--home-interaction-panel-model-name-size);
   font-weight:var(--home-interaction-panel-model-name-weight);
@@ -519,6 +528,9 @@
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
+  justify-content:center;
+  align-items:center;
+  aspect-ratio:1 / 1;
   font-size:var(--home-interaction-panel-file-chip-size);
   font-weight:var(--home-interaction-panel-file-chip-weight);
   letter-spacing:var(--home-interaction-panel-file-chip-tracking);
@@ -602,11 +614,14 @@
 /* =============================================================================
    12) SUBMIT CONTROL
 ============================================================================= */
-.home-interaction-panel__submit{
-  min-height:var(--home-interaction-panel-submit-height);
-  padding:var(--spacing-none) var(--home-interaction-panel-submit-padding-x);
+.home-interaction-panel__continuity{
+  width:var(--home-interaction-panel-control-size);
+  min-width:var(--home-interaction-panel-control-size);
+  height:var(--home-interaction-panel-control-size);
+  min-height:var(--home-interaction-panel-control-size);
+  padding:0;
   border:var(--border-width-hairline) solid var(--home-interaction-panel-submit-border);
-  border-radius:var(--home-interaction-panel-submit-radius);
+  border-radius:50%;
   background:var(--home-interaction-panel-submit-bg);
   color:var(--home-interaction-panel-submit-text);
   gap:var(--home-interaction-panel-submit-gap);
@@ -614,22 +629,25 @@
   font-weight:var(--home-interaction-panel-submit-weight);
   line-height:var(--home-interaction-panel-submit-line-height);
   white-space:nowrap;
+  justify-content:center;
+  align-items:center;
+  aspect-ratio:1 / 1;
 }
 
-.home-interaction-panel__submit[disabled]{
+.home-interaction-panel__continuity[disabled]{
   opacity:var(--home-interaction-panel-disabled-opacity);
 }
 
-.home-interaction-panel__submit[data-home-interaction-submit-intent="thinking"],
-.home-interaction-panel__submit[data-home-interaction-submit-intent="listening"]{
-  background:var(--home-interaction-panel-submit-thinking-bg);
+.home-interaction-panel__continuity[data-home-interaction-submit-intent="thinking"],
+.home-interaction-panel__continuity[data-home-interaction-submit-intent="listening"]{
+  background:var(--home-interaction-panel-control-thinking-bg);
 }
 
-.home-interaction-panel__submit[data-home-interaction-submit-intent="reset"]{
-  background:var(--home-interaction-panel-submit-reset-bg);
+.home-interaction-panel__continuity[data-home-interaction-submit-intent="reset"]{
+  background:var(--home-interaction-panel-control-responding-bg);
 }
 
-.home-interaction-panel[data-home-interaction-mode="thinking"] .home-interaction-panel__submit-label::after{
+.home-interaction-panel[data-home-interaction-mode="thinking"] .home-interaction-panel__continuity-label::after{
   content:"";
   display:inline-block;
   width:var(--home-interaction-panel-dot-width);
@@ -662,7 +680,7 @@
   .home-interaction-panel__composer-left,
   .home-interaction-panel__composer-right{
     width:var(--size-full);
-    justify-content:space-between;
+    justify-content:flex-end;
   }
 
   .home-interaction-panel__developer-workbench{
@@ -679,7 +697,7 @@
     order:3;
   }
 
-  .home-interaction-panel__submit{
+  .home-interaction-panel__continuity{
     min-width:var(--home-interaction-panel-control-size);
     padding:var(--spacing-none) var(--home-interaction-panel-model-padding-x-mobile);
   }
@@ -687,7 +705,7 @@
 
 @media (prefers-reduced-motion:reduce){
   #stage #stage-microphone-button.home-interaction-panel__voice[data-voice-mode="listening"],
-  .home-interaction-panel[data-home-interaction-mode="thinking"] .home-interaction-panel__submit-label::after{
+  .home-interaction-panel[data-home-interaction-mode="thinking"] .home-interaction-panel__continuity-label::after{
     animation:none;
   }
 }

@@ -22,18 +22,18 @@
    01) RESPONSE PANEL TOKENS
 ============================================================================= */
 :root{
-  --home-interaction-response-panel-width:min(46rem, calc(100vw - (2 * var(--site-gutter))));
-  --home-interaction-response-panel-max-height:3rem;
+  --home-interaction-response-panel-width:min(58rem, calc(100vw - (2 * var(--site-gutter))));
+  --home-interaction-response-panel-max-height:min(52vh, 36rem);
   --home-interaction-response-panel-padding:0.18rem 0.18rem 0.18rem;
-  --home-interaction-response-panel-content-max-width:42rem;
+  --home-interaction-response-panel-content-max-width:52rem;
   --home-interaction-response-panel-content-align:left;
   --home-interaction-response-panel-radius:var(--control-radius-composer);
   --home-interaction-response-panel-surface:transparent;
   --home-interaction-response-panel-text:var(--text-primary-color);
   --home-interaction-response-panel-muted:var(--text-secondary-color);
-  --home-interaction-response-panel-font-size:1.02rem;
+  --home-interaction-response-panel-font-size:1.06rem;
   --home-interaction-response-panel-font-weight:300;
-  --home-interaction-response-panel-line-height:1.72;
+  --home-interaction-response-panel-line-height:1.92;
   --home-interaction-response-panel-letter-spacing:-0.012em;
   --home-interaction-response-panel-scrollbar:color-mix(in srgb, var(--text-secondary-color) 22%, transparent);
   --home-interaction-response-panel-scrollbar-hover:color-mix(in srgb, var(--text-secondary-color) 38%, transparent);
@@ -49,8 +49,8 @@
   flex-direction:column;
   width:var(--home-interaction-response-panel-width);
   max-width:100%;
-  max-height:var(--home-interaction-response-panel-max-height);
-  height:var(--home-interaction-response-panel-max-height);
+  max-height:auto;
+  height:auto;
   min-height:0;
   margin:0 auto;
   padding:var(--home-interaction-response-panel-padding);
@@ -60,7 +60,7 @@
   background:var(--home-interaction-response-panel-surface);
   color:var(--home-interaction-response-panel-text);
   text-align:var(--home-interaction-response-panel-content-align);
-  overflow:hidden;
+  overflow:visible;
 }
 
 /* =============================================================================
@@ -88,12 +88,12 @@
   height:100%;
   min-width:0;
   min-height:0;
-  max-height:var(--home-interaction-response-panel-max-height);
+  max-height:auto;
   box-sizing:border-box;
   overflow-y:auto;
   overflow-x:hidden;
   overscroll-behavior:contain;
-  scrollbar-width:thin;
+  scrollbar-width:none;
   scrollbar-color:var(--home-interaction-response-panel-scrollbar) transparent;
   outline:none;
   border-radius:var(--home-interaction-response-panel-radius);
@@ -101,7 +101,9 @@
 }
 
 .home-interaction-response-panel__scroller::-webkit-scrollbar{
-  width:0.42rem;
+  display:none;
+  width:0;
+  height:0;
 }
 
 .home-interaction-response-panel__scroller::-webkit-scrollbar-track{
@@ -123,7 +125,7 @@
 .home-interaction-response-panel__content{
   margin:0;
   max-width:var(--home-interaction-response-panel-content-max-width);
-  padding:0.18rem 0.24rem 0.32rem;
+  padding:0.4rem 0.2rem 1.4rem;
   color:var(--home-interaction-response-panel-text);
   font-size:var(--home-interaction-response-panel-font-size);
   font-weight:var(--home-interaction-response-panel-font-weight);
@@ -143,12 +145,100 @@
 @media (max-width:760px){
   :root{
     --home-interaction-response-panel-width:min(100%, calc(100vw - (2 * var(--site-gutter))));
-    --home-interaction-response-panel-max-height:3rem;
+    --home-interaction-response-panel-max-height:min(52vh, 36rem);
     --home-interaction-response-panel-content-max-width:100%;
     --home-interaction-response-panel-font-size:0.96rem;
     --home-interaction-response-panel-line-height:1.66;
   }
 }
+
+
+
+/* =============================================================================
+   05A) IMMERSIVE COGNITION TYPOGRAPHY
+============================================================================= */
+
+.home-interaction-response-panel__content{
+  display:grid;
+  gap:1.2rem;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  text-wrap:pretty;
+}
+
+.home-interaction-response-panel__content > *{
+  margin:0;
+}
+
+.home-interaction-response-panel__content p{
+  opacity:0;
+  transform:translateY(0.4rem);
+  animation:home-response-emergence 680ms var(--interaction-ease-standard) forwards;
+}
+
+.home-interaction-response-panel__content p + p{
+  margin-top:0.2rem;
+}
+
+.home-interaction-response-panel__content h1,
+.home-interaction-response-panel__content h2,
+.home-interaction-response-panel__content h3{
+  font-weight:500;
+  letter-spacing:-0.03em;
+  line-height:1.18;
+}
+
+.home-interaction-response-panel__content strong{
+  font-weight:520;
+  color:var(--text-primary-color);
+}
+
+.home-interaction-response-panel__content code{
+  padding:0.14rem 0.38rem;
+  border-radius:0.5rem;
+  background:color-mix(in srgb, var(--text-primary-color) 8%, transparent);
+  font-size:0.92em;
+}
+
+.home-interaction-response-panel__content pre{
+  overflow:auto;
+  padding:1rem 1.1rem;
+  border-radius:1rem;
+  background:color-mix(in srgb, var(--surface-elevated) 42%, transparent);
+  scrollbar-width:none;
+}
+
+.home-interaction-response-panel__content pre::-webkit-scrollbar{
+  display:none;
+}
+
+.home-interaction-response-panel__scroller::after{
+  content:"";
+  position:sticky;
+  display:block;
+  bottom:0;
+  width:100%;
+  height:3.5rem;
+  pointer-events:none;
+  background:linear-gradient(
+    to bottom,
+    transparent,
+    var(--page-bg)
+  );
+}
+
+@keyframes home-response-emergence{
+  from{
+    opacity:0;
+    transform:translateY(0.4rem);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
 
 /* =============================================================================
    06) END OF FILE

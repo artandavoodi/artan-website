@@ -43,7 +43,7 @@ const HOME_STAGE_VOICE_STATE = {
 
 const HOME_STAGE_VOICE_SELECTORS = {
   stageShell: '#stage-cognitive-core-shell',
-  microphoneButton: '#stage-microphone-button',
+  microphoneButton: '#home-interaction-panel-submit',
   composerInput: '#home-interaction-panel-input',
 };
 

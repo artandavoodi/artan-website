@@ -66,3 +66,7 @@ import './developer-mode/00-developer-mode-all.js';
 /* =========================================================
    02. END OF FILE
    ========================================================= */
+
+import './runtime/multimodal/multimodal-intake-runtime.js';
+
+import './settings/runtime-provider-settings/00-runtime-provider-settings-all.js';

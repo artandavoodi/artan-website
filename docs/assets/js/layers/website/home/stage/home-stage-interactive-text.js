@@ -86,15 +86,15 @@ function getHomeStageInteractiveTextIdleLabel() {
 function getHomeStageInteractiveTextLabel(mode) {
   switch (normalizeHomeStageInteractiveTextMode(mode)) {
     case 'listening':
-      return 'Listening';
+      return 'Presence';
     case 'transcribing':
-      return 'Transcribing';
+      return 'Receiving';
     case 'thinking':
-      return 'Thinking';
+      return 'Processing';
     case 'responding':
-      return 'Responding';
+      return 'Emerging';
     case 'finding':
-      return 'Finding';
+      return 'Routing';
     default:
       return getHomeStageInteractiveTextIdleLabel();
   }
