@@ -420,6 +420,30 @@ async function handlePatchProposal(request, response) {
    06) ROUTER
 ============================================================================= */
 export async function handleDeveloperModeApi(request, response, url) {
+
+  // ── Runtime proxy — forwards to Groq runtime on port 3030 ──────────────
+  if (request.method === 'POST' && url.pathname === '/api/runtime/gemini') {
+    try {
+      const chunks = [];
+      for await (const chunk of request) chunks.push(chunk);
+      const body = Buffer.concat(chunks).toString();
+
+      const upstream = await fetch('http://localhost:3030/api/runtime/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body
+      });
+
+      const data = await upstream.json();
+      response.writeHead(upstream.status, { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify(data));
+    } catch (error) {
+      response.writeHead(502, { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify({ error: 'Runtime proxy unavailable.', response: 'Runtime proxy unavailable.' }));
+    }
+    return true;
+  }
+
   if (!url.pathname.startsWith('/api/developer-mode/')) {
     return false;
   }

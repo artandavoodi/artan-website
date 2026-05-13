@@ -430,6 +430,12 @@ function handleHomeStageQuerySubmitted(event) {
   const query = normalizeHomeStageQuery(event?.detail?.query ?? '');
   const source = normalizeHomeStageQuery(event?.detail?.source ?? 'homepage-interaction');
 
+  // Text submissions are handled directly by the interaction panel via the
+  // runtime proxy — skip query engine routing to prevent race conditions.
+  if (source === 'text') {
+    return;
+  }
+
   if (!query || HOME_STAGE_QUERY_ENGINE_STATE.isBusy) {
     return;
   }
