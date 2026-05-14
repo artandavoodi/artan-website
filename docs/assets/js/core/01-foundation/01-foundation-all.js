@@ -48,7 +48,7 @@ import './overlays.js';
  * orchestrator. First-paint homepage state bootstraps must be loaded directly
  * in the document head before visual stylesheets.
  */
-import './config-bootstrap.js';
+import './';
 
 /* =============================================================================
    04) END OF FILE

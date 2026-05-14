@@ -307,8 +307,12 @@ function stopLoop() {
 }
 
 function renderCursor() {
-  const customCursor = document.querySelector(CURSOR_SELECTOR);
-  if (!customCursor) return;
+  let customCursor = document.querySelector(CURSOR_SELECTOR);
+  if (!customCursor) {
+    if (!state.enabled) return;
+    customCursor = ensureCursorNode();
+    if (!customCursor) return;
+  }
 
   if (!state.enabled) {
     applyVisualState();
@@ -372,6 +376,13 @@ function handlePointerLeave() {
 ============================================================================= */
 function handleVisibilityChange() {
   state.isHidden = document.hidden;
+  if (document.hidden) {
+    document.documentElement.dataset.cursorCustom = 'false';
+  } else if (state.enabled) {
+    document.documentElement.dataset.cursorCustom = 'true';
+    ensureCursorNode();
+    startLoop();
+  }
   applyVisualState();
 }
 
@@ -381,11 +392,21 @@ function handleScroll() {
 
 function handleWindowFocus() {
   state.isHidden = false;
+  // Restore custom cursor state
+  if (state.enabled) {
+    document.documentElement.dataset.cursorCustom = 'true';
+  }
   applyVisualState();
+  if (state.enabled) {
+    ensureCursorNode();
+    startLoop();
+  }
 }
 
 function handleWindowBlur() {
   state.isHidden = true;
+  // Restore native OS cursor — prevents cursor:none leaking to macOS
+  document.documentElement.dataset.cursorCustom = 'false';
   applyVisualState();
 }
 
@@ -422,6 +443,32 @@ function bindEvents() {
 
   document.documentElement.addEventListener('mouseleave', handlePointerLeave, { passive: true });
   document.documentElement.addEventListener('mouseenter', handleWindowFocus, { passive: true });
+
+  // When a text input is focused, restore native cursor so macOS does not
+  // lose cursor state when the user switches to another application.
+  document.addEventListener('focusin', (event) => {
+    const target = event.target;
+    if (
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement ||
+      target instanceof HTMLSelectElement
+    ) {
+      document.documentElement.dataset.cursorCustom = 'false';
+    }
+  });
+
+  document.addEventListener('focusout', (event) => {
+    const target = event.target;
+    if (
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement ||
+      target instanceof HTMLSelectElement
+    ) {
+      if (state.enabled && !state.isHidden) {
+        document.documentElement.dataset.cursorCustom = 'true';
+      }
+    }
+  });
 
   const pointerMediaQuery = window.matchMedia('(pointer: fine)');
   if (typeof pointerMediaQuery.addEventListener === 'function') {

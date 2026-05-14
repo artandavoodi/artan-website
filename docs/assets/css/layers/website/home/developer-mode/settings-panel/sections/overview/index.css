@@ -10,51 +10,51 @@
 .developer-mode-settings-panel-section--overview{
   display:grid;
   gap:var(--nav-global-topbar-menu-gap);
-  padding:var(--home-composition-panel-padding);
-  border:1px solid var(--border-color);
-  border-radius:var(--home-composition-panel-radius);
+  padding:var(--cc-composition-panel-padding);
+  border:1px solid var(--cc-color);
+  border-radius:var(--cc-composition-panel-radius);
   background:var(--surface-primary-color);
 }
 
 .developer-mode-settings-panel-section--overview .developer-mode-settings-panel-section__header{
   display:grid;
-  gap:var(--home-composition-section-gap);
+  gap:var(--cc-composition-section-gap);
 }
 
 .developer-mode-settings-panel-section--overview .developer-mode-settings-panel-section__eyebrow{
   margin:0;
-  color:var(--text-secondary-color);
-  font:var(--text-xxs-label-font);
+  color:var(--cc-secondary-color);
+  font:var(--cc-xxs-label-font);
   letter-spacing:var(--tracking-wide);
   text-transform:uppercase;
 }
 
 .developer-mode-settings-panel-section--overview .developer-mode-settings-panel-section__title{
   margin:0;
-  color:var(--text-primary-color);
+  color:var(--cc-primary-color);
   font:var(--heading-5-font);
 }
 
 .developer-mode-settings-panel-section--overview .developer-mode-settings-panel-section__copy{
   margin:0;
-  color:var(--text-secondary-color);
+  color:var(--cc-secondary-color);
   font:var(--body-small-font);
 }
 
 .developer-mode-settings-panel-section--overview .developer-mode-settings-panel-section__body{
   display:grid;
-  gap:var(--home-composition-section-gap);
+  gap:var(--cc-composition-section-gap);
 }
 
 .developer-mode-settings-panel-section--overview .developer-mode-settings-panel-section__placeholder{
   display:flex;
   align-items:center;
   justify-content:flex-start;
-  min-block-size:var(--home-composition-panel-min-block-size);
-  padding:var(--home-composition-panel-padding);
-  border:1px dashed var(--border-color);
-  border-radius:var(--home-composition-panel-radius);
-  color:var(--text-tertiary-color);
+  min-block-size:var(--cc-composition-panel-min-block-size);
+  padding:var(--cc-composition-panel-padding);
+  border:1px dashed var(--cc-color);
+  border-radius:var(--cc-composition-panel-radius);
+  color:var(--cc-tertiary-color);
   background:transparent;
 }
 

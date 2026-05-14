@@ -22,11 +22,11 @@
    01) CONTEXT COMPONENT TOKENS
 ============================================================================= */
 .home-developer-mode-context{
-  --home-developer-mode-context-surface:var(--home-interaction-settings-control-group-surface-bg, var(--home-interaction-panel-bg, var(--surface-primary-color)));
-  --home-developer-mode-context-border:var(--home-interaction-settings-control-group-surface-border, var(--home-interaction-panel-border, var(--border-color)));
-  --home-developer-mode-context-separator:var(--home-interaction-settings-control-group-row-separator, var(--border-color));
-  --home-developer-mode-context-text:var(--text-primary-color);
-  --home-developer-mode-context-muted:var(--text-secondary-color);
+  --home-developer-mode-context-surface:var(--cc-interaction-settings-control-group-surface-bg, var(--cc-interaction-panel-bg, var(--surface-primary-color)));
+  --home-developer-mode-context-border:var(--cc-interaction-settings-control-group-surface-border, var(--cc-interaction-panel-border, var(--cc-color)));
+  --home-developer-mode-context-separator:var(--cc-interaction-settings-control-group-row-separator, var(--cc-color));
+  --home-developer-mode-context-text:var(--cc-primary-color);
+  --home-developer-mode-context-muted:var(--cc-secondary-color);
   --home-developer-mode-context-padding-block:var(--spacing-md);
   --home-developer-mode-context-padding-inline:var(--spacing-md);
   --home-developer-mode-context-gap:var(--spacing-md);
@@ -46,9 +46,9 @@
   width:var(--size-full);
   min-width:var(--spacing-none);
   min-height:var(--spacing-none);
-  color:var(--home-developer-mode-context-text);
-  background:var(--home-developer-mode-context-surface);
-  border:var(--border-width-hairline) solid var(--home-developer-mode-context-border);
+  color:var(--cc-developer-mode-context-text);
+  background:var(--cc-developer-mode-context-surface);
+  border:var(--cc-width-hairline) solid var(--cc-developer-mode-context-border);
   overflow:hidden;
 }
 
@@ -59,9 +59,9 @@
   display:flex;
   flex:0 0 auto;
   flex-direction:column;
-  gap:var(--home-developer-mode-context-copy-gap);
-  padding:var(--home-developer-mode-context-padding-block) var(--home-developer-mode-context-padding-inline);
-  border-bottom:var(--border-width-hairline) solid var(--home-developer-mode-context-separator);
+  gap:var(--cc-developer-mode-context-copy-gap);
+  padding:var(--cc-developer-mode-context-padding-block) var(--cc-developer-mode-context-padding-inline);
+  border-bottom:var(--cc-width-hairline) solid var(--cc-developer-mode-context-separator);
 }
 
 .home-developer-mode-context__eyebrow,
@@ -72,7 +72,7 @@
 
 .home-developer-mode-context__eyebrow,
 .home-developer-mode-context__group-title{
-  color:var(--home-developer-mode-context-muted);
+  color:var(--cc-developer-mode-context-muted);
   font-size:var(--font-size-caption);
   font-weight:var(--font-weight-light);
   letter-spacing:var(--tracking-label);
@@ -81,7 +81,7 @@
 }
 
 .home-developer-mode-context__title{
-  color:var(--home-developer-mode-context-text);
+  color:var(--cc-developer-mode-context-text);
   font-size:var(--font-size-body-1);
   font-weight:var(--font-weight-light);
   letter-spacing:var(--tracking-copy);
@@ -89,7 +89,7 @@
 }
 
 .home-developer-mode-context__description{
-  color:var(--home-developer-mode-context-muted);
+  color:var(--cc-developer-mode-context-muted);
   font-size:var(--font-size-body-3);
   font-weight:var(--font-weight-light);
   letter-spacing:var(--tracking-copy);
@@ -103,10 +103,10 @@
   display:flex;
   flex:1 1 auto;
   flex-direction:column;
-  gap:var(--home-developer-mode-context-gap);
+  gap:var(--cc-developer-mode-context-gap);
   min-width:var(--spacing-none);
   min-height:var(--spacing-none);
-  padding:var(--home-developer-mode-context-padding-block) var(--home-developer-mode-context-padding-inline);
+  padding:var(--cc-developer-mode-context-padding-block) var(--cc-developer-mode-context-padding-inline);
   overflow:auto;
 }
 
@@ -116,7 +116,7 @@
 .home-developer-mode-context__group{
   display:flex;
   flex-direction:column;
-  gap:var(--home-developer-mode-context-copy-gap);
+  gap:var(--cc-developer-mode-context-copy-gap);
   margin:var(--spacing-none);
   padding:var(--spacing-none);
 }
@@ -135,19 +135,19 @@
   padding:var(--spacing-none);
   overflow:hidden;
   background:transparent;
-  border:var(--border-width-hairline) solid var(--home-developer-mode-context-border);
+  border:var(--cc-width-hairline) solid var(--cc-developer-mode-context-border);
 }
 
 .home-developer-mode-context__item{
   display:grid;
   grid-template-columns:minmax(var(--spacing-none), 0.82fr) minmax(var(--spacing-none), 1fr);
-  gap:var(--home-developer-mode-context-row-gap);
+  gap:var(--cc-developer-mode-context-row-gap);
   align-items:start;
-  padding:var(--home-developer-mode-context-row-padding-block) var(--home-developer-mode-context-row-padding-inline);
+  padding:var(--cc-developer-mode-context-row-padding-block) var(--cc-developer-mode-context-row-padding-inline);
 }
 
 .home-developer-mode-context__item + .home-developer-mode-context__item{
-  border-top:var(--border-width-hairline) solid var(--home-developer-mode-context-separator);
+  border-top:var(--cc-width-hairline) solid var(--cc-developer-mode-context-separator);
 }
 
 .home-developer-mode-context__item dt,
@@ -161,11 +161,11 @@
 }
 
 .home-developer-mode-context__item dt{
-  color:var(--home-developer-mode-context-muted);
+  color:var(--cc-developer-mode-context-muted);
 }
 
 .home-developer-mode-context__item dd{
-  color:var(--home-developer-mode-context-text);
+  color:var(--cc-developer-mode-context-text);
   overflow-wrap:anywhere;
 }
 

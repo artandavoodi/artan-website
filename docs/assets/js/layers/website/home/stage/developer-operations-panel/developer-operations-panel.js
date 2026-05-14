@@ -347,8 +347,6 @@ function bindDeveloperOperationsPanelEvents() {
     }
   });
 
-  document.addEventListener('home-developer-mode:activated', renderDeveloperOperationsPanel);
-  document.addEventListener('home-developer-mode:deactivated', renderDeveloperOperationsPanel);
   document.addEventListener('neuroartan:home-stage-developer-command-artifact-created', renderDeveloperOperationsPanel);
 }
 

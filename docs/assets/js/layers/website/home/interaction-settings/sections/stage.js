@@ -284,11 +284,9 @@ function bindStageDeveloperModeEvents(){
 
   document.documentElement.dataset.homeStageDeveloperModeBound = 'true';
 
-  document.addEventListener('home-developer-mode:activated', () => {
     setStageDeveloperModeActive(true);
   });
 
-  document.addEventListener('home-developer-mode:deactivated', () => {
     setStageDeveloperModeActive(false);
   });
 }

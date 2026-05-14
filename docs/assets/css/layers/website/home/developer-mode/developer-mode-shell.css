@@ -24,13 +24,13 @@
 :root{
   --home-developer-mode-shell-padding-y:var(--spacing-lg);
   --home-developer-mode-shell-padding-x:var(--spacing-lg);
-  --home-developer-mode-shell-viewport-height:calc(100vh - var(--home-dashboard-topbar-height, var(--control-height-xl)));
+  --home-developer-mode-shell-viewport-height:calc(100vh - var(--cc-dashboard-topbar-height, var(--control-height-xl)));
   --home-developer-mode-shell-slot-gap:var(--spacing-lg);
-  --home-developer-mode-shell-left-slot-width:minmax(var(--spacing-none), var(--layout-home-platform-rail-width));
-  --home-developer-mode-shell-right-slot-width:minmax(var(--spacing-none), var(--layout-home-platform-subrail-width));
-  --home-developer-mode-shell-left-slot-border:var(--text-primary-color);
-  --home-developer-mode-shell-center-slot-border:var(--text-secondary-color);
-  --home-developer-mode-shell-right-slot-border:var(--border-color);
+  --home-developer-mode-shell-left-slot-width:minmax(var(--spacing-none), var(--cc-home-platform-rail-width));
+  --home-developer-mode-shell-right-slot-width:minmax(var(--spacing-none), var(--cc-home-platform-subrail-width));
+  --home-developer-mode-shell-left-slot-border:var(--cc-primary-color);
+  --home-developer-mode-shell-center-slot-border:var(--cc-secondary-color);
+  --home-developer-mode-shell-right-slot-border:var(--cc-color);
 }
 
 /* =============================================================================
@@ -64,15 +64,15 @@
   width:var(--size-full);
   min-width:var(--spacing-none);
   min-height:var(--spacing-none);
-  height:var(--home-developer-mode-shell-viewport-height);
-  padding:var(--home-developer-mode-shell-padding-y) var(--home-developer-mode-shell-padding-x);
+  height:var(--cc-developer-mode-shell-viewport-height);
+  padding:var(--cc-developer-mode-shell-padding-y) var(--cc-developer-mode-shell-padding-x);
   overflow:hidden;
 }
 
 .home-developer-mode-shell__workspace{
   display:grid;
-  grid-template-columns:var(--home-developer-mode-shell-left-slot-width) minmax(var(--spacing-none), 1fr) var(--home-developer-mode-shell-right-slot-width);
-  gap:var(--home-developer-mode-shell-slot-gap);
+  grid-template-columns:var(--cc-developer-mode-shell-left-slot-width) minmax(var(--spacing-none), 1fr) var(--cc-developer-mode-shell-right-slot-width);
+  gap:var(--cc-developer-mode-shell-slot-gap);
   align-items:stretch;
   width:var(--size-full);
   min-width:var(--spacing-none);
@@ -94,15 +94,15 @@
 }
 
 .home-developer-mode-shell__slot--left{
-  border:var(--border-width-sm) solid var(--home-developer-mode-shell-left-slot-border);
+  border:var(--cc-width-sm) solid var(--cc-developer-mode-shell-left-slot-border);
 }
 
 .home-developer-mode-shell__slot--center{
-  border:var(--border-width-sm) solid var(--home-developer-mode-shell-center-slot-border);
+  border:var(--cc-width-sm) solid var(--cc-developer-mode-shell-center-slot-border);
 }
 
 .home-developer-mode-shell__slot--right{
-  border:var(--border-width-sm) solid var(--home-developer-mode-shell-right-slot-border);
+  border:var(--cc-width-sm) solid var(--cc-developer-mode-shell-right-slot-border);
 }
 
 /* =============================================================================
@@ -110,7 +110,7 @@
 ============================================================================= */
 @media (max-width: 1200px){
   .home-developer-mode-shell__workspace{
-    grid-template-columns:var(--home-developer-mode-shell-left-slot-width) minmax(var(--spacing-none), 1fr) var(--home-developer-mode-shell-right-slot-width);
+    grid-template-columns:var(--cc-developer-mode-shell-left-slot-width) minmax(var(--spacing-none), 1fr) var(--cc-developer-mode-shell-right-slot-width);
   }
 }
 

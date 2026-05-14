@@ -24,7 +24,7 @@
   flex:0 1 auto;
   min-width:0;
   margin-inline-start:auto;
-  gap:var(--home-topbar-menu-gap);
+  gap:var(--cc-topbar-menu-gap);
   overflow-x:auto;
   overflow-y:hidden;
   scrollbar-width:none;
@@ -42,7 +42,7 @@
   display:inline-flex;
   align-items:center;
   flex:0 0 auto;
-  color:var(--text-primary-color);
+  color:var(--cc-primary-color);
   font-size:var(--font-size-body-1);
   font-weight:var(--font-weight-light);
   letter-spacing:var(--tracking-copy);
@@ -54,7 +54,7 @@
    03) DEVELOPER ACTIVE STATE
 ============================================================================= */
 .home-developer-mode-topbar .home-dashboard-topbar__action[aria-pressed="true"]{
-  color:var(--text-primary-color);
+  color:var(--cc-primary-color);
   opacity:1;
 }
 

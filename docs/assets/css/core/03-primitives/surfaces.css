@@ -17,12 +17,12 @@
 ============================================================================= */
 .ui-card,
 .ui-surface{
-  background:var(--panel-surface-unified);
-  border:var(--border-width-hairline) solid var(--panel-border-unified);
+  background:var(--cc-surface-unified);
+  border:var(--cc-width-hairline) solid var(--cc-border-unified);
   border-radius:var(--shape-card-radius);
-  box-shadow:var(--panel-shadow-unified);
-  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
-  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  box-shadow:var(--cc-shadow-unified);
+  backdrop-filter:blur(var(--cc-blur-unified)) saturate(var(--cc-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--cc-blur-unified)) saturate(var(--cc-saturate-unified));
   transition:var(--interaction-transition-control);
 }
 
@@ -31,19 +31,19 @@
 ============================================================================= */
 .ui-card--elevated,
 .ui-surface--elevated{
-  background:var(--panel-surface-unified);
-  border-radius:var(--panel-radius-unified);
-  box-shadow:var(--panel-shadow-unified);
+  background:var(--cc-surface-unified);
+  border-radius:var(--cc-radius-unified);
+  box-shadow:var(--cc-shadow-unified);
 }
 
 /* =============================================================================
    04) GLASS SURFACE VARIANT
 ============================================================================= */
 .ui-surface--glass{
-  background:var(--panel-surface-unified);
-  border-radius:var(--panel-radius-unified);
-  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
-  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  background:var(--cc-surface-unified);
+  border-radius:var(--cc-radius-unified);
+  backdrop-filter:blur(var(--cc-blur-unified)) saturate(var(--cc-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--cc-blur-unified)) saturate(var(--cc-saturate-unified));
 }
 
 /* =============================================================================

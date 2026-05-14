@@ -19,12 +19,12 @@
    01) LEFT SIDEBAR TOKENS
 ============================================================================= */
 .home-developer-mode-sidebar{
-  --home-developer-mode-sidebar-surface:var(--home-interaction-settings-control-group-surface-bg, var(--home-interaction-panel-bg, var(--surface-primary-color)));
-  --home-developer-mode-sidebar-border:var(--border-color);
-  --home-developer-mode-sidebar-diagnostic-border:var(--color-success, var(--text-primary-color));
-  --home-developer-mode-sidebar-separator:var(--home-interaction-settings-control-group-row-separator, var(--border-color));
-  --home-developer-mode-sidebar-text:var(--text-primary-color);
-  --home-developer-mode-sidebar-muted:var(--text-secondary-color);
+  --home-developer-mode-sidebar-surface:var(--cc-interaction-settings-control-group-surface-bg, var(--cc-interaction-panel-bg, var(--surface-primary-color)));
+  --home-developer-mode-sidebar-border:var(--cc-color);
+  --home-developer-mode-sidebar-diagnostic-border:var(--color-success, var(--cc-primary-color));
+  --home-developer-mode-sidebar-separator:var(--cc-interaction-settings-control-group-row-separator, var(--cc-color));
+  --home-developer-mode-sidebar-text:var(--cc-primary-color);
+  --home-developer-mode-sidebar-muted:var(--cc-secondary-color);
   --home-developer-mode-sidebar-gap:var(--spacing-sm);
   --home-developer-mode-sidebar-padding-block:var(--spacing-md);
   --home-developer-mode-sidebar-padding-inline:var(--spacing-md);
@@ -41,10 +41,10 @@
   width:var(--size-full);
   min-width:var(--spacing-none);
   min-height:var(--spacing-none);
-  gap:var(--home-developer-mode-sidebar-gap);
-  color:var(--home-developer-mode-sidebar-text);
-  background:var(--home-developer-mode-sidebar-surface);
-  border:var(--border-width-sm) solid var(--home-developer-mode-sidebar-diagnostic-border);
+  gap:var(--cc-developer-mode-sidebar-gap);
+  color:var(--cc-developer-mode-sidebar-text);
+  background:var(--cc-developer-mode-sidebar-surface);
+  border:var(--cc-width-sm) solid var(--cc-developer-mode-sidebar-diagnostic-border);
   overflow:hidden;
 }
 
@@ -54,14 +54,14 @@
 .home-developer-mode-sidebar__label{
   flex:0 0 auto;
   margin:var(--spacing-none);
-  padding:var(--home-developer-mode-sidebar-padding-block) var(--home-developer-mode-sidebar-padding-inline);
-  color:var(--home-developer-mode-sidebar-muted);
+  padding:var(--cc-developer-mode-sidebar-padding-block) var(--cc-developer-mode-sidebar-padding-inline);
+  color:var(--cc-developer-mode-sidebar-muted);
   font-size:var(--font-size-caption);
   font-weight:var(--font-weight-light);
   letter-spacing:var(--tracking-label);
   line-height:var(--line-height-tight);
   text-transform:uppercase;
-  border-bottom:var(--border-width-hairline) solid var(--home-developer-mode-sidebar-separator);
+  border-bottom:var(--cc-width-hairline) solid var(--cc-developer-mode-sidebar-separator);
 }
 
 /* =============================================================================
@@ -69,10 +69,10 @@
 ============================================================================= */
 .home-developer-mode-sidebar__items{
   display:grid;
-  gap:var(--home-developer-mode-sidebar-gap);
+  gap:var(--cc-developer-mode-sidebar-gap);
   min-width:var(--spacing-none);
   min-height:var(--spacing-none);
-  padding:var(--home-developer-mode-sidebar-padding-block) var(--home-developer-mode-sidebar-padding-inline);
+  padding:var(--cc-developer-mode-sidebar-padding-block) var(--cc-developer-mode-sidebar-padding-inline);
   overflow:auto;
 }
 
@@ -85,18 +85,18 @@
   justify-content:flex-start;
   width:var(--size-full);
   min-width:var(--spacing-none);
-  padding:var(--home-developer-mode-sidebar-route-padding-block) var(--home-developer-mode-sidebar-route-padding-inline);
-  color:var(--home-developer-mode-sidebar-muted);
+  padding:var(--cc-developer-mode-sidebar-route-padding-block) var(--cc-developer-mode-sidebar-route-padding-inline);
+  color:var(--cc-developer-mode-sidebar-muted);
   background:transparent;
-  border:var(--border-width-hairline) solid var(--home-developer-mode-sidebar-border);
+  border:var(--cc-width-hairline) solid var(--cc-developer-mode-sidebar-border);
   font:inherit;
   text-align:left;
   cursor:pointer;
 }
 
 .home-developer-mode-sidebar .home-developer-mode-route[aria-pressed="true"]{
-  color:var(--home-developer-mode-sidebar-text);
-  background:var(--home-developer-mode-sidebar-surface);
+  color:var(--cc-developer-mode-sidebar-text);
+  background:var(--cc-developer-mode-sidebar-surface);
 }
 
 /* =============================================================================

@@ -24,14 +24,14 @@
 .site-footer{
   width:100%;
   background-color:transparent;
-  color:var(--text-secondary-color);
+  color:var(--cc-secondary-color);
   text-align:center;
   font-size:var(--footer-copy-font-size);
   font-weight:400;
 }
 
 html[data-theme-effective="dark"] .site-footer{
-  color:var(--text-color);
+  color:var(--cc-color);
 }
 
 .footer-left,

@@ -38,7 +38,7 @@
 :root{
   --bg-color:var(--color-black);
   --text-color:var(--color-white);
-  --text-primary-color:var(--text-color);
+  --text-primary-color:var(--cc-color);
   --text-secondary-color:var(--color-primary3);
   --link-color:var(--color-primary5);
   --link-hover-color:var(--color-primary6);
