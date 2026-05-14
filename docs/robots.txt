@@ -7,5 +7,5 @@ Disallow: /profile.html
 
 Disallow: /assets/
 Allow: /assets/images/brand/
-Allow: /assets/icons/
+Allow: /registry/icons/public/assets/
 Sitemap: https://neuroartan.com/sitemap.xml

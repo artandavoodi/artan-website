@@ -46,8 +46,8 @@ import {
 } from './tabs/code-review/code-review-tab.js';
 
 const HOME_STAGE_DEVELOPER_OPERATIONS_VIEW_ICONS = {
-  full:'/assets/icons/core/actions/expand-collapse/collapse.svg',
-  mini:'/assets/icons/core/actions/expand-collapse/expand.svg'
+  full:'/registry/icons/public/assets/core/actions/expand-collapse/collapse.svg',
+  mini:'/registry/icons/public/assets/core/actions/expand-collapse/expand.svg'
 };
 
 /* =============================================================================

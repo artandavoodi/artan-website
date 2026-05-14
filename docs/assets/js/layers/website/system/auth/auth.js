@@ -70,7 +70,7 @@
      05) PROFILE ROUTES
   ============================================================================= */
   const PROFILE_ROUTE_MATCHERS = ['/profile.html', '/profile/'];
-  const CORE_NEUROARTAN_LOGO = 'assets/icons/core/identity/brand/neuroartan/logo-plain.svg';
+  const CORE_NEUROARTAN_LOGO = 'registry/icons/public/assets/core/identity/brand/neuroartan/logo-plain.svg';
 
   /* =============================================================================
      06) ROUTE HELPERS
